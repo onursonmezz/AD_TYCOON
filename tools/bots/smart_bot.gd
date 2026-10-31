@@ -10,6 +10,8 @@ const GROWTH_HORIZON_WEEKS: int = 26
 const GROWTH_RESERVE_MONTHS: float = 2.0
 ## Kampanya kararında, en kötü tahsilat vadesinin üstüne eklenen güvenlik payı (hafta).
 const PAYMENT_SAFETY_WEEKS: int = 2
+## İkinci kanalın bütçe payı.
+const SECOND_SHARE: float = 0.4
 ## Ekibi bu sırayla büyütür: önce kreatif ve strateji, sonra prodüksiyon, account, hata yakalama.
 const HIRE_ORDER: Array[String] = ["art_director", "planner", "copywriter", "producer", "account", "graphic_designer",
 	"media_planner", "proofreader", "copywriter", "art_director", "planner", "producer"]
@@ -114,10 +116,38 @@ func best_choices(sim: Simulation, brief: Dictionary) -> Dictionary:
 				if m > best_m:
 					best_m = m
 					best = setup
+	_maybe_add_second_channel(sim, brief, best, client, channels, best_m)
 	var s1: Array[float] = _ideal_sliders(sim, best["objective"], 0)
 	var s2: Array[float] = _ideal_sliders(sim, best["objective"], 1)
 	best["sliders"] = [s1, s2, _best_phase3_sliders(sim, best["objective"], s1, s2)]
 	return best
+
+
+## Kanal sınırı ve bütçe izin veriyorsa, M × sinerjiyi artıran ikinci kanalı %40 payla ekler (GDD 7.3).
+func _maybe_add_second_channel(sim: Simulation, brief: Dictionary, best: Dictionary, client: Dictionary,
+		channels: Array[String], single_m: float) -> void:
+	if sim.media.channel_limit(sim.state, BotUtil.available_team(sim)) < 2:
+		return
+	var media_budget: float = float(brief["media_budget"])
+	var year: int = sim.state.clock.year()
+	var infl: float = Economy.inflation(sim.data, year)
+	var first: String = best["mix"][0]["channel"]
+	var best_value: float = single_m * float(sim.scoring.synergy(best["mix"], media_budget, year)["synergy"])
+	var best_mix: Array = best["mix"]
+	for ch: String in channels:
+		if ch == first or media_budget * SECOND_SHARE < float(sim.data.channels[ch]["min_budget"]) * infl \
+				or media_budget * (1.0 - SECOND_SHARE) < float(sim.data.channels[first]["min_budget"]) * infl:
+			continue
+		var mix: Array = [{"channel": first, "share": 1.0 - SECOND_SHARE}, {"channel": ch, "share": SECOND_SHARE}]
+		var trial: Dictionary = best.duplicate()
+		trial["mix"] = mix
+		var value: float = float(sim.scoring.combination(trial, client)["m"]) \
+			* float(sim.scoring.novelty(trial, sim.state.history, sim.state.clock.week_index, year)["n"]) \
+			* float(sim.scoring.synergy(mix, media_budget, year)["synergy"])
+		if value > best_value:
+			best_value = value
+			best_mix = mix
+	best["mix"] = best_mix
 
 
 ## 3. fazda Medya Planlama ve Ölçümleme S'ye de puan yazar; F ile S/K dengesini (B) birlikte en iyileyen dağılım.

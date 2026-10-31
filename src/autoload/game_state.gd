@@ -85,6 +85,8 @@ func _attach(new_sim: Simulation) -> void:
 	sim.staff_note.connect(func(key: String, args: Array, kind: String) -> void:
 		EventBus.notification.emit(key, args, kind))
 	sim.offer_received.connect(func(offer: Dictionary) -> void: EventBus.offer_received.emit(offer))
+	sim.supplier_offer_received.connect(func(offer: Dictionary) -> void:
+		EventBus.notification.emit("NOTE_SUPPLIER_OFFER", [tr(DataDB.data.suppliers[offer["supplier"]]["name_key"])], "info"))
 
 
 ## Arayüz dili (isim listeleri için): "tr" ya da "en".

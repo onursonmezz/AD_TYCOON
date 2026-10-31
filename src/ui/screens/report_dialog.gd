@@ -37,6 +37,7 @@ func _ready() -> void:
 	if bool(report.get("perfect", false)):
 		col.add_child(UiUtil.label(tr("UI_PERFECT"), 20, UiUtil.MUSTARD))
 	col.add_child(_kpi_cards())
+	col.add_child(_channel_table())
 	col.add_child(UiUtil.label(tr("UI_WHY"), 18, UiUtil.SAGE_DARK))
 	var lines: Array = _camp.get("lines", [])
 	if lines.is_empty():
@@ -99,11 +100,41 @@ func _kpi_cards() -> GridContainer:
 	return grid
 
 
+## Kanal bazında KPI (GDD 7.10, M4).
+func _channel_table() -> GridContainer:
+	var grid: GridContainer = GridContainer.new()
+	grid.columns = 6
+	grid.add_theme_constant_override("h_separation", 18)
+	for key: String in ["UI_COL_CHANNEL", "UI_COL_SPEND", "UI_COL_IMPRESSIONS", "KPI_REACH", "KPI_ENGAGEMENTS", "KPI_CONVERSIONS"]:
+		grid.add_child(UiUtil.label(tr(key), 13, UiUtil.WOOD))
+	var budget: float = float(_camp["setup"]["media_budget"])
+	var shares: Dictionary = {}
+	for entry: Dictionary in _camp["setup"]["mix"]:
+		shares[entry["channel"]] = float(entry["share"])
+	for row: Dictionary in _camp.get("kpi", {}).get("per_channel", []):
+		grid.add_child(UiUtil.label(UiUtil.name_of(DataDB.data.channels, row["channel"]), 14))
+		grid.add_child(UiUtil.label(UiUtil.money(budget * float(shares.get(row["channel"], 0.0))), 14))
+		for key: String in ["impressions", "reach", "engagements", "conversions"]:
+			grid.add_child(UiUtil.label(UiUtil.big_number(float(row[key])), 14))
+	return grid
+
+
 func _money_block() -> VBoxContainer:
 	var v: VBoxContainer = UiUtil.vbox(2)
 	var income: Dictionary = _camp.get("income", {})
-	v.add_child(UiUtil.label(tr("UI_INCOME_LINE") % [UiUtil.money(float(income.get("fee", 0.0))),
-		UiUtil.money(float(income.get("commission", 0.0))), UiUtil.money(float(income.get("bonus", 0.0)))], 15))
+	v.add_child(UiUtil.wrapped(tr("UI_INCOME_LINE") % [UiUtil.money(float(income.get("fee", 0.0))),
+		UiUtil.money(float(income.get("commission", 0.0))), UiUtil.money(float(income.get("bonus", 0.0)))], 15, UiUtil.TEXT, 680.0))
+	if (_camp.get("print_results", []) as Array).size() > 0:
+		v.add_child(UiUtil.label(tr("UI_PRODUCTION_MARGIN") % UiUtil.money(float(income.get("production_margin", 0.0))), 15))
+	for r: Dictionary in _camp.get("print_results", []):
+		var line: String = tr("UI_PRINT_RESULT") % [UiUtil.name_of(DataDB.data.channels, r["channel"]), UiUtil.money(r["cost"]),
+			int(r["weeks"])]
+		if bool(r["error"]):
+			line += " · " + tr("UI_PRINT_REPRINTED")
+		v.add_child(UiUtil.label(line, 14, UiUtil.TERRACOTTA if bool(r["error"]) else UiUtil.WOOD))
+	var late: int = int(_camp["setup"].get("late_weeks", 0))
+	if late > 0:
+		v.add_child(UiUtil.label(tr("UI_LATE_DELIVERY") % late, 15, UiUtil.TERRACOTTA))
 	var delta: float = float(_camp.get("satisfaction_delta", 0.0))
 	v.add_child(UiUtil.label(tr("UI_SATISFACTION_DELTA") % ("%+.1f" % delta), 15,
 		UiUtil.SAGE_DARK if delta >= 0.0 else UiUtil.TERRACOTTA))

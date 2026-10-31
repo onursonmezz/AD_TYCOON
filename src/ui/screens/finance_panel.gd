@@ -3,6 +3,7 @@ extends VBoxContainer
 ## Finans özeti (GDD 13.6, M2 sade sürüm): nakit, bekleyen tahsilat/ödemeler, bu yılın gelir-gideri.
 
 var _grid: GridContainer
+var _suppliers: VBoxContainer
 
 
 func _init() -> void:
@@ -14,6 +15,21 @@ func _init() -> void:
 	_grid.add_theme_constant_override("v_separation", 8)
 	add_child(_grid)
 	add_child(UiUtil.wrapped(tr("UI_FINANCE_HINT"), 14, UiUtil.MUTED, 420.0))
+	add_child(UiUtil.label(tr("UI_SUPPLIERS"), 18, UiUtil.SAGE_DARK))
+	_suppliers = UiUtil.vbox(4)
+	add_child(_suppliers)
+
+
+## Matbaalarla ilişki puanı ve aktif anlaşmalar (GDD 10.3).
+func _refresh_suppliers(s: SimState) -> void:
+	UiUtil.clear(_suppliers)
+	var data: GameData = DataDB.data
+	for id: String in data.supplier_ids:
+		_suppliers.add_child(UiUtil.label(tr("UI_SUPPLIER_LINE") % [tr(data.suppliers[id]["name_key"]),
+			int(GameState.sim.suppliers.relationship(s, id))], 14))
+	for deal: Dictionary in s.supplier_deals:
+		_suppliers.add_child(UiUtil.label("✓ %s: %s" % [tr(data.suppliers[deal["supplier"]]["name_key"]),
+			UiUtil.supplier_offer_text(deal)], 14, UiUtil.SAGE_DARK))
 
 
 func refresh() -> void:
@@ -41,6 +57,7 @@ func refresh() -> void:
 		["UI_FIN_MONTHLY", UiUtil.money(monthly)],
 		["UI_FIN_RED_WEEKS", "%d / %d" % [s.red_weeks, data.bali("cashflow.red_weeks_to_bankrupt")]],
 	]
+	_refresh_suppliers(s)
 	UiUtil.clear(_grid)
 	for row: Array in rows:
 		_grid.add_child(UiUtil.label(tr(row[0]), 16, UiUtil.WOOD))

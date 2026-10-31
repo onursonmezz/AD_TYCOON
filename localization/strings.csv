@@ -498,3 +498,66 @@ UI_TEAM_LINE,Ekip: %s,Team: %s
 UI_BACKGROUND_TITLE,Sen kimsin?,Who are you?
 UI_BACKGROUND_HINT,Ajansı kuran kişinin geçmişi başlangıç statlarını belirler. Büyüdükçe CEO olacaksın.,The founder's background sets your starting stats. As the agency grows you become the CEO.
 UI_PICK,Seç,Choose
+PRINT_FLYER_A5,El ilanı (A5),Flyer (A5)
+PRINT_BROCHURE_A4,Broşür (A4 katlamalı),Brochure (folded A4)
+PRINT_CATALOG_16,Katalog (16 sayfa),Catalog (16 pages)
+PRINT_CATALOG_32,Katalog (32 sayfa),Catalog (32 pages)
+PRINT_CATALOG_64,Katalog (64 sayfa),Catalog (64 pages)
+PRINT_POP_WOBBLER,POP: wobbler / dangler,POP: wobbler / dangler
+PRINT_POP_STAND,POP: stand,POP: display stand
+DIST_DOOR_TO_DOOR,Kapı kapı,Door to door
+DIST_NEWSPAPER_INSERT,Gazete arası,Newspaper insert
+DIST_IN_STORE,Mağazada,In store
+DIST_FAIR,Fuarda,At fairs
+QUALITY_ECONOMY,Ekonomik,Economy
+QUALITY_STANDARD,Standart,Standard
+QUALITY_PREMIUM,"Premium (kuşe, selefon, lak)","Premium (coated, laminated)"
+SUP_UCUZCU_OFSET,Ucuzcu Ofset,Ucuzcu Ofset
+SUP_UCUZCU_OFSET_DESC,Ucuz ama yavaş; hata oranı yüksek.,Cheap but slow; high error rate.
+SUP_RENKLI_BASKI,Renkli Baskı A.Ş.,Renkli Baskı Inc.
+SUP_RENKLI_BASKI_DESC,"Orta fiyat, orta kalite.","Mid price, mid quality."
+SUP_ALTIN_VARAK,Altın Varak Matbaacılık,Altın Varak Printing
+SUP_ALTIN_VARAK_DESC,"Premium: pahalı, neredeyse hatasız.","Premium: expensive, almost flawless."
+SUP_HIZLI_DIJITAL,Hızlı Dijital,Hızlı Dijital
+SUP_HIZLI_DIJITAL_DESC,"Dijital baskı: küçük adette ucuz ve hızlı, büyük adette pahalı.","Digital print: cheap and fast for small runs, expensive for large ones."
+UI_CHANNEL_MIX,Kanal karışımı (en fazla %d kanal),Channel mix (up to %d channels)
+UI_ADD_CHANNEL,+ Kanal ekle,+ Add channel
+UI_MIN_BUDGET,Bu kanalın en az bütçesi: %s,Minimum budget for this channel: %s
+UI_PIECES, adet, pcs
+UI_PROOF,Prova,Proof
+TIP_PROOF,Matbaa provası 1 hafta ve küçük bir ücret ekler ama baskı hatası riskini %70 düşürür.,A printer's proof adds a week and a small fee but cuts the risk of print errors by 70%.
+UI_PRINT_COST,Baskı maliyeti %s · marj %s · teslim %d hafta,Print cost %s · margin %s · delivery %d weeks
+UI_NEGOTIATED,Pazarlıkla %%%d indirim,%d%% off after negotiating
+UI_NEGOTIATE,Pazarlık et,Negotiate
+UI_AUTO,Otomatik,Auto
+UI_NEGOTIATION_TITLE,Pazarlık: %s,Negotiation: %s
+UI_LIST_PRICE,Liste fiyatı: %s,List price: %s
+UI_NEGOTIATION_HINT,Satın alma uzmanın tahmini: taban %s – %s arası.,Your purchasing specialist estimates the floor between %s and %s.
+UI_NEGOTIATION_NO_HINT,Matbaanın kabul edeceği en düşük fiyat gizli. 3 teklif hakkın var; her ret ilişkiyi biraz zedeleyebilir. (Bir satın alma uzmanı aralığı tahmin edebilir.),The lowest price the printer will accept is hidden. You have 3 offers; each rejection may strain the relationship. (A purchasing specialist can estimate the range.)
+UI_MAKE_OFFER,Teklif ver,Make offer
+UI_NEGOTIATION_ACCEPTED,Kabul edildi: %s (%%%d indirim).,Accepted: %s (%d%% off).
+UI_NEGOTIATION_FAILED,Anlaşma olmadı; liste fiyatı geçerli.,No deal; the list price stands.
+UI_NEGOTIATION_REJECTED,Reddedildi (tur %d / %d).,Rejected (round %d / %d).
+UI_NEGOTIATION_STRAINED,Matbaa biraz bozuldu; ilişki zedelendi.,The printer is a little annoyed; the relationship took a hit.
+UI_SUPPLIER_OFFER,TEDARİKÇİ TEKLİFİ,SUPPLIER OFFER
+UI_OFFER_VOLUME,"%d adet ve üzeri baskı işlerinde %%%d indirim, %d hafta geçerli.","Print jobs of %d+ pieces get %d%% off, valid for %d weeks."
+UI_OFFER_ANNUAL,Yıl sonuna kadar %d adet baskı taahhüdü karşılığında %%%d indirim. Taahhüt tutmazsa ceza var.,Commit to %d pieces of printing by year end and get %d%% off. Missing the commitment costs a penalty.
+NOTE_DEAL_SIGNED,%s ile anlaşma imzalandı.,Deal signed with %s.
+NOTE_SUPPLIER_OFFER,%s bir fiyat teklifi gönderdi (gelen kutusu).,%s sent a price offer (inbox).
+NOTE_COMMIT_PENALTY,Yıllık baskı taahhüdü tutmadı: ₺%d ceza ödendi.,Annual print commitment missed: ₺%d penalty paid.
+UI_PRODUCTION_MARGIN,Prodüksiyon marjı (baskı): %s,Production margin (print): %s
+UI_PRINT_RESULT,%s: baskı %s · %d haftada teslim,%s: printing %s · delivered in %d weeks
+UI_PRINT_REPRINTED,"baskı hatası, yeniden basıldı","print error, reprinted"
+UI_LATE_DELIVERY,Baskı geç kaldı: %d hafta gecikme (müşteri memnuniyeti düştü).,Printing was late: %d week(s) delay (client satisfaction dropped).
+UI_COL_CHANNEL,Kanal,Channel
+UI_COL_SPEND,Bütçe,Budget
+UI_COL_IMPRESSIONS,Gösterim,Impressions
+UI_SUPPLIERS,Matbaalar,Printers
+UI_SUPPLIER_LINE,%s · ilişki %d,%s · relationship %d
+ERR_TOO_MANY_CHANNELS,Bu kadar kanal kullanamazsın. Çoklu kanal 3. yılda açılır; sınırı ofis ve medya planlamacı belirler.,You cannot use this many channels. Multi-channel opens in year 3; the limit depends on your office and media planner.
+ERR_PRINT_PRODUCT,Bu kanal için geçersiz basılı ürün.,Invalid print product for this channel.
+ERR_PRINT_DISTRIBUTION,Bu ürün bu dağıtımla yapılamaz.,This product cannot use that distribution.
+ERR_PRINT_OPTIONS,Baskı ayarları geçersiz.,Invalid print settings.
+ERR_PRINT_QUANTITY,Adet bu ürün için izin verilen aralığın dışında.,Quantity is outside the allowed range for this product.
+UI_REMOVE_CHANNEL,Kanalı çıkar,Remove channel
+UI_PRINT_LATE_WARNING,"geç kalır (baskıya %d hafta var)","will be late (%d weeks available for printing)"

@@ -39,11 +39,21 @@ func decide(sim: Simulation) -> void:
 		if channels.is_empty():
 			continue
 		var data: GameData = sim.data
+		var team: Array = BotUtil.available_team(sim)
+		var count: int = rng.randi_range(1, mini(sim.media.channel_limit(sim.state, team), channels.size()))
+		var picked: Array[String] = []
+		while picked.size() < count:
+			var ch: String = channels[rng.randi_range(0, channels.size() - 1)]
+			if not picked.has(ch):
+				picked.append(ch)
+		var mix: Array = []
+		for ch: String in picked:
+			mix.append({"channel": ch, "share": 1.0 / count})
 		var choices: Dictionary = {
 			"objective": data.objective_ids[rng.randi_range(0, data.objective_ids.size() - 1)],
 			"audience": data.audience_ids[rng.randi_range(0, data.audience_ids.size() - 1)],
 			"tone": data.tone_ids[rng.randi_range(0, data.tone_ids.size() - 1)],
-			"mix": [{"channel": channels[rng.randi_range(0, channels.size() - 1)], "share": 1.0}],
+			"mix": mix,
 			"sliders": [_random_sliders(), _random_sliders(), _random_sliders()],
 			"team": BotUtil.available_team(sim)}
 		StartCampaignCommand.new(brief["id"], choices).execute(sim)

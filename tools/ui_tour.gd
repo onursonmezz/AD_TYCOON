@@ -73,7 +73,42 @@ func _run() -> void:
 	await _shot("09_team")
 	screen.call("show_panel", "office")
 	await _shot("10_office")
+	await _tour_media(screen, sim)
 	get_tree().quit()
+
+
+## M4: 3. yılda çoklu kanal + basılı iş, pazarlık penceresi, kanal bazında rapor.
+func _tour_media(screen: Control, sim: Simulation) -> void:
+	while sim.state.clock.game_year() < 3 or not sim.state.is_idle() or sim.state.inbox.is_empty():
+		if GameState.is_waiting():
+			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+		GameState.step_day()
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	await get_tree().process_frame
+	var wizard: WizardDialog = WizardDialog.new(sim.state.inbox[0], screen)
+	screen.call("open_modal", wizard)
+	await get_tree().process_frame
+	var mix: MixEditor = wizard.get("_mix")
+	var ids: Array[String] = mix.get("_channel_ids")
+	mix.call("_add_row", maxi(0, ids.find("flyer_brochure")))
+	await _shot("11_wizard_mix")
+	var job: Dictionary = mix.get_mix()[1].get("options", {}).get("job", {})
+	if not job.is_empty():
+		var dialog: NegotiationDialog = NegotiationDialog.new(job["supplier"], 20000.0, func(_d: float) -> void: pass)
+		screen.call("open_modal", dialog)
+		await get_tree().process_frame
+		dialog.call("_on_offer")
+		await _shot("12_negotiation")
+		dialog.queue_free()
+	wizard.call("_on_start")
+	var before: int = sim.state.finished.size()
+	while sim.state.finished.size() == before:
+		if GameState.is_waiting():
+			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+		GameState.step_day()
+	await get_tree().create_timer(2.0).timeout
+	await _shot("13_report_channels")
 
 
 func _shot(file_name: String) -> void:

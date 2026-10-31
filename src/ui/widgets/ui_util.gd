@@ -49,6 +49,14 @@ static func style_toggle(toggle: BaseButton, pressed_color: Color = SAGE_DARK) -
 	toggle.add_theme_color_override("font_hover_pressed_color", pressed_color)
 
 
+## Tedarikçi teklifinin / anlaşmasının açıklaması.
+static func supplier_offer_text(offer: Dictionary) -> String:
+	var pct: int = int(roundf(float(offer["discount"]) * 100.0))
+	if offer["type"] == "volume":
+		return tr_fmt("UI_OFFER_VOLUME", [int(offer["min_quantity"]), pct, int(offer["duration_weeks"])])
+	return tr_fmt("UI_OFFER_ANNUAL", [int(offer["commit_quantity"]), pct])
+
+
 static func card() -> PanelContainer:
 	return PanelContainer.new()
 

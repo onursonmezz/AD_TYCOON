@@ -1,6 +1,6 @@
 class_name WizardDialog
 extends Control
-## Kampanya sihirbazı (GDD 7.1, 20; M2 sade sürüm): ad, hedef (serbestse), kitle, ton, tek kanal. Büyüklük brief'ten gelir.
+## Kampanya sihirbazı (GDD 7.1, 20): ad, hedef (serbestse), kitle, ton, kanal karışımı, ekip. Büyüklük brief'ten gelir.
 ## Uyum tabloları gizlidir (GDD 8): burada hiçbir uyum değeri gösterilmez.
 
 var _brief: Dictionary
@@ -9,8 +9,7 @@ var _name_edit: LineEdit
 var _objective: OptionButton
 var _audience: OptionButton
 var _tone: OptionButton
-var _channel: OptionButton
-var _channel_ids: Array[String] = []
+var _mix: MixEditor
 var _team_checks: Dictionary = {}
 var _error: Label
 
@@ -23,7 +22,7 @@ func _init(brief: Dictionary, main_screen: Control) -> void:
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	var s: SimState = GameState.sim.state
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(620.0, 600.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(860.0, 640.0))
 	var client: Dictionary = _brief["prospect"] if not (_brief["prospect"] as Dictionary).is_empty() \
 		else s.clients.get(_brief["client_id"], {})
 	col.add_child(UiUtil.heading(tr("UI_WIZARD_TITLE") % str(client.get("name", ""))))
@@ -47,13 +46,12 @@ func _ready() -> void:
 	_add_row(col, "UI_AUDIENCE", _audience)
 	_tone = _option_for(data.tones, data.tone_ids)
 	_add_row(col, "UI_TONE", _tone)
-	_channel = OptionButton.new()
-	var infl: float = Economy.inflation(data, s.clock.year())
-	for id: String in data.channels_available(s.clock.year()):
-		if float(_brief["media_budget"]) >= float(data.channels[id]["min_budget"]) * infl:
-			_channel_ids.append(id)
-			_channel.add_item("%s (%s)" % [UiUtil.name_of(data.channels, id), tr("CAT_" + str(data.channels[id]["category"]).to_upper())])
-	_add_row(col, "UI_CHANNEL", _channel)
+	var free_staff: Array = []
+	for emp: Dictionary in s.staff.values():
+		if Employee.is_available(emp, s.clock.week_index):
+			free_staff.append(emp["id"])
+	_mix = MixEditor.new(_brief, GameState.sim.media.channel_limit(s, free_staff), _main)
+	col.add_child(_mix)
 	col.add_child(UiUtil.label(tr("UI_TEAM_PICK"), 16))
 	var team_box: HFlowContainer = HFlowContainer.new()
 	for emp: Dictionary in s.staff.values():
@@ -103,7 +101,8 @@ func _add_row(col: VBoxContainer, key: String, control: Control) -> void:
 
 func _on_start() -> void:
 	var data: GameData = DataDB.data
-	if _channel_ids.is_empty():
+	var mix: Array = _mix.get_mix()
+	if mix.is_empty():
 		_error.text = tr("ERR_CHANNEL")
 		return
 	var choices: Dictionary = {
@@ -111,7 +110,7 @@ func _on_start() -> void:
 		"objective": data.objective_ids[_objective.selected] if not _objective.disabled else _brief["objective"],
 		"audience": data.audience_ids[_audience.selected],
 		"tone": data.tone_ids[_tone.selected],
-		"mix": [{"channel": _channel_ids[_channel.selected], "share": 1.0}],
+		"mix": mix,
 		"team": _picked_team(),
 	}
 	if (choices["team"] as Array).is_empty():
