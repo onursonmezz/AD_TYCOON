@@ -1,0 +1,46 @@
+[
+	{
+		"id": "ucuzcu_ofset",
+		"type": "printer",
+		"name_key": "SUP_UCUZCU_OFSET",
+		"desc_key": "SUP_UCUZCU_OFSET_DESC",
+		"price_mult": 0.8,
+		"error_rate": 0.08,
+		"capacity_weekly": 20000,
+		"queue_weeks": 2,
+		"digital": false
+	},
+	{
+		"id": "renkli_baski",
+		"type": "printer",
+		"name_key": "SUP_RENKLI_BASKI",
+		"desc_key": "SUP_RENKLI_BASKI_DESC",
+		"price_mult": 1,
+		"error_rate": 0.04,
+		"capacity_weekly": 40000,
+		"queue_weeks": 1,
+		"digital": false
+	},
+	{
+		"id": "altin_varak",
+		"type": "printer",
+		"name_key": "SUP_ALTIN_VARAK",
+		"desc_key": "SUP_ALTIN_VARAK_DESC",
+		"price_mult": 1.3,
+		"error_rate": 0.01,
+		"capacity_weekly": 15000,
+		"queue_weeks": 1,
+		"digital": false
+	},
+	{
+		"id": "hizli_dijital",
+		"type": "printer",
+		"name_key": "SUP_HIZLI_DIJITAL",
+		"desc_key": "SUP_HIZLI_DIJITAL_DESC",
+		"price_mult": 0.85,
+		"error_rate": 0.03,
+		"capacity_weekly": 10000,
+		"queue_weeks": 0,
+		"digital": true
+	}
+]

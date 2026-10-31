@@ -75,7 +75,8 @@ func test_interest_curve_piecewise_linear() -> void:
 	var kpi: Kpi = Kpi.new(data, Scoring.new(data))
 	assert_almost_eq(kpi.interest("newspaper", 1995), 0.95, 0.0001)
 	assert_almost_eq(kpi.interest("newspaper", 2035), 0.08, 0.0001)
-	assert_almost_eq(kpi.interest("radio", 2000), 1.0, 0.0001, "eğrisi olmayan kanal")
+	assert_almost_eq(kpi.interest("radio", 2000), 0.8, 0.0001, "M4: her kanalın eğrisi var (K-040)")
+	assert_almost_eq(kpi.interest("radio", 1995), 0.825, 0.0001, "noktalar arası doğrusal")
 
 
 func test_kpi_reach_grows_with_budget_and_saturates() -> void:

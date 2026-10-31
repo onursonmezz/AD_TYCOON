@@ -32,7 +32,10 @@
 				2035,
 				0.08
 			]
-		]
+		],
+		"base_cpm": 7,
+		"base_er": 0.003,
+		"base_cvr": 0.02
 	},
 	{
 		"id": "magazine",
@@ -41,7 +44,36 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 3000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.9
+			],
+			[
+				2000,
+				0.9
+			],
+			[
+				2008,
+				0.65
+			],
+			[
+				2015,
+				0.4
+			],
+			[
+				2025,
+				0.2
+			],
+			[
+				2035,
+				0.12
+			]
+		],
+		"base_cpm": 9,
+		"base_er": 0.005,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "flyer_brochure",
@@ -50,7 +82,35 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 500,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.9
+			],
+			[
+				2005,
+				0.8
+			],
+			[
+				2015,
+				0.55
+			],
+			[
+				2025,
+				0.4
+			],
+			[
+				2035,
+				0.3
+			]
+		],
+		"base_er": 0.006,
+		"base_cvr": 0.03,
+		"print_products": [
+			"flyer_a5",
+			"brochure_a4"
+		]
 	},
 	{
 		"id": "catalog",
@@ -59,7 +119,36 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 4000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.85
+			],
+			[
+				2000,
+				0.9
+			],
+			[
+				2010,
+				0.6
+			],
+			[
+				2020,
+				0.35
+			],
+			[
+				2035,
+				0.2
+			]
+		],
+		"base_er": 0.01,
+		"base_cvr": 0.04,
+		"print_products": [
+			"catalog_16",
+			"catalog_32",
+			"catalog_64"
+		]
 	},
 	{
 		"id": "pop_instore",
@@ -68,7 +157,31 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 1500,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.8
+			],
+			[
+				2005,
+				0.9
+			],
+			[
+				2020,
+				0.8
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"base_er": 0.02,
+		"base_cvr": 0.05,
+		"print_products": [
+			"pop_wobbler",
+			"pop_stand"
+		]
 	},
 	{
 		"id": "billboard",
@@ -129,7 +242,28 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 2000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.85
+			],
+			[
+				2005,
+				0.95
+			],
+			[
+				2020,
+				0.8
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"base_cpm": 3.5,
+		"base_er": 0.002,
+		"base_cvr": 0.012
 	},
 	{
 		"id": "transit_wrap",
@@ -138,7 +272,32 @@
 		"available_from": 1993,
 		"requires_research": null,
 		"min_budget": 6000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1993,
+				0.5
+			],
+			[
+				2000,
+				0.8
+			],
+			[
+				2010,
+				0.9
+			],
+			[
+				2020,
+				0.75
+			],
+			[
+				2035,
+				0.65
+			]
+		],
+		"base_cpm": 3,
+		"base_er": 0.002,
+		"base_cvr": 0.008
 	},
 	{
 		"id": "megalight",
@@ -147,7 +306,32 @@
 		"available_from": 1996,
 		"requires_research": null,
 		"min_budget": 15000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1996,
+				0.5
+			],
+			[
+				2002,
+				0.85
+			],
+			[
+				2012,
+				0.9
+			],
+			[
+				2022,
+				0.7
+			],
+			[
+				2035,
+				0.55
+			]
+		],
+		"base_cpm": 6,
+		"base_er": 0.003,
+		"base_cvr": 0.008
 	},
 	{
 		"id": "dooh",
@@ -156,7 +340,32 @@
 		"available_from": 2012,
 		"requires_research": null,
 		"min_budget": 20000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				2012,
+				0.3
+			],
+			[
+				2016,
+				0.6
+			],
+			[
+				2023,
+				0.95
+			],
+			[
+				2030,
+				1
+			],
+			[
+				2035,
+				0.95
+			]
+		],
+		"base_cpm": 5,
+		"base_er": 0.004,
+		"base_cvr": 0.012
 	},
 	{
 		"id": "anamorphic_3d",
@@ -165,7 +374,28 @@
 		"available_from": 2021,
 		"requires_research": null,
 		"min_budget": 60000,
-		"viral": 3
+		"viral": 3,
+		"interest_curve": [
+			[
+				2021,
+				0.4
+			],
+			[
+				2023,
+				0.9
+			],
+			[
+				2027,
+				1
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"base_cpm": 12,
+		"base_er": 0.02,
+		"base_cvr": 0.006
 	},
 	{
 		"id": "guerrilla",
@@ -174,7 +404,32 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 1000,
-		"viral": 3
+		"viral": 3,
+		"interest_curve": [
+			[
+				1990,
+				0.6
+			],
+			[
+				2005,
+				0.8
+			],
+			[
+				2012,
+				0.9
+			],
+			[
+				2025,
+				0.75
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"base_cpm": 3,
+		"base_er": 0.02,
+		"base_cvr": 0.01
 	},
 	{
 		"id": "radio",
@@ -183,7 +438,32 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 3000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.85
+			],
+			[
+				2000,
+				0.8
+			],
+			[
+				2010,
+				0.65
+			],
+			[
+				2020,
+				0.5
+			],
+			[
+				2035,
+				0.4
+			]
+		],
+		"base_cpm": 4,
+		"base_er": 0.003,
+		"base_cvr": 0.012
 	},
 	{
 		"id": "national_tv",
@@ -196,7 +476,36 @@
 		"needs_outputs": [
 			"storyboard",
 			"production"
-		]
+		],
+		"interest_curve": [
+			[
+				1990,
+				0.8
+			],
+			[
+				1993,
+				1
+			],
+			[
+				2008,
+				0.95
+			],
+			[
+				2016,
+				0.75
+			],
+			[
+				2025,
+				0.5
+			],
+			[
+				2035,
+				0.35
+			]
+		],
+		"base_cpm": 10,
+		"base_er": 0.003,
+		"base_cvr": 0.01
 	},
 	{
 		"id": "local_tv",
@@ -209,7 +518,32 @@
 		"needs_outputs": [
 			"storyboard",
 			"production"
-		]
+		],
+		"interest_curve": [
+			[
+				1992,
+				0.5
+			],
+			[
+				1995,
+				0.9
+			],
+			[
+				2005,
+				0.6
+			],
+			[
+				2015,
+				0.35
+			],
+			[
+				2035,
+				0.15
+			]
+		],
+		"base_cpm": 5,
+		"base_er": 0.003,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "cinema",
@@ -218,7 +552,40 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 8000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.6
+			],
+			[
+				2000,
+				0.75
+			],
+			[
+				2010,
+				0.7
+			],
+			[
+				2019,
+				0.6
+			],
+			[
+				2020,
+				0.2
+			],
+			[
+				2023,
+				0.55
+			],
+			[
+				2035,
+				0.45
+			]
+		],
+		"base_cpm": 14,
+		"base_er": 0.006,
+		"base_cvr": 0.01
 	},
 	{
 		"id": "ctv",
@@ -227,7 +594,28 @@
 		"available_from": 2018,
 		"requires_research": null,
 		"min_budget": 30000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2018,
+				0.3
+			],
+			[
+				2022,
+				0.75
+			],
+			[
+				2028,
+				1
+			],
+			[
+				2035,
+				0.95
+			]
+		],
+		"base_cpm": 15,
+		"base_er": 0.005,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "podcast",
@@ -236,7 +624,28 @@
 		"available_from": 2018,
 		"requires_research": null,
 		"min_budget": 4000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2018,
+				0.3
+			],
+			[
+				2022,
+				0.75
+			],
+			[
+				2028,
+				0.85
+			],
+			[
+				2035,
+				0.75
+			]
+		],
+		"base_cpm": 12,
+		"base_er": 0.008,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "corporate_website",
@@ -245,7 +654,32 @@
 		"available_from": 1997,
 		"requires_research": null,
 		"min_budget": 3000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1997,
+				0.3
+			],
+			[
+				2000,
+				0.7
+			],
+			[
+				2008,
+				0.85
+			],
+			[
+				2015,
+				0.6
+			],
+			[
+				2035,
+				0.4
+			]
+		],
+		"base_cpm": 2,
+		"base_er": 0.02,
+		"base_cvr": 0.02
 	},
 	{
 		"id": "banner_display",
@@ -254,7 +688,36 @@
 		"available_from": 1998,
 		"requires_research": null,
 		"min_budget": 3000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1998,
+				0.4
+			],
+			[
+				2001,
+				0.8
+			],
+			[
+				2008,
+				0.75
+			],
+			[
+				2014,
+				0.5
+			],
+			[
+				2025,
+				0.3
+			],
+			[
+				2035,
+				0.2
+			]
+		],
+		"base_cpm": 1.5,
+		"base_er": 0.004,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "email_newsletter",
@@ -263,7 +726,32 @@
 		"available_from": 1998,
 		"requires_research": null,
 		"min_budget": 800,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1998,
+				0.4
+			],
+			[
+				2003,
+				0.8
+			],
+			[
+				2010,
+				0.6
+			],
+			[
+				2020,
+				0.45
+			],
+			[
+				2035,
+				0.35
+			]
+		],
+		"base_cpm": 1,
+		"base_er": 0.015,
+		"base_cvr": 0.03
 	},
 	{
 		"id": "sms",
@@ -272,7 +760,32 @@
 		"available_from": 2001,
 		"requires_research": null,
 		"min_budget": 1000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2001,
+				0.4
+			],
+			[
+				2005,
+				0.8
+			],
+			[
+				2012,
+				0.6
+			],
+			[
+				2020,
+				0.3
+			],
+			[
+				2035,
+				0.15
+			]
+		],
+		"base_cpm": 1.2,
+		"base_er": 0.01,
+		"base_cvr": 0.025
 	},
 	{
 		"id": "search_ads",
@@ -285,7 +798,32 @@
 		"needs_outputs": [
 			"copy",
 			"measurement"
-		]
+		],
+		"interest_curve": [
+			[
+				2002,
+				0.3
+			],
+			[
+				2006,
+				0.85
+			],
+			[
+				2012,
+				1
+			],
+			[
+				2025,
+				0.85
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"base_cpm": 6,
+		"base_er": 0.03,
+		"base_cvr": 0.04
 	},
 	{
 		"id": "seo_content",
@@ -294,7 +832,32 @@
 		"available_from": 2004,
 		"requires_research": null,
 		"min_budget": 4000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2004,
+				0.3
+			],
+			[
+				2010,
+				0.8
+			],
+			[
+				2018,
+				0.9
+			],
+			[
+				2028,
+				0.7
+			],
+			[
+				2035,
+				0.55
+			]
+		],
+		"base_cpm": 2,
+		"base_er": 0.02,
+		"base_cvr": 0.03
 	},
 	{
 		"id": "display_network",
@@ -303,7 +866,32 @@
 		"available_from": 2007,
 		"requires_research": null,
 		"min_budget": 3000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2007,
+				0.4
+			],
+			[
+				2012,
+				0.85
+			],
+			[
+				2016,
+				0.7
+			],
+			[
+				2024,
+				0.45
+			],
+			[
+				2035,
+				0.3
+			]
+		],
+		"base_cpm": 1.8,
+		"base_er": 0.005,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "mobile_app",
@@ -312,7 +900,32 @@
 		"available_from": 2011,
 		"requires_research": null,
 		"min_budget": 15000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				2011,
+				0.3
+			],
+			[
+				2014,
+				0.8
+			],
+			[
+				2020,
+				0.9
+			],
+			[
+				2030,
+				0.75
+			],
+			[
+				2035,
+				0.65
+			]
+		],
+		"base_cpm": 4,
+		"base_er": 0.03,
+		"base_cvr": 0.025
 	},
 	{
 		"id": "programmatic",
@@ -321,7 +934,32 @@
 		"available_from": 2013,
 		"requires_research": null,
 		"min_budget": 10000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2013,
+				0.3
+			],
+			[
+				2017,
+				0.8
+			],
+			[
+				2023,
+				0.9
+			],
+			[
+				2024,
+				0.7
+			],
+			[
+				2035,
+				0.6
+			]
+		],
+		"base_cpm": 2.5,
+		"base_er": 0.006,
+		"base_cvr": 0.02
 	},
 	{
 		"id": "ar_filter",
@@ -330,7 +968,28 @@
 		"available_from": 2018,
 		"requires_research": null,
 		"min_budget": 8000,
-		"viral": 2
+		"viral": 2,
+		"interest_curve": [
+			[
+				2018,
+				0.3
+			],
+			[
+				2021,
+				0.7
+			],
+			[
+				2026,
+				0.8
+			],
+			[
+				2035,
+				0.75
+			]
+		],
+		"base_cpm": 6,
+		"base_er": 0.05,
+		"base_cvr": 0.01
 	},
 	{
 		"id": "retail_media",
@@ -339,7 +998,28 @@
 		"available_from": 2023,
 		"requires_research": null,
 		"min_budget": 8000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2023,
+				0.4
+			],
+			[
+				2026,
+				0.85
+			],
+			[
+				2030,
+				1
+			],
+			[
+				2035,
+				0.95
+			]
+		],
+		"base_cpm": 8,
+		"base_er": 0.02,
+		"base_cvr": 0.05
 	},
 	{
 		"id": "youtup_video",
@@ -348,7 +1028,32 @@
 		"available_from": 2007,
 		"requires_research": null,
 		"min_budget": 6000,
-		"viral": 2
+		"viral": 2,
+		"interest_curve": [
+			[
+				2007,
+				0.3
+			],
+			[
+				2010,
+				0.7
+			],
+			[
+				2016,
+				0.95
+			],
+			[
+				2025,
+				0.9
+			],
+			[
+				2035,
+				0.75
+			]
+		],
+		"base_cpm": 5,
+		"base_er": 0.015,
+		"base_cvr": 0.012
 	},
 	{
 		"id": "facebuk_ads",
@@ -357,7 +1062,36 @@
 		"available_from": 2008,
 		"requires_research": null,
 		"min_budget": 2000,
-		"viral": 2
+		"viral": 2,
+		"interest_curve": [
+			[
+				2008,
+				0.3
+			],
+			[
+				2011,
+				0.8
+			],
+			[
+				2015,
+				1
+			],
+			[
+				2020,
+				0.75
+			],
+			[
+				2028,
+				0.45
+			],
+			[
+				2035,
+				0.3
+			]
+		],
+		"base_cpm": 3,
+		"base_er": 0.02,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "civil_microblog",
@@ -366,7 +1100,32 @@
 		"available_from": 2009,
 		"requires_research": null,
 		"min_budget": 1500,
-		"viral": 3
+		"viral": 3,
+		"interest_curve": [
+			[
+				2009,
+				0.3
+			],
+			[
+				2012,
+				0.75
+			],
+			[
+				2016,
+				0.7
+			],
+			[
+				2022,
+				0.45
+			],
+			[
+				2035,
+				0.25
+			]
+		],
+		"base_cpm": 2.5,
+		"base_er": 0.025,
+		"base_cvr": 0.008
 	},
 	{
 		"id": "linkedout",
@@ -375,7 +1134,28 @@
 		"available_from": 2011,
 		"requires_research": null,
 		"min_budget": 4000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				2011,
+				0.3
+			],
+			[
+				2016,
+				0.75
+			],
+			[
+				2025,
+				0.9
+			],
+			[
+				2035,
+				0.8
+			]
+		],
+		"base_cpm": 12,
+		"base_er": 0.015,
+		"base_cvr": 0.02
 	},
 	{
 		"id": "instafoto",
@@ -410,7 +1190,10 @@
 				2035,
 				0.55
 			]
-		]
+		],
+		"base_cpm": 4,
+		"base_er": 0.03,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "tiktak",
@@ -419,7 +1202,32 @@
 		"available_from": 2019,
 		"requires_research": null,
 		"min_budget": 3000,
-		"viral": 3
+		"viral": 3,
+		"interest_curve": [
+			[
+				2019,
+				0.3
+			],
+			[
+				2021,
+				0.85
+			],
+			[
+				2026,
+				1
+			],
+			[
+				2032,
+				0.8
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"base_cpm": 3,
+		"base_er": 0.04,
+		"base_cvr": 0.01
 	},
 	{
 		"id": "celebrity",
@@ -428,7 +1236,32 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 50000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1990,
+				0.85
+			],
+			[
+				2000,
+				0.9
+			],
+			[
+				2012,
+				0.75
+			],
+			[
+				2022,
+				0.55
+			],
+			[
+				2035,
+				0.4
+			]
+		],
+		"base_cpm": 20,
+		"base_er": 0.01,
+		"base_cvr": 0.01
 	},
 	{
 		"id": "influencer_micro",
@@ -437,7 +1270,32 @@
 		"available_from": 2012,
 		"requires_research": null,
 		"min_budget": 2000,
-		"viral": 2
+		"viral": 2,
+		"interest_curve": [
+			[
+				2012,
+				0.3
+			],
+			[
+				2016,
+				0.7
+			],
+			[
+				2022,
+				0.95
+			],
+			[
+				2030,
+				0.85
+			],
+			[
+				2035,
+				0.75
+			]
+		],
+		"base_cpm": 8,
+		"base_er": 0.05,
+		"base_cvr": 0.02
 	},
 	{
 		"id": "influencer_macro",
@@ -446,7 +1304,32 @@
 		"available_from": 2014,
 		"requires_research": null,
 		"min_budget": 30000,
-		"viral": 3
+		"viral": 3,
+		"interest_curve": [
+			[
+				2014,
+				0.3
+			],
+			[
+				2018,
+				0.8
+			],
+			[
+				2022,
+				0.95
+			],
+			[
+				2028,
+				0.7
+			],
+			[
+				2035,
+				0.55
+			]
+		],
+		"base_cpm": 12,
+		"base_er": 0.03,
+		"base_cvr": 0.015
 	},
 	{
 		"id": "event_launch",
@@ -455,7 +1338,36 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 15000,
-		"viral": 2
+		"viral": 2,
+		"interest_curve": [
+			[
+				1990,
+				0.75
+			],
+			[
+				2010,
+				0.85
+			],
+			[
+				2019,
+				0.85
+			],
+			[
+				2020,
+				0.2
+			],
+			[
+				2022,
+				0.8
+			],
+			[
+				2035,
+				0.8
+			]
+		],
+		"base_cpm": 40,
+		"base_er": 0.08,
+		"base_cvr": 0.03
 	},
 	{
 		"id": "trade_fair",
@@ -464,7 +1376,36 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 12000,
-		"viral": 0
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.8
+			],
+			[
+				2010,
+				0.8
+			],
+			[
+				2019,
+				0.75
+			],
+			[
+				2020,
+				0.15
+			],
+			[
+				2022,
+				0.65
+			],
+			[
+				2035,
+				0.6
+			]
+		],
+		"base_cpm": 30,
+		"base_er": 0.06,
+		"base_cvr": 0.05
 	},
 	{
 		"id": "concert_sponsorship",
@@ -473,7 +1414,36 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 25000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1990,
+				0.7
+			],
+			[
+				2005,
+				0.85
+			],
+			[
+				2019,
+				0.9
+			],
+			[
+				2020,
+				0.2
+			],
+			[
+				2022,
+				0.85
+			],
+			[
+				2035,
+				0.8
+			]
+		],
+		"base_cpm": 6,
+		"base_er": 0.006,
+		"base_cvr": 0.006
 	},
 	{
 		"id": "sports_sponsorship",
@@ -482,7 +1452,32 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 30000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1990,
+				0.8
+			],
+			[
+				2005,
+				0.9
+			],
+			[
+				2020,
+				0.75
+			],
+			[
+				2022,
+				0.9
+			],
+			[
+				2035,
+				0.85
+			]
+		],
+		"base_cpm": 5,
+		"base_er": 0.005,
+		"base_cvr": 0.006
 	},
 	{
 		"id": "product_placement",
@@ -491,7 +1486,32 @@
 		"available_from": 1995,
 		"requires_research": null,
 		"min_budget": 20000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1995,
+				0.4
+			],
+			[
+				2005,
+				0.8
+			],
+			[
+				2015,
+				0.85
+			],
+			[
+				2025,
+				0.6
+			],
+			[
+				2035,
+				0.5
+			]
+		],
+		"base_cpm": 8,
+		"base_er": 0.004,
+		"base_cvr": 0.008
 	},
 	{
 		"id": "pr_press",
@@ -500,7 +1520,28 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 1000,
-		"viral": 1
+		"viral": 1,
+		"interest_curve": [
+			[
+				1990,
+				0.8
+			],
+			[
+				2005,
+				0.75
+			],
+			[
+				2015,
+				0.6
+			],
+			[
+				2035,
+				0.5
+			]
+		],
+		"base_cpm": 2,
+		"base_er": 0.006,
+		"base_cvr": 0.006
 	},
 	{
 		"id": "csr_project",
@@ -509,6 +1550,31 @@
 		"available_from": 1990,
 		"requires_research": null,
 		"min_budget": 10000,
-		"viral": 2
+		"viral": 2,
+		"interest_curve": [
+			[
+				1990,
+				0.5
+			],
+			[
+				2005,
+				0.7
+			],
+			[
+				2015,
+				0.85
+			],
+			[
+				2025,
+				0.9
+			],
+			[
+				2035,
+				0.9
+			]
+		],
+		"base_cpm": 4,
+		"base_er": 0.01,
+		"base_cvr": 0.005
 	}
 ]

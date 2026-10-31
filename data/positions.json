@@ -341,7 +341,9 @@
 		"available_from": 1990,
 		"base_salary": 3000,
 		"hireable": true,
-		"effects": []
+		"effects": [
+			"media_buying"
+		]
 	},
 	{
 		"id": "web_developer",
@@ -673,6 +675,8 @@
 		"available_from": 1990,
 		"base_salary": 2400,
 		"hireable": true,
-		"effects": []
+		"effects": [
+			"negotiation_hint"
+		]
 	}
 ]

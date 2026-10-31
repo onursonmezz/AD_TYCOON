@@ -14,6 +14,7 @@ signal week_passed()
 ## Çalışan bildirimleri (izin, istifa, seviye atlama…): key yerelleştirme anahtarı.
 signal staff_note(key: String, args: Array, kind: String)
 signal offer_received(offer: Dictionary)
+signal supplier_offer_received(offer: Dictionary)
 
 var data: GameData
 var state: SimState
@@ -28,6 +29,10 @@ var reports: ReportWriter
 var staff: StaffSystem
 var staff_life: StaffLife
 var offices: OfficeSystem
+## Tedarikçiler, baskı ve medya planlama (M4).
+var suppliers: SupplierSystem
+var prints: PrintSystem
+var media: MediaPlanning
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -47,6 +52,10 @@ func _init(game_data: GameData, seed_value: int, background: String = "") -> voi
 	staff = StaffSystem.new(data)
 	staff_life = StaffLife.new(data)
 	offices = OfficeSystem.new(data)
+	suppliers = SupplierSystem.new(data)
+	prints = PrintSystem.new(data, suppliers)
+	media = MediaPlanning.new(data, prints)
+	kpi.prints = prints
 	var founder: Dictionary = staff.create_founder(state, background)
 	clients.create_starting(state, int(data.backgrounds[founder["background"]]["extra_start_clients"]))
 
@@ -79,6 +88,9 @@ func step_day() -> void:
 		_update_airing()
 		for note: Dictionary in staff_life.weekly(state):
 			staff_note.emit(note["key"], note["args"], note["kind"])
+		var supplier_offer: Dictionary = suppliers.weekly(state)
+		if not supplier_offer.is_empty():
+			supplier_offer_received.emit(supplier_offer)
 		economy.weekly(state)
 		if state.inbox.size() > inbox_before:
 			briefs_received.emit(state.inbox.size() - inbox_before)
@@ -161,6 +173,8 @@ func start_campaign(brief_id: String, choices: Dictionary) -> Dictionary:
 	var err: String = production.validate_setup(setup, state.clock.year())
 	if err.is_empty():
 		err = production.validate_team(team, state)
+	if err.is_empty():
+		err = media.prepare_mix(setup, state)
 	if not err.is_empty():
 		return {"ok": false, "error": err}
 	var prospect: Dictionary = brief["prospect"]
@@ -203,12 +217,17 @@ func _deliver() -> void:
 		float(state.best_raw.get(size, 0.0)), state.rng.stream("scoring"))
 	state.best_raw[size] = report["new_best"]
 	camp["report"] = report
-	var media: float = float(setup["media_budget"])
+	var media_budget: float = float(setup["media_budget"])
+	setup["media_efficiency"] = media.efficiency(state, setup.get("team", []))
+	var settled: Dictionary = media.settle_delivery(setup, state)
+	setup["production_margin"] = settled["production_margin"]
+	setup["late_weeks"] = settled["late_weeks"]
+	camp["print_results"] = settled["print_results"]
 	var income: Dictionary = kpi.agency_income(setup, 0.0)
-	economy.add_payable(state, media)
+	economy.add_payable(state, float(settled["payable"]))
 	if not client.is_empty():
-		economy.invoice(state, client, float(income["fee"]) + media + float(income["commission"]),
-			float(income["fee"]) + float(income["commission"]))
+		economy.invoice(state, client, float(income["fee"]) + media_budget + float(income["commission"]),
+			float(income["fee"]) + float(income["commission"]) + float(income["production_margin"]))
 	var airing: Array = data.bal("briefs.airing_weeks")
 	camp["air_end_week"] = state.clock.week_index + state.rng.range_i("airing", int(airing[0]), int(airing[1]))
 	state.airing.append(camp)
@@ -238,7 +257,7 @@ func _finish(camp: Dictionary) -> void:
 	var year: int = state.clock.year()
 	var client: Dictionary = state.clients.get(setup["client_id"], {})
 	var kpi_client: Dictionary = client if not client.is_empty() else {"scale": setup.get("client_scale", 0)}
-	var result: Dictionary = kpi.compute(setup, kpi_client, score, year, state.rng)
+	var result: Dictionary = kpi.compute(setup, kpi_client, score, year, state.rng, state.clock.month())
 	var ratio: float = Kpi.value_of(result, setup["kpi_type"]) / maxf(0.000001, float(setup["kpi_target"]))
 	camp["kpi"] = result
 	camp["kpi_ratio"] = ratio
@@ -251,7 +270,8 @@ func _finish(camp: Dictionary) -> void:
 			economy.invoice(state, client, bonus, bonus)
 		var team: Array = setup.get("team", [])
 		var delta: float = clients.satisfaction_delta(client, score, ratio, setup["tone"], year,
-			staff_life.account_bonus(state, team))
+			staff_life.account_bonus(state, team), int(setup.get("late_weeks", 0)),
+			float(setup.get("production_margin", 0.0)) < 0.0)
 		camp["satisfaction_delta"] = delta
 		clients.apply_result(client, camp["id"], score, setup["objective"], year, delta)
 	_apply_reputation(score, setup["size"])
@@ -295,6 +315,11 @@ func _apply_reputation(score: float, size: String) -> void:
 
 
 func _end_year() -> void:
+	var penalty: float = suppliers.year_end(state)
+	if penalty > 0.0:
+		economy.pay(state, penalty)
+		staff_note.emit("NOTE_COMMIT_PENALTY", [penalty], "bad")
+	state.year_media = 0.0
 	economy.yearly(state)
 	clients.yearly(state)
 	if state.reputation > data.balf("reputation.decay_threshold"):

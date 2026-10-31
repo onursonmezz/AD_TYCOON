@@ -33,6 +33,11 @@ var trait_ids: Array[String] = []
 var hiring_channel_ids: Array[String] = []
 var background_ids: Array[String] = []
 
+var print_products: Dictionary = {}
+var distributions: Dictionary = {}
+var suppliers: Dictionary = {}
+var supplier_ids: Array[String] = []
+
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
 var handcrafted_brands: Array = []
@@ -155,6 +160,12 @@ func _index() -> void:
 	_index_list("backgrounds.json", backgrounds, background_ids)
 	var office_ids: Array[String] = []
 	_index_list("offices.json", offices, office_ids)
+	_index_list("suppliers.json", suppliers, supplier_ids)
+	var print_opts: Dictionary = raw.get("print_options.json", {})
+	for rec: Dictionary in print_opts.get("products", []):
+		print_products[rec["id"]] = rec
+	for rec: Dictionary in print_opts.get("distributions", []):
+		distributions[rec["id"]] = rec
 	calendar = raw.get("calendar.json", {})
 	name_parts = raw.get("brands/name_parts.json", {})
 	handcrafted_brands = raw.get("brands/handcrafted_brands.json", [])

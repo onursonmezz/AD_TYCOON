@@ -1,0 +1,140 @@
+{
+	"products": [
+		{
+			"id": "flyer_a5",
+			"name_key": "PRINT_FLYER_A5",
+			"base_unit_price": 0.15,
+			"setup_cost": 300,
+			"views_per_piece": 1.2,
+			"min_quantity": 1000,
+			"max_quantity": 1000000,
+			"distributions": [
+				"door_to_door",
+				"newspaper_insert",
+				"in_store",
+				"fair"
+			]
+		},
+		{
+			"id": "brochure_a4",
+			"name_key": "PRINT_BROCHURE_A4",
+			"base_unit_price": 0.45,
+			"setup_cost": 600,
+			"views_per_piece": 1.5,
+			"min_quantity": 1000,
+			"max_quantity": 500000,
+			"distributions": [
+				"door_to_door",
+				"newspaper_insert",
+				"in_store",
+				"fair"
+			]
+		},
+		{
+			"id": "catalog_16",
+			"name_key": "PRINT_CATALOG_16",
+			"base_unit_price": 1.8,
+			"setup_cost": 1500,
+			"views_per_piece": 4,
+			"min_quantity": 1000,
+			"max_quantity": 200000,
+			"distributions": [
+				"door_to_door",
+				"in_store",
+				"fair"
+			]
+		},
+		{
+			"id": "catalog_32",
+			"name_key": "PRINT_CATALOG_32",
+			"base_unit_price": 3.2,
+			"setup_cost": 2500,
+			"views_per_piece": 5,
+			"min_quantity": 1000,
+			"max_quantity": 200000,
+			"distributions": [
+				"door_to_door",
+				"in_store",
+				"fair"
+			]
+		},
+		{
+			"id": "catalog_64",
+			"name_key": "PRINT_CATALOG_64",
+			"base_unit_price": 5.5,
+			"setup_cost": 4000,
+			"views_per_piece": 6,
+			"min_quantity": 1000,
+			"max_quantity": 100000,
+			"distributions": [
+				"door_to_door",
+				"in_store",
+				"fair"
+			]
+		},
+		{
+			"id": "pop_wobbler",
+			"name_key": "PRINT_POP_WOBBLER",
+			"base_unit_price": 0.8,
+			"setup_cost": 400,
+			"views_per_piece": 30,
+			"min_quantity": 1000,
+			"max_quantity": 100000,
+			"distributions": [
+				"in_store"
+			]
+		},
+		{
+			"id": "pop_stand",
+			"name_key": "PRINT_POP_STAND",
+			"base_unit_price": 25,
+			"setup_cost": 1000,
+			"views_per_piece": 300,
+			"min_quantity": 1000,
+			"max_quantity": 20000,
+			"distributions": [
+				"in_store"
+			]
+		}
+	],
+	"distributions": [
+		{
+			"id": "door_to_door",
+			"name_key": "DIST_DOOR_TO_DOOR",
+			"cost_per_piece": 0.05,
+			"waste": 0.35
+		},
+		{
+			"id": "newspaper_insert",
+			"name_key": "DIST_NEWSPAPER_INSERT",
+			"cost_per_piece": 0.03,
+			"waste": 0.45
+		},
+		{
+			"id": "in_store",
+			"name_key": "DIST_IN_STORE",
+			"cost_per_piece": 0.01,
+			"waste": 0.25
+		},
+		{
+			"id": "fair",
+			"name_key": "DIST_FAIR",
+			"cost_per_piece": 0.02,
+			"waste": 0.15
+		}
+	],
+	"qualities": [
+		{
+			"id": "economy",
+			"name_key": "QUALITY_ECONOMY"
+		},
+		{
+			"id": "standard",
+			"name_key": "QUALITY_STANDARD"
+		},
+		{
+			"id": "premium",
+			"name_key": "QUALITY_PREMIUM"
+		}
+	]
+}

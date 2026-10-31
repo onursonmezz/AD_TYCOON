@@ -4,6 +4,8 @@ extends RefCounted
 
 var data: GameData
 var scoring: Scoring
+## Basılı işlerin görülme/kalite hesabı (Simulation bağlar).
+var prints: PrintSystem = null
 
 
 func _init(game_data: GameData, scoring_ref: Scoring) -> void:
@@ -44,8 +46,23 @@ func reach_cap(client: Dictionary) -> float:
 	return float(data.bal("kpi.scale_reach_cap")[int(client["scale"])])
 
 
-## Kampanyanın KPI'ları. score: 1–10 puan.
-func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng: SimRng) -> Dictionary:
+## Medya talebinin yoğun olduğu aylarda CPM artar (7.10 "mevsim", calendar.json → cpm_season).
+func cpm_season(year: int, month: int) -> float:
+	var cfg: Dictionary = data.calendar.get("cpm_season", {})
+	var m: float = float(cfg.get("months", {}).get(str(month), 1.0))
+	for entry: Dictionary in data.calendar.get("moving_holidays", []):
+		if int(entry["year"]) != year:
+			continue
+		var moving: Dictionary = cfg.get("moving", {})
+		for key: String in moving:
+			for mm: Variant in entry.get(key, []):
+				if int(mm) == month:
+					m = maxf(m, float(moving[key]))
+	return m
+
+
+## Kampanyanın KPI'ları. score: 1–10 puan. month: yayın ayı (CPM mevsimi).
+func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng: SimRng, month: int = 1) -> Dictionary:
 	var media: float = float(setup["media_budget"])
 	var audience: String = setup["audience"]
 	var pop: float = population(year)
@@ -56,16 +73,27 @@ func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng
 	var engagements: float = 0.0
 	var conversions: float = 0.0
 	var per_channel: Array[Dictionary] = []
+	var efficiency: float = float(setup.get("media_efficiency", 1.0))
+	var season: float = cpm_season(year, month)
 	for entry: Dictionary in setup["mix"]:
 		var ch: String = entry["channel"]
-		var spend: float = media * float(entry["share"])  # M4: tedarikçi_verimi_k
-		var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest(ch, year))  # M4: mevsim
-		var impressions: float = spend / cpm * 1000.0
+		var spend: float = media * float(entry["share"]) * efficiency
+		var interest_now: float = interest(ch, year)
+		var job: Dictionary = entry.get("options", {}).get("job", {})
+		var impressions: float = 0.0
+		var quality: float = 1.0
+		if not job.is_empty() and prints != null:
+			impressions = prints.impressions(job)
+			quality = prints.quality_effect(job, setup["sector"])
+		else:
+			var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest_now) * season
+			impressions = spend / cpm * 1000.0
+		impressions *= interest_now  # 5.3: kanalın etkinliği ilgi eğrisiyle çarpılır
 		var pool: float = maxf(1.0, pop * share_of_pop * data.channel_audience_size(ch, audience) * reach_cap(client))
 		var r: float = pool * (1.0 - exp(-impressions / pool))
 		var aud_fit: float = scoring.fit_mult(data.fit("channel_audience", ch, audience))
 		var e: float = r * data.channel_param(ch, "er") * (data.balf("kpi.er_score_base") \
-			+ data.balf("kpi.er_score_per_point") * score) * aud_fit
+			+ data.balf("kpi.er_score_per_point") * score) * aud_fit * quality
 		var c: float = e * data.channel_param(ch, "cvr") * conv_mult
 		reach += r
 		engagements += e
@@ -121,9 +149,21 @@ func reference_value(objective_id: String, media_budget: float, client: Dictiona
 	return float(values[kpi_type(objective_id)])
 
 
-## GDD 7.11 ajans geliri: fee + medya komisyonu + performans primi (prodüksiyon marjı M4'te, kesinti şimdilik yok).
+## Karışımda basılı iş kanallarının bütçe payı (bu pay medya değil prodüksiyondur: komisyon yerine marj).
+func print_share(setup: Dictionary) -> float:
+	var s: float = 0.0
+	for entry: Dictionary in setup.get("mix", []):
+		if PrintSystem.is_print_channel(data, entry["channel"]):
+			s += float(entry["share"])
+	return s
+
+
+## GDD 7.11 ajans geliri: fee + medya komisyonu (yalnız medya kısmı) + prodüksiyon marjı + performans primi.
+## Kesinti (gecikme cezası, iade) şimdilik yok; gecikme memnuniyete yansır.
 func agency_income(setup: Dictionary, kpi_ratio: float) -> Dictionary:
 	var fee: float = float(setup["fee"])
-	var commission: float = float(setup["media_budget"]) * float(setup.get("commission_rate", data.balf("media_commission.default")))
+	var media_part: float = float(setup["media_budget"]) * (1.0 - print_share(setup))
+	var commission: float = media_part * float(setup.get("commission_rate", data.balf("media_commission.default")))
 	var bonus: float = fee * clampf(kpi_ratio - 1.0, 0.0, data.balf("agency.performance_bonus_max"))
-	return {"fee": fee, "commission": commission, "bonus": bonus}
+	return {"fee": fee, "commission": commission, "bonus": bonus,
+		"production_margin": float(setup.get("production_margin", 0.0))}

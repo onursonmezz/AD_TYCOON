@@ -23,6 +23,15 @@ var offers: Array[Dictionary] = []
 ## Fazla mesai (crunch) açık mı (GDD 11.4).
 var overtime: bool = false
 
+## Tedarikçiler (GDD 10.3): ilişki puanları, gelen teklifler, aktif anlaşmalar, yıllık baskı hacmi, açık pazarlık.
+var supplier_rel: Dictionary = {}
+var supplier_offers: Array[Dictionary] = []
+var supplier_deals: Array[Dictionary] = []
+var print_volume_year: Dictionary = {}
+var negotiation: Dictionary = {}
+## Bu yıl satın alınan medya (hacim indirimi, GDD 10.4).
+var year_media: float = 0.0
+
 ## id → müşteri sözlüğü (GDD 24.4 şeması).
 var clients: Dictionary = {}
 ## Gelen kutusundaki brief'ler.
@@ -50,7 +59,8 @@ var _next_id: Dictionary = {}
 
 ## Kayda giren alanlar (rng ve clock ayrıca yazılır).
 const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
-	"staff", "candidates", "offers", "overtime", "clients", "inbox", "active_campaign", "airing", "history", "finished",
+	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
+	"negotiation", "year_media", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id"]
 
 
@@ -108,6 +118,12 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.candidates.assign(saved.get("candidates", []))
 	s.offers.assign(saved.get("offers", []))
 	s.overtime = bool(saved.get("overtime", false))
+	s.supplier_rel = saved.get("supplier_rel", {})
+	s.supplier_offers.assign(saved.get("supplier_offers", []))
+	s.supplier_deals.assign(saved.get("supplier_deals", []))
+	s.print_volume_year = saved.get("print_volume_year", {})
+	s.negotiation = saved.get("negotiation", {})
+	s.year_media = float(saved.get("year_media", 0.0))
 	s.clients = saved.get("clients", {})
 	s.inbox.assign(saved.get("inbox", []))
 	s.active_campaign = saved.get("active_campaign", {})

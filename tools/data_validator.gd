@@ -20,6 +20,7 @@ const ID_LISTS: Dictionary = {
 	"hiring_channels.json": "hiring_channel",
 	"offices.json": "office",
 	"backgrounds.json": "background",
+	"suppliers.json": "supplier",
 }
 const FIT_FILES: Array[String] = [
 	"fit/sector_objective.json",
@@ -56,6 +57,7 @@ func validate(data: Dictionary) -> PackedStringArray:
 	_check_calendar(data, ids)
 	_check_brands(data, ids)
 	_check_staff_data(data, ids)
+	_check_print_data(data)
 	var rules: Dictionary = _parse_row_rules(data)
 	for file_name: String in FIT_FILES:
 		_check_fit_file(data, file_name, ids, rules)
@@ -307,6 +309,29 @@ func _check_staff_data(data: Dictionary, ids: Dictionary) -> void:
 		var n: Variant = data.get(file_name)
 		if typeof(n) != TYPE_DICTIONARY or (n.get("surnames", []) as Array).is_empty():
 			_err("%s eksik veya soyad listesi boş" % file_name)
+
+
+## Basılı iş verisi: kanalların ürünleri var mı, ürünlerin dağıtımları tanımlı mı (M4).
+func _check_print_data(data: Dictionary) -> void:
+	var opts: Variant = data.get("print_options.json")
+	if typeof(opts) != TYPE_DICTIONARY:
+		_err("print_options.json eksik")
+		return
+	var products: Array = []
+	var dists: Array = []
+	for d: Dictionary in opts.get("distributions", []):
+		dists.append(d["id"])
+	for p: Dictionary in opts.get("products", []):
+		products.append(p["id"])
+		for d: Variant in p.get("distributions", []):
+			if not dists.has(d):
+				_err("print_options.json: '%s' bilinmeyen dağıtım '%s'" % [str(p["id"]), str(d)])
+		if float(p.get("min_quantity", 0)) > float(p.get("max_quantity", 0)):
+			_err("print_options.json: '%s' min adet max adetten büyük" % str(p["id"]))
+	for ch: Dictionary in _records(data, "channels.json"):
+		for p: Variant in ch.get("print_products", []):
+			if not products.has(p):
+				_err("channels.json: '%s' bilinmeyen basılı ürün '%s'" % [str(ch["id"]), str(p)])
 
 
 func _parse_row_rules(data: Dictionary) -> Dictionary:
