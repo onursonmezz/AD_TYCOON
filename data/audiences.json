@@ -1,0 +1,18 @@
+[
+	{
+		"id": "young",
+		"name_key": "AUD_YOUNG"
+	},
+	{
+		"id": "adult",
+		"name_key": "AUD_ADULT"
+	},
+	{
+		"id": "mature",
+		"name_key": "AUD_MATURE"
+	},
+	{
+		"id": "b2b",
+		"name_key": "AUD_B2B"
+	}
+]

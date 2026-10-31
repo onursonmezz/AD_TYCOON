@@ -1,0 +1,3 @@
+[
+	{ "id": "sales_csr_insincere", "name_key": "COMBO_SALES_CSR_INSINCERE", "objectives": ["sales", "csr"], "multiplier": 0.90 }
+]

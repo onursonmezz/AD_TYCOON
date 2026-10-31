@@ -1,0 +1,221 @@
+{
+	"row_type": "sector",
+	"tables": {
+		"audience": {
+			"column_type": "audience",
+			"rule": "four_col",
+			"values": {
+				"fast_food": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -3
+				},
+				"packaged_food": {
+					"young": 1,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -3
+				},
+				"soft_drinks": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -3
+				},
+				"coffee_chain": {
+					"young": 2,
+					"adult": 3,
+					"mature": -1,
+					"b2b": -2
+				},
+				"automotive": {
+					"young": -2,
+					"adult": 3,
+					"mature": 1,
+					"b2b": 0
+				},
+				"banking_finance": {
+					"young": -1,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -2
+				},
+				"insurance": {
+					"young": -3,
+					"adult": 2,
+					"mature": 3,
+					"b2b": 0
+				},
+				"telecom": {
+					"young": 3,
+					"adult": 1,
+					"mature": 0,
+					"b2b": -2
+				},
+				"technology": {
+					"young": 3,
+					"adult": 1,
+					"mature": -3,
+					"b2b": 0
+				},
+				"fashion": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"cosmetics": {
+					"young": 2,
+					"adult": 3,
+					"mature": -1,
+					"b2b": -3
+				},
+				"retail": {
+					"young": 0,
+					"adult": 3,
+					"mature": 1,
+					"b2b": -3
+				},
+				"ecommerce": {
+					"young": 2,
+					"adult": 3,
+					"mature": -1,
+					"b2b": -2
+				},
+				"tourism_hotel": {
+					"young": -1,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -2
+				},
+				"airline": {
+					"young": 0,
+					"adult": 3,
+					"mature": -2,
+					"b2b": 2
+				},
+				"real_estate": {
+					"young": -3,
+					"adult": 2,
+					"mature": 3,
+					"b2b": 0
+				},
+				"health_pharma": {
+					"young": -2,
+					"adult": 1,
+					"mature": 3,
+					"b2b": 0
+				},
+				"private_hospital": {
+					"young": -3,
+					"adult": 2,
+					"mature": 3,
+					"b2b": -1
+				},
+				"education": {
+					"young": 3,
+					"adult": 2,
+					"mature": -2,
+					"b2b": -1
+				},
+				"gaming_entertainment": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -3
+				},
+				"sports_apparel": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -2
+				},
+				"energy_fuel": {
+					"young": -2,
+					"adult": 1,
+					"mature": 0,
+					"b2b": 3
+				},
+				"home_appliances": {
+					"young": -2,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -1
+				},
+				"furniture_decor": {
+					"young": 0,
+					"adult": 3,
+					"mature": 1,
+					"b2b": -2
+				},
+				"luxury": {
+					"young": -3,
+					"adult": 2,
+					"mature": 3,
+					"b2b": -1
+				},
+				"baby_kids": {
+					"young": -1,
+					"adult": 3,
+					"mature": 1,
+					"b2b": -3
+				},
+				"pet_products": {
+					"young": 2,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -3
+				},
+				"ngo_foundation": {
+					"young": 2,
+					"adult": 0,
+					"mature": 3,
+					"b2b": -2
+				},
+				"public_municipality": {
+					"young": 0,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -2
+				},
+				"mobile_startup": {
+					"young": 3,
+					"adult": 2,
+					"mature": -3,
+					"b2b": 0
+				},
+				"b2b_software": {
+					"young": -3,
+					"adult": 0,
+					"mature": 1,
+					"b2b": 3
+				},
+				"logistics": {
+					"young": -3,
+					"adult": 0,
+					"mature": 1,
+					"b2b": 3
+				},
+				"festival_music": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"media_publishing": {
+					"young": 2,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -2
+				},
+				"crypto_fintech": {
+					"young": 3,
+					"adult": 1,
+					"mature": -3,
+					"b2b": 0
+				}
+			}
+		}
+	}
+}

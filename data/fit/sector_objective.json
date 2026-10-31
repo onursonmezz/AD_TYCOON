@@ -1,0 +1,291 @@
+{
+	"row_type": "sector",
+	"tables": {
+		"objective": {
+			"column_type": "objective",
+			"rule": "six_col",
+			"values": {
+				"fast_food": {
+					"awareness": 2,
+					"launch": 0,
+					"sales": 3,
+					"rebrand": -1,
+					"engagement": 1,
+					"csr": -2
+				},
+				"packaged_food": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": -2,
+					"engagement": -1,
+					"csr": 0
+				},
+				"soft_drinks": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": 0,
+					"rebrand": -1,
+					"engagement": 2,
+					"csr": -3
+				},
+				"coffee_chain": {
+					"awareness": 2,
+					"launch": 0,
+					"sales": -1,
+					"rebrand": 1,
+					"engagement": 3,
+					"csr": -2
+				},
+				"automotive": {
+					"awareness": 2,
+					"launch": 3,
+					"sales": 0,
+					"rebrand": 1,
+					"engagement": -2,
+					"csr": -1
+				},
+				"banking_finance": {
+					"awareness": 2,
+					"launch": -1,
+					"sales": 3,
+					"rebrand": 1,
+					"engagement": -2,
+					"csr": 0
+				},
+				"insurance": {
+					"awareness": 1,
+					"launch": -2,
+					"sales": 3,
+					"rebrand": 0,
+					"engagement": -1,
+					"csr": 2
+				},
+				"telecom": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": -2,
+					"engagement": 0,
+					"csr": -1
+				},
+				"technology": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 2,
+					"rebrand": -1,
+					"engagement": 0,
+					"csr": -3
+				},
+				"fashion": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": -1,
+					"rebrand": 2,
+					"engagement": 0,
+					"csr": -2
+				},
+				"cosmetics": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 0,
+					"rebrand": -2,
+					"engagement": 2,
+					"csr": -1
+				},
+				"retail": {
+					"awareness": 1,
+					"launch": -2,
+					"sales": 3,
+					"rebrand": 0,
+					"engagement": 2,
+					"csr": -1
+				},
+				"ecommerce": {
+					"awareness": 0,
+					"launch": 1,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": 2,
+					"csr": -1
+				},
+				"tourism_hotel": {
+					"awareness": 3,
+					"launch": -1,
+					"sales": 2,
+					"rebrand": 1,
+					"engagement": 0,
+					"csr": -2
+				},
+				"airline": {
+					"awareness": 2,
+					"launch": -1,
+					"sales": 1,
+					"rebrand": 3,
+					"engagement": -2,
+					"csr": 0
+				},
+				"real_estate": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 2,
+					"rebrand": 0,
+					"engagement": -3,
+					"csr": -1
+				},
+				"health_pharma": {
+					"awareness": 2,
+					"launch": 0,
+					"sales": -2,
+					"rebrand": 1,
+					"engagement": -1,
+					"csr": 3
+				},
+				"private_hospital": {
+					"awareness": 3,
+					"launch": -2,
+					"sales": 0,
+					"rebrand": 1,
+					"engagement": -1,
+					"csr": 2
+				},
+				"education": {
+					"awareness": 2,
+					"launch": -1,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": 0,
+					"csr": 1
+				},
+				"gaming_entertainment": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 0,
+					"rebrand": -1,
+					"engagement": 2,
+					"csr": -3
+				},
+				"sports_apparel": {
+					"awareness": 2,
+					"launch": 1,
+					"sales": -1,
+					"rebrand": -2,
+					"engagement": 3,
+					"csr": 0
+				},
+				"energy_fuel": {
+					"awareness": 1,
+					"launch": -2,
+					"sales": 0,
+					"rebrand": 2,
+					"engagement": -1,
+					"csr": 3
+				},
+				"home_appliances": {
+					"awareness": 1,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": 0,
+					"engagement": -2,
+					"csr": -1
+				},
+				"furniture_decor": {
+					"awareness": 0,
+					"launch": 1,
+					"sales": 3,
+					"rebrand": 2,
+					"engagement": -1,
+					"csr": -2
+				},
+				"luxury": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": -3,
+					"rebrand": 2,
+					"engagement": 0,
+					"csr": -1
+				},
+				"baby_kids": {
+					"awareness": 2,
+					"launch": -1,
+					"sales": 1,
+					"rebrand": -2,
+					"engagement": 3,
+					"csr": 0
+				},
+				"pet_products": {
+					"awareness": -1,
+					"launch": 0,
+					"sales": 2,
+					"rebrand": -2,
+					"engagement": 3,
+					"csr": 1
+				},
+				"ngo_foundation": {
+					"awareness": 1,
+					"launch": -1,
+					"sales": -3,
+					"rebrand": 0,
+					"engagement": 2,
+					"csr": 3
+				},
+				"public_municipality": {
+					"awareness": 2,
+					"launch": -1,
+					"sales": -3,
+					"rebrand": 1,
+					"engagement": 0,
+					"csr": 3
+				},
+				"mobile_startup": {
+					"awareness": 0,
+					"launch": 3,
+					"sales": 2,
+					"rebrand": -2,
+					"engagement": 1,
+					"csr": -1
+				},
+				"b2b_software": {
+					"awareness": 0,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": 1,
+					"engagement": -2,
+					"csr": -1
+				},
+				"logistics": {
+					"awareness": 0,
+					"launch": -2,
+					"sales": 2,
+					"rebrand": 3,
+					"engagement": -1,
+					"csr": 1
+				},
+				"festival_music": {
+					"awareness": 2,
+					"launch": 1,
+					"sales": 0,
+					"rebrand": -2,
+					"engagement": 3,
+					"csr": -1
+				},
+				"media_publishing": {
+					"awareness": 2,
+					"launch": 3,
+					"sales": -1,
+					"rebrand": 0,
+					"engagement": 1,
+					"csr": -2
+				},
+				"crypto_fintech": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 2,
+					"rebrand": -1,
+					"engagement": 0,
+					"csr": -3
+				}
+			}
+		}
+	}
+}

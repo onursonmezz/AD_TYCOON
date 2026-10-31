@@ -1,0 +1,212 @@
+[
+	{
+		"id": "fast_food",
+		"name_key": "SEC_FAST_FOOD",
+		"available_from": 1990,
+		"tone_group": "food_beverage"
+	},
+	{
+		"id": "packaged_food",
+		"name_key": "SEC_PACKAGED_FOOD",
+		"available_from": 1990,
+		"tone_group": "food_beverage"
+	},
+	{
+		"id": "soft_drinks",
+		"name_key": "SEC_SOFT_DRINKS",
+		"available_from": 1990,
+		"tone_group": "food_beverage"
+	},
+	{
+		"id": "coffee_chain",
+		"name_key": "SEC_COFFEE_CHAIN",
+		"available_from": 1995,
+		"tone_group": "food_beverage"
+	},
+	{
+		"id": "automotive",
+		"name_key": "SEC_AUTOMOTIVE",
+		"available_from": 1990,
+		"tone_group": "automotive"
+	},
+	{
+		"id": "banking_finance",
+		"name_key": "SEC_BANKING_FINANCE",
+		"available_from": 1990,
+		"tone_group": "finance"
+	},
+	{
+		"id": "insurance",
+		"name_key": "SEC_INSURANCE",
+		"available_from": 1990,
+		"tone_group": "finance"
+	},
+	{
+		"id": "telecom",
+		"name_key": "SEC_TELECOM",
+		"available_from": 1994,
+		"tone_group": "telecom"
+	},
+	{
+		"id": "technology",
+		"name_key": "SEC_TECHNOLOGY",
+		"available_from": 1990,
+		"tone_group": "tech_startup"
+	},
+	{
+		"id": "fashion",
+		"name_key": "SEC_FASHION",
+		"available_from": 1990,
+		"tone_group": "fashion_beauty_luxury"
+	},
+	{
+		"id": "cosmetics",
+		"name_key": "SEC_COSMETICS",
+		"available_from": 1990,
+		"tone_group": "fashion_beauty_luxury"
+	},
+	{
+		"id": "retail",
+		"name_key": "SEC_RETAIL",
+		"available_from": 1990,
+		"tone_group": "retail_ecommerce"
+	},
+	{
+		"id": "ecommerce",
+		"name_key": "SEC_ECOMMERCE",
+		"available_from": 1999,
+		"tone_group": "retail_ecommerce"
+	},
+	{
+		"id": "tourism_hotel",
+		"name_key": "SEC_TOURISM_HOTEL",
+		"available_from": 1990,
+		"tone_group": "fashion_beauty_luxury"
+	},
+	{
+		"id": "airline",
+		"name_key": "SEC_AIRLINE",
+		"available_from": 1990,
+		"tone_group": "automotive"
+	},
+	{
+		"id": "real_estate",
+		"name_key": "SEC_REAL_ESTATE",
+		"available_from": 1990,
+		"tone_group": "automotive"
+	},
+	{
+		"id": "health_pharma",
+		"name_key": "SEC_HEALTH_PHARMA",
+		"available_from": 1990,
+		"tone_group": "health"
+	},
+	{
+		"id": "private_hospital",
+		"name_key": "SEC_PRIVATE_HOSPITAL",
+		"available_from": 1993,
+		"tone_group": "health"
+	},
+	{
+		"id": "education",
+		"name_key": "SEC_EDUCATION",
+		"available_from": 1990,
+		"tone_group": "health"
+	},
+	{
+		"id": "gaming_entertainment",
+		"name_key": "SEC_GAMING_ENTERTAINMENT",
+		"available_from": 1990,
+		"tone_group": "entertainment_sports"
+	},
+	{
+		"id": "sports_apparel",
+		"name_key": "SEC_SPORTS_APPAREL",
+		"available_from": 1990,
+		"tone_group": "entertainment_sports"
+	},
+	{
+		"id": "energy_fuel",
+		"name_key": "SEC_ENERGY_FUEL",
+		"available_from": 1990,
+		"tone_group": "b2b_logistics_energy"
+	},
+	{
+		"id": "home_appliances",
+		"name_key": "SEC_HOME_APPLIANCES",
+		"available_from": 1990,
+		"tone_group": "retail_ecommerce"
+	},
+	{
+		"id": "furniture_decor",
+		"name_key": "SEC_FURNITURE_DECOR",
+		"available_from": 1990,
+		"tone_group": "retail_ecommerce"
+	},
+	{
+		"id": "luxury",
+		"name_key": "SEC_LUXURY",
+		"available_from": 1990,
+		"tone_group": "fashion_beauty_luxury"
+	},
+	{
+		"id": "baby_kids",
+		"name_key": "SEC_BABY_KIDS",
+		"available_from": 1990,
+		"tone_group": "health"
+	},
+	{
+		"id": "pet_products",
+		"name_key": "SEC_PET_PRODUCTS",
+		"available_from": 1998,
+		"tone_group": "food_beverage"
+	},
+	{
+		"id": "ngo_foundation",
+		"name_key": "SEC_NGO_FOUNDATION",
+		"available_from": 1990,
+		"tone_group": "ngo_public"
+	},
+	{
+		"id": "public_municipality",
+		"name_key": "SEC_PUBLIC_MUNICIPALITY",
+		"available_from": 1990,
+		"tone_group": "ngo_public"
+	},
+	{
+		"id": "mobile_startup",
+		"name_key": "SEC_MOBILE_STARTUP",
+		"available_from": 2010,
+		"tone_group": "tech_startup"
+	},
+	{
+		"id": "b2b_software",
+		"name_key": "SEC_B2B_SOFTWARE",
+		"available_from": 1995,
+		"tone_group": "b2b_logistics_energy"
+	},
+	{
+		"id": "logistics",
+		"name_key": "SEC_LOGISTICS",
+		"available_from": 1990,
+		"tone_group": "b2b_logistics_energy"
+	},
+	{
+		"id": "festival_music",
+		"name_key": "SEC_FESTIVAL_MUSIC",
+		"available_from": 1990,
+		"tone_group": "entertainment_sports"
+	},
+	{
+		"id": "media_publishing",
+		"name_key": "SEC_MEDIA_PUBLISHING",
+		"available_from": 1990,
+		"tone_group": "entertainment_sports"
+	},
+	{
+		"id": "crypto_fintech",
+		"name_key": "SEC_CRYPTO_FINTECH",
+		"available_from": 2017,
+		"tone_group": "tech_startup"
+	}
+]

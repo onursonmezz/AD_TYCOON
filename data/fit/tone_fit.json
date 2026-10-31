@@ -1,0 +1,99 @@
+{
+	"row_type": "tone_group",
+	"tables": {
+		"tone": {
+			"column_type": "tone",
+			"rule": "six_col",
+			"values": {
+				"food_beverage": {
+					"emotional": 1,
+					"humorous": 3,
+					"informative": -1,
+					"bold": 0,
+					"luxury": -2,
+					"nostalgic": 2
+				},
+				"automotive": {
+					"emotional": 1,
+					"humorous": -2,
+					"informative": 0,
+					"bold": 2,
+					"luxury": 3,
+					"nostalgic": -1
+				},
+				"finance": {
+					"emotional": 2,
+					"humorous": -1,
+					"informative": 3,
+					"bold": -2,
+					"luxury": 0,
+					"nostalgic": 1
+				},
+				"telecom": {
+					"emotional": 2,
+					"humorous": 3,
+					"informative": 0,
+					"bold": 1,
+					"luxury": -2,
+					"nostalgic": -1
+				},
+				"tech_startup": {
+					"emotional": -1,
+					"humorous": 1,
+					"informative": 2,
+					"bold": 3,
+					"luxury": 0,
+					"nostalgic": -2
+				},
+				"fashion_beauty_luxury": {
+					"emotional": 1,
+					"humorous": -1,
+					"informative": -2,
+					"bold": 2,
+					"luxury": 3,
+					"nostalgic": 0
+				},
+				"health": {
+					"emotional": 2,
+					"humorous": -1,
+					"informative": 3,
+					"bold": -3,
+					"luxury": 0,
+					"nostalgic": 1
+				},
+				"retail_ecommerce": {
+					"emotional": 1,
+					"humorous": 3,
+					"informative": 2,
+					"bold": -1,
+					"luxury": -3,
+					"nostalgic": 0
+				},
+				"ngo_public": {
+					"emotional": 3,
+					"humorous": -1,
+					"informative": 2,
+					"bold": 1,
+					"luxury": -3,
+					"nostalgic": 0
+				},
+				"entertainment_sports": {
+					"emotional": 0,
+					"humorous": 2,
+					"informative": -1,
+					"bold": 3,
+					"luxury": -2,
+					"nostalgic": 1
+				},
+				"b2b_logistics_energy": {
+					"emotional": 1,
+					"humorous": -2,
+					"informative": 3,
+					"bold": 0,
+					"luxury": 2,
+					"nostalgic": -1
+				}
+			}
+		}
+	}
+}

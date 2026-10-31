@@ -1,0 +1,46 @@
+[
+	{
+		"id": "food_beverage",
+		"name_key": "TG_FOOD_BEVERAGE"
+	},
+	{
+		"id": "automotive",
+		"name_key": "TG_AUTOMOTIVE"
+	},
+	{
+		"id": "finance",
+		"name_key": "TG_FINANCE"
+	},
+	{
+		"id": "telecom",
+		"name_key": "TG_TELECOM"
+	},
+	{
+		"id": "tech_startup",
+		"name_key": "TG_TECH_STARTUP"
+	},
+	{
+		"id": "fashion_beauty_luxury",
+		"name_key": "TG_FASHION_BEAUTY_LUXURY"
+	},
+	{
+		"id": "health",
+		"name_key": "TG_HEALTH"
+	},
+	{
+		"id": "retail_ecommerce",
+		"name_key": "TG_RETAIL_ECOMMERCE"
+	},
+	{
+		"id": "ngo_public",
+		"name_key": "TG_NGO_PUBLIC"
+	},
+	{
+		"id": "entertainment_sports",
+		"name_key": "TG_ENTERTAINMENT_SPORTS"
+	},
+	{
+		"id": "b2b_logistics_energy",
+		"name_key": "TG_B2B_LOGISTICS_ENERGY"
+	}
+]

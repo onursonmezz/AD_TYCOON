@@ -1,0 +1,647 @@
+{
+	"row_type": "channel",
+	"tables": {
+		"objective": {
+			"column_type": "objective",
+			"rule": "six_col",
+			"values": {
+				"newspaper": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 2,
+					"rebrand": 0,
+					"engagement": -2,
+					"csr": -1
+				},
+				"magazine": {
+					"awareness": 1,
+					"launch": 2,
+					"sales": -1,
+					"rebrand": 3,
+					"engagement": -2,
+					"csr": 0
+				},
+				"flyer_brochure": {
+					"awareness": 0,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": 1,
+					"csr": -1
+				},
+				"catalog": {
+					"awareness": 0,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": -1,
+					"engagement": 1,
+					"csr": -3
+				},
+				"pop_instore": {
+					"awareness": 0,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": -1,
+					"engagement": 1,
+					"csr": -2
+				},
+				"billboard": {
+					"awareness": 3,
+					"launch": 2,
+					"sales": -1,
+					"rebrand": 1,
+					"engagement": -2,
+					"csr": 0
+				},
+				"street_furniture": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": 0,
+					"engagement": -2,
+					"csr": -1
+				},
+				"transit_wrap": {
+					"awareness": 3,
+					"launch": 2,
+					"sales": -1,
+					"rebrand": 0,
+					"engagement": 1,
+					"csr": -2
+				},
+				"megalight": {
+					"awareness": 2,
+					"launch": 3,
+					"sales": -2,
+					"rebrand": 1,
+					"engagement": -1,
+					"csr": 0
+				},
+				"dooh": {
+					"awareness": 2,
+					"launch": 3,
+					"sales": 1,
+					"rebrand": -1,
+					"engagement": 0,
+					"csr": -2
+				},
+				"anamorphic_3d": {
+					"awareness": 1,
+					"launch": 2,
+					"sales": -3,
+					"rebrand": 0,
+					"engagement": 3,
+					"csr": -1
+				},
+				"guerrilla": {
+					"awareness": 2,
+					"launch": 0,
+					"sales": -3,
+					"rebrand": -1,
+					"engagement": 3,
+					"csr": 1
+				},
+				"radio": {
+					"awareness": 2,
+					"launch": 1,
+					"sales": 3,
+					"rebrand": -1,
+					"engagement": 0,
+					"csr": -2
+				},
+				"national_tv": {
+					"awareness": 3,
+					"launch": 2,
+					"sales": -1,
+					"rebrand": 1,
+					"engagement": -2,
+					"csr": 0
+				},
+				"local_tv": {
+					"awareness": 1,
+					"launch": 0,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": -1,
+					"csr": 2
+				},
+				"cinema": {
+					"awareness": 2,
+					"launch": 3,
+					"sales": -2,
+					"rebrand": 0,
+					"engagement": 1,
+					"csr": -1
+				},
+				"ctv": {
+					"awareness": 2,
+					"launch": 1,
+					"sales": 3,
+					"rebrand": 0,
+					"engagement": -1,
+					"csr": -2
+				},
+				"podcast": {
+					"awareness": 0,
+					"launch": -2,
+					"sales": -1,
+					"rebrand": 1,
+					"engagement": 3,
+					"csr": 2
+				},
+				"corporate_website": {
+					"awareness": -1,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": 3,
+					"engagement": 0,
+					"csr": -2
+				},
+				"banner_display": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": 0,
+					"engagement": -1,
+					"csr": -2
+				},
+				"email_newsletter": {
+					"awareness": -2,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": 0,
+					"engagement": 3,
+					"csr": -1
+				},
+				"sms": {
+					"awareness": 0,
+					"launch": 1,
+					"sales": 3,
+					"rebrand": -3,
+					"engagement": 2,
+					"csr": -1
+				},
+				"search_ads": {
+					"awareness": 1,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": 0,
+					"csr": -1
+				},
+				"seo_content": {
+					"awareness": 1,
+					"launch": -2,
+					"sales": 3,
+					"rebrand": 0,
+					"engagement": 2,
+					"csr": -1
+				},
+				"display_network": {
+					"awareness": 3,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": -1,
+					"engagement": 0,
+					"csr": -2
+				},
+				"mobile_app": {
+					"awareness": -1,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": 0,
+					"engagement": 3,
+					"csr": -2
+				},
+				"programmatic": {
+					"awareness": 2,
+					"launch": 1,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": 0,
+					"csr": -1
+				},
+				"ar_filter": {
+					"awareness": 1,
+					"launch": 2,
+					"sales": -2,
+					"rebrand": 0,
+					"engagement": 3,
+					"csr": -1
+				},
+				"retail_media": {
+					"awareness": 0,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": -2,
+					"engagement": 1,
+					"csr": -1
+				},
+				"youtup_video": {
+					"awareness": 3,
+					"launch": 2,
+					"sales": -1,
+					"rebrand": 0,
+					"engagement": 1,
+					"csr": -2
+				},
+				"facebuk_ads": {
+					"awareness": 1,
+					"launch": 0,
+					"sales": 2,
+					"rebrand": -1,
+					"engagement": 3,
+					"csr": -2
+				},
+				"civil_microblog": {
+					"awareness": 1,
+					"launch": 0,
+					"sales": -3,
+					"rebrand": -1,
+					"engagement": 3,
+					"csr": 2
+				},
+				"linkedout": {
+					"awareness": 1,
+					"launch": -1,
+					"sales": 2,
+					"rebrand": 3,
+					"engagement": -2,
+					"csr": 0
+				},
+				"instafoto": {
+					"awareness": 1,
+					"launch": 3,
+					"sales": 0,
+					"rebrand": -1,
+					"engagement": 2,
+					"csr": -2
+				},
+				"tiktak": {
+					"awareness": 2,
+					"launch": 1,
+					"sales": 0,
+					"rebrand": -2,
+					"engagement": 3,
+					"csr": -1
+				},
+				"celebrity": {
+					"awareness": 3,
+					"launch": 2,
+					"sales": 0,
+					"rebrand": 1,
+					"engagement": -1,
+					"csr": -2
+				},
+				"influencer_micro": {
+					"awareness": 0,
+					"launch": 1,
+					"sales": 2,
+					"rebrand": -2,
+					"engagement": 3,
+					"csr": -1
+				},
+				"influencer_macro": {
+					"awareness": 2,
+					"launch": 3,
+					"sales": 0,
+					"rebrand": -1,
+					"engagement": 1,
+					"csr": -2
+				},
+				"event_launch": {
+					"awareness": 0,
+					"launch": 3,
+					"sales": -2,
+					"rebrand": 1,
+					"engagement": 2,
+					"csr": -1
+				},
+				"trade_fair": {
+					"awareness": 0,
+					"launch": 2,
+					"sales": 3,
+					"rebrand": 1,
+					"engagement": -1,
+					"csr": -2
+				},
+				"concert_sponsorship": {
+					"awareness": 3,
+					"launch": 0,
+					"sales": -2,
+					"rebrand": 1,
+					"engagement": 2,
+					"csr": -1
+				},
+				"sports_sponsorship": {
+					"awareness": 3,
+					"launch": -1,
+					"sales": -2,
+					"rebrand": 2,
+					"engagement": 1,
+					"csr": 0
+				},
+				"product_placement": {
+					"awareness": 3,
+					"launch": 0,
+					"sales": 2,
+					"rebrand": 1,
+					"engagement": -1,
+					"csr": -3
+				},
+				"pr_press": {
+					"awareness": 1,
+					"launch": 0,
+					"sales": -2,
+					"rebrand": 2,
+					"engagement": -1,
+					"csr": 3
+				},
+				"csr_project": {
+					"awareness": 0,
+					"launch": -1,
+					"sales": -3,
+					"rebrand": 2,
+					"engagement": 1,
+					"csr": 3
+				}
+			}
+		},
+		"audience": {
+			"column_type": "audience",
+			"rule": "four_col",
+			"values": {
+				"newspaper": {
+					"young": -3,
+					"adult": 1,
+					"mature": 3,
+					"b2b": 0
+				},
+				"magazine": {
+					"young": 1,
+					"adult": 3,
+					"mature": -1,
+					"b2b": -2
+				},
+				"flyer_brochure": {
+					"young": -1,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -2
+				},
+				"catalog": {
+					"young": -2,
+					"adult": 2,
+					"mature": 3,
+					"b2b": 0
+				},
+				"pop_instore": {
+					"young": 1,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -3
+				},
+				"billboard": {
+					"young": 1,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -2
+				},
+				"street_furniture": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"transit_wrap": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -2
+				},
+				"megalight": {
+					"young": 0,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -2
+				},
+				"dooh": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -2
+				},
+				"anamorphic_3d": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -3
+				},
+				"guerrilla": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"radio": {
+					"young": -1,
+					"adult": 2,
+					"mature": 3,
+					"b2b": -2
+				},
+				"national_tv": {
+					"young": 0,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -3
+				},
+				"local_tv": {
+					"young": -1,
+					"adult": 2,
+					"mature": 3,
+					"b2b": -3
+				},
+				"cinema": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"ctv": {
+					"young": 1,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -2
+				},
+				"podcast": {
+					"young": 2,
+					"adult": 3,
+					"mature": -2,
+					"b2b": 0
+				},
+				"corporate_website": {
+					"young": -2,
+					"adult": 2,
+					"mature": 0,
+					"b2b": 3
+				},
+				"banner_display": {
+					"young": 2,
+					"adult": 3,
+					"mature": -1,
+					"b2b": -2
+				},
+				"email_newsletter": {
+					"young": -2,
+					"adult": 2,
+					"mature": 0,
+					"b2b": 3
+				},
+				"sms": {
+					"young": 0,
+					"adult": 3,
+					"mature": 1,
+					"b2b": -2
+				},
+				"search_ads": {
+					"young": 0,
+					"adult": 3,
+					"mature": -2,
+					"b2b": 2
+				},
+				"seo_content": {
+					"young": 0,
+					"adult": 2,
+					"mature": -2,
+					"b2b": 3
+				},
+				"display_network": {
+					"young": 2,
+					"adult": 3,
+					"mature": -1,
+					"b2b": -2
+				},
+				"mobile_app": {
+					"young": 3,
+					"adult": 2,
+					"mature": -3,
+					"b2b": 0
+				},
+				"programmatic": {
+					"young": 2,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -2
+				},
+				"ar_filter": {
+					"young": 3,
+					"adult": 1,
+					"mature": -3,
+					"b2b": -1
+				},
+				"retail_media": {
+					"young": 1,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -3
+				},
+				"youtup_video": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -2
+				},
+				"facebuk_ads": {
+					"young": -1,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -2
+				},
+				"civil_microblog": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -2
+				},
+				"linkedout": {
+					"young": -3,
+					"adult": 1,
+					"mature": 0,
+					"b2b": 3
+				},
+				"instafoto": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"tiktak": {
+					"young": 3,
+					"adult": 1,
+					"mature": -3,
+					"b2b": -1
+				},
+				"celebrity": {
+					"young": 0,
+					"adult": 3,
+					"mature": 2,
+					"b2b": -3
+				},
+				"influencer_micro": {
+					"young": 3,
+					"adult": 2,
+					"mature": -1,
+					"b2b": -3
+				},
+				"influencer_macro": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -2
+				},
+				"event_launch": {
+					"young": 2,
+					"adult": 0,
+					"mature": -2,
+					"b2b": 3
+				},
+				"trade_fair": {
+					"young": -3,
+					"adult": 1,
+					"mature": 0,
+					"b2b": 3
+				},
+				"concert_sponsorship": {
+					"young": 3,
+					"adult": 1,
+					"mature": -1,
+					"b2b": -3
+				},
+				"sports_sponsorship": {
+					"young": 2,
+					"adult": 3,
+					"mature": 0,
+					"b2b": -2
+				},
+				"product_placement": {
+					"young": -1,
+					"adult": 2,
+					"mature": 3,
+					"b2b": -3
+				},
+				"pr_press": {
+					"young": -2,
+					"adult": 2,
+					"mature": 0,
+					"b2b": 3
+				},
+				"csr_project": {
+					"young": 3,
+					"adult": 2,
+					"mature": 0,
+					"b2b": -2
+				}
+			}
+		}
+	}
+}

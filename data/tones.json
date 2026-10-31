@@ -1,0 +1,26 @@
+[
+	{
+		"id": "emotional",
+		"name_key": "TONE_EMOTIONAL"
+	},
+	{
+		"id": "humorous",
+		"name_key": "TONE_HUMOROUS"
+	},
+	{
+		"id": "informative",
+		"name_key": "TONE_INFORMATIVE"
+	},
+	{
+		"id": "bold",
+		"name_key": "TONE_BOLD"
+	},
+	{
+		"id": "luxury",
+		"name_key": "TONE_LUXURY"
+	},
+	{
+		"id": "nostalgic",
+		"name_key": "TONE_NOSTALGIC"
+	}
+]

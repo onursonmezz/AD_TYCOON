@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Ajans Tycoon"
+config/description="Reklam ajansı yönetim simülasyonu"
+config/version="0.0.1"
+run/main_scene="res://src/ui/screens/boot_screen.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/strings.tr.translation", "res://localization/strings.en.translation")
+locale/fallback="tr"

@@ -1,0 +1,21 @@
+# Godot 4 (CLAUDE.md: .import dosyaları ve .godot/ elle düzenlenmez, depoya girmez)
+.godot/
+*.import
+/android/
+
+# Godot'nun ürettiği çeviri dosyaları (localization/strings.csv'den yeniden üretilir)
+*.translation
+
+# Dışa aktarma çıktıları
+/build/
+/export/
+export_credentials.cfg
+
+# İşletim sistemi / editör
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+
+# PDF'in indirilen orijinal kopyası (doküman docs/GDD.pdf olarak tutulur)
+/Ajans_Tycoon_GDD_ve_Yol_Haritasi_1.pdf

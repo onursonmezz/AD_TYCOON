@@ -1,0 +1,98 @@
+[
+	{
+		"id": "awareness",
+		"name_key": "OBJ_AWARENESS",
+		"ideal_sk": 0.6,
+		"focus_importance": {
+			"research": 0,
+			"insight": 2,
+			"positioning": 2,
+			"concept": 3,
+			"copy": 2,
+			"visual": 3,
+			"production": 2,
+			"media_planning": 3,
+			"measurement": -1
+		}
+	},
+	{
+		"id": "launch",
+		"name_key": "OBJ_LAUNCH",
+		"ideal_sk": 1,
+		"focus_importance": {
+			"research": 2,
+			"insight": 2,
+			"positioning": 3,
+			"concept": 3,
+			"copy": 2,
+			"visual": 2,
+			"production": 3,
+			"media_planning": 2,
+			"measurement": 0
+		}
+	},
+	{
+		"id": "sales",
+		"name_key": "OBJ_SALES",
+		"ideal_sk": 1.7,
+		"focus_importance": {
+			"research": 2,
+			"insight": 1,
+			"positioning": 2,
+			"concept": 0,
+			"copy": 3,
+			"visual": 1,
+			"production": 1,
+			"media_planning": 3,
+			"measurement": 3
+		}
+	},
+	{
+		"id": "rebrand",
+		"name_key": "OBJ_REBRAND",
+		"ideal_sk": 0.5,
+		"focus_importance": {
+			"research": 3,
+			"insight": 3,
+			"positioning": 3,
+			"concept": 2,
+			"copy": 0,
+			"visual": 3,
+			"production": 2,
+			"media_planning": -1,
+			"measurement": -2
+		}
+	},
+	{
+		"id": "engagement",
+		"name_key": "OBJ_ENGAGEMENT",
+		"ideal_sk": 0.9,
+		"focus_importance": {
+			"research": 1,
+			"insight": 3,
+			"positioning": 1,
+			"concept": 3,
+			"copy": 2,
+			"visual": 2,
+			"production": 1,
+			"media_planning": 2,
+			"measurement": 2
+		}
+	},
+	{
+		"id": "csr",
+		"name_key": "OBJ_CSR",
+		"ideal_sk": 0.8,
+		"focus_importance": {
+			"research": 2,
+			"insight": 3,
+			"positioning": 2,
+			"concept": 2,
+			"copy": 3,
+			"visual": 1,
+			"production": 0,
+			"media_planning": 1,
+			"measurement": -1
+		}
+	}
+]

@@ -1,0 +1,514 @@
+[
+	{
+		"id": "newspaper",
+		"name_key": "CH_NEWSPAPER",
+		"category": "print",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 2000,
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				1
+			],
+			[
+				2000,
+				0.9
+			],
+			[
+				2008,
+				0.6
+			],
+			[
+				2015,
+				0.35
+			],
+			[
+				2025,
+				0.15
+			],
+			[
+				2035,
+				0.08
+			]
+		]
+	},
+	{
+		"id": "magazine",
+		"name_key": "CH_MAGAZINE",
+		"category": "print",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 0
+	},
+	{
+		"id": "flyer_brochure",
+		"name_key": "CH_FLYER_BROCHURE",
+		"category": "print",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 500,
+		"viral": 0
+	},
+	{
+		"id": "catalog",
+		"name_key": "CH_CATALOG",
+		"category": "print",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 4000,
+		"viral": 0
+	},
+	{
+		"id": "pop_instore",
+		"name_key": "CH_POP_INSTORE",
+		"category": "print",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 1500,
+		"viral": 0
+	},
+	{
+		"id": "billboard",
+		"name_key": "CH_BILLBOARD",
+		"category": "ooh",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 5000,
+		"viral": 0,
+		"interest_curve": [
+			[
+				1990,
+				0.9
+			],
+			[
+				2005,
+				1
+			],
+			[
+				2020,
+				0.8
+			],
+			[
+				2035,
+				0.7
+			]
+		],
+		"needs_outputs": [
+			"key_visual",
+			"slogan"
+		],
+		"base_cpm": 4,
+		"base_er": 0.002,
+		"base_cvr": 0.01,
+		"audience_size": {
+			"young": 0.8,
+			"adult": 1,
+			"mature": 0.8,
+			"b2b": 0.2
+		},
+		"options": {
+			"location_tier": [
+				"A",
+				"B",
+				"C"
+			],
+			"weeks": [
+				1,
+				2,
+				4
+			]
+		}
+	},
+	{
+		"id": "street_furniture",
+		"name_key": "CH_STREET_FURNITURE",
+		"category": "ooh",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 2000,
+		"viral": 0
+	},
+	{
+		"id": "transit_wrap",
+		"name_key": "CH_TRANSIT_WRAP",
+		"category": "ooh",
+		"available_from": 1993,
+		"requires_research": null,
+		"min_budget": 6000,
+		"viral": 1
+	},
+	{
+		"id": "megalight",
+		"name_key": "CH_MEGALIGHT",
+		"category": "ooh",
+		"available_from": 1996,
+		"requires_research": null,
+		"min_budget": 15000,
+		"viral": 1
+	},
+	{
+		"id": "dooh",
+		"name_key": "CH_DOOH",
+		"category": "ooh",
+		"available_from": 2012,
+		"requires_research": null,
+		"min_budget": 20000,
+		"viral": 1
+	},
+	{
+		"id": "anamorphic_3d",
+		"name_key": "CH_ANAMORPHIC_3D",
+		"category": "ooh",
+		"available_from": 2021,
+		"requires_research": null,
+		"min_budget": 60000,
+		"viral": 3
+	},
+	{
+		"id": "guerrilla",
+		"name_key": "CH_GUERRILLA",
+		"category": "guerrilla",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 1000,
+		"viral": 3
+	},
+	{
+		"id": "radio",
+		"name_key": "CH_RADIO",
+		"category": "broadcast",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 0
+	},
+	{
+		"id": "national_tv",
+		"name_key": "CH_NATIONAL_TV",
+		"category": "broadcast",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 80000,
+		"viral": 1,
+		"needs_outputs": [
+			"storyboard",
+			"production"
+		]
+	},
+	{
+		"id": "local_tv",
+		"name_key": "CH_LOCAL_TV",
+		"category": "broadcast",
+		"available_from": 1992,
+		"requires_research": null,
+		"min_budget": 10000,
+		"viral": 0,
+		"needs_outputs": [
+			"storyboard",
+			"production"
+		]
+	},
+	{
+		"id": "cinema",
+		"name_key": "CH_CINEMA",
+		"category": "broadcast",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 8000,
+		"viral": 0
+	},
+	{
+		"id": "ctv",
+		"name_key": "CH_CTV",
+		"category": "broadcast",
+		"available_from": 2018,
+		"requires_research": null,
+		"min_budget": 30000,
+		"viral": 0
+	},
+	{
+		"id": "podcast",
+		"name_key": "CH_PODCAST",
+		"category": "broadcast",
+		"available_from": 2018,
+		"requires_research": null,
+		"min_budget": 4000,
+		"viral": 0
+	},
+	{
+		"id": "corporate_website",
+		"name_key": "CH_CORPORATE_WEBSITE",
+		"category": "digital",
+		"available_from": 1997,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 0
+	},
+	{
+		"id": "banner_display",
+		"name_key": "CH_BANNER_DISPLAY",
+		"category": "digital",
+		"available_from": 1998,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 0
+	},
+	{
+		"id": "email_newsletter",
+		"name_key": "CH_EMAIL_NEWSLETTER",
+		"category": "digital",
+		"available_from": 1998,
+		"requires_research": null,
+		"min_budget": 800,
+		"viral": 0
+	},
+	{
+		"id": "sms",
+		"name_key": "CH_SMS",
+		"category": "digital",
+		"available_from": 2001,
+		"requires_research": null,
+		"min_budget": 1000,
+		"viral": 0
+	},
+	{
+		"id": "search_ads",
+		"name_key": "CH_SEARCH_ADS",
+		"category": "digital",
+		"available_from": 2002,
+		"requires_research": null,
+		"min_budget": 2000,
+		"viral": 0,
+		"needs_outputs": [
+			"copy",
+			"measurement"
+		]
+	},
+	{
+		"id": "seo_content",
+		"name_key": "CH_SEO_CONTENT",
+		"category": "digital",
+		"available_from": 2004,
+		"requires_research": null,
+		"min_budget": 4000,
+		"viral": 0
+	},
+	{
+		"id": "display_network",
+		"name_key": "CH_DISPLAY_NETWORK",
+		"category": "digital",
+		"available_from": 2007,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 0
+	},
+	{
+		"id": "mobile_app",
+		"name_key": "CH_MOBILE_APP",
+		"category": "digital",
+		"available_from": 2011,
+		"requires_research": null,
+		"min_budget": 15000,
+		"viral": 1
+	},
+	{
+		"id": "programmatic",
+		"name_key": "CH_PROGRAMMATIC",
+		"category": "digital",
+		"available_from": 2013,
+		"requires_research": null,
+		"min_budget": 10000,
+		"viral": 0
+	},
+	{
+		"id": "ar_filter",
+		"name_key": "CH_AR_FILTER",
+		"category": "digital",
+		"available_from": 2018,
+		"requires_research": null,
+		"min_budget": 8000,
+		"viral": 2
+	},
+	{
+		"id": "retail_media",
+		"name_key": "CH_RETAIL_MEDIA",
+		"category": "digital",
+		"available_from": 2023,
+		"requires_research": null,
+		"min_budget": 8000,
+		"viral": 0
+	},
+	{
+		"id": "youtup_video",
+		"name_key": "CH_YOUTUP_VIDEO",
+		"category": "social",
+		"available_from": 2007,
+		"requires_research": null,
+		"min_budget": 6000,
+		"viral": 2
+	},
+	{
+		"id": "facebuk_ads",
+		"name_key": "CH_FACEBUK_ADS",
+		"category": "social",
+		"available_from": 2008,
+		"requires_research": null,
+		"min_budget": 2000,
+		"viral": 2
+	},
+	{
+		"id": "civil_microblog",
+		"name_key": "CH_CIVIL_MICROBLOG",
+		"category": "social",
+		"available_from": 2009,
+		"requires_research": null,
+		"min_budget": 1500,
+		"viral": 3
+	},
+	{
+		"id": "linkedout",
+		"name_key": "CH_LINKEDOUT",
+		"category": "social",
+		"available_from": 2011,
+		"requires_research": null,
+		"min_budget": 4000,
+		"viral": 0
+	},
+	{
+		"id": "instafoto",
+		"name_key": "CH_INSTAFOTO",
+		"category": "social",
+		"available_from": 2015,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 2,
+		"interest_curve": [
+			[
+				2011,
+				0.15
+			],
+			[
+				2013,
+				0.5
+			],
+			[
+				2016,
+				0.95
+			],
+			[
+				2022,
+				1
+			],
+			[
+				2028,
+				0.75
+			],
+			[
+				2035,
+				0.55
+			]
+		]
+	},
+	{
+		"id": "tiktak",
+		"name_key": "CH_TIKTAK",
+		"category": "social",
+		"available_from": 2019,
+		"requires_research": null,
+		"min_budget": 3000,
+		"viral": 3
+	},
+	{
+		"id": "celebrity",
+		"name_key": "CH_CELEBRITY",
+		"category": "influencer",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 50000,
+		"viral": 1
+	},
+	{
+		"id": "influencer_micro",
+		"name_key": "CH_INFLUENCER_MICRO",
+		"category": "influencer",
+		"available_from": 2012,
+		"requires_research": null,
+		"min_budget": 2000,
+		"viral": 2
+	},
+	{
+		"id": "influencer_macro",
+		"name_key": "CH_INFLUENCER_MACRO",
+		"category": "influencer",
+		"available_from": 2014,
+		"requires_research": null,
+		"min_budget": 30000,
+		"viral": 3
+	},
+	{
+		"id": "event_launch",
+		"name_key": "CH_EVENT_LAUNCH",
+		"category": "event",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 15000,
+		"viral": 2
+	},
+	{
+		"id": "trade_fair",
+		"name_key": "CH_TRADE_FAIR",
+		"category": "event",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 12000,
+		"viral": 0
+	},
+	{
+		"id": "concert_sponsorship",
+		"name_key": "CH_CONCERT_SPONSORSHIP",
+		"category": "sponsorship",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 25000,
+		"viral": 1
+	},
+	{
+		"id": "sports_sponsorship",
+		"name_key": "CH_SPORTS_SPONSORSHIP",
+		"category": "sponsorship",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 30000,
+		"viral": 1
+	},
+	{
+		"id": "product_placement",
+		"name_key": "CH_PRODUCT_PLACEMENT",
+		"category": "sponsorship",
+		"available_from": 1995,
+		"requires_research": null,
+		"min_budget": 20000,
+		"viral": 1
+	},
+	{
+		"id": "pr_press",
+		"name_key": "CH_PR_PRESS",
+		"category": "pr",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 1000,
+		"viral": 1
+	},
+	{
+		"id": "csr_project",
+		"name_key": "CH_CSR_PROJECT",
+		"category": "pr",
+		"available_from": 1990,
+		"requires_research": null,
+		"min_budget": 10000,
+		"viral": 2
+	}
+]

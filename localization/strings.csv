@@ -1,0 +1,121 @@
+keys,tr,en
+GAME_TITLE,Ajans Tycoon,Ajans Tycoon
+BOOT_SUBTITLE,Garajdan reklam holdingine,From garage to advertising holding
+BOOT_MILESTONE,M0 iskeleti: proje çalışıyor. Oynanış M1–M2 ile gelecek.,M0 skeleton: the project runs. Gameplay arrives with M1–M2.
+COMBO_SALES_CSR_INSINCERE,Samimiyetsiz: satış ve sosyal sorumluluk birlikte,Insincere: sales and CSR together
+OBJ_AWARENESS,Bilinirlik,Awareness
+OBJ_LAUNCH,Lansman,Launch
+OBJ_SALES,Satış/Dönüşüm,Sales/Conversion
+OBJ_REBRAND,Marka Yenileme,Rebrand
+OBJ_ENGAGEMENT,Etkileşim/Sadakat,Engagement/Loyalty
+OBJ_CSR,Sosyal Sorumluluk/İtibar,CSR/Reputation
+AUD_YOUNG,Genç,Young
+AUD_ADULT,Yetişkin,Adult
+AUD_MATURE,Olgun,Mature
+AUD_B2B,Kurumsal/B2B,Corporate/B2B
+TONE_EMOTIONAL,Duygusal,Emotional
+TONE_HUMOROUS,Esprili,Humorous
+TONE_INFORMATIVE,Bilgilendirici,Informative
+TONE_BOLD,Cesur/Provokatif,Bold/Provocative
+TONE_LUXURY,Lüks/Prestijli,Luxury/Prestige
+TONE_NOSTALGIC,Nostaljik,Nostalgic
+TG_FOOD_BEVERAGE,Fast Food / Gıda / İçecek,Fast Food / Food / Beverage
+TG_AUTOMOTIVE,Otomotiv,Automotive
+TG_FINANCE,Banka / Sigorta / Finans,Banking / Insurance / Finance
+TG_TELECOM,Telekom,Telecom
+TG_TECH_STARTUP,Teknoloji / Startup / Fintech,Technology / Startup / Fintech
+TG_FASHION_BEAUTY_LUXURY,Moda / Kozmetik / Lüks,Fashion / Cosmetics / Luxury
+TG_HEALTH,Sağlık / İlaç / Hastane,Health / Pharma / Hospital
+TG_RETAIL_ECOMMERCE,Perakende / E-ticaret,Retail / E-commerce
+TG_NGO_PUBLIC,STK / Kamu,NGO / Public
+TG_ENTERTAINMENT_SPORTS,Oyun / Festival / Spor,Games / Festival / Sports
+TG_B2B_LOGISTICS_ENERGY,B2B / Lojistik / Enerji,B2B / Logistics / Energy
+FOCUS_RESEARCH,Pazar Araştırması,Market Research
+FOCUS_INSIGHT,İçgörü (Insight),Insight
+FOCUS_POSITIONING,Konumlandırma & Mesaj,Positioning & Message
+FOCUS_CONCEPT,Büyük Fikir / Konsept,Big Idea / Concept
+FOCUS_COPY,Metin Yazarlığı (Copy),Copywriting
+FOCUS_VISUAL,Görsel Tasarım (Art),Visual Design (Art)
+FOCUS_PRODUCTION,Prodüksiyon,Production
+FOCUS_MEDIA_PLANNING,Medya Planlama,Media Planning
+FOCUS_MEASUREMENT,Ölçümleme & Optimizasyon,Measurement & Optimization
+SEC_FAST_FOOD,Fast Food,Fast Food
+SEC_PACKAGED_FOOD,Gıda & Ambalajlı Ürün,Food & Packaged Goods
+SEC_SOFT_DRINKS,Alkolsüz İçecek,Soft Drinks
+SEC_COFFEE_CHAIN,Kahve & Kafe Zinciri,Coffee & Café Chain
+SEC_AUTOMOTIVE,Otomotiv,Automotive
+SEC_BANKING_FINANCE,Banka & Finans,Banking & Finance
+SEC_INSURANCE,Sigorta,Insurance
+SEC_TELECOM,Telekom & GSM,Telecom & Mobile
+SEC_TECHNOLOGY,Teknoloji & Elektronik,Technology & Electronics
+SEC_FASHION,Moda & Tekstil,Fashion & Textile
+SEC_COSMETICS,Kozmetik & Güzellik,Cosmetics & Beauty
+SEC_RETAIL,Perakende / Market,Retail / Grocery
+SEC_ECOMMERCE,E-ticaret,E-commerce
+SEC_TOURISM_HOTEL,Turizm & Otel,Tourism & Hotels
+SEC_AIRLINE,Havayolu,Airline
+SEC_REAL_ESTATE,Emlak & İnşaat,Real Estate & Construction
+SEC_HEALTH_PHARMA,Sağlık & İlaç,Health & Pharma
+SEC_PRIVATE_HOSPITAL,Özel Hastane,Private Hospital
+SEC_EDUCATION,Eğitim & Dershane/Okul,Education & Schools
+SEC_GAMING_ENTERTAINMENT,Oyun & Eğlence,Games & Entertainment
+SEC_SPORTS_APPAREL,Spor & Spor Giyim,Sports & Sportswear
+SEC_ENERGY_FUEL,Enerji & Akaryakıt,Energy & Fuel
+SEC_HOME_APPLIANCES,Beyaz Eşya & Ev Aletleri,Home Appliances
+SEC_FURNITURE_DECOR,Mobilya & Dekorasyon,Furniture & Decor
+SEC_LUXURY,Lüks Ürünler,Luxury Goods
+SEC_BABY_KIDS,Bebek & Çocuk Ürünleri,Baby & Kids Products
+SEC_PET_PRODUCTS,Evcil Hayvan Ürünleri,Pet Products
+SEC_NGO_FOUNDATION,STK & Vakıf,NGO & Foundation
+SEC_PUBLIC_MUNICIPALITY,Kamu & Belediye,Public & Municipality
+SEC_MOBILE_STARTUP,Mobil Uygulama & Startup,Mobile App & Startup
+SEC_B2B_SOFTWARE,B2B Yazılım & Hizmet,B2B Software & Services
+SEC_LOGISTICS,Lojistik & Kargo,Logistics & Cargo
+SEC_FESTIVAL_MUSIC,Festival & Müzik,Festival & Music
+SEC_MEDIA_PUBLISHING,Medya & Yayıncılık,Media & Publishing
+SEC_CRYPTO_FINTECH,Kripto & Fintech,Crypto & Fintech
+CH_NEWSPAPER,Gazete ilanı,Newspaper ad
+CH_MAGAZINE,Dergi ilanı,Magazine ad
+CH_FLYER_BROCHURE,Broşür & el ilanı,Brochure & flyer
+CH_CATALOG,Katalog,Catalog
+CH_POP_INSTORE,POP / mağaza içi,POP / in-store
+CH_BILLBOARD,Billboard,Billboard
+CH_STREET_FURNITURE,Raket / durak,Street panel / bus stop
+CH_TRANSIT_WRAP,Otobüs / metro giydirme,Bus / metro wrap
+CH_MEGALIGHT,Megalight / bina giydirme,Megalight / building wrap
+CH_DOOH,Dijital billboard (DOOH),Digital billboard (DOOH)
+CH_ANAMORPHIC_3D,3D anamorfik billboard,3D anamorphic billboard
+CH_GUERRILLA,Gerilla / ambient,Guerrilla / ambient
+CH_RADIO,Radyo spotu / jingle,Radio spot / jingle
+CH_NATIONAL_TV,Ulusal TV,National TV
+CH_LOCAL_TV,Yerel TV,Local TV
+CH_CINEMA,Sinema reklamı,Cinema ad
+CH_CTV,CTV / bağlı TV,CTV / connected TV
+CH_PODCAST,Podcast,Podcast
+CH_CORPORATE_WEBSITE,Kurumsal web sitesi,Corporate website
+CH_BANNER_DISPLAY,Banner / display,Banner / display
+CH_EMAIL_NEWSLETTER,E-posta bülteni,Email newsletter
+CH_SMS,SMS pazarlama,SMS marketing
+CH_SEARCH_ADS,Arama reklamı (Gooble Kelime),Search ads (Gooble Words)
+CH_SEO_CONTENT,SEO & içerik,SEO & content
+CH_DISPLAY_NETWORK,Görüntülü Ağ (GDN karşılığı),Display Network
+CH_MOBILE_APP,Mobil uygulama,Mobile app
+CH_PROGRAMMATIC,Programatik,Programmatic
+CH_AR_FILTER,AR filtre / deneyim,AR filter / experience
+CH_RETAIL_MEDIA,Retail media,Retail media
+CH_YOUTUP_VIDEO,YouTüp video reklamı,YouTüp video ad
+CH_FACEBUK_ADS,FaceBuk reklamları,FaceBuk ads
+CH_CIVIL_MICROBLOG,Cıvıl (mikroblog),Cıvıl (microblog)
+CH_LINKEDOUT,LinkedOut,LinkedOut
+CH_INSTAFOTO,InstaFoto reklamları,InstaFoto ads
+CH_TIKTAK,TikTak,TikTak
+CH_CELEBRITY,Ünlü yüzü (TV dönemi),Celebrity face (TV era)
+CH_INFLUENCER_MICRO,Influencer (mikro),Influencer (micro)
+CH_INFLUENCER_MACRO,Influencer (makro / mega),Influencer (macro / mega)
+CH_EVENT_LAUNCH,Etkinlik / lansman partisi,Event / launch party
+CH_TRADE_FAIR,Fuar standı,Trade fair stand
+CH_CONCERT_SPONSORSHIP,Konser / festival sponsorluğu,Concert / festival sponsorship
+CH_SPORTS_SPONSORSHIP,Spor sponsorluğu,Sports sponsorship
+CH_PRODUCT_PLACEMENT,Dizi içi ürün yerleştirme,TV series product placement
+CH_PR_PRESS,PR & basın bülteni,PR & press release
+CH_CSR_PROJECT,Sosyal sorumluluk projesi,CSR project

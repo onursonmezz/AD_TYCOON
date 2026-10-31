@@ -1,0 +1,47 @@
+[
+	{
+		"id": "research",
+		"phase": "strategy",
+		"name_key": "FOCUS_RESEARCH"
+	},
+	{
+		"id": "insight",
+		"phase": "strategy",
+		"name_key": "FOCUS_INSIGHT"
+	},
+	{
+		"id": "positioning",
+		"phase": "strategy",
+		"name_key": "FOCUS_POSITIONING"
+	},
+	{
+		"id": "concept",
+		"phase": "creative",
+		"name_key": "FOCUS_CONCEPT"
+	},
+	{
+		"id": "copy",
+		"phase": "creative",
+		"name_key": "FOCUS_COPY"
+	},
+	{
+		"id": "visual",
+		"phase": "creative",
+		"name_key": "FOCUS_VISUAL"
+	},
+	{
+		"id": "production",
+		"phase": "production",
+		"name_key": "FOCUS_PRODUCTION"
+	},
+	{
+		"id": "media_planning",
+		"phase": "production",
+		"name_key": "FOCUS_MEDIA_PLANNING"
+	},
+	{
+		"id": "measurement",
+		"phase": "production",
+		"name_key": "FOCUS_MEASUREMENT"
+	}
+]
