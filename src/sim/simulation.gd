@@ -15,6 +15,7 @@ signal week_passed()
 signal staff_note(key: String, args: Array, kind: String)
 signal offer_received(offer: Dictionary)
 signal supplier_offer_received(offer: Dictionary)
+signal scandal_started(scandal: Dictionary)
 
 var data: GameData
 var state: SimState
@@ -33,6 +34,8 @@ var offices: OfficeSystem
 var suppliers: SupplierSystem
 var prints: PrintSystem
 var media: MediaPlanning
+var options: ChannelOptions
+var influencers: InfluencerSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -54,8 +57,11 @@ func _init(game_data: GameData, seed_value: int, background: String = "") -> voi
 	offices = OfficeSystem.new(data)
 	suppliers = SupplierSystem.new(data)
 	prints = PrintSystem.new(data, suppliers)
-	media = MediaPlanning.new(data, prints)
+	options = ChannelOptions.new(data)
+	influencers = InfluencerSystem.new(data)
+	media = MediaPlanning.new(data, prints, options, influencers)
 	kpi.prints = prints
+	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
 	clients.create_starting(state, int(data.backgrounds[founder["background"]]["extra_start_clients"]))
 
@@ -88,6 +94,8 @@ func step_day() -> void:
 		_update_airing()
 		for note: Dictionary in staff_life.weekly(state):
 			staff_note.emit(note["key"], note["args"], note["kind"])
+		influencers.weekly(state)
+		influencers.expire_scandals(state)
 		var supplier_offer: Dictionary = suppliers.weekly(state)
 		if not supplier_offer.is_empty():
 			supplier_offer_received.emit(supplier_offer)
@@ -223,6 +231,11 @@ func _deliver() -> void:
 	setup["production_margin"] = settled["production_margin"]
 	setup["late_weeks"] = settled["late_weeks"]
 	camp["print_results"] = settled["print_results"]
+	setup["option_satisfaction"] = settled["option_satisfaction"]
+	if float(settled["fines"]) > 0.0:
+		economy.pay(state, float(settled["fines"]))
+	for note: Dictionary in settled["notes"]:
+		staff_note.emit(note["key"], note["args"], note["kind"])
 	var income: Dictionary = kpi.agency_income(setup, 0.0)
 	economy.add_payable(state, float(settled["payable"]))
 	if not client.is_empty():
@@ -237,6 +250,10 @@ func _deliver() -> void:
 		"factors": {"m": report["combination"]["m"], "f": report["focus"]["f"], "b": report["balance"]["b"],
 			"n": report["novelty"]["n"], "synergy": report["synergy"]["synergy"], "r": report["r"],
 			"errors": report["errors"], "points": report["s"] + report["k"] + report["t"]}})
+	for inf: Dictionary in settled["scandal_candidates"]:
+		var scandal: Dictionary = influencers.maybe_scandal(state, camp["id"], inf)
+		if not scandal.is_empty():
+			scandal_started.emit(scandal)
 	campaign_delivered.emit(camp)
 
 
@@ -257,6 +274,7 @@ func _finish(camp: Dictionary) -> void:
 	var year: int = state.clock.year()
 	var client: Dictionary = state.clients.get(setup["client_id"], {})
 	var kpi_client: Dictionary = client if not client.is_empty() else {"scale": setup.get("client_scale", 0)}
+	media.before_kpi(camp, score, state)
 	var result: Dictionary = kpi.compute(setup, kpi_client, score, year, state.rng, state.clock.month())
 	var ratio: float = Kpi.value_of(result, setup["kpi_type"]) / maxf(0.000001, float(setup["kpi_target"]))
 	camp["kpi"] = result
@@ -272,6 +290,7 @@ func _finish(camp: Dictionary) -> void:
 		var delta: float = clients.satisfaction_delta(client, score, ratio, setup["tone"], year,
 			staff_life.account_bonus(state, team), int(setup.get("late_weeks", 0)),
 			float(setup.get("production_margin", 0.0)) < 0.0)
+		delta += float(setup.get("option_satisfaction", 0.0)) + float(camp.get("scandal", {}).get("satisfaction", 0.0))
 		camp["satisfaction_delta"] = delta
 		clients.apply_result(client, camp["id"], score, setup["objective"], year, delta)
 	_apply_reputation(score, setup["size"])

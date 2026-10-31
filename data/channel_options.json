@@ -1,0 +1,602 @@
+{
+	"categories": {
+		"ooh": {
+			"options": [
+				{
+					"id": "location",
+					"name_key": "OPT_OOH_LOCATION",
+					"choices": [
+						{
+							"id": "a",
+							"name_key": "OPT_OOH_LOCATION_A",
+							"effects": {
+								"cost_mult": 2,
+								"impressions_mult": 2.5
+							}
+						},
+						{
+							"id": "b",
+							"name_key": "OPT_OOH_LOCATION_B",
+							"effects": {}
+						},
+						{
+							"id": "c",
+							"name_key": "OPT_OOH_LOCATION_C",
+							"effects": {
+								"cost_mult": 0.6,
+								"impressions_mult": 0.5
+							}
+						}
+					],
+					"default": "b"
+				},
+				{
+					"id": "weeks",
+					"name_key": "OPT_OOH_WEEKS",
+					"choices": [
+						{
+							"id": "1",
+							"name_key": "OPT_OOH_WEEKS_1",
+							"effects": {
+								"recall_mult": 0.9
+							}
+						},
+						{
+							"id": "2",
+							"name_key": "OPT_OOH_WEEKS_2",
+							"effects": {}
+						},
+						{
+							"id": "4",
+							"name_key": "OPT_OOH_WEEKS_4",
+							"effects": {
+								"recall_mult": 1.1
+							}
+						}
+					],
+					"default": "2"
+				}
+			],
+			"channel_risks": {
+				"megalight": {
+					"chance": 0.2,
+					"effects": {
+						"impressions_mult": 0.5
+					},
+					"note": "NOTE_PERMIT_DELAY",
+					"satisfaction": -3
+				}
+			},
+			"measurement_bonus": {
+				"dooh": 0.2
+			}
+		},
+		"broadcast": {
+			"production": {
+				"share": 0.2,
+				"margin": 0.2,
+				"channels": [
+					"national_tv",
+					"local_tv",
+					"cinema",
+					"ctv"
+				]
+			},
+			"options": [
+				{
+					"id": "daypart",
+					"name_key": "OPT_BROADCAST_DAYPART",
+					"choices": [
+						{
+							"id": "morning",
+							"name_key": "OPT_BROADCAST_DAYPART_MORNING",
+							"effects": {
+								"cost_mult": 0.7,
+								"audience_mult": {
+									"mature": 1.2,
+									"young": 0.8
+								}
+							}
+						},
+						{
+							"id": "day",
+							"name_key": "OPT_BROADCAST_DAYPART_DAY",
+							"effects": {
+								"cost_mult": 0.8,
+								"audience_mult": {
+									"mature": 1.3,
+									"young": 0.7
+								}
+							}
+						},
+						{
+							"id": "prime",
+							"name_key": "OPT_BROADCAST_DAYPART_PRIME",
+							"effects": {
+								"cost_mult": 1.6,
+								"impressions_mult": 1.4
+							}
+						},
+						{
+							"id": "night",
+							"name_key": "OPT_BROADCAST_DAYPART_NIGHT",
+							"effects": {
+								"cost_mult": 0.6,
+								"audience_mult": {
+									"young": 1.3,
+									"mature": 0.7
+								}
+							}
+						}
+					],
+					"default": "day"
+				},
+				{
+					"id": "spot",
+					"name_key": "OPT_BROADCAST_SPOT",
+					"choices": [
+						{
+							"id": "15",
+							"name_key": "OPT_BROADCAST_SPOT_15",
+							"effects": {
+								"cost_mult": 0.6,
+								"recall_mult": 0.8
+							}
+						},
+						{
+							"id": "30",
+							"name_key": "OPT_BROADCAST_SPOT_30",
+							"effects": {}
+						},
+						{
+							"id": "45",
+							"name_key": "OPT_BROADCAST_SPOT_45",
+							"effects": {
+								"cost_mult": 1.4,
+								"recall_mult": 1.1
+							}
+						},
+						{
+							"id": "60",
+							"name_key": "OPT_BROADCAST_SPOT_60",
+							"effects": {
+								"cost_mult": 1.8,
+								"recall_mult": 1.2
+							}
+						}
+					],
+					"default": "30"
+				}
+			],
+			"tone_risk": {
+				"tone": "bold",
+				"chance": 0.1,
+				"effects": {
+					"impressions_mult": 0.3
+				},
+				"note": "NOTE_BROADCAST_BAN",
+				"satisfaction": -5
+			}
+		},
+		"digital": {
+			"options": [
+				{
+					"id": "bid",
+					"name_key": "OPT_DIGITAL_BID",
+					"choices": [
+						{
+							"id": "cpm",
+							"name_key": "OPT_DIGITAL_BID_CPM",
+							"effects": {
+								"objective_mult": {
+									"awareness": 1.2,
+									"launch": 1.1,
+									"sales": 0.85
+								}
+							}
+						},
+						{
+							"id": "cpc",
+							"name_key": "OPT_DIGITAL_BID_CPC",
+							"effects": {
+								"er_mult": 1.2,
+								"objective_mult": {
+									"engagement": 1.15,
+									"awareness": 0.9
+								}
+							}
+						},
+						{
+							"id": "cpa",
+							"name_key": "OPT_DIGITAL_BID_CPA",
+							"effects": {
+								"cvr_mult": 1.3,
+								"objective_mult": {
+									"sales": 1.2,
+									"awareness": 0.6,
+									"rebrand": 0.7
+								}
+							}
+						}
+					],
+					"default": "cpm"
+				},
+				{
+					"id": "targeting",
+					"name_key": "OPT_DIGITAL_TARGETING",
+					"choices": [
+						{
+							"id": "broad",
+							"name_key": "OPT_DIGITAL_TARGETING_BROAD",
+							"effects": {
+								"impressions_mult": 1.2,
+								"er_mult": 0.85
+							}
+						},
+						{
+							"id": "balanced",
+							"name_key": "OPT_DIGITAL_TARGETING_BALANCED",
+							"effects": {}
+						},
+						{
+							"id": "narrow",
+							"name_key": "OPT_DIGITAL_TARGETING_NARROW",
+							"effects": {
+								"impressions_mult": 0.6,
+								"er_mult": 1.4,
+								"after_year": 2024,
+								"after_effects": {
+									"er_mult": 0.8
+								}
+							}
+						}
+					],
+					"default": "balanced"
+				}
+			]
+		},
+		"social": {
+			"same_as": "digital"
+		},
+		"guerrilla": {
+			"options": [
+				{
+					"id": "card",
+					"name_key": "OPT_GUERRILLA_CARD",
+					"choices": [
+						{
+							"id": "footprints",
+							"name_key": "OPT_GUERRILLA_CARD_FOOTPRINTS",
+							"effects": {
+								"impressions_mult": 1
+							},
+							"risk": {
+								"chance": 0.05,
+								"fine_share": 0.1,
+								"satisfaction": -2,
+								"note": "NOTE_GUERRILLA_FINE"
+							}
+						},
+						{
+							"id": "street_art",
+							"name_key": "OPT_GUERRILLA_CARD_STREET_ART",
+							"effects": {
+								"impressions_mult": 1.2,
+								"er_mult": 1.1
+							},
+							"risk": {
+								"chance": 0.1,
+								"fine_share": 0.15,
+								"satisfaction": -3,
+								"note": "NOTE_GUERRILLA_FINE"
+							}
+						},
+						{
+							"id": "flash_mob",
+							"name_key": "OPT_GUERRILLA_CARD_FLASH_MOB",
+							"effects": {
+								"impressions_mult": 1.4,
+								"er_mult": 1.3
+							},
+							"risk": {
+								"chance": 0.2,
+								"fine_share": 0.2,
+								"satisfaction": -4,
+								"note": "NOTE_GUERRILLA_FINE"
+							}
+						},
+						{
+							"id": "bus_stops",
+							"name_key": "OPT_GUERRILLA_CARD_BUS_STOPS",
+							"effects": {
+								"impressions_mult": 1.1
+							},
+							"risk": {
+								"chance": 0.08,
+								"fine_share": 0.1,
+								"satisfaction": -2,
+								"note": "NOTE_GUERRILLA_FINE"
+							}
+						},
+						{
+							"id": "fake_queue",
+							"name_key": "OPT_GUERRILLA_CARD_FAKE_QUEUE",
+							"effects": {
+								"impressions_mult": 1.6,
+								"er_mult": 1.2
+							},
+							"risk": {
+								"chance": 0.3,
+								"fine_share": 0.25,
+								"satisfaction": -6,
+								"note": "NOTE_GUERRILLA_BACKLASH"
+							}
+						}
+					],
+					"default": "footprints"
+				}
+			],
+			"press": {
+				"base": 0.25,
+				"per_point": 0.05,
+				"pivot": 6,
+				"impressions_mult": 2,
+				"pr_reduce_div": 150,
+				"pr_mult": 1.333
+			}
+		},
+		"event": {
+			"production": {
+				"share": 1,
+				"margin": 0.2
+			},
+			"options": [
+				{
+					"id": "venue",
+					"name_key": "OPT_EVENT_VENUE",
+					"choices": [
+						{
+							"id": "hall",
+							"name_key": "OPT_EVENT_VENUE_HALL",
+							"effects": {
+								"impressions_mult": 0.7,
+								"er_mult": 1.1
+							}
+						},
+						{
+							"id": "hotel",
+							"name_key": "OPT_EVENT_VENUE_HOTEL",
+							"effects": {}
+						},
+						{
+							"id": "open_air",
+							"name_key": "OPT_EVENT_VENUE_OPEN_AIR",
+							"effects": {
+								"impressions_mult": 1.5
+							},
+							"risk": {
+								"chance": 0.2,
+								"effects": {
+									"impressions_mult": 0.4
+								},
+								"note": "NOTE_EVENT_WEATHER",
+								"satisfaction": -4,
+								"reduced_by": "event_risk"
+							}
+						}
+					],
+					"default": "hotel"
+				},
+				{
+					"id": "catering",
+					"name_key": "OPT_EVENT_CATERING",
+					"choices": [
+						{
+							"id": "basic",
+							"name_key": "OPT_EVENT_CATERING_BASIC",
+							"effects": {
+								"cost_mult": 0.85,
+								"er_mult": 0.9
+							}
+						},
+						{
+							"id": "premium",
+							"name_key": "OPT_EVENT_CATERING_PREMIUM",
+							"effects": {
+								"cost_mult": 1.2,
+								"er_mult": 1.2
+							}
+						}
+					],
+					"default": "basic"
+				},
+				{
+					"id": "guests",
+					"name_key": "OPT_EVENT_GUESTS",
+					"choices": [
+						{
+							"id": "public",
+							"name_key": "OPT_EVENT_GUESTS_PUBLIC",
+							"effects": {}
+						},
+						{
+							"id": "press",
+							"name_key": "OPT_EVENT_GUESTS_PRESS",
+							"effects": {
+								"impressions_mult": 1.3
+							}
+						},
+						{
+							"id": "press_influencers",
+							"name_key": "OPT_EVENT_GUESTS_PRESS_INFLUENCERS",
+							"effects": {
+								"impressions_mult": 1.6,
+								"er_mult": 1.1
+							},
+							"from_year": 2012
+						}
+					],
+					"default": "public"
+				}
+			],
+			"base_risk": {
+				"chance": 0.12,
+				"effects": {
+					"impressions_mult": 0.6
+				},
+				"note": "NOTE_EVENT_TROUBLE",
+				"satisfaction": -3,
+				"reduced_by": "event_risk"
+			}
+		}
+	},
+	"influencers": {
+		"pool_size": 12,
+		"refresh_weeks": 48,
+		"post_reach": 0.35,
+		"max_posts": 4,
+		"repeat_discount": 0.1,
+		"repeat_discount_max": 0.2,
+		"repeat_er_bonus": 0.1,
+		"niche_match_mult": 1.3,
+		"reveal_effect": "detect_fake_followers",
+		"tiers": {
+			"nano": {
+				"followers": [
+					3000,
+					10000
+				],
+				"er": [
+					0.06,
+					0.1
+				],
+				"fee_1990": [
+					300,
+					800
+				],
+				"channel": "influencer_micro"
+			},
+			"micro": {
+				"followers": [
+					10000,
+					100000
+				],
+				"er": [
+					0.03,
+					0.07
+				],
+				"fee_1990": [
+					800,
+					4000
+				],
+				"channel": "influencer_micro"
+			},
+			"macro": {
+				"followers": [
+					100000,
+					1000000
+				],
+				"er": [
+					0.015,
+					0.04
+				],
+				"fee_1990": [
+					5000,
+					25000
+				],
+				"channel": "influencer_macro"
+			},
+			"mega": {
+				"followers": [
+					1000000,
+					8000000
+				],
+				"er": [
+					0.008,
+					0.02
+				],
+				"fee_1990": [
+					30000,
+					120000
+				],
+				"channel": "influencer_macro"
+			}
+		},
+		"authenticity": [
+			0.4,
+			1
+		],
+		"scandal_chance": [
+			0.02,
+			0.12
+		],
+		"niches": {
+			"gaming": [
+				"gaming_entertainment",
+				"mobile_startup"
+			],
+			"beauty": [
+				"cosmetics",
+				"fashion",
+				"luxury"
+			],
+			"food": [
+				"fast_food",
+				"packaged_food",
+				"coffee_chain",
+				"soft_drinks",
+				"retail"
+			],
+			"sport": [
+				"sports_apparel",
+				"soft_drinks"
+			],
+			"tech": [
+				"technology",
+				"mobile_startup",
+				"crypto_fintech",
+				"telecom"
+			],
+			"parenting": [
+				"baby_kids",
+				"education",
+				"home_appliances"
+			],
+			"humor": []
+		},
+		"scandal": {
+			"response_weeks": 1,
+			"options": {
+				"terminate": {
+					"impressions_mult": 0.3,
+					"satisfaction": -2,
+					"reputation": 0
+				},
+				"silent": {
+					"impressions_mult": 1,
+					"satisfaction": -8,
+					"reputation": -2
+				},
+				"statement": {
+					"impressions_mult": 0.8,
+					"check_stat": "communication",
+					"dc": 60,
+					"success_satisfaction": -2,
+					"fail_satisfaction": -10,
+					"reputation": -1
+				}
+			}
+		},
+		"young_share": [
+			0.2,
+			0.7
+		],
+		"audience_norm": 3,
+		"b2b_match": 0.1,
+		"handle_number": [
+			10,
+			99
+		]
+	},
+	"risk_reduce_mult": 0.5
+}

@@ -32,6 +32,12 @@ var negotiation: Dictionary = {}
 ## Bu yıl satın alınan medya (hacim indirimi, GDD 10.4).
 var year_media: float = 0.0
 
+## Influencer havuzu (GDD 9.6), havuzun kurulduğu hafta, birlikte çalışma sayıları, karar bekleyen skandallar.
+var influencers: Array[Dictionary] = []
+var influencer_pool_week: int = -1
+var influencer_history: Dictionary = {}
+var scandals: Array[Dictionary] = []
+
 ## id → müşteri sözlüğü (GDD 24.4 şeması).
 var clients: Dictionary = {}
 ## Gelen kutusundaki brief'ler.
@@ -60,7 +66,7 @@ var _next_id: Dictionary = {}
 ## Kayda giren alanlar (rng ve clock ayrıca yazılır).
 const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
 	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
-	"negotiation", "year_media", "clients", "inbox", "active_campaign", "airing", "history", "finished",
+	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id"]
 
 
@@ -124,6 +130,10 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.print_volume_year = saved.get("print_volume_year", {})
 	s.negotiation = saved.get("negotiation", {})
 	s.year_media = float(saved.get("year_media", 0.0))
+	s.influencers.assign(saved.get("influencers", []))
+	s.influencer_pool_week = int(saved.get("influencer_pool_week", -1))
+	s.influencer_history = saved.get("influencer_history", {})
+	s.scandals.assign(saved.get("scandals", []))
 	s.clients = saved.get("clients", {})
 	s.inbox.assign(saved.get("inbox", []))
 	s.active_campaign = saved.get("active_campaign", {})

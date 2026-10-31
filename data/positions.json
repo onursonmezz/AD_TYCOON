@@ -519,7 +519,11 @@
 		"available_from": 1990,
 		"base_salary": 2800,
 		"hireable": true,
-		"effects": []
+		"effects": [
+			"event_risk",
+			"detect_fake_followers",
+			"pr_press"
+		]
 	},
 	{
 		"id": "event_coordinator",
@@ -538,7 +542,11 @@
 		"available_from": 1990,
 		"base_salary": 2600,
 		"hireable": true,
-		"effects": []
+		"effects": [
+			"event_risk",
+			"detect_fake_followers",
+			"pr_press"
+		]
 	},
 	{
 		"id": "influencer_manager",
@@ -556,7 +564,11 @@
 		"available_from": 2012,
 		"base_salary": 2800,
 		"hireable": true,
-		"effects": []
+		"effects": [
+			"event_risk",
+			"detect_fake_followers",
+			"pr_press"
+		]
 	},
 	{
 		"id": "traffic_manager",

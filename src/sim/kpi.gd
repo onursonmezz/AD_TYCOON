@@ -4,8 +4,9 @@ extends RefCounted
 
 var data: GameData
 var scoring: Scoring
-## Basılı işlerin görülme/kalite hesabı (Simulation bağlar).
+## Basılı işlerin görülme/kalite hesabı ve kanal seçeneklerinin etkileri (Simulation bağlar).
 var prints: PrintSystem = null
+var options: ChannelOptions = null
 
 
 func _init(game_data: GameData, scoring_ref: Scoring) -> void:
@@ -75,35 +76,50 @@ func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng
 	var per_channel: Array[Dictionary] = []
 	var efficiency: float = float(setup.get("media_efficiency", 1.0))
 	var season: float = cpm_season(year, month)
+	var recall_reach: float = 0.0
 	for entry: Dictionary in setup["mix"]:
 		var ch: String = entry["channel"]
-		var spend: float = media * float(entry["share"]) * efficiency
+		var opts: Dictionary = entry.get("options", {})
+		var production_share: float = float(options.production(ch).get("share", 0.0)) if options != null else 0.0
+		var spend: float = media * float(entry["share"]) * (1.0 - production_share) * efficiency
 		var interest_now: float = interest(ch, year)
-		var job: Dictionary = entry.get("options", {}).get("job", {})
+		var fx: Dictionary = options.effects(ch, opts, setup, year) if options != null else {}
+		var job: Dictionary = opts.get("job", {})
 		var impressions: float = 0.0
 		var quality: float = 1.0
+		var er: float = data.channel_param(ch, "er")
 		if not job.is_empty() and prints != null:
 			impressions = prints.impressions(job)
 			quality = prints.quality_effect(job, setup["sector"])
+		elif opts.has("_influencer_kpi"):
+			impressions = float(opts["_influencer_kpi"]["impressions"]) * float(opts.get("_scandal_mult", 1.0))
+			er = float(opts["_influencer_kpi"]["er"])
+		elif production_share >= 1.0:
+			# Etkinlik: bütçenin tamamı prodüksiyon; katılım/görülme, marj sonrası kalan bütçeyle ölçülür.
+			var event_spend: float = media * float(entry["share"]) * (1.0 - float(options.production(ch).get("margin", 0.0)))
+			impressions = event_spend / (data.channel_param(ch, "cpm") * infl * float(fx.get("cost_mult", 1.0))) * 1000.0
 		else:
-			var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest_now) * season
+			var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest_now) * season * float(fx.get("cost_mult", 1.0))
 			impressions = spend / cpm * 1000.0
-		impressions *= interest_now  # 5.3: kanalın etkinliği ilgi eğrisiyle çarpılır
+		impressions *= interest_now * float(fx.get("impressions_mult", 1.0)) * float(opts.get("_press", 1.0))
 		var pool: float = maxf(1.0, pop * share_of_pop * data.channel_audience_size(ch, audience) * reach_cap(client))
 		var r: float = pool * (1.0 - exp(-impressions / pool))
 		var aud_fit: float = scoring.fit_mult(data.fit("channel_audience", ch, audience))
-		var e: float = r * data.channel_param(ch, "er") * (data.balf("kpi.er_score_base") \
-			+ data.balf("kpi.er_score_per_point") * score) * aud_fit * quality
-		var c: float = e * data.channel_param(ch, "cvr") * conv_mult
+		var e: float = r * er * (data.balf("kpi.er_score_base") + data.balf("kpi.er_score_per_point") * score) \
+			* aud_fit * quality * float(fx.get("er_mult", 1.0))
+		var c: float = e * data.channel_param(ch, "cvr") * conv_mult * float(fx.get("cvr_mult", 1.0))
 		reach += r
+		recall_reach += r * float(fx.get("recall_mult", 1.0))
 		engagements += e
 		conversions += c
 		per_channel.append({"channel": ch, "spend": spend, "impressions": impressions, "reach": r,
-			"engagements": e, "conversions": c})
+			"engagements": e, "conversions": c, "press": opts.has("_press")})
 	var viral: bool = _roll_viral(setup, score, year, rng)
 	if viral:
-		reach += reach * rng.range_f("kpi", data.balf("kpi.viral.organic_min"), data.balf("kpi.viral.organic_max"))
-	var awareness_lift: float = minf(1.0, reach / pop * recall(score))
+		var organic: float = rng.range_f("kpi", data.balf("kpi.viral.organic_min"), data.balf("kpi.viral.organic_max"))
+		reach += reach * organic
+		recall_reach += recall_reach * organic
+	var awareness_lift: float = minf(1.0, recall_reach / pop * recall(score))
 	var total_budget: float = media + float(setup["fee"])
 	var basket: float = float(data.sectors[setup["sector"]]["avg_basket"]) * infl
 	var roi: float = (conversions * basket - total_budget) / total_budget
@@ -158,11 +174,21 @@ func print_share(setup: Dictionary) -> float:
 	return s
 
 
+## Karışımda prodüksiyon payı (TV çekimi, etkinlik): komisyon yerine marj alınır.
+func production_share(setup: Dictionary) -> float:
+	if options == null:
+		return 0.0
+	var s: float = 0.0
+	for entry: Dictionary in setup.get("mix", []):
+		s += float(entry["share"]) * float(options.production(entry["channel"]).get("share", 0.0))
+	return s
+
+
 ## GDD 7.11 ajans geliri: fee + medya komisyonu (yalnız medya kısmı) + prodüksiyon marjı + performans primi.
 ## Kesinti (gecikme cezası, iade) şimdilik yok; gecikme memnuniyete yansır.
 func agency_income(setup: Dictionary, kpi_ratio: float) -> Dictionary:
 	var fee: float = float(setup["fee"])
-	var media_part: float = float(setup["media_budget"]) * (1.0 - print_share(setup))
+	var media_part: float = float(setup["media_budget"]) * (1.0 - print_share(setup) - production_share(setup))
 	var commission: float = media_part * float(setup.get("commission_rate", data.balf("media_commission.default")))
 	var bonus: float = fee * clampf(kpi_ratio - 1.0, 0.0, data.balf("agency.performance_bonus_max"))
 	return {"fee": fee, "commission": commission, "bonus": bonus,

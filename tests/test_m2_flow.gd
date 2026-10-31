@@ -117,6 +117,15 @@ func test_all_data_text_keys_are_translated() -> void:
 			for k: Variant in rec.get("title_keys", []):
 				if not keys.has(k):
 					missing.append(str(k))
+	for cat: Dictionary in data.raw["channel_options.json"]["categories"].values():
+		for def: Dictionary in cat.get("options", []):
+			for k: Variant in [def["name_key"]]:
+				if not keys.has(k):
+					missing.append(str(k))
+			for c: Dictionary in def["choices"]:
+				for field: String in ["name_key", "desc_key"]:
+					if c.has(field) and not keys.has(c[field]):
+						missing.append(str(c[field]))
 	for pos: Dictionary in data.raw["positions.json"]:
 		var dept: String = "DEPT_" + str(pos["department"]).to_upper()
 		if not keys.has(dept):
