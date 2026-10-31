@@ -2,46 +2,75 @@
 	{
 		"id": "research",
 		"phase": "strategy",
-		"name_key": "FOCUS_RESEARCH"
+		"name_key": "FOCUS_RESEARCH",
+		"stats": {
+			"strategy": 1
+		}
 	},
 	{
 		"id": "insight",
 		"phase": "strategy",
-		"name_key": "FOCUS_INSIGHT"
+		"name_key": "FOCUS_INSIGHT",
+		"stats": {
+			"strategy": 1
+		}
 	},
 	{
 		"id": "positioning",
 		"phase": "strategy",
-		"name_key": "FOCUS_POSITIONING"
+		"name_key": "FOCUS_POSITIONING",
+		"stats": {
+			"strategy": 1
+		}
 	},
 	{
 		"id": "concept",
 		"phase": "creative",
-		"name_key": "FOCUS_CONCEPT"
+		"name_key": "FOCUS_CONCEPT",
+		"stats": {
+			"creative": 1
+		}
 	},
 	{
 		"id": "copy",
 		"phase": "creative",
-		"name_key": "FOCUS_COPY"
+		"name_key": "FOCUS_COPY",
+		"stats": {
+			"creative": 1
+		}
 	},
 	{
 		"id": "visual",
 		"phase": "creative",
-		"name_key": "FOCUS_VISUAL"
+		"name_key": "FOCUS_VISUAL",
+		"stats": {
+			"creative": 1
+		}
 	},
 	{
 		"id": "production",
 		"phase": "production",
-		"name_key": "FOCUS_PRODUCTION"
+		"name_key": "FOCUS_PRODUCTION",
+		"stats": {
+			"technical": 1
+		}
 	},
 	{
 		"id": "media_planning",
 		"phase": "production",
-		"name_key": "FOCUS_MEDIA_PLANNING"
+		"name_key": "FOCUS_MEDIA_PLANNING",
+		"stats": {
+			"strategy": 0.5,
+			"technical": 0.5
+		}
 	},
 	{
 		"id": "measurement",
 		"phase": "production",
-		"name_key": "FOCUS_MEASUREMENT"
+		"name_key": "FOCUS_MEASUREMENT",
+		"stats": {
+			"strategy": 0.5,
+			"technical": 0.5
+		}
 	}
 ]

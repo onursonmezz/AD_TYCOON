@@ -48,6 +48,8 @@ func validate(data: Dictionary) -> PackedStringArray:
 	_check_objectives(data, ids)
 	_check_channels(data)
 	_check_combo_rules(data, ids)
+	_check_calendar(data, ids)
+	_check_brands(data, ids)
 	var rules: Dictionary = _parse_row_rules(data)
 	for file_name: String in FIT_FILES:
 		_check_fit_file(data, file_name, ids, rules)
@@ -183,6 +185,9 @@ func _check_sectors(data: Dictionary, ids: Dictionary) -> void:
 			_err("sectors.json: '%s' available_from tam sayı olmalı" % id)
 		if not (ids["tone_group"] as Array).has(rec.get("tone_group")):
 			_err("sectors.json: '%s' bilinmeyen tone_group '%s'" % [id, str(rec.get("tone_group"))])
+		var basket: Variant = rec.get("avg_basket")
+		if not (typeof(basket) == TYPE_FLOAT or typeof(basket) == TYPE_INT) or float(basket) <= 0.0:
+			_err("sectors.json: '%s' avg_basket pozitif sayı olmalı" % id)
 
 
 func _check_objectives(data: Dictionary, ids: Dictionary) -> void:
@@ -245,6 +250,36 @@ func _check_combo_rules(data: Dictionary, ids: Dictionary) -> void:
 		for obj: Variant in objectives:
 			if not (ids["objective"] as Array).has(obj):
 				_err("combo_rules.json: '%s' bilinmeyen hedef '%s'" % [str(rec.get("id")), str(obj)])
+
+
+func _check_calendar(data: Dictionary, ids: Dictionary) -> void:
+	var cal: Variant = data.get("calendar.json")
+	if typeof(cal) != TYPE_DICTIONARY:
+		_err("calendar.json eksik veya nesne değil")
+		return
+	for season: Variant in cal.get("seasons", []):
+		var sid: String = str(season.get("id"))
+		for sector: Variant in season.get("sectors", []):
+			if not (ids["sector"] as Array).has(sector):
+				_err("calendar.json: '%s' bilinmeyen sektör '%s'" % [sid, str(sector)])
+		for m: Variant in season.get("months", []):
+			if not _is_int(m) or int(m) < 1 or int(m) > 12:
+				_err("calendar.json: '%s' ay 1..12 olmalı" % sid)
+
+
+func _check_brands(data: Dictionary, ids: Dictionary) -> void:
+	var parts: Variant = data.get("brands/name_parts.json")
+	if typeof(parts) != TYPE_DICTIONARY or typeof(parts.get("suffixes")) != TYPE_DICTIONARY:
+		_err("brands/name_parts.json eksik veya 'suffixes' yok")
+	else:
+		_check_keys_match("brands/name_parts.json suffixes", (parts["suffixes"] as Dictionary).keys(), ids["sector"])
+	var hand: Variant = data.get("brands/handcrafted_brands.json")
+	if typeof(hand) != TYPE_ARRAY:
+		_err("brands/handcrafted_brands.json eksik")
+		return
+	for rec: Variant in hand:
+		if not (ids["sector"] as Array).has(rec.get("sector")):
+			_err("handcrafted_brands.json: '%s' bilinmeyen sektör" % str(rec.get("id")))
 
 
 func _parse_row_rules(data: Dictionary) -> Dictionary:

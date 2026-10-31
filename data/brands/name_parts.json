@@ -1,0 +1,201 @@
+{
+	"_note": "Marka adı = önek + \" \" + sektör eki. Gerçek marka adı kullanılmaz (GDD 28.1).",
+	"prefixes": [
+		"Anadolu",
+		"Mavi",
+		"Altın",
+		"Yıldız",
+		"Güneş",
+		"Doğa",
+		"Kuzey",
+		"Ege",
+		"Başkent",
+		"Usta",
+		"Yeni",
+		"Lale",
+		"Çınar",
+		"Atlas",
+		"Defne",
+		"Bereket",
+		"Akdeniz",
+		"Toros",
+		"Kardelen",
+		"Martı",
+		"Pusula",
+		"Zirve",
+		"Umut",
+		"Işık"
+	],
+	"suffixes": {
+		"fast_food": [
+			"Köfte",
+			"Döner",
+			"Burger",
+			"Pide"
+		],
+		"packaged_food": [
+			"Gıda",
+			"Makarna",
+			"Konserve",
+			"Çikolata"
+		],
+		"soft_drinks": [
+			"Gazoz",
+			"Meyve Suyu",
+			"Soda"
+		],
+		"coffee_chain": [
+			"Kahve",
+			"Kafe",
+			"Kahvecisi"
+		],
+		"automotive": [
+			"Oto",
+			"Motor",
+			"Otomotiv"
+		],
+		"banking_finance": [
+			"Bank",
+			"Kart Bank",
+			"Yatırım"
+		],
+		"insurance": [
+			"Sigorta",
+			"Güvence"
+		],
+		"telecom": [
+			"Telekom",
+			"GSM",
+			"İletişim"
+		],
+		"technology": [
+			"Elektronik",
+			"Bilgisayar",
+			"Teknoloji"
+		],
+		"fashion": [
+			"Tekstil",
+			"Moda",
+			"Giyim"
+		],
+		"cosmetics": [
+			"Kozmetik",
+			"Güzellik",
+			"Parfüm"
+		],
+		"retail": [
+			"Market",
+			"Bakkal Zinciri",
+			"Mağazaları"
+		],
+		"ecommerce": [
+			"Sepet",
+			"Pazar.com",
+			"Online"
+		],
+		"tourism_hotel": [
+			"Otel",
+			"Tatil",
+			"Turizm"
+		],
+		"airline": [
+			"Hava Yolları",
+			"Air"
+		],
+		"real_estate": [
+			"İnşaat",
+			"Yapı",
+			"Konutları"
+		],
+		"health_pharma": [
+			"İlaç",
+			"Sağlık",
+			"Eczacılık"
+		],
+		"private_hospital": [
+			"Hastanesi",
+			"Tıp Merkezi"
+		],
+		"education": [
+			"Dershanesi",
+			"Koleji",
+			"Akademi"
+		],
+		"gaming_entertainment": [
+			"Oyun",
+			"Eğlence",
+			"Lunapark"
+		],
+		"sports_apparel": [
+			"Spor",
+			"Atletik"
+		],
+		"energy_fuel": [
+			"Petrol",
+			"Enerji",
+			"Akaryakıt"
+		],
+		"home_appliances": [
+			"Beyaz Eşya",
+			"Ev Aletleri"
+		],
+		"furniture_decor": [
+			"Mobilya",
+			"Dekorasyon",
+			"Ev"
+		],
+		"luxury": [
+			"Mücevher",
+			"Saat",
+			"Pırlanta"
+		],
+		"baby_kids": [
+			"Bebe",
+			"Çocuk",
+			"Oyuncak"
+		],
+		"pet_products": [
+			"Mama",
+			"Pet",
+			"Patiler"
+		],
+		"ngo_foundation": [
+			"Vakfı",
+			"Derneği"
+		],
+		"public_municipality": [
+			"Belediyesi",
+			"Kalkınma Ajansı"
+		],
+		"mobile_startup": [
+			"App",
+			"Mobil",
+			"Lab"
+		],
+		"b2b_software": [
+			"Yazılım",
+			"Bilişim",
+			"Sistem"
+		],
+		"logistics": [
+			"Kargo",
+			"Lojistik",
+			"Nakliyat"
+		],
+		"festival_music": [
+			"Festivali",
+			"Müzik",
+			"Konserleri"
+		],
+		"media_publishing": [
+			"Gazetesi",
+			"Yayınları",
+			"Medya"
+		],
+		"crypto_fintech": [
+			"Coin",
+			"Pay",
+			"Finans"
+		]
+	}
+}

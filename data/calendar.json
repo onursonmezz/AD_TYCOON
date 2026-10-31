@@ -1,0 +1,636 @@
+{
+	"_note": "Kayan bayramlar hicri takvimden yaklaşık hesaplandı (± birkaç gün). Ay = oyun ayı (1 ay = 4 hafta).",
+	"moving_holidays": [
+		{
+			"year": 1990,
+			"ramadan": [
+				3
+			],
+			"ramazan_bayrami": [
+				4
+			],
+			"kurban_bayrami": [
+				7
+			]
+		},
+		{
+			"year": 1991,
+			"ramadan": [
+				3
+			],
+			"ramazan_bayrami": [
+				4
+			],
+			"kurban_bayrami": [
+				6
+			]
+		},
+		{
+			"year": 1992,
+			"ramadan": [
+				3
+			],
+			"ramazan_bayrami": [
+				4
+			],
+			"kurban_bayrami": [
+				6
+			]
+		},
+		{
+			"year": 1993,
+			"ramadan": [
+				2
+			],
+			"ramazan_bayrami": [
+				3
+			],
+			"kurban_bayrami": [
+				5
+			]
+		},
+		{
+			"year": 1994,
+			"ramadan": [
+				2
+			],
+			"ramazan_bayrami": [
+				3
+			],
+			"kurban_bayrami": [
+				5
+			]
+		},
+		{
+			"year": 1995,
+			"ramadan": [
+				2
+			],
+			"ramazan_bayrami": [
+				3
+			],
+			"kurban_bayrami": [
+				5
+			]
+		},
+		{
+			"year": 1996,
+			"ramadan": [
+				1
+			],
+			"ramazan_bayrami": [
+				2
+			],
+			"kurban_bayrami": [
+				4
+			]
+		},
+		{
+			"year": 1997,
+			"ramadan": [
+				1,
+				12
+			],
+			"ramazan_bayrami": [
+				2
+			],
+			"kurban_bayrami": [
+				4
+			]
+		},
+		{
+			"year": 1998,
+			"ramadan": [
+				12
+			],
+			"ramazan_bayrami": [
+				1
+			],
+			"kurban_bayrami": [
+				4
+			]
+		},
+		{
+			"year": 1999,
+			"ramadan": [
+				12
+			],
+			"ramazan_bayrami": [
+				1
+			],
+			"kurban_bayrami": [
+				3
+			]
+		},
+		{
+			"year": 2000,
+			"ramadan": [
+				11
+			],
+			"ramazan_bayrami": [
+				1,
+				12
+			],
+			"kurban_bayrami": [
+				3
+			]
+		},
+		{
+			"year": 2001,
+			"ramadan": [
+				11
+			],
+			"ramazan_bayrami": [
+				12
+			],
+			"kurban_bayrami": [
+				3
+			]
+		},
+		{
+			"year": 2002,
+			"ramadan": [
+				11
+			],
+			"ramazan_bayrami": [
+				12
+			],
+			"kurban_bayrami": [
+				2
+			]
+		},
+		{
+			"year": 2003,
+			"ramadan": [
+				10
+			],
+			"ramazan_bayrami": [
+				11
+			],
+			"kurban_bayrami": [
+				2
+			]
+		},
+		{
+			"year": 2004,
+			"ramadan": [
+				10
+			],
+			"ramazan_bayrami": [
+				11
+			],
+			"kurban_bayrami": [
+				2
+			]
+		},
+		{
+			"year": 2005,
+			"ramadan": [
+				10
+			],
+			"ramazan_bayrami": [
+				11
+			],
+			"kurban_bayrami": [
+				1
+			]
+		},
+		{
+			"year": 2006,
+			"ramadan": [
+				9
+			],
+			"ramazan_bayrami": [
+				10
+			],
+			"kurban_bayrami": [
+				1,
+				12
+			]
+		},
+		{
+			"year": 2007,
+			"ramadan": [
+				9
+			],
+			"ramazan_bayrami": [
+				10
+			],
+			"kurban_bayrami": [
+				12
+			]
+		},
+		{
+			"year": 2008,
+			"ramadan": [
+				9
+			],
+			"ramazan_bayrami": [
+				10
+			],
+			"kurban_bayrami": [
+				12
+			]
+		},
+		{
+			"year": 2009,
+			"ramadan": [
+				8
+			],
+			"ramazan_bayrami": [
+				9
+			],
+			"kurban_bayrami": [
+				11
+			]
+		},
+		{
+			"year": 2010,
+			"ramadan": [
+				8
+			],
+			"ramazan_bayrami": [
+				9
+			],
+			"kurban_bayrami": [
+				11
+			]
+		},
+		{
+			"year": 2011,
+			"ramadan": [
+				8
+			],
+			"ramazan_bayrami": [
+				8
+			],
+			"kurban_bayrami": [
+				11
+			]
+		},
+		{
+			"year": 2012,
+			"ramadan": [
+				7
+			],
+			"ramazan_bayrami": [
+				8
+			],
+			"kurban_bayrami": [
+				10
+			]
+		},
+		{
+			"year": 2013,
+			"ramadan": [
+				7
+			],
+			"ramazan_bayrami": [
+				8
+			],
+			"kurban_bayrami": [
+				10
+			]
+		},
+		{
+			"year": 2014,
+			"ramadan": [
+				6
+			],
+			"ramazan_bayrami": [
+				7
+			],
+			"kurban_bayrami": [
+				10
+			]
+		},
+		{
+			"year": 2015,
+			"ramadan": [
+				6
+			],
+			"ramazan_bayrami": [
+				7
+			],
+			"kurban_bayrami": [
+				9
+			]
+		},
+		{
+			"year": 2016,
+			"ramadan": [
+				6
+			],
+			"ramazan_bayrami": [
+				7
+			],
+			"kurban_bayrami": [
+				9
+			]
+		},
+		{
+			"year": 2017,
+			"ramadan": [
+				5
+			],
+			"ramazan_bayrami": [
+				6
+			],
+			"kurban_bayrami": [
+				9
+			]
+		},
+		{
+			"year": 2018,
+			"ramadan": [
+				5
+			],
+			"ramazan_bayrami": [
+				6
+			],
+			"kurban_bayrami": [
+				8
+			]
+		},
+		{
+			"year": 2019,
+			"ramadan": [
+				5
+			],
+			"ramazan_bayrami": [
+				6
+			],
+			"kurban_bayrami": [
+				8
+			]
+		},
+		{
+			"year": 2020,
+			"ramadan": [
+				4
+			],
+			"ramazan_bayrami": [
+				5
+			],
+			"kurban_bayrami": [
+				7
+			]
+		},
+		{
+			"year": 2021,
+			"ramadan": [
+				4
+			],
+			"ramazan_bayrami": [
+				5
+			],
+			"kurban_bayrami": [
+				7
+			]
+		},
+		{
+			"year": 2022,
+			"ramadan": [
+				4
+			],
+			"ramazan_bayrami": [
+				5
+			],
+			"kurban_bayrami": [
+				7
+			]
+		},
+		{
+			"year": 2023,
+			"ramadan": [
+				3
+			],
+			"ramazan_bayrami": [
+				4
+			],
+			"kurban_bayrami": [
+				6
+			]
+		},
+		{
+			"year": 2024,
+			"ramadan": [
+				3
+			],
+			"ramazan_bayrami": [
+				4
+			],
+			"kurban_bayrami": [
+				6
+			]
+		},
+		{
+			"year": 2025,
+			"ramadan": [
+				3
+			],
+			"ramazan_bayrami": [
+				3
+			],
+			"kurban_bayrami": [
+				6
+			]
+		},
+		{
+			"year": 2026,
+			"ramadan": [
+				2
+			],
+			"ramazan_bayrami": [
+				3
+			],
+			"kurban_bayrami": [
+				5
+			]
+		},
+		{
+			"year": 2027,
+			"ramadan": [
+				2
+			],
+			"ramazan_bayrami": [
+				3
+			],
+			"kurban_bayrami": [
+				5
+			]
+		},
+		{
+			"year": 2028,
+			"ramadan": [
+				1
+			],
+			"ramazan_bayrami": [
+				2
+			],
+			"kurban_bayrami": [
+				5
+			]
+		},
+		{
+			"year": 2029,
+			"ramadan": [
+				1
+			],
+			"ramazan_bayrami": [
+				2
+			],
+			"kurban_bayrami": [
+				4
+			]
+		},
+		{
+			"year": 2030,
+			"ramadan": [
+				1,
+				12
+			],
+			"ramazan_bayrami": [
+				2
+			],
+			"kurban_bayrami": [
+				4
+			]
+		},
+		{
+			"year": 2031,
+			"ramadan": [
+				12
+			],
+			"ramazan_bayrami": [
+				1
+			],
+			"kurban_bayrami": [
+				4
+			]
+		},
+		{
+			"year": 2032,
+			"ramadan": [
+				12
+			],
+			"ramazan_bayrami": [
+				1
+			],
+			"kurban_bayrami": [
+				3
+			]
+		},
+		{
+			"year": 2033,
+			"ramadan": [
+				11
+			],
+			"ramazan_bayrami": [
+				1,
+				12
+			],
+			"kurban_bayrami": [
+				3
+			]
+		},
+		{
+			"year": 2034,
+			"ramadan": [
+				11
+			],
+			"ramazan_bayrami": [
+				12
+			],
+			"kurban_bayrami": [
+				3
+			]
+		},
+		{
+			"year": 2035,
+			"ramadan": [
+				11
+			],
+			"ramazan_bayrami": [
+				12
+			],
+			"kurban_bayrami": [
+				2
+			]
+		}
+	],
+	"seasons": [
+		{
+			"id": "ramadan_holidays",
+			"moving": [
+				"ramadan",
+				"ramazan_bayrami",
+				"kurban_bayrami"
+			],
+			"sectors": [
+				"fast_food",
+				"packaged_food",
+				"soft_drinks",
+				"telecom",
+				"retail"
+			],
+			"multiplier": 1.5
+		},
+		{
+			"id": "new_year",
+			"months": [
+				12
+			],
+			"sectors": [
+				"retail",
+				"ecommerce"
+			],
+			"multiplier": 1.5
+		},
+		{
+			"id": "valentines",
+			"months": [
+				2
+			],
+			"sectors": [
+				"cosmetics",
+				"fashion"
+			],
+			"multiplier": 1.5
+		},
+		{
+			"id": "summer",
+			"months": [
+				6,
+				7,
+				8
+			],
+			"sectors": [
+				"tourism_hotel",
+				"soft_drinks"
+			],
+			"multiplier": 1.5
+		},
+		{
+			"id": "school",
+			"months": [
+				9
+			],
+			"sectors": [
+				"education"
+			],
+			"multiplier": 1.5
+		},
+		{
+			"id": "black_friday",
+			"months": [
+				11
+			],
+			"from_year": 2010,
+			"sectors": [
+				"ecommerce"
+			],
+			"multiplier": 1.5
+		}
+	]
+}

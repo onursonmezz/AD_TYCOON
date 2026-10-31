@@ -1,0 +1,30 @@
+[
+	{
+		"id": "lezzetci_kofte",
+		"name": "Lezzetçi Köfte",
+		"sector": "fast_food",
+		"scale": 0,
+		"starter": true
+	},
+	{
+		"id": "cinar_mobilya",
+		"name": "Çınar Mobilya",
+		"sector": "furniture_decor",
+		"scale": 0,
+		"starter": true
+	},
+	{
+		"id": "anadolu_oto",
+		"name": "Anadolu Oto",
+		"sector": "automotive",
+		"scale": 1,
+		"starter": false
+	},
+	{
+		"id": "mavi_kart_bank",
+		"name": "Mavi Kart Bank",
+		"sector": "banking_finance",
+		"scale": 2,
+		"starter": false
+	}
+]
