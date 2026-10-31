@@ -204,6 +204,50 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 ## K-034 · 2026-10-31 · Kabul · Orgo playtest'i (A-005, A-010 kapandı)
 **Karar:** M2 playtest'inde puanlama ve müşteri tepkileri "adil", oyun hızı (1x'te haftada 3 sn, 5.1) "iyi" bulundu. Bölüm 7 formülleri ve `time.seconds_per_week_1x` olduğu gibi kalıyor. Bot puan farkı (1.5) M10'daki denge çalışmasında 27.2 hedefleriyle (≥ 2.5) yeniden ele alınacak. 4.1 ve 27.2'deki "yıl 10–15 dk" ifadesi, oyuncunun duraklattığı süreyle birlikte kaba bir tahmin olarak okunuyor.
 
+## K-035 · 2026-10-31 · Kabul · Orgo onayı (M3 planı; sayılar uygulama kararı)
+**Konu:** Çalışan modeli ve GDD'de sayısı olmayan değerler (M3). Hepsi `data/balance.json → staff_rules` ve ilgili veri dosyalarında.
+**Karar:**
+- **Kurucu bir çalışandır** (`role: founder`): 4 geçmişten biriyle başlar (`data/backgrounds.json`, 11.5), maaş almaz, genelcidir, account etkisi taşır. M1'in geçici oyuncu büyümesi (K-024) kaldırıldı.
+- **Pozisyonlar** (`data/positions.json`): 11.1'deki bütün roller, kıdem unvanları, uzman alanlar, ana statlar, çıkış yılları. 1990 taban maaşları ₺1.600–5.000/ay; GDD örneği art director ₺3.500. Kıdem unvanı her 3 seviyede bir ilerler. Piyasa değeri = taban × enflasyon × (1 + 0.35 × kıdem) × (ana stat ort. / 50).
+- **İşe alım** (`data/hiring_channels.json`): İlan ₺500, 3 aday, ana stat ~42, potansiyel 45–75 · Staj ₺200, stat ~30, potansiyel 70–95, maaş ×0.5 · Kariyer sitesi (2000+) ₺1.500, 4 aday, stat ~48 · Headhunter ₺8.000, stat ~62, seviye 3–6, maaş ×1.15. Ana olmayan statlar ortalamanın 12 altında. Hız ~55. Adaylar 1–2 özellik taşır (11.2'deki 10 özellik, `data/traits.json`).
+- **Enerji:** Kampanyada çalışırken günde −1.5 (fazla mesaide ×2), boştayken +4, hafta sonu +12.
+- **Moral (11.4):** Her hafta hedefe doğru %15 yaklaşır. Hedef = 60 + ofis konforu × 0.5 + diğerlerinin ego etkisi (−5 kişi başı). Buna eklenenler: (maaş/piyasa − 1) × 20, fazla mesai −4/hafta, kampanya sonunda (puan − 6) × 2. Hedefe yaklaşma kuralı GDD'de yok; olmazsa moral sürekli 0 ya da 100'e kayıyor.
+- **Tükenmişlik:** Fazla mesai haftası +6 (gece kuşu ×0.5), normal hafta −3. 80'e ulaşınca %30 olasılıkla 2 hafta hastalık izni (−30), yoksa sadakate bağlı istifa olasılığı.
+- **XP:** Kampanya puanı × 10; 100 XP'de seviye. Seviye başına +3 ana stat (kurucuda kampanyanın S/K/T payına göre) ve +1 hız; tavan gizli potansiyel. Mentor varsa junior'lar (seviye ≤ 3) ×1.25 XP.
+- **Gizli statlar** 24 hafta sonra ya da ajansta İK uzmanı varken görünür.
+- **Eğitim:** ₺2.000 (1990), 2 hafta, −25 enerji, +3..6 stat. **Uzmanlaşma:** seviye 5+, ₺5.000, 4 hafta, seçilen sektörde ×1.15.
+- **Kovma:** kıdem yılı başına bir aylık maaş (en az bir ay); diğerlerinin morali −5.
+- **Rakip teklif:** Maaşı piyasa değerinin %90'ının altındaysa ayda %10 olasılıkla teklif gelir (piyasa +%20). Oyuncu 2 hafta içinde "piyasa +%10 zam" ya da "bırak" seçer; cevapsız kalırsa çalışan gider. Genel olay sistemi M7'de.
+- **Departman etkileri:** Account bonusu = 6 × iletişim/100 (+3 müşteri dostu), ekipteki en iyi account'tan gelir. Trafik/Prova okuyucu teslimden önce her hatayı dikkat/100 × 0.6 olasılıkla temizler. Her Creative Director (kreatif departmanda 5. unvan) 6 kreatif yönetir; CD yoksa ilk 6'ya izin var.
+- **Maaşlar** aylık, %20.5 SGK ile (29.1 `payroll_tax`).
+
+## K-036 · 2026-10-31 · Kabul · Orgo onayı
+**Konu:** 7.5 "uzmanlık bonusu (pozisyon alanla eşleşirse 1.3; uyumsuzsa 0.6)".
+**Karar:** Uzman alanı ×1.3; ana statına giden ama uzman olmadığı alan ×1.0; tamamen başka iş ×0.6. Kurucu her alanda ×1.0.
+
+## K-037 · 2026-10-31 · Kabul · Orgo onayı (A) + uygulama kararı
+**Konu:** Ofis seviyeleri M3'te (`data/offices.json`, 12.1).
+**Karar:** Kapasite 2 / 6 / 12 / 30 / 120. Koşullar 12.1 ve 17'deki gibi (büyütülmüş ofis Y8 A6). 12.1'deki nakit tutarı **taşınma bedeli** olarak ödenir (GDT'deki gibi; enflasyonla ölçeklenir). GDD'de olmayan değerler: aylık kira (1990 ₺) 0 / 3.000 / 12.000 / 50.000 / 250.000; oda kalitesi 50 / 60 / 70 / 80 / 90 (ofis çarpanı 7.5); konfor 0 / 2 / 4 / 6 / 8 (moral). Büyük işler büyütülmüş ofisle (seviye 3) açılır (17 "Büyük Kampanya: Ofis 3"); büyük brief ücret/medya aralıkları eklendi.
+
+## K-038 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** M3'te ertelenenler.
+**Karar:** Aynı anda tek kampanya (A-013). Rakipten transfer kanalı (rakipler M5'te). Yazılım sertifikası ve festival gezisi eğitimleri (M7/M5). Medya, PR, New Business, Muhasebe ve Satın alma etkileri (M4/M5). Ödül avcısı ve sunum canavarı özellikleri veride var, etkileri ödüller ve pitch'le gelecek. Ajans kültürü (geç oyun). İş yükü aşımı ve müşteri kabalığı moral terimleri 0 (olay sistemi M7).
+
+## K-039 · 2026-10-31 · Kabul · Uygulama kararı (denge)
+**Konu:** Ekiple birlikte ekonomi ayarı.
+**Karar:** Brief ücretleri M1 önerisinin ~2.4 katına çıktı: küçük ₺15–36k, orta ₺60–150k, büyük ₺200–500k. Gerekçe: GDD Y2'de ₺500k'lık ofis bekliyor; eski ücretlerle yılda ~₺85k kâr çıkıyordu. Enerji dengesi düzeltildi (K-035): eski değerlerle sürekli çalışan ekibin enerjisi birkaç ayda 20'nin altına inip üretim yarıya düşüyordu. Kayıt sürümü 2: M2 kayıtları otomatik olarak kurucu çalışana göç eder (`SaveCodec.migrate_v1_to_v2`).
+
+---
+
+## M3 denge sonucu (200 koşu × 10 yıl)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan | Kampanya/koşu | Küçük ofis |
+|---|---|---|---|---|---|
+| Rastgele | %45.5 | %77.0 | 5.52 | 19.8 | %52 koşu, medyan Y5 |
+| Bilgili | %1.0 | %10.0 | 6.51 | 54.6 | %98 koşu, medyan Y5 |
+
+Bilgili bot: puan Y2 7.79 → Y5 6.96 → Y10 5.04; ekip Y5'te 3.6, Y10'da 5.8 kişi. Açık konular: A-011, A-012, A-013.
+
 ---
 
 ## M1 denge sonucu (200 koşu × 10 yıl, `tools/balance_sim.gd`)
@@ -221,9 +265,11 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 ## Açık sorular (ilgili kilometre taşında sorulacak)
 
 - **A-005:** Kapandı, bkz. K-034 (M10'da 27.2 hedefleriyle tekrar bakılacak).
-- **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6": 17'deki ayrıntılı koşul esas alınabilir.
-- **A-007 (M2/M3):** S/K oranı tek kişilik ajansta yapısal olarak ≥ ~1 çıkıyor, çünkü Strateji fazının bütün üretimi S'ye gidiyor. İdeal oranı 1'in altında olan hedefler (Bilinirlik 0.6, Yenileme 0.5, SSR 0.8, Etkileşim 0.9) her zaman B cezası alıyor. Ekip kurulunca (M3) kreatif ağırlıklı ekip bunu çözer; ya da faz sürelerinin oyuncuya bırakılması düşünülebilir.
+- **A-006:** Kapandı: büyütülmüş ofis koşulu 17'deki gibi Y8 A6 (`data/offices.json`).
+- **A-007 (M2/M3):** S/K oranı tek kişilik ajansta yapısal olarak ≥ ~1 çıkıyor, çünkü Strateji fazının bütün üretimi S'ye gidiyor. İdeal oranı 1'in altında olan hedefler (Bilinirlik 0.6, Yenileme 0.5, SSR 0.8, Etkileşim 0.9) her zaman B cezası alıyor. Ekip kurulunca (M3) kreatif ağırlıklı ekip bunu çözer; ya da faz sürelerinin oyuncuya bırakılması düşünülebilir. M3 notu: artık kreatif ağırlıklı ekip (copywriter/art director) K'yi artırıp oranı düşürebiliyor.
 - **A-008 (M4):** 7.3 "Display + Retargeting" sinerjisi: kanal tablosunda "retargeting" kanalı yok (5.2'de özellik olarak geçiyor). Çift veride duruyor ama `b` tarafı boş, yani etkisiz.
-- **A-009 (M3):** K-024'teki geçici oyuncu XP büyümesi M3'te gerçek çalışan modeline devredilmeli.
+- **A-009:** Kapandı: M3'te kurucu gerçek bir çalışan oldu (K-035); M1'deki geçici oyuncu büyümesi kaldırıldı.
 - **A-010:** Kapandı, bkz. K-034.
-- **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6" — 17'deki ayrıntılı koşul esas alınabilir.
+- **A-011 (M10):** Ekonomi GDD 27.2 hedeflerinin gerisinde. Bilgili bot küçük ofise Y5'te geçiyor (hedef Y2–Y3), büyütülmüş ofise (₺3M) 10 yılda ulaşamıyor. Puanı Y2'de 7.8, Y10'da 5.0 (dönem beklentisi her yıl %8.5 büyüyor, ilandan alınan çalışanlar zayıf). Ayar kolları: brief ücretleri, ofis bedelleri, işe alım kalitesi, müşteri ölçeği büyümesi.
+- **A-012 (M10):** Rastgele bot ilk 3 yılda %45 iflas ediyor (hedef %20–40). Rastgele işe alım (maaş yükü) bunu artırıyor.
+- **A-013 (M4/M5):** GDD 11.1 Trafik "eşzamanlı kampanya sayısını ↑" diyor; şu an aynı anda tek kampanya üretimde. Eşzamanlı kampanyalar ekibin daha fazla iş, yani daha fazla gelir üretmesini sağlar (A-011'e de yardım eder), ama faz slider ekranının birden çok kampanyayı yönetmesi gerekir.

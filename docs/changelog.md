@@ -1,5 +1,29 @@
 # Değişiklik günlüğü
 
+## M3 — Çalışanlar ve departmanlar (2026-10-31)
+
+### Eklenenler
+- Çalışan modeli (GDD 11.2): 6 stat, gizli statlar, enerji, moral, tükenmişlik, XP/seviye, kıdem unvanları, özellikler, sektör uzmanlaşması.
+- Çalışan bazlı puan üretimi (7.5): ekipteki herkes kendi statı, uzmanlığı (×1.3 / ×1.0 / ×0.6), morali, enerjisi ve özellikleriyle üretiyor.
+- Fazla mesai: üretim ×1.35, enerji ×2, tükenmişlik +6/hafta, hata ×1.6.
+- İşe alım (ilan, staj, kariyer sitesi 2000+, headhunter), eğitim, uzmanlaşma, zam, kovma, rakip transfer teklifi.
+- Departman etkileri: Account (müşteri memnuniyeti), Trafik/Prova (hata temizleme), Creative Director (kreatif kapasitesi).
+- Ofis seviyeleri (12.1): kapasite, koşullar, taşınma bedeli, kira, oda kalitesi.
+- Yeni oyunda oyuncu geçmişi seçimi (11.5).
+- Veri: `positions.json`, `traits.json`, `hiring_channels.json`, `offices.json`, `backgrounds.json`, `names_tr.json`, `names_en.json`.
+- Arayüz: Ekip ve Ofis ekranları, İşe Alım ve rakip teklif pencereleri, sihirbazda ekip seçimi, üst barda fazla mesai anahtarı.
+- Kayıt sürümü 2: eski kayıtlar otomatik göç ediyor.
+- Testler: `tests/test_staff.gd` (17); toplam 62. Botlar işe alım ve ofis taşınması yapıyor.
+
+### Nasıl test ederim
+1. F5 → **Yeni Oyun** → bir geçmiş seç (ör. Eski Pazarlama Müdürü fazladan bir müşteriyle başlar).
+2. **Ekip** → **İşe al** → pozisyon ve kanal seç → **Aday ara** → birini işe al. Ev odasında sen dahil en fazla 2 kişi olabilirsin.
+3. Bir brief kabul et; sihirbazın altındaki **Ekip** kutucuklarıyla kimin çalışacağını seç.
+4. Kampanya sürerken **Ekip** ekranında enerji ve moral barlarına bak. Üst bardaki **Fazla mesai**'yi açınca enerji hızla düşer, tükenmişlik birikir.
+5. Kampanya bitince ekip XP kazanır; seviye atlayan bildirimde görünür.
+6. **Ofis** ekranında bir sonraki ofisin koşullarını gör (Y2 + ₺500k). Koşullar sağlanınca **Taşın**.
+7. Eski bir kaydı **Devam Et** ile aç: kurucu otomatik oluşur.
+
 ## M2 — Oynanabilir 2D prototip (2026-10-31)
 
 ### Eklenenler
