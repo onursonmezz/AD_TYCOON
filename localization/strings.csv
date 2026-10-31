@@ -119,3 +119,169 @@ CH_SPORTS_SPONSORSHIP,Spor sponsorluğu,Sports sponsorship
 CH_PRODUCT_PLACEMENT,Dizi içi ürün yerleştirme,TV series product placement
 CH_PR_PRESS,PR & basın bülteni,PR & press release
 CH_CSR_PROJECT,Sosyal sorumluluk projesi,CSR project
+MENU_NEW_GAME,Yeni Oyun,New Game
+MENU_CONTINUE,Devam Et,Continue
+MENU_LANGUAGE,Dil: Türkçe,Language: English
+MENU_QUIT,Çıkış,Quit
+ERR_DATA,Veri dosyalarında hata var:,The data files contain errors:
+ERR_SAVE_CORRUPT,Kayıt dosyası okunamadı.,The save file could not be read.
+ERR_SAVE_VERSION,Kayıt dosyası bu sürümle uyumlu değil.,The save file is not compatible with this version.
+UI_NOTIFICATIONS,Bildirimler,Notifications
+TIP_CASH,Kasadaki nakit. 4 hafta üst üste eksi kalırsa ajans iflas eder.,Cash on hand. Four weeks in a row below zero means bankruptcy.
+TIP_REPUTATION,"Ajans ünü (0–100): iyi kampanyalarla artar, yeni müşteri getirir.",Agency reputation (0–100): grows with good campaigns and brings new clients.
+TIP_PAUSE,Duraklat / devam (Boşluk),Pause / resume (Space)
+TIP_SPEED,Hız (kısayol: %d),Speed (shortcut: %d)
+UI_SAVE,Kaydet,Save
+UI_MAIN_MENU,Ana Menü,Main Menu
+MENU_INBOX,Gelen Kutusu,Inbox
+MENU_CLIENTS,Müşteriler,Clients
+MENU_CAMPAIGN,Kampanya,Campaign
+MENU_FINANCE,Finans,Finance
+MENU_HISTORY,Raporlar,Reports
+UI_REPUTATION,İtibar %.1f,Reputation %.1f
+UI_RESUME,▶ Devam,▶ Resume
+UI_PAUSE,⏸ Durdur,⏸ Pause
+FMT_DATE,%d · Ay %d · Hafta %d (Y%d),%d · Month %d · Week %d (Y%d)
+NOTE_WELCOME,"Ajansın kuruldu! Evinin bir odasında, iki küçük müşteriyle başlıyorsun. Gelen kutusunu takip et.",Your agency is open! You start in a spare room with two small clients. Keep an eye on your inbox.
+NOTE_LOADED,Kayıt yüklendi.,Game loaded.
+NOTE_SAVED,Oyun kaydedildi.,Game saved.
+NOTE_SAVE_FAILED,Kayıt başarısız oldu.,Saving failed.
+NOTE_NEW_BRIEFS,Gelen kutusuna %d yeni brief düştü.,%d new brief(s) arrived in your inbox.
+NOTE_CLIENT_LOST,%s ajansla çalışmayı bıraktı.,%s stopped working with the agency.
+NOTE_DELIVERED,%s kampanyası teslim edildi ve yayında.,The %s campaign was delivered and is on air.
+NOTE_REPORT_READY,%s kampanyasının raporu hazır: %.1f,The %s campaign report is ready: %.1f
+UI_INBOX_EMPTY,Gelen kutusu boş. Zamanı ilerlet; brief'ler haftalık gelir.,The inbox is empty. Let time run; briefs arrive weekly.
+UI_BUSY_HINT,Şu an bir kampanya üretimde. Yeni bir işi kabul etmek için onun bitmesini bekle.,A campaign is in production. Wait for it to finish before accepting a new job.
+UI_NEW_CLIENT,YENİ MÜŞTERİ,NEW CLIENT
+UI_EXPIRES,%d hafta içinde düşer,expires in %d week(s)
+UI_OBJECTIVE_FREE,Serbest (sen seç),Open (your choice)
+SCALE_0,Mahalle esnafı,Neighborhood shop
+SCALE_1,Yerel,Local
+SCALE_2,Ulusal,National
+SCALE_3,Çok uluslu,Multinational
+SIZE_SMALL,Küçük iş,Small job
+SIZE_MEDIUM,Orta iş,Medium job
+SIZE_LARGE,Büyük iş,Large job
+SIZE_MEGA,Mega iş,Mega job
+UI_BRIEF_OBJECTIVE,Hedef: %s,Objective: %s
+UI_BRIEF_MONEY,Ücret %s · Medya bütçesi %s · Süre %d hafta,Fee %s · Media budget %s · %d weeks
+UI_DECLINE,Reddet,Decline
+UI_ACCEPT,Kabul et,Accept
+UI_NO_CLIENTS,Hiç müşterin kalmadı.,You have no clients left.
+UI_RISK_TAG,RİSKLİ,AT RISK
+CONTRACT_PROJECT,Proje bazlı,Project-based
+CONTRACT_RETAINER,Retainer,Retainer
+CONTRACT_PERFORMANCE,Performans,Performance
+CONTRACT_MEDIA,Medya komisyonu,Media commission
+UI_SATISFACTION,Memnuniyet,Satisfaction
+UI_TRUST,Güven %d,Trust %d
+UI_CLIENT_BUDGET,Yıllık reklam bütçesi %s · %d kampanya,Annual ad budget %s · %d campaign(s)
+UI_ON_AIR,Yayında,On air
+UI_NO_ACTIVE_CAMPAIGN,Üretimde kampanya yok. Gelen kutusundan bir brief kabul et.,No campaign in production. Accept a brief from the inbox.
+UI_UNTITLED,(adsız kampanya),(untitled campaign)
+UI_PHASE_STATUS,%s · fazın bitmesine %d gün,%s · %d day(s) left in this phase
+PHASE_0,Faz 1: Strateji,Phase 1: Strategy
+PHASE_1,Faz 2: Kreatif,Phase 2: Creative
+PHASE_2,Faz 3: Prodüksiyon & Yayın,Phase 3: Production & Launch
+UI_COUNTERS,S %d · K %d · T %d · hata %d,S %d · C %d · T %d · errors %d
+UI_AIRING_ROW,%s · %d hafta sonra rapor,%s · report in %d week(s)
+UI_PHASE_SLIDERS,%s başlıyor: emeğini nasıl dağıtacaksın?,%s is starting: how will you split your effort?
+UI_PHASE_SLIDERS_HINT,Üç alanın toplamı %100. Tek alana %60'tan fazlası azalan getiri verir.,The three areas total 100%. Putting more than 60% into one area gives diminishing returns.
+UI_START_PHASE,Fazı başlat,Start phase
+UI_FINANCE_HINT,Müşteriler 30/60/90 günde öder; medyayı ise teslimden 6 hafta sonra kanallara sen ödersin. Arada nakit sıkışabilir.,"Clients pay in 30/60/90 days, but you pay the media 6 weeks after delivery. Cash can get tight in between."
+UI_FIN_CASH,Nakit,Cash
+UI_FIN_RECEIVABLE,Bekleyen tahsilat,Receivables
+UI_FIN_NEXT_DUE,Sıradaki tahsilat,Next payment in
+UI_WEEKS,%d hafta,%d week(s)
+UI_FIN_PAYABLE,Ödenecek medya,Media payable
+UI_FIN_PROJECTED,Hepsi ödenince nakit,Cash after all settle
+UI_FIN_YEAR_INCOME,Bu yıl ajans geliri,Agency income this year
+UI_FIN_YEAR_EXPENSE,Bu yıl gider,Expenses this year
+UI_FIN_YEAR_PROFIT,Bu yıl kâr (vergi öncesi),Profit this year (pre-tax)
+UI_FIN_MONTHLY,Aylık sabit gider,Monthly fixed costs
+UI_FIN_RED_WEEKS,Eksi bakiye haftası,Weeks in the red
+UI_NO_HISTORY,Henüz biten kampanya yok.,No finished campaigns yet.
+UI_OPEN_REPORT,Raporu aç,Open report
+UI_WIZARD_TITLE,Yeni kampanya: %s,New campaign: %s
+UI_CAMPAIGN_NAME,Kampanya adı,Campaign name
+UI_CAMPAIGN_NAME_HINT,ör. Bir Lokma Mutluluk,e.g. One Bite of Joy
+UI_OBJECTIVE,Hedef,Objective
+UI_AUDIENCE,Hedef kitle,Audience
+UI_TONE,Ton,Tone
+UI_CHANNEL,Kanal,Channel
+UI_WIZARD_HINT,Hangi seçimin işe yarayacağı gizli; denedikçe öğreneceksin. Raporlar neyin iyi neyin kötü gittiğini söyler.,Which choices work is hidden; you learn by trying. Reports tell you what went well and what didn't.
+UI_CANCEL,Vazgeç,Cancel
+UI_START_CAMPAIGN,Kampanyayı başlat,Start campaign
+CAT_PRINT,Baskı,Print
+CAT_OOH,Açık hava,Out-of-home
+CAT_GUERRILLA,Gerilla,Guerrilla
+CAT_BROADCAST,Yayın,Broadcast
+CAT_DIGITAL,Dijital,Digital
+CAT_SOCIAL,Sosyal,Social
+CAT_INFLUENCER,Influencer,Influencer
+CAT_EVENT,Etkinlik,Event
+CAT_SPONSORSHIP,Sponsorluk,Sponsorship
+CAT_PR,PR,PR
+ERR_CHANNEL,Bu bütçeyle kullanılabilecek bir kanal yok.,No channel is available for this budget.
+ERR_OBJECTIVE,Bir hedef seç.,Choose an objective.
+ERR_AUDIENCE,Bir hedef kitle seç.,Choose an audience.
+ERR_TONE,Bir ton seç.,Choose a tone.
+ERR_MIX_EMPTY,En az bir kanal seç.,Choose at least one channel.
+ERR_SHARE,Kanal bütçe payları toplamı %100 olmalı.,Channel budget shares must total 100%.
+ERR_MIN_BUDGET,Bu kanal için bütçe yetersiz.,The budget is too low for this channel.
+ERR_SLIDERS,Slider'ların toplamı %100 olmalı.,Sliders must total 100%.
+ERR_BUSY,Zaten üretimde bir kampanya var.,A campaign is already in production.
+ERR_NO_BRIEF,Bu brief artık geçerli değil.,This brief is no longer available.
+UI_REPORT_TITLE,Rapor: %s — %s,Report: %s — %s
+REVIEWER_REKLAM_DUNYASI,Reklam Dünyası,Reklam Dünyası
+REVIEWER_PAZARLAMA_GAZETESI,Pazarlama Gazetesi,Pazarlama Gazetesi
+REVIEWER_KREATIF_BLOG,Kreatif Blog,Kreatif Blog
+REVIEWER_MUSTERI,Müşteri,The Client
+REV_BAND1_A,Bu kampanyayı görmemiş olmayı dilerdik.,We wish we had never seen this campaign.
+REV_BAND1_B,Brief'i okudular mı acaba?,Did anyone read the brief?
+REV_BAND2_A,Fikir var ama hiçbir yere varmıyor.,"There is an idea, but it goes nowhere."
+REV_BAND2_B,Vasat; ajansın daha iyisini yapabileceğini biliyoruz.,Mediocre; we know this agency can do better.
+REV_BAND3_A,"Derli toplu, güvenli bir iş.","Tidy, safe work."
+REV_BAND3_B,Kötü değil ama akılda kalmıyor.,"Not bad, but not memorable either."
+REV_BAND4_A,"Akıllıca kurgulanmış, etkili bir kampanya.","A smartly built, effective campaign."
+REV_BAND4_B,Sokakta konuşulan reklamlardan biri olmaya aday.,This one could become the talk of the town.
+REV_BAND5_A,Yılın işlerinden! Jüri bunu not etmeli.,One of the works of the year! The jury should take note.
+REV_BAND5_B,Rakip ajanslar bu kampanyayı kıskançlıkla izliyor.,Rival agencies are watching this one with envy.
+UI_PERFECT,★ Mükemmel Kampanya! ★,★ Perfect Campaign! ★
+UI_WHY,Neden bu puan?,Why this score?
+RL_NOTHING_SPECIAL,Dikkat çeken bir güçlü ya da zayıf yön yok.,No standout strengths or weaknesses.
+RL_SH_GOOD,Sektör ile kampanya hedefi mükemmel uyumlu.,Sector and campaign objective are a perfect match.
+RL_SH_BAD,Bu sektörde bu hedef pek işe yaramıyor.,This objective doesn't work well in this sector.
+RL_SK_GOOD,Doğru kitleye konuştunuz.,You spoke to exactly the right audience.
+RL_SK_BAD,Bu ürün için seçilen kitle pek uygun değildi.,The chosen audience wasn't a good fit for this product.
+RL_KN_GOOD,Kanal seçimi hedefe ve kitleye çok uygundu.,The channel suited the objective and audience very well.
+RL_KN_BAD,Kanal uyumu zayıf: mesaj yanlış mecrada kaldı.,Weak channel fit: the message ended up in the wrong medium.
+RL_TONE_GOOD,Ton markaya çok yakıştı.,The tone suited the brand perfectly.
+RL_TONE_BAD,Ton bu sektörde ters tepti.,The tone backfired in this sector.
+RL_F_GOOD,Doğru alanlara odaklandın.,You focused on the right areas.
+RL_F_BAD,Emek yanlış alanlara harcandı.,Effort went into the wrong areas.
+RL_B_ANALYTIC,"Kampanya fazla analitik kaldı, kreatif tarafı zayıf.",The campaign stayed too analytical; the creative side was weak.
+RL_B_CREATIVE,Kreatif güçlü ama stratejik temel zayıf kaldı.,"Strong creative, but the strategic foundation was weak."
+RL_B_GOOD,Strateji ve kreatif dengesi yerindeydi.,Strategy and creative were well balanced.
+RL_N_BAD,Jüri ve tüketiciler bu fikri daha önce gördüklerini düşünüyor.,Jury and consumers feel they have seen this idea before.
+RL_N_PIONEER,Yeni bir mecrayı ilk kullananlardan oldunuz.,You were among the first to use a new medium.
+RL_FRAGMENTED,Bütçe çok fazla kanala bölünmüş.,The budget was split across too many channels.
+RL_SYNERGY,Kanallar birbirini güçlendirdi.,The channels reinforced each other.
+RL_ERRORS,Basılı malzemelerde yazım hataları fark edildi.,Typos were spotted in the printed materials.
+UI_BREAKDOWN,Puan dökümü (ayar için),Score breakdown (for tuning)
+UI_CLOSE,Kapat,Close
+KPI_REACH,Erişim,Reach
+KPI_ENGAGEMENTS,Etkileşim,Engagements
+KPI_CONVERSIONS,Dönüşüm,Conversions
+KPI_AWARENESS_LIFT,Bilinirlik artışı,Awareness lift
+KPI_ROI,Müşteri ROI,Client ROI
+KPI_TARGET,KPI hedefi,KPI target
+KPI_VIRAL,VİRAL OLDU!,IT WENT VIRAL!
+UI_INCOME_LINE,Gelir: ücret %s + medya komisyonu %s + performans primi %s,Income: fee %s + media commission %s + performance bonus %s
+UI_SATISFACTION_DELTA,Müşteri memnuniyeti: %s,Client satisfaction: %s
+BD_LINE1,M %.3f  (sektör×hedef %.2f · kitle %.2f · kanal %.2f · ton %.3f),M %.3f  (sector×objective %.2f · audience %.2f · channel %.2f · tone %.3f)
+BD_LINE2,"F %.3f · B %.3f (S/K %.2f, ideal %.2f) · N %.3f · sinerji %.3f","F %.3f · B %.3f (S/C %.2f, ideal %.2f) · N %.3f · synergy %.3f"
+BD_LINE3,S %.0f · K %.0f · T %.0f · hata %d,S %.0f · C %.0f · T %.0f · errors %d
+BD_LINE4,ham %.1f / hedef %.1f → r %.3f,raw %.1f / target %.1f → r %.3f
+UI_BANKRUPT_TITLE,İflas!,Bankrupt!
+UI_BANKRUPT_TEXT,Kasa 4 hafta üst üste eksi kaldı ve ajans kapandı (%s). Toplam %d kampanya yaptın.,Cash stayed below zero for four weeks and the agency closed (%s). You made %d campaign(s).
