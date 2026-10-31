@@ -108,10 +108,19 @@ func test_all_data_text_keys_are_translated() -> void:
 			keys[row[0]] = true
 	var missing: Array[String] = []
 	for file_name: String in ["sectors.json", "objectives.json", "audiences.json", "tones.json", "tone_groups.json",
-			"focus_areas.json", "channels.json", "combo_rules.json"]:
+			"focus_areas.json", "channels.json", "combo_rules.json", "positions.json", "traits.json",
+			"hiring_channels.json", "offices.json", "backgrounds.json"]:
 		for rec: Dictionary in data.raw[file_name]:
-			if not keys.has(rec["name_key"]):
-				missing.append(rec["name_key"])
+			for field: String in ["name_key", "desc_key"]:
+				if rec.has(field) and not keys.has(rec[field]):
+					missing.append(rec[field])
+			for k: Variant in rec.get("title_keys", []):
+				if not keys.has(k):
+					missing.append(str(k))
+	for pos: Dictionary in data.raw["positions.json"]:
+		var dept: String = "DEPT_" + str(pos["department"]).to_upper()
+		if not keys.has(dept):
+			missing.append(dept)
 	var lines: Dictionary = data.raw["report_lines.json"]
 	for rule: Dictionary in lines["explanations"]:
 		if not keys.has(rule["key"]):

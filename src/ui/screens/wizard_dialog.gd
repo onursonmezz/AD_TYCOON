@@ -11,6 +11,7 @@ var _audience: OptionButton
 var _tone: OptionButton
 var _channel: OptionButton
 var _channel_ids: Array[String] = []
+var _team_checks: Dictionary = {}
 var _error: Label
 
 
@@ -53,6 +54,18 @@ func _ready() -> void:
 			_channel_ids.append(id)
 			_channel.add_item("%s (%s)" % [UiUtil.name_of(data.channels, id), tr("CAT_" + str(data.channels[id]["category"]).to_upper())])
 	_add_row(col, "UI_CHANNEL", _channel)
+	col.add_child(UiUtil.label(tr("UI_TEAM_PICK"), 16))
+	var team_box: HFlowContainer = HFlowContainer.new()
+	for emp: Dictionary in s.staff.values():
+		var check: CheckBox = CheckBox.new()
+		check.text = "%s (%s)" % [GameState.employee_name(emp), tr(Employee.title_key(data, emp))]
+		UiUtil.style_toggle(check)
+		var available: bool = Employee.is_available(emp, s.clock.week_index)
+		check.button_pressed = available
+		check.disabled = not available
+		_team_checks[emp["id"]] = check
+		team_box.add_child(check)
+	col.add_child(team_box)
 	col.add_child(UiUtil.wrapped(tr("UI_WIZARD_HINT"), 14, UiUtil.MUTED, 560.0))
 	_error = UiUtil.label("", 15, UiUtil.TERRACOTTA)
 	col.add_child(_error)
@@ -61,6 +74,14 @@ func _ready() -> void:
 	buttons.add_child(UiUtil.button(tr("UI_CANCEL"), queue_free))
 	buttons.add_child(UiUtil.button(tr("UI_START_CAMPAIGN"), _on_start))
 	col.add_child(buttons)
+
+
+func _picked_team() -> Array:
+	var team: Array = []
+	for id: Variant in _team_checks:
+		if (_team_checks[id] as CheckBox).button_pressed:
+			team.append(id)
+	return team
 
 
 func _option_for(table: Dictionary, ids: Array[String]) -> OptionButton:
@@ -91,7 +112,11 @@ func _on_start() -> void:
 		"audience": data.audience_ids[_audience.selected],
 		"tone": data.tone_ids[_tone.selected],
 		"mix": [{"channel": _channel_ids[_channel.selected], "share": 1.0}],
+		"team": _picked_team(),
 	}
+	if (choices["team"] as Array).is_empty():
+		_error.text = tr("ERR_TEAM_EMPTY")
+		return
 	var result: Dictionary = GameState.execute(StartCampaignCommand.new(_brief["id"], choices))
 	if not bool(result["ok"]):
 		_error.text = tr(str(result["error"]))

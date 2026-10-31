@@ -8,10 +8,11 @@ func has_game() -> bool:
 	return sim != null
 
 
-func new_game(seed_value: int = -1) -> void:
+## background: oyuncunun geçmişi (data/backgrounds.json, GDD 11.5).
+func new_game(seed_value: int = -1, background: String = "") -> void:
 	if seed_value < 0:
 		seed_value = int(Time.get_unix_time_from_system()) % 1000000
-	_attach(Simulation.new(DataDB.data, seed_value))
+	_attach(Simulation.new(DataDB.data, seed_value, background))
 	EventBus.game_started.emit()
 	EventBus.notification.emit("NOTE_WELCOME", [], "info")
 	EventBus.state_changed.emit()
@@ -81,6 +82,21 @@ func _attach(new_sim: Simulation) -> void:
 		for n: String in names:
 			EventBus.notification.emit("NOTE_CLIENT_LOST", [n], "bad"))
 	sim.went_bankrupt.connect(func() -> void: EventBus.bankrupt.emit())
+	sim.staff_note.connect(func(key: String, args: Array, kind: String) -> void:
+		EventBus.notification.emit(key, args, kind))
+	sim.offer_received.connect(func(offer: Dictionary) -> void: EventBus.offer_received.emit(offer))
+
+
+## Arayüz dili (isim listeleri için): "tr" ya da "en".
+func lang() -> String:
+	return "en" if TranslationServer.get_locale().begins_with("en") else "tr"
+
+
+## Çalışanın görünen adı: kurucu için "Sen (unvan)".
+func employee_name(emp: Dictionary) -> String:
+	if bool(emp.get("is_founder", false)):
+		return tr("UI_YOU")
+	return str(emp.get("name", ""))
 
 
 func _on_delivered(camp: Dictionary) -> void:

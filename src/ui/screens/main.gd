@@ -8,6 +8,7 @@ var _date: Label
 var _rep: Label
 var _speed_buttons: Array[Button] = []
 var _pause_button: Button
+var _overtime: CheckButton
 var _content: PanelContainer
 var _feed: VBoxContainer
 var _menu_buttons: Dictionary = {}
@@ -25,6 +26,7 @@ func _ready() -> void:
 	EventBus.phase_started.connect(func(_phase: int) -> void: show_panel("campaign"))
 	EventBus.campaign_finished.connect(_on_campaign_finished)
 	EventBus.bankrupt.connect(_on_bankrupt)
+	EventBus.offer_received.connect(func(offer: Dictionary) -> void: open_modal(OfferDialog.new(offer)))
 	show_panel("inbox")
 	_refresh()
 	_refresh_speed()
@@ -68,9 +70,8 @@ func _build() -> void:
 
 func _build_top_bar() -> PanelContainer:
 	var bar: PanelContainer = UiUtil.card()
-	var row: HBoxContainer = UiUtil.hbox(18)
+	var row: HBoxContainer = UiUtil.hbox(12)
 	bar.add_child(row)
-	row.add_child(UiUtil.label(tr("GAME_TITLE"), 22, UiUtil.SAGE_DARK))
 	_cash = UiUtil.label("", 20)
 	_cash.tooltip_text = tr("TIP_CASH")
 	_cash.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -82,6 +83,12 @@ func _build_top_bar() -> PanelContainer:
 	_rep.mouse_filter = Control.MOUSE_FILTER_PASS
 	row.add_child(_rep)
 	row.add_child(UiUtil.spacer())
+	_overtime = CheckButton.new()
+	_overtime.text = tr("UI_OVERTIME")
+	_overtime.tooltip_text = tr("TIP_OVERTIME")
+	UiUtil.style_toggle(_overtime, UiUtil.TERRACOTTA)
+	_overtime.toggled.connect(func(on: bool) -> void: GameState.execute(SetOvertimeCommand.new(on)))
+	row.add_child(_overtime)
 	_pause_button = UiUtil.button("", func() -> void: Clock.toggle_pause())
 	_pause_button.tooltip_text = tr("TIP_PAUSE")
 	row.add_child(_pause_button)
@@ -102,7 +109,7 @@ func _build_menu() -> PanelContainer:
 	card.custom_minimum_size.x = 190.0
 	var col: VBoxContainer = UiUtil.vbox(8)
 	card.add_child(col)
-	for id: String in ["inbox", "clients", "campaign", "finance", "history"]:
+	for id: String in ["inbox", "clients", "campaign", "team", "office", "finance", "history"]:
 		var b: Button = UiUtil.button(tr("MENU_" + id.to_upper()), func() -> void: show_panel(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		_menu_buttons[id] = b
@@ -122,6 +129,10 @@ func show_panel(id: String) -> void:
 			_panel = ClientsPanel.new()
 		"campaign":
 			_panel = CampaignPanel.new()
+		"team":
+			_panel = TeamPanel.new(self)
+		"office":
+			_panel = OfficePanel.new()
 		"finance":
 			_panel = FinancePanel.new()
 		"history":
@@ -140,6 +151,7 @@ func _refresh() -> void:
 	_rep.text = tr("UI_REPUTATION") % s.reputation
 	(_menu_buttons["inbox"] as Button).text = tr("MENU_INBOX") + (" (%d)" % s.inbox.size() if not s.inbox.is_empty() else "")
 	(_menu_buttons["campaign"] as Button).text = tr("MENU_CAMPAIGN") + (" ●" if GameState.is_waiting() else "")
+	_overtime.set_pressed_no_signal(s.overtime)
 	if _panel != null:
 		_panel.call("refresh")
 	_refresh_speed()

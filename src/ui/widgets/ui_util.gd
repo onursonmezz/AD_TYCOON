@@ -40,6 +40,15 @@ static func button(text: String, on_press: Callable) -> Button:
 	return b
 
 
+## CheckBox/CheckButton tema gereği düğme zeminini miras alır; düz ve okunaklı yapar.
+static func style_toggle(toggle: BaseButton, pressed_color: Color = SAGE_DARK) -> void:
+	toggle.flat = true
+	for state: String in ["font_color", "font_hover_color", "font_focus_color"]:
+		toggle.add_theme_color_override(state, TEXT)
+	toggle.add_theme_color_override("font_pressed_color", pressed_color)
+	toggle.add_theme_color_override("font_hover_pressed_color", pressed_color)
+
+
 static func card() -> PanelContainer:
 	return PanelContainer.new()
 

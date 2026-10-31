@@ -18,8 +18,10 @@ func _run() -> void:
 	var menu: Control = load("res://src/ui/screens/main_menu.tscn").instantiate()
 	add_child(menu)
 	await _shot("01_main_menu")
+	menu.call("_on_new_game")
+	await _shot("01b_background")
 	menu.queue_free()
-	GameState.new_game(5)
+	GameState.new_game(5, "marketing_manager")
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
 	add_child(screen)
 	var sim: Simulation = GameState.sim
@@ -58,6 +60,19 @@ func _run() -> void:
 	for id: String in ["clients", "finance", "history"]:
 		screen.call("show_panel", id)
 		await _shot("07_" + id)
+	sim.state.cash = 900000.0
+	var hiring: HiringDialog = HiringDialog.new()
+	screen.call("open_modal", hiring)
+	await get_tree().process_frame
+	hiring.call("_on_search")
+	await _shot("08_hiring")
+	var cand: Dictionary = sim.state.candidates[0]
+	GameState.execute(HireEmployeeCommand.new(cand["id"]))
+	hiring.queue_free()
+	screen.call("show_panel", "team")
+	await _shot("09_team")
+	screen.call("show_panel", "office")
+	await _shot("10_office")
 	get_tree().quit()
 
 

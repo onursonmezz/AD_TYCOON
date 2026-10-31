@@ -285,3 +285,216 @@ BD_LINE3,S %.0f · K %.0f · T %.0f · hata %d,S %.0f · C %.0f · T %.0f · err
 BD_LINE4,ham %.1f / hedef %.1f → r %.3f,raw %.1f / target %.1f → r %.3f
 UI_BANKRUPT_TITLE,İflas!,Bankrupt!
 UI_BANKRUPT_TEXT,Kasa 4 hafta üst üste eksi kaldı ve ajans kapandı (%s). Toplam %d kampanya yaptın.,Cash stayed below zero for four weeks and the agency closed (%s). You made %d campaign(s).
+ROLE_FOUNDER,Kurucu (sen),Founder (you)
+POS_FOUNDER_0,Kurucu,Founder
+POS_FOUNDER_1,CEO / ECD,CEO / ECD
+ROLE_ACCOUNT,Account Executive,Account Executive
+POS_ACCOUNT_0,Account Executive,Account Executive
+POS_ACCOUNT_1,Account Manager,Account Manager
+POS_ACCOUNT_2,Account Director,Account Director
+POS_ACCOUNT_3,Group Account Director,Group Account Director
+ROLE_PLANNER,Planner,Planner
+POS_PLANNER_0,Junior Planner,Junior Planner
+POS_PLANNER_1,Strategic Planner,Strategic Planner
+POS_PLANNER_2,Strateji Direktörü,Strategy Director
+ROLE_COPYWRITER,Copywriter,Copywriter
+POS_COPYWRITER_0,Junior Copywriter,Junior Copywriter
+POS_COPYWRITER_1,Copywriter,Copywriter
+POS_COPYWRITER_2,Kıdemli Copywriter,Senior Copywriter
+POS_COPYWRITER_3,Creative Group Head,Creative Group Head
+POS_COPYWRITER_4,Creative Director,Creative Director
+POS_COPYWRITER_5,Executive Creative Director,Executive Creative Director
+ROLE_ART_DIRECTOR,Art Director,Art Director
+POS_ART_DIRECTOR_0,Junior Art Director,Junior Art Director
+POS_ART_DIRECTOR_1,Art Director,Art Director
+POS_ART_DIRECTOR_2,Kıdemli Art Director,Senior Art Director
+POS_ART_DIRECTOR_3,Creative Group Head,Creative Group Head
+POS_ART_DIRECTOR_4,Creative Director,Creative Director
+POS_ART_DIRECTOR_5,Executive Creative Director,Executive Creative Director
+ROLE_GRAPHIC_DESIGNER,Grafik Tasarımcı,Graphic Designer
+POS_GRAPHIC_DESIGNER_0,Grafik Tasarımcı,Graphic Designer
+ROLE_ILLUSTRATOR,İllüstratör,Illustrator
+POS_ILLUSTRATOR_0,İllüstratör,Illustrator
+ROLE_MOTION_DESIGNER,Motion Designer,Motion Designer
+POS_MOTION_DESIGNER_0,Motion Designer,Motion Designer
+ROLE_ARTIST_3D,3D Artist,3D Artist
+POS_ARTIST_3D_0,3D Artist,3D Artist
+ROLE_UI_UX_DESIGNER,UI/UX Tasarımcı,UI/UX Designer
+POS_UI_UX_DESIGNER_0,UI/UX Tasarımcı,UI/UX Designer
+ROLE_RETOUCHER,Retoucher,Retoucher
+POS_RETOUCHER_0,Retoucher,Retoucher
+ROLE_PRODUCER,Prodüktör,Producer
+POS_PRODUCER_0,Prodüktör,Producer
+ROLE_VIDEO_EDITOR,Video Editörü,Video Editor
+POS_VIDEO_EDITOR_0,Video Editörü,Video Editor
+ROLE_PHOTOGRAPHER,Fotoğrafçı,Photographer
+POS_PHOTOGRAPHER_0,Fotoğrafçı,Photographer
+ROLE_SOUND_DESIGNER,Ses Tasarımcısı,Sound Designer
+POS_SOUND_DESIGNER_0,Ses Tasarımcısı,Sound Designer
+ROLE_DIRECTOR,Yönetmen,Director
+POS_DIRECTOR_0,Yönetmen,Director
+ROLE_MEDIA_PLANNER,Medya Planlamacı,Media Planner
+POS_MEDIA_PLANNER_0,Medya Planlamacı,Media Planner
+POS_MEDIA_PLANNER_1,Medya Satın Alma Uzmanı,Media Buyer
+POS_MEDIA_PLANNER_2,Medya Direktörü,Media Director
+ROLE_WEB_DEVELOPER,Web Geliştirici,Web Developer
+POS_WEB_DEVELOPER_0,Web Geliştirici,Web Developer
+ROLE_SEM_SPECIALIST,SEM Uzmanı,SEM Specialist
+POS_SEM_SPECIALIST_0,SEM Uzmanı,SEM Specialist
+ROLE_SOCIAL_MEDIA_SPECIALIST,Sosyal Medya Uzmanı,Social Media Specialist
+POS_SOCIAL_MEDIA_SPECIALIST_0,Sosyal Medya Uzmanı,Social Media Specialist
+ROLE_COMMUNITY_MANAGER,Topluluk Yöneticisi,Community Manager
+POS_COMMUNITY_MANAGER_0,Topluluk Yöneticisi,Community Manager
+ROLE_DATA_ANALYST,Veri Analisti,Data Analyst
+POS_DATA_ANALYST_0,Veri Analisti,Data Analyst
+ROLE_PERFORMANCE_MANAGER,Performans Pazarlama Müdürü,Performance Marketing Manager
+POS_PERFORMANCE_MANAGER_0,Performans Pazarlama Müdürü,Performance Marketing Manager
+ROLE_GROWTH_HACKER,Growth Hacker,Growth Hacker
+POS_GROWTH_HACKER_0,Growth Hacker,Growth Hacker
+ROLE_AI_PROMPT_SPECIALIST,AI Prompt Uzmanı,AI Prompt Specialist
+POS_AI_PROMPT_SPECIALIST_0,AI Prompt Uzmanı,AI Prompt Specialist
+ROLE_PR_SPECIALIST,PR Uzmanı,PR Specialist
+POS_PR_SPECIALIST_0,PR Uzmanı,PR Specialist
+ROLE_EVENT_COORDINATOR,Etkinlik Koordinatörü,Event Coordinator
+POS_EVENT_COORDINATOR_0,Etkinlik Koordinatörü,Event Coordinator
+ROLE_INFLUENCER_MANAGER,Influencer Yöneticisi,Influencer Manager
+POS_INFLUENCER_MANAGER_0,Influencer Yöneticisi,Influencer Manager
+ROLE_TRAFFIC_MANAGER,Trafik Yöneticisi,Traffic Manager
+POS_TRAFFIC_MANAGER_0,Trafik Yöneticisi,Traffic Manager
+POS_TRAFFIC_MANAGER_1,Proje Yöneticisi,Project Manager
+ROLE_PROOFREADER,Prova Okuyucu,Proofreader
+POS_PROOFREADER_0,Prova Okuyucu,Proofreader
+ROLE_NEW_BUSINESS_MANAGER,New Business Müdürü,New Business Manager
+POS_NEW_BUSINESS_MANAGER_0,New Business Müdürü,New Business Manager
+ROLE_ACCOUNTANT,Muhasebeci,Accountant
+POS_ACCOUNTANT_0,Muhasebeci,Accountant
+ROLE_HR_SPECIALIST,İK Uzmanı,HR Specialist
+POS_HR_SPECIALIST_0,İK Uzmanı,HR Specialist
+ROLE_OFFICE_ASSISTANT,Ofis Asistanı,Office Assistant
+POS_OFFICE_ASSISTANT_0,Ofis Asistanı,Office Assistant
+ROLE_PURCHASING,Satın Alma Uzmanı,Purchasing Specialist
+POS_PURCHASING_0,Satın Alma Uzmanı,Purchasing Specialist
+DEPT_ACCOUNT,Müşteri İlişkileri,Account
+DEPT_STRATEGY,Strateji / Planlama,Strategy / Planning
+DEPT_CREATIVE,Kreatif,Creative
+DEPT_DESIGN,Tasarım Stüdyosu,Design Studio
+DEPT_PRODUCTION,Prodüksiyon,Production
+DEPT_MEDIA,Medya,Media
+DEPT_DIGITAL,Dijital / Performans,Digital / Performance
+DEPT_PR_EVENT,PR & Etkinlik,PR & Events
+DEPT_OPERATIONS,Operasyon (Trafik),Operations (Traffic)
+DEPT_NEW_BUSINESS,Yeni İş,New Business
+DEPT_SUPPORT,Destek,Support
+DEPT_FOUNDER,Kurucu,Founder
+TRAIT_PERFECTIONIST,Mükemmeliyetçi,Perfectionist
+TRAIT_PERFECTIONIST_DESC,"Kalite +%12, hız −%15.","Quality +12%, speed −15%."
+TRAIT_EGO,Ego,Ego
+TRAIT_EGO_DESC,"Bireysel performans +%10, ekip morali −5.","Personal performance +10%, team morale −5."
+TRAIT_FAST_SLOPPY,Hızlı ama özensiz,Fast but sloppy
+TRAIT_FAST_SLOPPY_DESC,"Hız +%20, hata ×1.5.","Speed +20%, errors ×1.5."
+TRAIT_TREND_HUNTER,Trend avcısı,Trend hunter
+TRAIT_TREND_HUNTER_DESC,Yeni çıkan kanallarda +%15.,+15% on newly launched channels.
+TRAIT_NIGHT_OWL,Gece kuşu,Night owl
+TRAIT_NIGHT_OWL_DESC,Fazla mesaide tükenmişlik yarı yarıya.,Half the burnout from overtime.
+TRAIT_NOSTALGIC,Nostaljik,Nostalgic
+TRAIT_NOSTALGIC_DESC,"Klasik kanallarda +%10, dijitalde −%5.","+10% on classic channels, −5% on digital."
+TRAIT_AWARD_HUNTER,Ödül avcısı,Award hunter
+TRAIT_AWARD_HUNTER_DESC,Ödül kategorisine uygun işlerde +%10; ödül alamazsa moral − (ödüller yakında).,+10% on award-worthy work; morale drops without awards (awards coming soon).
+TRAIT_MENTOR,Mentor,Mentor
+TRAIT_MENTOR_DESC,Aynı ekipteki junior'ların XP'si +%25.,Juniors on the same team gain +25% XP.
+TRAIT_PRESENTER,Sunum canavarı,Presentation beast
+TRAIT_PRESENTER_DESC,Pitch puanı +%15 (pitch'ler yakında).,Pitch score +15% (pitches coming soon).
+TRAIT_CLIENT_FRIEND,Müşteri dostu,Client friend
+TRAIT_CLIENT_FRIEND_DESC,Account rolünde memnuniyet +3.,+3 client satisfaction in an account role.
+HIRE_JOB_AD,İlan,Job ad
+HIRE_JOB_AD_DESC,"Ucuz, düşük kalite havuzu.","Cheap, lower-quality pool."
+HIRE_INTERNSHIP,Üniversite stajı,University internship
+HIRE_INTERNSHIP_DESC,"Çok ucuz, yüksek potansiyel, düşük stat.","Very cheap, high potential, low stats."
+HIRE_CAREER_SITE,Kariyer sitesi,Career site
+HIRE_CAREER_SITE_DESC,"Orta fiyat, geniş havuz.","Mid-priced, wide pool."
+HIRE_HEADHUNTER,Headhunter,Headhunter
+HIRE_HEADHUNTER_DESC,Pahalı ama iyi aday.,Expensive but strong candidates.
+OFFICE_1,Ev odası / garaj,Spare room / garage
+OFFICE_2,Küçük ofis (semt pasajı),Small office (local arcade)
+OFFICE_3,Büyütülmüş ofis,Expanded office
+OFFICE_4,Plaza katı,Office tower floor
+OFFICE_5,Ajans binası / Holding kampüsü,Agency building / holding campus
+BG_COPYWRITER,Eski Copywriter,Former Copywriter
+BG_COPYWRITER_DESC,Kreatif yüksek.,High creativity.
+BG_MARKETING_MANAGER,Eski Pazarlama Müdürü,Former Marketing Manager
+BG_MARKETING_MANAGER_DESC,Strateji yüksek + müşteri ağı (bir başlangıç müşterisi fazla).,High strategy + client network (one extra starting client).
+BG_GRAPHIC_DESIGNER,Grafik Tasarımcı,Graphic Designer
+BG_GRAPHIC_DESIGNER_DESC,Görsel tasarım ve teknik yüksek.,Strong visual design and technical skills.
+BG_SALESPERSON,Satışçı,Salesperson
+BG_SALESPERSON_DESC,İletişim yüksek (müşteri memnuniyeti; pitch'te avantaj yakında).,High communication (client satisfaction; pitch advantage coming soon).
+MENU_TEAM,Ekip,Team
+MENU_OFFICE,Ofis,Office
+UI_YOU,Sen,You
+UI_HIRE,İşe al,Hire
+UI_TEAM_HEADER,%d / %d kişi · aylık maaş + SGK %s,%d / %d people · monthly payroll + taxes %s
+UI_LEVEL,Seviye %d,Level %d
+BUSY_TRAINING,Eğitimde (%d hafta),In training (%d weeks)
+BUSY_SICK,Hastalık izninde (%d hafta),On sick leave (%d weeks)
+UI_SPECIALIZED,Uzmanlık: %s (+%%15),Specialization: %s (+15%%)
+STAT_STRATEGY,S,S
+STAT_CREATIVE,K,C
+STAT_TECHNICAL,T,T
+STAT_COMMUNICATION,İ,Com
+STAT_SPEED,H,Spd
+STAT_ATTENTION,D,Att
+UI_HIDDEN_UNKNOWN,Potansiyel ? · Sadakat ?,Potential ? · Loyalty ?
+UI_HIDDEN_LINE,Potansiyel %d · Sadakat %d,Potential %d · Loyalty %d
+TIP_HIDDEN,"Gizli statlar zamanla (24 hafta) ya da bir İK uzmanı işe alınınca ortaya çıkar. S=Strateji, K=Kreatif, T=Teknik, İ=İletişim, H=Hız, D=Dikkat.","Hidden stats are revealed over time (24 weeks) or once you hire an HR specialist. S=Strategy, C=Creative, T=Technical, Com=Communication, Spd=Speed, Att=Attention."
+UI_ENERGY,Enerji,Energy
+UI_MORALE,Moral,Morale
+UI_BURNOUT,Tükenmişlik,Burnout
+UI_SALARY_LINE,Maaş %s / ay · piyasa değeri %s,Salary %s / month · market value %s
+UI_TRAIN,Eğit (%s),Train (%s)
+UI_SPECIALIZE,Uzmanlaş,Specialize
+UI_RAISE,Zam yap,Give raise
+UI_FIRE,Kov (tazminat %s),Fire (severance %s)
+UI_HIRE_TITLE,İşe alım,Hiring
+UI_ROLE,Pozisyon,Position
+UI_HIRE_CHANNEL,Kanal,Channel
+UI_SEARCH,Aday ara,Search candidates
+UI_EXPECTED_SALARY,Maaş beklentisi %s,Expects %s
+UI_HIRE_THIS,İşe al,Hire
+NOTE_HIRED,%s ekibe katıldı.,%s joined the team.
+NOTE_LEVEL_UP,%s seviye atladı!,%s leveled up!
+NOTE_LEVEL_UP_FOUNDER,Seviye atladın!,You leveled up!
+NOTE_SICK_LEAVE,%s tükendi ve hastalık iznine çıktı.,%s burned out and went on sick leave.
+NOTE_RESIGNED,%s tükenmişlik yüzünden istifa etti.,%s resigned due to burnout.
+NOTE_POACHED,%s rakip ajansın teklifini kabul edip ayrıldı.,%s accepted a rival agency's offer and left.
+NOTE_MOVED,Yeni ofise taşındın: %s,You moved into a new office: %s
+ERR_NO_CANDIDATE,Aday bulunamadı.,No candidates found.
+ERR_OFFICE_FULL,Ofiste yer yok. Daha büyük bir ofise taşın.,The office is full. Move to a bigger office.
+ERR_NEED_CD,Her Creative Director en fazla 6 kreatif yönetebilir. Önce bir kreatifi CD seviyesine yükselt.,Each Creative Director can manage at most 6 creatives. Grow a creative to CD level first.
+ERR_CANNOT_FIRE,Bu kişi işten çıkarılamaz.,This person cannot be fired.
+ERR_ON_CAMPAIGN,Bu kişi şu an kampanyada çalışıyor.,This person is working on a campaign right now.
+ERR_NO_EMPLOYEE,Çalışan bulunamadı.,Employee not found.
+ERR_BUSY_EMPLOYEE,"Bu kişi şu an müsait değil (kampanyada, eğitimde ya da izinde).","This person is not available right now (on a campaign, in training or on leave)."
+ERR_LEVEL_TOO_LOW,Uzmanlaşma için seviye yetersiz.,Level too low to specialize.
+ERR_NO_OFFER,Teklif artık geçerli değil.,The offer is no longer valid.
+ERR_TEAM_EMPTY,Kampanyaya en az bir kişi ata.,Assign at least one person to the campaign.
+ERR_OFFICE_REQUIREMENTS,Taşınma koşulları sağlanmıyor.,Moving requirements are not met.
+UI_OFFICE_LINE,%d / %d kişi · kira %s / ay · oda kalitesi %d,%d / %d people · rent %s / month · room quality %d
+UI_OFFICE_LINE_NEXT,Kapasite %d kişi · kira %s / ay · oda kalitesi %d,Capacity %d people · rent %s / month · room quality %d
+UI_OFFICE_SIZES,Alınabilecek işler: %s,Jobs you can take: %s
+UI_OFFICE_MAX,En büyük ofistesin.,You are in the largest office.
+UI_OFFICE_NEXT,Sonraki: %s,Next: %s
+REQ_CASH,Taşınma bedeli %s (kasada %s),Moving cost %s (you have %s)
+REQ_YEAR,Oyun yılı Y%s (şu an Y%s),Game year Y%s (now Y%s)
+REQ_EMPLOYEES,En az %s çalışan (şu an %s),At least %s employees (now %s)
+REQ_REPUTATION,İtibar en az %s (şu an %s),Reputation at least %s (now %s)
+UI_MOVE_OFFICE,Taşın (%s),Move (%s)
+UI_OVERTIME,Fazla mesai,Overtime
+TIP_OVERTIME,"Açıkken ekip %35 daha çok üretir ama enerji iki kat hızlı düşer, haftada +6 tükenmişlik birikir ve hata artar.","When on, the team produces 35% more, but energy drains twice as fast, burnout builds +6 per week and errors rise."
+UI_OFFER_TITLE,Rakip ajanstan teklif!,A rival agency made an offer!
+UI_OFFER_TEXT,%s (%s) rakip bir ajanstan ayda %s teklif aldı. Şu anki maaşı %s. Karşılık vermezsen iki hafta içinde ayrılacak.,"%s (%s) got an offer of %s per month from a rival agency. Current salary: %s. If you don't respond, they will leave within two weeks."
+UI_OFFER_MATCH,Zam yap ve tut (%s),Give a raise and keep (%s)
+UI_OFFER_RELEASE,Bırak gitsin,Let them go
+UI_TEAM_PICK,Ekip,Team
+UI_TEAM_LINE,Ekip: %s,Team: %s
+UI_BACKGROUND_TITLE,Sen kimsin?,Who are you?
+UI_BACKGROUND_HINT,Ajansı kuran kişinin geçmişi başlangıç statlarını belirler. Büyüdükçe CEO olacaksın.,The founder's background sets your starting stats. As the agency grows you become the CEO.
+UI_PICK,Seç,Choose

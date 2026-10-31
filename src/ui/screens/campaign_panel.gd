@@ -56,6 +56,12 @@ func _rebuild(s: SimState) -> void:
 		_info.add_child(UiUtil.label("%s · %s · %s · %s" % [UiUtil.name_of(data.objectives, setup["objective"]),
 			UiUtil.name_of(data.audiences, setup["audience"]), UiUtil.name_of(data.tones, setup["tone"]),
 			UiUtil.name_of(data.channels, Scoring.main_channel(setup["mix"]))], 14, UiUtil.WOOD))
+		var names: PackedStringArray = PackedStringArray()
+		for id: Variant in setup.get("team", []):
+			var emp: Dictionary = s.staff.get(str(id), {})
+			if not emp.is_empty():
+				names.append(GameState.employee_name(emp))
+		_info.add_child(UiUtil.label(tr("UI_TEAM_LINE") % ", ".join(names), 14))
 		_phase_label = UiUtil.label("", 17)
 		_info.add_child(_phase_label)
 		_progress = ProgressBar.new()
