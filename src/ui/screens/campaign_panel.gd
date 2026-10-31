@@ -10,7 +10,6 @@ var _slider_box: VBoxContainer
 var _sliders: Array[HSlider] = []
 var _value_labels: Array[Label] = []
 var _airing: VBoxContainer
-var _adjusting: bool = false
 var _signature: String = ""
 
 
@@ -97,7 +96,6 @@ func _build_sliders(camp: Dictionary) -> void:
 	_slider_box.add_child(UiUtil.label(tr("UI_PHASE_SLIDERS") % tr("PHASE_%d" % phase), 18, UiUtil.TERRACOTTA))
 	_slider_box.add_child(UiUtil.wrapped(tr("UI_PHASE_SLIDERS_HINT"), 14, UiUtil.MUTED, 420.0))
 	var ids: Array[String] = data.focus_ids_of_phase(phase)
-	var current: Array = camp["setup"]["sliders"][phase]
 	for i: int in 3:
 		var row: HBoxContainer = UiUtil.hbox()
 		var name_label: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, ids[i]), 16)
@@ -107,53 +105,39 @@ func _build_sliders(camp: Dictionary) -> void:
 		slider.min_value = 0.0
 		slider.max_value = 100.0
 		slider.step = 1.0
-		slider.value = roundf(float(current[i]) * 100.0)
+		slider.value = data.balf("focus.slider_default_priority")
 		slider.custom_minimum_size.x = 260.0
-		slider.value_changed.connect(func(_v: float) -> void: _on_slider(i))
+		slider.value_changed.connect(func(_v: float) -> void: _update_value_labels())
 		row.add_child(slider)
 		var value_label: Label = UiUtil.label("", 16)
+		value_label.custom_minimum_size.x = 60.0
 		row.add_child(value_label)
 		_sliders.append(slider)
 		_value_labels.append(value_label)
 		_slider_box.add_child(row)
-	_normalize_from(0)
 	_update_value_labels()
 	_slider_box.add_child(UiUtil.button(tr("UI_START_PHASE"), _on_confirm))
 
 
-## Bir slider değişince diğer ikisini orantılı ayarlar; toplam her zaman 100.
-func _on_slider(changed: int) -> void:
-	if _adjusting:
-		return
-	_normalize_from(changed)
-	_update_value_labels()
-
-
-func _normalize_from(changed: int) -> void:
-	_adjusting = true
-	var fixed: float = _sliders[changed].value
-	var others: Array[int] = []
-	for i: int in 3:
-		if i != changed:
-			others.append(i)
-	var rest: float = _sliders[others[0]].value + _sliders[others[1]].value
-	var remaining: float = 100.0 - fixed
-	if rest <= 0.0:
-		_sliders[others[0]].value = roundf(remaining / 2.0)
-	else:
-		_sliders[others[0]].value = roundf(remaining * _sliders[others[0]].value / rest)
-	_sliders[others[1]].value = remaining - _sliders[others[0]].value
-	_adjusting = false
+## Her slider bağımsız bir öncelik (GDT gibi); iş payı = öncelik / öncelikler toplamı (K-033).
+## Hepsi 0 ise iş eşit dağılır. Paylar her zaman tam %100 eder.
+func shares() -> Array[float]:
+	var total: float = 0.0
+	for slider: HSlider in _sliders:
+		total += slider.value
+	var out: Array[float] = []
+	for i: int in _sliders.size():
+		out.append(1.0 / _sliders.size() if total <= 0.0 else _sliders[i].value / total)
+	out[out.size() - 1] = 1.0 - out[0] - out[1]
+	return out
 
 
 func _update_value_labels() -> void:
+	var s: Array[float] = shares()
 	for i: int in _sliders.size():
-		_value_labels[i].text = "%%%d" % int(_sliders[i].value)
+		_value_labels[i].text = "%%%d" % int(roundf(s[i] * 100.0))
 
 
 func _on_confirm() -> void:
-	var values: Array = []
-	for slider: HSlider in _sliders:
-		values.append(slider.value / 100.0)
-	if GameState.set_phase_sliders(values):
+	if GameState.set_phase_sliders(shares()):
 		Clock.set_paused(false)

@@ -4,7 +4,7 @@
 	"fit_multiplier": { "-3": 0.45, "-2": 0.62, "-1": 0.82, "0": 1.0, "1": 1.06, "2": 1.14, "3": 1.25 },
 	"fit_row_rules": { "six_col": "1x+3, 1x+2, 1x+1, 1x0, 1x-1, 1x(-2|-3)", "four_col": "1x+3, 1x(+1|+2), 1x(0|-1), 1x(-2|-3)" },
 	"combo_weights": { "sector_objective": 0.35, "sector_audience": 0.25, "channel": 0.30, "tone": 0.10 },
-	"focus": { "min_mult": 0.80, "max_mult": 1.20, "slider_soft_cap": 0.60 },
+	"focus": { "min_mult": 0.80, "max_mult": 1.20, "slider_soft_cap": 0.60, "slider_default_priority": 50 },
 	"importance_values": { "3": 1.0, "2": 0.7, "1": 0.45, "0": 0.3, "-1": 0.15, "-2": 0.05, "-3": 0.0 },
 	"balance_sk": { "penalty_per_log": 0.25, "max_penalty": 0.30 },
 	"novelty": { "same_pair_recent3": 0.88, "same_triplet_last": 0.75, "same_client_12w": 0.85,

@@ -186,7 +186,7 @@ PHASE_2,Faz 3: Prodüksiyon & Yayın,Phase 3: Production & Launch
 UI_COUNTERS,S %d · K %d · T %d · hata %d,S %d · C %d · T %d · errors %d
 UI_AIRING_ROW,%s · %d hafta sonra rapor,%s · report in %d week(s)
 UI_PHASE_SLIDERS,%s başlıyor: emeğini nasıl dağıtacaksın?,%s is starting: how will you split your effort?
-UI_PHASE_SLIDERS_HINT,Üç alanın toplamı %100. Tek alana %60'tan fazlası azalan getiri verir.,The three areas total 100%. Putting more than 60% into one area gives diminishing returns.
+UI_PHASE_SLIDERS_HINT,"Her slider bir öncelik. İş, önceliklerin oranına göre dağılır; sağdaki yüzde gerçek payı gösterir. Bir alana %60'tan fazlası azalan getiri verir.",Each slider is a priority. Work is split in proportion to the priorities; the percentage on the right is the real share. More than 60% in one area gives diminishing returns.
 UI_START_PHASE,Fazı başlat,Start phase
 UI_FINANCE_HINT,Müşteriler 30/60/90 günde öder; medyayı ise teslimden 6 hafta sonra kanallara sen ödersin. Arada nakit sıkışabilir.,"Clients pay in 30/60/90 days, but you pay the media 6 weeks after delivery. Cash can get tight in between."
 UI_FIN_CASH,Nakit,Cash

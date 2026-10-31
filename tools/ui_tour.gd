@@ -34,7 +34,14 @@ func _run() -> void:
 	while not GameState.is_waiting():
 		GameState.step_day()
 	await _shot("04_phase_sliders")
-	GameState.set_phase_sliders([0.5, 0.3, 0.2])
+	var panel: CampaignPanel = screen.get("_panel")
+	var sliders: Array[HSlider] = panel.get("_sliders")
+	sliders[0].value = 30.0
+	sliders[1].value = 90.0
+	sliders[2].value = 60.0
+	await _shot("04b_phase_sliders_moved")
+	panel.call("_on_confirm")
+	Clock.set_paused(true)
 	for i: int in 10:
 		GameState.step_day()
 	await _shot("05_phase_running")

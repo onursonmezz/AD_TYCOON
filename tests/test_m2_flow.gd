@@ -144,6 +144,22 @@ func test_ui_full_loop_smoke() -> void:
 	wizard.call("_on_start")
 	await wait_physics_frames(2)
 	assert_false(sim.state.is_idle(), "sihirbaz kampanyayı başlattı")
+	while not GameState.is_waiting():
+		GameState.step_day()
+	screen.call("show_panel", "campaign")
+	await wait_physics_frames(1)
+	var panel: CampaignPanel = screen.get("_panel")
+	var sliders: Array[HSlider] = panel.get("_sliders")
+	for s: HSlider in sliders:
+		s.value = 100.0
+	assert_almost_eq(panel.shares()[0], 1.0 / 3.0, 0.0001, "hepsi %100 → eşit dağılım (GDT)")
+	sliders[0].value = 30.0
+	sliders[1].value = 30.0
+	sliders[2].value = 60.0
+	assert_eq(sliders[0].value, 30.0, "bir slider diğerlerini kaydırmaz")
+	assert_almost_eq(panel.shares()[2], 0.5, 0.0001)
+	panel.call("_on_confirm")
+	assert_false(GameState.is_waiting())
 	var reports_before: int = sim.state.finished.size()
 	for i: int in 1000:
 		if GameState.is_waiting():
