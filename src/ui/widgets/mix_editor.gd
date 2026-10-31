@@ -38,7 +38,7 @@ func media_budget() -> float:
 	return float(_brief["media_budget"])
 
 
-## Dönüş: [{ "channel", "share", "options": { "job"? } }] — paylar öncelik oranından, toplam tam 1.
+## Dönüş: [{ "channel", "share", "options": { "job" | "influencer" | kategori seçenekleri } }] — paylar öncelik oranından, toplam tam 1.
 func get_mix() -> Array:
 	var total: float = 0.0
 	for row: Dictionary in _rows:
@@ -54,6 +54,10 @@ func get_mix() -> Array:
 		var entry: Dictionary = {"channel": _channel_ids[(row["pick"] as OptionButton).selected], "share": share}
 		if not (row["job"] as Dictionary).is_empty():
 			entry["options"] = {"job": (row["job"] as Dictionary).duplicate()}
+		elif not str(row["influencer"]).is_empty():
+			entry["options"] = {"influencer": row["influencer"]}
+		elif not (row["opts"] as Dictionary).is_empty():
+			entry["options"] = (row["opts"] as Dictionary).duplicate()
 		mix.append(entry)
 	return mix
 
@@ -88,12 +92,14 @@ func _add_row(channel_index: int) -> void:
 	var print_box: VBoxContainer = UiUtil.vbox(4)
 	box.add_child(print_box)
 	var row: Dictionary = {"box": box, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box,
-		"job": {}, "auto": true}
+		"job": {}, "auto": true, "opts": {}, "influencer": ""}
 	_rows.append(row)
 	_rows_box.add_child(box)
 	pick.item_selected.connect(func(_i: int) -> void:
 		row["job"] = {}
 		row["auto"] = true
+		row["opts"] = {}
+		row["influencer"] = ""
 		_refresh())
 	slider.value_changed.connect(func(_v: float) -> void: _refresh())
 	remove.pressed.connect(func() -> void:
@@ -127,9 +133,12 @@ func _refresh() -> void:
 				row["job"] = sim.prints.auto_job(ch, budget, _brief["sector"], sim.state, int(_brief["deadline_weeks"]))
 				row["job"]["negotiated_discount"] = discount
 			_build_print_panel(row, ch, budget)
+		elif InfluencerSystem.is_influencer_channel(data, ch):
+			row["job"] = {}
+			_build_influencer_panel(row, ch, budget)
 		else:
 			row["job"] = {}
-			UiUtil.clear(row["print_box"])
+			_build_options_panel(row, ch)
 
 
 func _build_print_panel(row: Dictionary, channel_id: String, budget: float) -> void:
@@ -222,3 +231,72 @@ func _option(ids: Array, selected: String, label_of: Callable, on_pick: Callable
 			o.selected = i
 	o.item_selected.connect(func(i: int) -> void: on_pick.call(str(ids[i])))
 	return o
+
+
+## Kategori seçenekleri (GDD 9.2–9.7): veriden otomatik çizilir; varsayılan "Otomatik".
+func _build_options_panel(row: Dictionary, channel_id: String) -> void:
+	var box: VBoxContainer = row["print_box"]
+	UiUtil.clear(box)
+	var sim: Simulation = GameState.sim
+	var defs: Array = sim.options.option_defs(channel_id)
+	if defs.is_empty():
+		row["opts"] = {}
+		return
+	var opts: Dictionary = row["opts"]
+	var defaults: Dictionary = sim.options.defaults(channel_id)
+	var flow: HFlowContainer = HFlowContainer.new()
+	flow.add_theme_constant_override("h_separation", 8)
+	var year: int = sim.state.clock.year()
+	for def: Dictionary in defs:
+		var key: String = def["id"]
+		if not opts.has(key):
+			opts[key] = defaults[key]
+		var ids: Array = []
+		for c: Dictionary in def["choices"]:
+			if int(c.get("from_year", 0)) <= year:
+				ids.append(str(c["id"]))
+		var names: Dictionary = {}
+		for c: Dictionary in def["choices"]:
+			names[str(c["id"])] = tr(c["name_key"])
+		var label: Label = UiUtil.label(tr(def["name_key"]), 14, UiUtil.WOOD)
+		flow.add_child(label)
+		flow.add_child(_option(ids, str(opts[key]), func(id: String) -> String: return str(names[id]),
+			func(id: String) -> void: opts[key] = id))
+	box.add_child(flow)
+
+
+## Influencer seçici (GDD 9.6): havuzdaki uygun kademeden; sahte takipçi oranı ancak PR ekibi varsa görünür.
+func _build_influencer_panel(row: Dictionary, channel_id: String, budget: float) -> void:
+	var box: VBoxContainer = row["print_box"]
+	UiUtil.clear(box)
+	var sim: Simulation = GameState.sim
+	var pool: Array[Dictionary] = sim.influencers.pool_for(sim.state, channel_id)
+	if pool.is_empty():
+		box.add_child(UiUtil.label(tr("UI_NO_INFLUENCERS"), 14, UiUtil.TERRACOTTA))
+		return
+	var ids: Array = []
+	var texts: Dictionary = {}
+	var see: bool = sim.influencers.can_see_authenticity(sim.state)
+	for inf: Dictionary in pool:
+		ids.append(inf["id"])
+		var text: String = tr("UI_INFLUENCER_ROW") % [inf["name"], tr("TIER_" + str(inf["tier"]).to_upper()),
+			tr("NICHE_" + str(inf["niche"]).to_upper()), UiUtil.big_number(float(inf["followers"])), 100.0 * float(inf["er"]),
+			UiUtil.money(sim.influencers.fee(sim.state, inf))]
+		if see:
+			text += " · " + tr("UI_AUTHENTICITY") % int(roundf(100.0 * float(inf["authenticity"])))
+		texts[inf["id"]] = text
+	if str(row["influencer"]).is_empty() or not ids.has(row["influencer"]):
+		row["influencer"] = sim.influencers.auto_pick(sim.state, channel_id, budget, {"audience": "adult", "sector": _brief["sector"]})
+		if str(row["influencer"]).is_empty():
+			row["influencer"] = ids[0]
+	var pick: OptionButton = _option(ids, str(row["influencer"]), func(id: String) -> String: return str(texts[id]),
+		func(id: String) -> void:
+			row["influencer"] = id
+			_refresh.call_deferred())
+	pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_child(pick)
+	var chosen: Dictionary = sim.influencers.find(sim.state, str(row["influencer"]))
+	if not chosen.is_empty() and sim.influencers.fee(sim.state, chosen) > budget:
+		box.add_child(UiUtil.label(tr("ERR_INFLUENCER_FEE"), 14, UiUtil.TERRACOTTA))
+	if not see:
+		box.add_child(UiUtil.label(tr("UI_AUTHENTICITY_HIDDEN"), 13, UiUtil.MUTED))

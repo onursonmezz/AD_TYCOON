@@ -132,6 +132,14 @@ func _money_block() -> VBoxContainer:
 		if bool(r["error"]):
 			line += " · " + tr("UI_PRINT_REPRINTED")
 		v.add_child(UiUtil.label(line, 14, UiUtil.TERRACOTTA if bool(r["error"]) else UiUtil.WOOD))
+	for entry: Dictionary in _camp["setup"]["mix"]:
+		var opts: Dictionary = entry.get("options", {})
+		for o: Variant in opts.get("_outcomes", []):
+			v.add_child(UiUtil.label("－ " + UiUtil.tr_fmt(str(o["note"]), [_camp["setup"].get("client_name", "")]), 14, UiUtil.TERRACOTTA))
+		if opts.has("_press"):
+			v.add_child(UiUtil.label("＋ " + tr("UI_GUERRILLA_PRESS"), 14, UiUtil.SAGE_DARK))
+	if _camp.has("scandal"):
+		v.add_child(UiUtil.label(tr("UI_REPORT_SCANDAL") % tr("UI_SCANDAL_" + str(_camp["scandal"]["choice"]).to_upper()), 14, UiUtil.TERRACOTTA))
 	var late: int = int(_camp["setup"].get("late_weeks", 0))
 	if late > 0:
 		v.add_child(UiUtil.label(tr("UI_LATE_DELIVERY") % late, 15, UiUtil.TERRACOTTA))

@@ -109,6 +109,34 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 		GameState.step_day()
 	await get_tree().create_timer(2.0).timeout
 	await _shot("13_report_channels")
+	await _tour_options(screen, sim)
+
+
+## M4-B: 2015'te açık hava + influencer seçenekleri ve skandal penceresi.
+func _tour_options(screen: Control, sim: Simulation) -> void:
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	sim.state.clock.week_index = (2015 - 1990) * 48
+	sim.influencers.refresh(sim.state)
+	while sim.state.inbox.is_empty():
+		GameState.step_day()
+	var brief: Dictionary = sim.state.inbox[0]
+	brief["media_budget"] = 400000.0
+	var wizard: WizardDialog = WizardDialog.new(brief, screen)
+	screen.call("open_modal", wizard)
+	await get_tree().process_frame
+	var mix: MixEditor = wizard.get("_mix")
+	var ids: Array[String] = mix.get("_channel_ids")
+	var rows: Array = mix.get("_rows")
+	(rows[0]["pick"] as OptionButton).select(maxi(0, ids.find("billboard")))
+	(rows[0]["pick"] as OptionButton).item_selected.emit(maxi(0, ids.find("billboard")))
+	mix.call("_add_row", maxi(0, ids.find("influencer_micro")))
+	mix.call("_add_row", maxi(0, ids.find("national_tv")))
+	await _shot("14_wizard_options")
+	wizard.queue_free()
+	var scandal: Dictionary = {"id": "sc_demo", "campaign_id": "", "influencer": "@ece42", "expires_week": sim.state.clock.week_index + 1}
+	screen.call("open_modal", ScandalDialog.new(scandal))
+	await _shot("15_scandal")
 
 
 func _shot(file_name: String) -> void:

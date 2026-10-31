@@ -27,6 +27,7 @@ func _ready() -> void:
 	EventBus.campaign_finished.connect(_on_campaign_finished)
 	EventBus.bankrupt.connect(_on_bankrupt)
 	EventBus.offer_received.connect(func(offer: Dictionary) -> void: open_modal(OfferDialog.new(offer)))
+	EventBus.scandal_started.connect(func(scandal: Dictionary) -> void: open_modal(ScandalDialog.new(scandal)))
 	show_panel("inbox")
 	_refresh()
 	_refresh_speed()

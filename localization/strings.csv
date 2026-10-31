@@ -561,3 +561,83 @@ ERR_PRINT_OPTIONS,Baskı ayarları geçersiz.,Invalid print settings.
 ERR_PRINT_QUANTITY,Adet bu ürün için izin verilen aralığın dışında.,Quantity is outside the allowed range for this product.
 UI_REMOVE_CHANNEL,Kanalı çıkar,Remove channel
 UI_PRINT_LATE_WARNING,"geç kalır (baskıya %d hafta var)","will be late (%d weeks available for printing)"
+OPT_OOH_LOCATION,Lokasyon paketi,Location package
+OPT_OOH_LOCATION_A,"A (ana arterler, meydanlar)","A (main roads, squares)"
+OPT_OOH_LOCATION_B,B (semt),B (neighborhoods)
+OPT_OOH_LOCATION_C,C (çevre yollar),C (ring roads)
+OPT_OOH_WEEKS,Süre,Duration
+OPT_OOH_WEEKS_1,1 hafta,1 week
+OPT_OOH_WEEKS_2,2 hafta,2 weeks
+OPT_OOH_WEEKS_4,4 hafta,4 weeks
+OPT_BROADCAST_DAYPART,Kuşak,Daypart
+OPT_BROADCAST_DAYPART_MORNING,Sabah,Morning
+OPT_BROADCAST_DAYPART_DAY,Gündüz,Daytime
+OPT_BROADCAST_DAYPART_PRIME,Prime time,Prime time
+OPT_BROADCAST_DAYPART_NIGHT,Gece,Late night
+OPT_BROADCAST_SPOT,Spot süresi,Spot length
+OPT_BROADCAST_SPOT_15,15 sn,15 s
+OPT_BROADCAST_SPOT_30,30 sn,30 s
+OPT_BROADCAST_SPOT_45,45 sn,45 s
+OPT_BROADCAST_SPOT_60,60 sn,60 s
+OPT_DIGITAL_BID,Teklif modeli,Bid model
+OPT_DIGITAL_BID_CPM,CPM (bin gösterim),"CPM (per 1,000 impressions)"
+OPT_DIGITAL_BID_CPC,CPC (tıklama),CPC (per click)
+OPT_DIGITAL_BID_CPA,CPA (dönüşüm),CPA (per conversion)
+OPT_DIGITAL_TARGETING,Hedefleme,Targeting
+OPT_DIGITAL_TARGETING_BROAD,Geniş,Broad
+OPT_DIGITAL_TARGETING_BALANCED,Dengeli,Balanced
+OPT_DIGITAL_TARGETING_NARROW,Dar,Narrow
+OPT_GUERRILLA_CARD,Gerilla fikri,Guerrilla idea
+OPT_GUERRILLA_CARD_FOOTPRINTS,Dev ayak izleri,Giant footprints
+OPT_GUERRILLA_CARD_STREET_ART,Kaldırıma 3D çizim,3D sidewalk art
+OPT_GUERRILLA_CARD_FLASH_MOB,Flash mob,Flash mob
+OPT_GUERRILLA_CARD_BUS_STOPS,Duraklara yerleştirme,Bus stop takeover
+OPT_GUERRILLA_CARD_FAKE_QUEUE,Sahte ürün kuyruğu,Fake product queue
+OPT_EVENT_VENUE,Mekân,Venue
+OPT_EVENT_VENUE_HALL,Küçük salon,Small hall
+OPT_EVENT_VENUE_HOTEL,Otel balo salonu,Hotel ballroom
+OPT_EVENT_VENUE_OPEN_AIR,Açık hava alanı,Open-air venue
+OPT_EVENT_CATERING,Catering,Catering
+OPT_EVENT_CATERING_BASIC,Basit,Basic
+OPT_EVENT_CATERING_PREMIUM,Premium,Premium
+OPT_EVENT_GUESTS,Davetliler,Guest list
+OPT_EVENT_GUESTS_PUBLIC,Sadece katılımcılar,Attendees only
+OPT_EVENT_GUESTS_PRESS,Basın,Press
+OPT_EVENT_GUESTS_PRESS_INFLUENCERS,Basın + influencer,Press + influencers
+NICHE_GAMING,Oyun,Gaming
+NICHE_BEAUTY,Güzellik,Beauty
+NICHE_FOOD,Yemek,Food
+NICHE_SPORT,Spor,Sports
+NICHE_TECH,Teknoloji,Tech
+NICHE_PARENTING,Anne/ebeveyn,Parenting
+NICHE_HUMOR,Mizah,Comedy
+TIER_NANO,Nano,Nano
+TIER_MICRO,Mikro,Micro
+TIER_MACRO,Makro,Macro
+TIER_MEGA,Mega/Ünlü,Mega/Celebrity
+UI_NO_INFLUENCERS,Bu kademede uygun influencer yok (havuz yılda bir yenilenir).,No suitable influencers at this tier (the pool refreshes yearly).
+UI_INFLUENCER_ROW,%s · %s · %s · %s takipçi · etkileşim %%%.1f · %s,%s · %s · %s · %s followers · engagement %.1f%% · %s
+UI_AUTHENTICITY,gerçek takipçi %%%d,real followers %d%%
+UI_AUTHENTICITY_HIDDEN,Sahte takipçi oranı gizli. Bir PR & Etkinlik çalışanı bunu görebilir.,The fake-follower ratio is hidden. Someone from PR & Events can see it.
+ERR_NO_INFLUENCER,Bu kanal için havuzda influencer yok.,No influencer available for this channel.
+ERR_INFLUENCER_FEE,Seçilen influencer bu kanal bütçesini aşıyor.,The chosen influencer costs more than this channel's budget.
+ERR_CHANNEL_OPTION,Kanal seçeneklerinden biri geçersiz ya da henüz açılmadı.,A channel option is invalid or not available yet.
+UI_SCANDAL_TITLE,Influencer skandalı!,Influencer scandal!
+UI_SCANDAL_TEXT,Kampanyada çalıştığın %s bir skandala karıştı. Müşteri tedirgin. Ne yapacaksın?,"%s, who is in your campaign, is caught up in a scandal. The client is nervous. What will you do?"
+UI_SCANDAL_TERMINATE,Sözleşmeyi feshet,Terminate the contract
+UI_SCANDAL_SILENT,Sessiz kal,Stay silent
+UI_SCANDAL_STATEMENT,Açıklama yap,Make a statement
+UI_SCANDAL_TERMINATE_DESC,Feshet: müşteri biraz rahatlar ama kanalın erişimi büyük ölçüde kaybolur.,"Terminate: the client calms down a little, but the channel loses most of its reach."
+UI_SCANDAL_SILENT_DESC,Sessiz kal: erişim korunur ama müşteri ve itibar ciddi zarar görür.,"Stay silent: reach is kept, but the client and your reputation take a hit."
+UI_SCANDAL_STATEMENT_DESC,"Açıklama yap: ekibindeki en iyi iletişimciye bağlı; iyi giderse hasar az, kötü giderse büyük.","Make a statement: depends on your best communicator; done well it limits damage, done badly it makes it worse."
+UI_SCANDAL_RESULT,Müşteri memnuniyetine etkisi: %s.,Effect on client satisfaction: %s.
+UI_SCANDAL_STATEMENT_OK,Açıklama iyi karşılandı.,The statement was well received.
+UI_SCANDAL_STATEMENT_FAIL,Açıklama ters tepti.,The statement backfired.
+UI_REPORT_SCANDAL,Influencer skandalı: %s,Influencer scandal: %s
+UI_GUERRILLA_PRESS,Gerilla işi basına çıktı; erişim katlandı.,The guerrilla stunt made the news; reach multiplied.
+NOTE_PERMIT_DELAY,"%s: belediye izni gecikti, megalight kısa süre asılı kaldı.",%s: the municipal permit was delayed; the megalight ran only briefly.
+NOTE_BROADCAST_BAN,%s: Yayın Kurulu cesur reklamı durdurdu.,%s: the Broadcasting Board pulled the bold ad.
+NOTE_GUERRILLA_FINE,%s: gerilla uygulaması belediye cezası aldı.,%s: the guerrilla stunt got a municipal fine.
+NOTE_GUERRILLA_BACKLASH,"%s: sahte kuyruk ortaya çıktı, basın tepki gösterdi ve ceza geldi.",%s: the fake queue was exposed; the press reacted and a fine followed.
+NOTE_EVENT_WEATHER,%s: açık hava etkinliğini yağmur vurdu.,%s: rain hit the open-air event.
+NOTE_EVENT_TROUBLE,%s: etkinlikte aksilik (katılım düşük / teknik arıza / ünlü gelmedi).,%s: trouble at the event (low turnout / technical failure / celebrity no-show).
