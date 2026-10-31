@@ -98,11 +98,13 @@ func yearly(state: SimState) -> void:
 
 
 ## Memnuniyeti eşiğin altına düşen müşteriler ajansı bırakır (M5'te önce ihaleye çıkacak). Dönüş: ayrılanların id'leri.
-func remove_unhappy(state: SimState) -> Array[String]:
+## removed_names: verilirse ayrılan markaların adları buna eklenir (bildirim için).
+func remove_unhappy(state: SimState, removed_names: Array[String] = []) -> Array[String]:
 	var gone: Array[String] = []
 	for id: String in state.clients.keys():
 		if float(state.clients[id]["satisfaction"]) < data.balf("clients.leave_threshold"):
 			gone.append(id)
 	for id: String in gone:
+		removed_names.append(str(state.clients[id]["name"]))
 		state.clients.erase(id)
 	return gone

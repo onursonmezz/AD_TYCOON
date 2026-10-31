@@ -1,7 +1,7 @@
 class_name SimState
 extends RefCounted
-## Simülasyonun tüm durumu (tek doğruluk kaynağı). Sözlük/dizi tutulur ki kayıt sistemi (M2) kolayca JSON'a çevirsin.
-## M2'de GameState autoload'u bu nesneyi saracak.
+## Simülasyonun tüm durumu (tek doğruluk kaynağı). Sözlük/dizi tutulur ki kayıt sistemi kolayca JSON'a çevirsin.
+## GameState autoload'u bu nesneyi (Simulation üzerinden) sarar.
 
 var rng: SimRng
 var clock: SimClock
@@ -11,6 +11,8 @@ var reputation: float = 0.0
 var office_level: int = 1
 var bankrupt: bool = false
 var red_weeks: int = 0
+## Faz başında oyuncunun slider girmesi bekleniyor (oyun durur).
+var waiting_for_input: bool = false
 
 ## Oyuncu karakteri (M1'de tek "çalışan").
 var player: Dictionary = {}
@@ -23,20 +25,27 @@ var inbox: Array[Dictionary] = []
 var active_campaign: Dictionary = {}
 ## Teslim edilmiş, yayında olan kampanyalar.
 var airing: Array[Dictionary] = []
-## Biten kampanyalar (rapor dahil), en yenisi sonda.
+## Biten kampanyaların özetleri (tekrar cezası için), en yenisi sonda.
 var history: Array[Dictionary] = []
-## Tahsil edilecek faturalar: { "client_id", "amount", "due_week" }
+## Raporu ekranda gösterilebilecek son biten kampanyalar (tam kayıt).
+var finished: Array[Dictionary] = []
+## Tahsil edilecek faturalar: { "client_id", "amount", "income", "due_week" }
 var receivables: Array[Dictionary] = []
 ## Tedarikçiye ödenecek tutarlar (medya): { "amount", "due_week" }
 var payables: Array[Dictionary] = []
 ## Büyüklük → en iyi ham puan (GDD 7.9 rekor).
 var best_raw: Dictionary = {}
 
-## Yıllık gelir/gider (vergi için) ve aylık özet.
+## Yıllık gelir/gider (vergi için).
 var year_income: float = 0.0
 var year_expense: float = 0.0
 
 var _next_id: Dictionary = {}
+
+## Kayda giren alanlar (rng ve clock ayrıca yazılır).
+const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
+	"player", "clients", "inbox", "active_campaign", "airing", "history", "finished", "receivables", "payables",
+	"best_raw", "year_income", "year_expense", "_next_id"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -63,3 +72,37 @@ func find_brief(brief_id: String) -> Dictionary:
 		if b["id"] == brief_id:
 			return b
 	return {}
+
+
+func to_dict() -> Dictionary:
+	var out: Dictionary = {"rng": rng.to_dict(), "clock": clock.to_dict()}
+	for field: String in SAVED_FIELDS:
+		var value: Variant = get(field)
+		out[field] = value.duplicate(true) if (value is Dictionary or value is Array) else value
+	return out
+
+
+static func from_dict(data: GameData, saved: Dictionary) -> SimState:
+	var s: SimState = SimState.new(data, 0)
+	s.rng = SimRng.from_dict(saved.get("rng", {}))
+	s.clock.load_dict(saved.get("clock", {}))
+	s.cash = float(saved.get("cash", s.cash))
+	s.reputation = float(saved.get("reputation", s.reputation))
+	s.office_level = int(saved.get("office_level", s.office_level))
+	s.bankrupt = bool(saved.get("bankrupt", false))
+	s.red_weeks = int(saved.get("red_weeks", 0))
+	s.waiting_for_input = bool(saved.get("waiting_for_input", false))
+	s.player = saved.get("player", s.player)
+	s.clients = saved.get("clients", {})
+	s.inbox.assign(saved.get("inbox", []))
+	s.active_campaign = saved.get("active_campaign", {})
+	s.airing.assign(saved.get("airing", []))
+	s.history.assign(saved.get("history", []))
+	s.finished.assign(saved.get("finished", []))
+	s.receivables.assign(saved.get("receivables", []))
+	s.payables.assign(saved.get("payables", []))
+	s.best_raw = saved.get("best_raw", {})
+	s.year_income = float(saved.get("year_income", 0.0))
+	s.year_expense = float(saved.get("year_expense", 0.0))
+	s._next_id = saved.get("_next_id", {})
+	return s

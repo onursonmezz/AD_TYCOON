@@ -37,6 +37,27 @@ func pick(stream_name: String, items: Array) -> Variant:
 	return items[stream(stream_name).randi_range(0, items.size() - 1)]
 
 
+## Kayıt: her akışın seed'i ve o anki durumu saklanır; yüklenince aynı sayılar devam eder.
+## RNG seed/state 64 bit; JSON sayısı (double) taşıyamayacağı için metin olarak yazılır.
+func to_dict() -> Dictionary:
+	var streams: Dictionary = {}
+	for stream_name: String in _streams:
+		var rng: RandomNumberGenerator = _streams[stream_name]
+		streams[stream_name] = {"seed": str(rng.seed), "state": str(rng.state)}
+	return {"seed": seed_value, "streams": streams}
+
+
+static func from_dict(saved: Dictionary) -> SimRng:
+	var r: SimRng = SimRng.new(int(saved.get("seed", 0)))
+	var streams: Dictionary = saved.get("streams", {})
+	for stream_name: String in streams:
+		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+		rng.seed = str(streams[stream_name]["seed"]).to_int()
+		rng.state = str(streams[stream_name]["state"]).to_int()
+		r._streams[stream_name] = rng
+	return r
+
+
 ## Ağırlıklı seçim; ağırlıkların indeksini döndürür.
 func pick_weighted_index(stream_name: String, weights: Array) -> int:
 	var total: float = 0.0
