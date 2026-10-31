@@ -40,3 +40,5 @@ gereken bir şey varsa adım adım tarif et.
 - GUT 9.7.1 `addons/gut` altında. Veri doğrulayıcının çekirdeği `tools/data_validator.gd`.
 - Denge aracında dosyayı değiştirmeden değer denemek: `... balance_sim.gd -- --runs=50 --set=yol.alt=değer`.
 - Simülasyonun giriş noktası `src/sim/simulation.gd` (`Simulation`); veri erişimi `GameData.bal("yol")`.
+- Arayüz kodla kurulur (`src/ui/screens/*.gd`, yardımcılar `UiUtil`). Ekranları görsel kontrol için:
+  `godot --path . res://tools/ui_tour.tscn -- --out=<klasör>` (pencere açar, PNG kaydeder).

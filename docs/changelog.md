@@ -1,5 +1,26 @@
 # Değişiklik günlüğü
 
+## M2 — Oynanabilir 2D prototip (2026-10-31)
+
+### Eklenenler
+- Autoload'lar: `DataDB`, `EventBus`, `SaveSystem`, `GameState`, `Clock` (Duraklat/1x/2x/4x, Boşluk ve 1/2/3 kısayolları).
+- Ekranlar: ana menü (Yeni oyun, Devam et, dil), oyun ekranı (üst bar, sol menü, bildirim akışı), Gelen Kutusu, Müşteriler, Kampanya (faz slider'ları + canlı S/K/T sayaçları), Finans, Raporlar.
+- Pencereler: kampanya sihirbazı, kampanya raporu (sayarak yükselen puan, 4 yorum, KPI kartları, "Neden bu puan?", puan dökümü), iflas ekranı.
+- Tema: krem zemin, adaçayı yeşili, yuvarlak köşeler.
+- Kayıt/yükleme (tek slot), `SaveCodec`, `ReportWriter`, `data/report_lines.json`.
+- `strings.csv`'ye 166 yeni anahtar (TR + EN).
+- Testler: `tests/test_m2_flow.gd`; toplam 45 test. `tools/ui_tour.tscn`: ekranların görüntüsünü alan geliştirici aracı.
+
+### Nasıl test ederim
+1. Godot'yu aç (`C:\Users\osonm\Tools\Godot\Godot_v4.7.2-stable_win64.exe`) ve projeyi seç. Editör açılınca yeni dosyaları içe aktarması birkaç saniye sürer.
+2. **F5** (veya sağ üstteki ▶) ile oyunu başlat → **Yeni Oyun**.
+3. Oyun duraklatılmış başlar. **1x**'e bas (veya Boşluk). Brief'ler haftalık gelir.
+4. **Gelen Kutusu** → bir brief'te **Kabul et** → sihirbazda kitle, ton ve kanal seç → **Kampanyayı başlat**.
+5. Her fazın başında oyun durur: üç slider'ı ayarla → **Fazı başlat**. Üç faz bitince kampanya teslim edilir ve yayına çıkar.
+6. Yayın bitince rapor açılır. "Puan dökümü" düğmesi puanı oluşturan çarpanları gösterir.
+7. **Kaydet** → Ana Menü → **Devam Et** ile kaydın geri geldiğini kontrol et.
+8. 30 dakika oyna ve `docs/playtest-notes.md`'ye yaz: "Bir kampanya daha" hissi var mı? Neler sıkıcı, neler anlaşılmaz?
+
 ## M1 — Simülasyon çekirdeği (2026-10-31)
 
 ### Eklenenler

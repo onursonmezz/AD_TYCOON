@@ -170,6 +170,32 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 - 7.10 viral mekaniği 2005'ten itibaren (formüldeki "2005+"; 5.2'de "2008 Viral mekaniği açılır" yazıyor, Bölüm 7 esas alındı). Viral zarı kanal başına atılır; olasılık × kanalın yıldız sayısı × ton bonusu (Esprili/Cesur ×1.5).
 - 14.1 itibar aralıkları büyüklüğe dağıtıldı: puan ≥ 8 → küçük +0.5, orta +1, büyük +1.5, mega +2; puan ≤ 4 → −1/−1.5/−2/−3; müşteri kaybı −2.
 
+## K-028 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Arayüzün yapısı (M2).
+**Karar:** Ekranlar kodla kurulur: `src/ui/screens/*.gd`, her biri bir `class_name`. Sahne dosyası yalnızca iki kök için var (`main_menu.tscn`, `main.tscn`). Böylece bütün arayüz düz metin olarak okunup düzeltilebilir. Ortak yardımcılar `src/ui/widgets/ui_util.gd`, tema `src/ui/theme/main_theme.tres`. M0'daki `boot_screen` kaldırıldı; ana sahne artık ana menü.
+
+## K-029 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Faz slider'larının ne zaman girileceği.
+**Karar:** GDT'deki gibi her fazın başında oyun durur ve oyuncu o fazın üç slider'ını girer (`Simulation.pause_on_phase`). Botlar ve testler kurulumdaki slider'larla duraksamadan devam eder. Sihirbaz slider sormaz; varsayılan her alan için 1/3'tür.
+
+## K-030 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Rapor ne zaman açılır, ne içerir.
+**Karar:** GDD 4.2'deki sıraya uygun olarak rapor yayın bittiğinde otomatik açılır; puan teslimde hesaplanmış olur, teslimde sadece bildirim gelir. Raporun içeriği:
+- 4 yorumcu (Reklam Dünyası, Pazarlama Gazetesi, Kreatif Blog, Müşteri): her biri puan ±0.6 verir, puan aralığına göre 5 bant × 2 cümleden biri seçilir.
+- Açıklama cümleleri: 7.12'deki 5 örneğe ek olarak kitle, kanal, ton, odak (F), denge (B iki yönlü), öncü bonusu ve sinerji için eşikler. Hepsi `data/report_lines.json`'da.
+- Açılıp kapanan "Puan dökümü": M2 ayarı için (A-005).
+
+## K-031 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Kayıt sistemi (M2: tek slot).
+**Karar:** `user://save_slot_1.sav`, gzip'li JSON, `save_version: 1`, sürüm göçü yeri `SaveCodec.migrate()`. RNG akışlarının seed/state'i 64 bit olduğu için metin olarak yazılır; yüklenen oyun birebir aynı devam eder (test var). Sadece elle kayıt; otomatik kayıt ve 3 slot M9'da.
+
+## K-032 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** M2'de saat, dil ve büyüklük.
+**Karar:**
+- Hızlar `time.speeds` = 1x/2x/4x; kısayollar Boşluk (duraklat), 1/2/3. Modal pencere açıkken saat durur.
+- Dil ana menüdeki düğmeyle seçilir, varsayılan Türkçe. Ayarlar ekranı M9'da.
+- M2 promptu sihirbazda "büyüklük" sayıyor, GDD 6.2'de ise büyüklük brief'in bir alanı. Bu yüzden sihirbazda brief'ten gelen büyüklük salt-okunur gösterilir.
+
 ---
 
 ## M1 denge sonucu (200 koşu × 10 yıl, `tools/balance_sim.gd`)
@@ -191,4 +217,5 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **A-007 (M2/M3):** S/K oranı tek kişilik ajansta yapısal olarak ≥ ~1 çıkıyor, çünkü Strateji fazının bütün üretimi S'ye gidiyor. İdeal oranı 1'in altında olan hedefler (Bilinirlik 0.6, Yenileme 0.5, SSR 0.8, Etkileşim 0.9) her zaman B cezası alıyor. Ekip kurulunca (M3) kreatif ağırlıklı ekip bunu çözer; ya da faz sürelerinin oyuncuya bırakılması düşünülebilir.
 - **A-008 (M4):** 7.3 "Display + Retargeting" sinerjisi: kanal tablosunda "retargeting" kanalı yok (5.2'de özellik olarak geçiyor). Çift veride duruyor ama `b` tarafı boş, yani etkisiz.
 - **A-009 (M3):** K-024'teki geçici oyuncu XP büyümesi M3'te gerçek çalışan modeline devredilmeli.
+- **A-010 (M2 playtest):** Oyun hızı çelişkisi. 5.1 "1x'te 1 hafta ≈ 3 saniye" diyor, bu da yılda 2.4 dakika eder. 4.1 ve 27.2 ise "bir oyun yılı 1x'te 10–15 dakika" diyor. Duraklamalar (sihirbaz, slider, rapor) süreyi uzatıyor ama bu kadar değil. Playtest'te hissedip birlikte karar verelim (`time.seconds_per_week_1x`).
 - **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6" — 17'deki ayrıntılı koşul esas alınabilir.
