@@ -14,8 +14,14 @@ var red_weeks: int = 0
 ## Faz başında oyuncunun slider girmesi bekleniyor (oyun durur).
 var waiting_for_input: bool = false
 
-## Oyuncu karakteri (M1'de tek "çalışan").
-var player: Dictionary = {}
+## id → çalışan sözlüğü (GDD 11.2; kurucu da bir çalışandır, is_founder = true). Alanlar: Employee sınıfına bakın.
+var staff: Dictionary = {}
+## Son işe alım aramasının adayları.
+var candidates: Array[Dictionary] = []
+## Rakip transfer teklifleri: { "id", "employee_id", "offer_salary", "expires_week" }
+var offers: Array[Dictionary] = []
+## Fazla mesai (crunch) açık mı (GDD 11.4).
+var overtime: bool = false
 
 ## id → müşteri sözlüğü (GDD 24.4 şeması).
 var clients: Dictionary = {}
@@ -44,8 +50,8 @@ var _next_id: Dictionary = {}
 
 ## Kayda giren alanlar (rng ve clock ayrıca yazılır).
 const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
-	"player", "clients", "inbox", "active_campaign", "airing", "history", "finished", "receivables", "payables",
-	"best_raw", "year_income", "year_expense", "_next_id"]
+	"staff", "candidates", "offers", "overtime", "clients", "inbox", "active_campaign", "airing", "history", "finished",
+	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -54,7 +60,13 @@ func _init(data: GameData, seed_value: int) -> void:
 	cash = data.balf("start.cash")
 	reputation = data.balf("start.reputation")
 	office_level = data.bali("start.office_level")
-	player = (data.bal("player") as Dictionary).duplicate(true)
+
+
+func founder() -> Dictionary:
+	for emp: Dictionary in staff.values():
+		if bool(emp.get("is_founder", false)):
+			return emp
+	return {}
 
 
 func next_id(prefix: String) -> String:
@@ -92,7 +104,10 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.bankrupt = bool(saved.get("bankrupt", false))
 	s.red_weeks = int(saved.get("red_weeks", 0))
 	s.waiting_for_input = bool(saved.get("waiting_for_input", false))
-	s.player = saved.get("player", s.player)
+	s.staff = saved.get("staff", {})
+	s.candidates.assign(saved.get("candidates", []))
+	s.offers.assign(saved.get("offers", []))
+	s.overtime = bool(saved.get("overtime", false))
 	s.clients = saved.get("clients", {})
 	s.inbox.assign(saved.get("inbox", []))
 	s.active_campaign = saved.get("active_campaign", {})

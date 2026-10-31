@@ -71,40 +71,45 @@ func is_finished(campaign: Dictionary) -> bool:
 	return int(campaign["day"]) >= int(campaign["days_total"])
 
 
-## GDD 7.5'teki çalışan bazlı çarpanların alana bağlı olmayan kısmı.
-func person_multiplier(person: Dictionary) -> float:
-	var ref: float = data.balf("production.stat_reference")
-	var speed: float = float(person["speed"]) / ref
-	var quality: float = clampf(data.balf("office.home_room_quality") / 100.0, 0.0, 1.0)
-	var office: float = data.balf("office.quality_base") + data.balf("office.quality_range") * quality
-	var morale: float = data.balf("morale.mult_base") + data.balf("morale.mult_range") * float(person["morale"]) / 100.0
-	var energy: float = data.balf("energy.low_mult") if float(person["energy"]) < data.balf("energy.low_threshold") else 1.0
-	return speed * float(person["tool_mult"]) * office * morale * energy * float(person["specialty_mult"])
+## Ekibin geçerliliği: en az bir kişi, herkes var ve müsait (eğitimde/izinde değil).
+func validate_team(team: Array, state: SimState) -> String:
+	if team.is_empty():
+		return "ERR_TEAM_EMPTY"
+	for id: Variant in team:
+		var emp: Dictionary = state.staff.get(str(id), {})
+		if emp.is_empty() or not Employee.is_available(emp, state.clock.week_index):
+			return "ERR_BUSY_EMPLOYEE"
+	return ""
 
 
-## Alanın stat değeri: birden çok stata bölünen alanlarda ağırlıklı ortalama.
-func area_stat(person: Dictionary, area: String) -> float:
-	var split: Dictionary = data.focus_areas[area]["stats"]
-	var v: float = 0.0
-	for stat: String in split:
-		v += float(person[stat]) * float(split[stat])
-	return v
-
-
-## Bir günlük üretim: fazın üç odak alanına slider payıyla puan; günde bir hata zarı (K-021).
-func produce_day(campaign: Dictionary, person: Dictionary, rng: SimRng) -> void:
+## Bir günlük üretim (GDD 7.5): ekipteki her müsait çalışan, fazın üç odak alanına slider payıyla puan üretir;
+## her çalışan için günde bir hata zarı atılır (K-021).
+func produce_day(campaign: Dictionary, state: SimState) -> void:
 	var phase: int = current_phase(campaign)
 	var ids: Array[String] = data.focus_ids_of_phase(phase)
-	var sliders: Array = campaign["setup"]["sliders"][phase]
-	var base: float = data.balf("production.base_per_day") * person_multiplier(person)
+	var setup: Dictionary = campaign["setup"]
+	var sliders: Array = setup["sliders"][phase]
 	var ref: float = data.balf("production.stat_reference")
+	var year: int = state.clock.year()
+	var overtime_out: float = data.balf("staff.overtime_output") if state.overtime else 1.0
+	var rush: bool = int(setup["deadline_weeks"]) < data.bali("production.rush_below_weeks")
 	var points: Dictionary = campaign["points"]
-	for i: int in ids.size():
-		var share: float = scoring.effective_share(float(sliders[i]))
-		points[ids[i]] = float(points[ids[i]]) + base * area_stat(person, ids[i]) / ref * share
-	var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(person["attention"]) / 100.0)
-	if int(campaign["setup"]["deadline_weeks"]) < data.bali("production.rush_below_weeks"):
-		p_error *= data.balf("production.rush_error_mult")
-	if rng.chance("production", p_error):
-		campaign["errors"] = int(campaign["errors"]) + 1
+	for id: Variant in setup.get("team", []):
+		var emp: Dictionary = state.staff.get(str(id), {})
+		if emp.is_empty() or not Employee.is_available(emp, state.clock.week_index):
+			continue
+		var base: float = data.balf("production.base_per_day") * Employee.person_mult(data, emp, state.office_level) \
+			* Employee.campaign_mult(data, emp, setup, year) * overtime_out
+		for i: int in ids.size():
+			var share: float = scoring.effective_share(float(sliders[i]))
+			points[ids[i]] = float(points[ids[i]]) + base * Employee.area_stat(data, emp, ids[i]) / ref \
+				* Employee.specialty_mult(data, emp, ids[i]) * share
+		var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(emp["stats"]["attention"]) / 100.0) \
+			* Employee.trait_effect(data, emp, "error_mult")
+		if rush:
+			p_error *= data.balf("production.rush_error_mult")
+		if state.overtime:
+			p_error *= data.balf("production.overtime_error_mult")
+		if state.rng.chance("production", p_error):
+			campaign["errors"] = int(campaign["errors"]) + 1
 	campaign["day"] = int(campaign["day"]) + 1

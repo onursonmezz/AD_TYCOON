@@ -1,0 +1,101 @@
+[
+	{
+		"id": "office_1",
+		"level": 1,
+		"name_key": "OFFICE_1",
+		"capacity": 2,
+		"rent_1990": 0,
+		"requirements": {
+			"cash": 0,
+			"game_year": 1,
+			"employees": 0,
+			"reputation": 0
+		},
+		"room_quality": 50,
+		"comfort": 0,
+		"allowed_sizes": [
+			"small",
+			"medium"
+		]
+	},
+	{
+		"id": "office_2",
+		"level": 2,
+		"name_key": "OFFICE_2",
+		"capacity": 6,
+		"rent_1990": 3000,
+		"requirements": {
+			"cash": 500000,
+			"game_year": 2,
+			"employees": 0,
+			"reputation": 0
+		},
+		"room_quality": 60,
+		"comfort": 2,
+		"allowed_sizes": [
+			"small",
+			"medium"
+		]
+	},
+	{
+		"id": "office_3",
+		"level": 3,
+		"name_key": "OFFICE_3",
+		"capacity": 12,
+		"rent_1990": 12000,
+		"requirements": {
+			"cash": 3000000,
+			"game_year": 8,
+			"game_month": 6,
+			"employees": 4,
+			"reputation": 0
+		},
+		"room_quality": 70,
+		"comfort": 4,
+		"allowed_sizes": [
+			"small",
+			"medium",
+			"large"
+		]
+	},
+	{
+		"id": "office_4",
+		"level": 4,
+		"name_key": "OFFICE_4",
+		"capacity": 30,
+		"rent_1990": 50000,
+		"requirements": {
+			"cash": 15000000,
+			"game_year": 14,
+			"employees": 10,
+			"reputation": 40
+		},
+		"room_quality": 80,
+		"comfort": 6,
+		"allowed_sizes": [
+			"small",
+			"medium",
+			"large"
+		]
+	},
+	{
+		"id": "office_5",
+		"level": 5,
+		"name_key": "OFFICE_5",
+		"capacity": 120,
+		"rent_1990": 250000,
+		"requirements": {
+			"cash": 80000000,
+			"game_year": 22,
+			"employees": 0,
+			"reputation": 70
+		},
+		"room_quality": 90,
+		"comfort": 8,
+		"allowed_sizes": [
+			"small",
+			"medium",
+			"large"
+		]
+	}
+]

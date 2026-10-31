@@ -1,0 +1,86 @@
+[
+	{
+		"id": "perfectionist",
+		"name_key": "TRAIT_PERFECTIONIST",
+		"desc_key": "TRAIT_PERFECTIONIST_DESC",
+		"effects": {
+			"output_mult": 1.12,
+			"speed_mult": 0.85
+		}
+	},
+	{
+		"id": "ego",
+		"name_key": "TRAIT_EGO",
+		"desc_key": "TRAIT_EGO_DESC",
+		"effects": {
+			"output_mult": 1.1,
+			"team_morale": -5
+		}
+	},
+	{
+		"id": "fast_sloppy",
+		"name_key": "TRAIT_FAST_SLOPPY",
+		"desc_key": "TRAIT_FAST_SLOPPY_DESC",
+		"effects": {
+			"speed_mult": 1.2,
+			"error_mult": 1.5
+		}
+	},
+	{
+		"id": "trend_hunter",
+		"name_key": "TRAIT_TREND_HUNTER",
+		"desc_key": "TRAIT_TREND_HUNTER_DESC",
+		"effects": {
+			"new_channel_mult": 1.15
+		}
+	},
+	{
+		"id": "night_owl",
+		"name_key": "TRAIT_NIGHT_OWL",
+		"desc_key": "TRAIT_NIGHT_OWL_DESC",
+		"effects": {
+			"overtime_burnout_mult": 0.5
+		}
+	},
+	{
+		"id": "nostalgic",
+		"name_key": "TRAIT_NOSTALGIC",
+		"desc_key": "TRAIT_NOSTALGIC_DESC",
+		"effects": {
+			"classic_channel_mult": 1.1,
+			"digital_channel_mult": 0.95
+		}
+	},
+	{
+		"id": "award_hunter",
+		"name_key": "TRAIT_AWARD_HUNTER",
+		"desc_key": "TRAIT_AWARD_HUNTER_DESC",
+		"effects": {
+			"award_mult": 1.1
+		}
+	},
+	{
+		"id": "mentor",
+		"name_key": "TRAIT_MENTOR",
+		"desc_key": "TRAIT_MENTOR_DESC",
+		"effects": {
+			"junior_xp_mult": 1.25
+		}
+	},
+	{
+		"id": "presenter",
+		"name_key": "TRAIT_PRESENTER",
+		"desc_key": "TRAIT_PRESENTER_DESC",
+		"effects": {
+			"pitch_mult": 1.15
+		}
+	},
+	{
+		"id": "client_friend",
+		"name_key": "TRAIT_CLIENT_FRIEND",
+		"desc_key": "TRAIT_CLIENT_FRIEND_DESC",
+		"effects": {
+			"account_satisfaction": 3
+		}
+	}
+]

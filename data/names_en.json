@@ -1,0 +1,63 @@
+{
+	"female": [
+		"Emma",
+		"Olivia",
+		"Sophie",
+		"Grace",
+		"Chloe",
+		"Ella",
+		"Maya",
+		"Nora",
+		"Ruby",
+		"Zoe",
+		"Hannah",
+		"Iris",
+		"Lucy",
+		"Mia",
+		"Ava"
+	],
+	"male": [
+		"James",
+		"Oliver",
+		"Leo",
+		"Noah",
+		"Ethan",
+		"Lucas",
+		"Adam",
+		"Ben",
+		"Daniel",
+		"Felix",
+		"Henry",
+		"Jack",
+		"Max",
+		"Sam",
+		"Theo"
+	],
+	"neutral": [
+		"Alex",
+		"Jordan",
+		"Riley",
+		"Casey",
+		"Robin",
+		"Sam",
+		"Taylor",
+		"Quinn"
+	],
+	"surnames": [
+		"Smith",
+		"Taylor",
+		"Brown",
+		"Wilson",
+		"Evans",
+		"Thomas",
+		"Johnson",
+		"Roberts",
+		"Walker",
+		"Wright",
+		"Green",
+		"Hall",
+		"Wood",
+		"Clarke",
+		"Hughes"
+	]
+}

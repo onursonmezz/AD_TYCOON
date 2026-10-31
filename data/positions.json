@@ -1,0 +1,678 @@
+[
+	{
+		"id": "founder",
+		"department": "founder",
+		"name_key": "ROLE_FOUNDER",
+		"title_keys": [
+			"POS_FOUNDER_0",
+			"POS_FOUNDER_1"
+		],
+		"specialty_focus": [],
+		"primary_stats": [],
+		"available_from": 1990,
+		"base_salary": 0,
+		"hireable": false,
+		"effects": [
+			"account_bonus",
+			"generalist"
+		]
+	},
+	{
+		"id": "account",
+		"department": "account",
+		"name_key": "ROLE_ACCOUNT",
+		"title_keys": [
+			"POS_ACCOUNT_0",
+			"POS_ACCOUNT_1",
+			"POS_ACCOUNT_2",
+			"POS_ACCOUNT_3"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"communication"
+		],
+		"available_from": 1990,
+		"base_salary": 3000,
+		"hireable": true,
+		"effects": [
+			"account_bonus"
+		]
+	},
+	{
+		"id": "planner",
+		"department": "strategy",
+		"name_key": "ROLE_PLANNER",
+		"title_keys": [
+			"POS_PLANNER_0",
+			"POS_PLANNER_1",
+			"POS_PLANNER_2"
+		],
+		"specialty_focus": [
+			"research",
+			"insight",
+			"positioning"
+		],
+		"primary_stats": [
+			"strategy"
+		],
+		"available_from": 1990,
+		"base_salary": 3200,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "copywriter",
+		"department": "creative",
+		"name_key": "ROLE_COPYWRITER",
+		"title_keys": [
+			"POS_COPYWRITER_0",
+			"POS_COPYWRITER_1",
+			"POS_COPYWRITER_2",
+			"POS_COPYWRITER_3",
+			"POS_COPYWRITER_4",
+			"POS_COPYWRITER_5"
+		],
+		"specialty_focus": [
+			"concept",
+			"copy"
+		],
+		"primary_stats": [
+			"creative"
+		],
+		"available_from": 1990,
+		"base_salary": 3200,
+		"hireable": true,
+		"effects": [
+			"creative_director_from_title_4"
+		]
+	},
+	{
+		"id": "art_director",
+		"department": "creative",
+		"name_key": "ROLE_ART_DIRECTOR",
+		"title_keys": [
+			"POS_ART_DIRECTOR_0",
+			"POS_ART_DIRECTOR_1",
+			"POS_ART_DIRECTOR_2",
+			"POS_ART_DIRECTOR_3",
+			"POS_ART_DIRECTOR_4",
+			"POS_ART_DIRECTOR_5"
+		],
+		"specialty_focus": [
+			"concept",
+			"visual"
+		],
+		"primary_stats": [
+			"creative",
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 3500,
+		"hireable": true,
+		"effects": [
+			"creative_director_from_title_4"
+		]
+	},
+	{
+		"id": "graphic_designer",
+		"department": "design",
+		"name_key": "ROLE_GRAPHIC_DESIGNER",
+		"title_keys": [
+			"POS_GRAPHIC_DESIGNER_0"
+		],
+		"specialty_focus": [
+			"visual",
+			"production"
+		],
+		"primary_stats": [
+			"creative",
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "illustrator",
+		"department": "design",
+		"name_key": "ROLE_ILLUSTRATOR",
+		"title_keys": [
+			"POS_ILLUSTRATOR_0"
+		],
+		"specialty_focus": [
+			"visual"
+		],
+		"primary_stats": [
+			"creative"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "motion_designer",
+		"department": "design",
+		"name_key": "ROLE_MOTION_DESIGNER",
+		"title_keys": [
+			"POS_MOTION_DESIGNER_0"
+		],
+		"specialty_focus": [
+			"visual",
+			"production"
+		],
+		"primary_stats": [
+			"creative",
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 3000,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "artist_3d",
+		"department": "design",
+		"name_key": "ROLE_ARTIST_3D",
+		"title_keys": [
+			"POS_ARTIST_3D_0"
+		],
+		"specialty_focus": [
+			"visual",
+			"production"
+		],
+		"primary_stats": [
+			"technical",
+			"creative"
+		],
+		"available_from": 1990,
+		"base_salary": 3300,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "ui_ux_designer",
+		"department": "design",
+		"name_key": "ROLE_UI_UX_DESIGNER",
+		"title_keys": [
+			"POS_UI_UX_DESIGNER_0"
+		],
+		"specialty_focus": [
+			"visual",
+			"production"
+		],
+		"primary_stats": [
+			"creative",
+			"technical"
+		],
+		"available_from": 2000,
+		"base_salary": 3400,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "retoucher",
+		"department": "design",
+		"name_key": "ROLE_RETOUCHER",
+		"title_keys": [
+			"POS_RETOUCHER_0"
+		],
+		"specialty_focus": [
+			"visual"
+		],
+		"primary_stats": [
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 2200,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "producer",
+		"department": "production",
+		"name_key": "ROLE_PRODUCER",
+		"title_keys": [
+			"POS_PRODUCER_0"
+		],
+		"specialty_focus": [
+			"production"
+		],
+		"primary_stats": [
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 3000,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "video_editor",
+		"department": "production",
+		"name_key": "ROLE_VIDEO_EDITOR",
+		"title_keys": [
+			"POS_VIDEO_EDITOR_0"
+		],
+		"specialty_focus": [
+			"production"
+		],
+		"primary_stats": [
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "photographer",
+		"department": "production",
+		"name_key": "ROLE_PHOTOGRAPHER",
+		"title_keys": [
+			"POS_PHOTOGRAPHER_0"
+		],
+		"specialty_focus": [
+			"production"
+		],
+		"primary_stats": [
+			"technical",
+			"creative"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "sound_designer",
+		"department": "production",
+		"name_key": "ROLE_SOUND_DESIGNER",
+		"title_keys": [
+			"POS_SOUND_DESIGNER_0"
+		],
+		"specialty_focus": [
+			"production"
+		],
+		"primary_stats": [
+			"technical",
+			"creative"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "director",
+		"department": "production",
+		"name_key": "ROLE_DIRECTOR",
+		"title_keys": [
+			"POS_DIRECTOR_0"
+		],
+		"specialty_focus": [
+			"production"
+		],
+		"primary_stats": [
+			"creative",
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 5000,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "media_planner",
+		"department": "media",
+		"name_key": "ROLE_MEDIA_PLANNER",
+		"title_keys": [
+			"POS_MEDIA_PLANNER_0",
+			"POS_MEDIA_PLANNER_1",
+			"POS_MEDIA_PLANNER_2"
+		],
+		"specialty_focus": [
+			"media_planning"
+		],
+		"primary_stats": [
+			"strategy",
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 3000,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "web_developer",
+		"department": "digital",
+		"name_key": "ROLE_WEB_DEVELOPER",
+		"title_keys": [
+			"POS_WEB_DEVELOPER_0"
+		],
+		"specialty_focus": [
+			"production",
+			"measurement"
+		],
+		"primary_stats": [
+			"technical"
+		],
+		"available_from": 1998,
+		"base_salary": 3200,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "sem_specialist",
+		"department": "digital",
+		"name_key": "ROLE_SEM_SPECIALIST",
+		"title_keys": [
+			"POS_SEM_SPECIALIST_0"
+		],
+		"specialty_focus": [
+			"media_planning",
+			"measurement"
+		],
+		"primary_stats": [
+			"technical",
+			"strategy"
+		],
+		"available_from": 1998,
+		"base_salary": 3000,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "social_media_specialist",
+		"department": "digital",
+		"name_key": "ROLE_SOCIAL_MEDIA_SPECIALIST",
+		"title_keys": [
+			"POS_SOCIAL_MEDIA_SPECIALIST_0"
+		],
+		"specialty_focus": [
+			"media_planning",
+			"copy"
+		],
+		"primary_stats": [
+			"creative",
+			"strategy"
+		],
+		"available_from": 1998,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "community_manager",
+		"department": "digital",
+		"name_key": "ROLE_COMMUNITY_MANAGER",
+		"title_keys": [
+			"POS_COMMUNITY_MANAGER_0"
+		],
+		"specialty_focus": [
+			"measurement"
+		],
+		"primary_stats": [
+			"communication"
+		],
+		"available_from": 1998,
+		"base_salary": 2200,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "data_analyst",
+		"department": "digital",
+		"name_key": "ROLE_DATA_ANALYST",
+		"title_keys": [
+			"POS_DATA_ANALYST_0"
+		],
+		"specialty_focus": [
+			"measurement",
+			"research"
+		],
+		"primary_stats": [
+			"strategy",
+			"technical"
+		],
+		"available_from": 1998,
+		"base_salary": 3400,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "performance_manager",
+		"department": "digital",
+		"name_key": "ROLE_PERFORMANCE_MANAGER",
+		"title_keys": [
+			"POS_PERFORMANCE_MANAGER_0"
+		],
+		"specialty_focus": [
+			"measurement",
+			"media_planning"
+		],
+		"primary_stats": [
+			"strategy",
+			"technical"
+		],
+		"available_from": 1998,
+		"base_salary": 3800,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "growth_hacker",
+		"department": "digital",
+		"name_key": "ROLE_GROWTH_HACKER",
+		"title_keys": [
+			"POS_GROWTH_HACKER_0"
+		],
+		"specialty_focus": [
+			"measurement",
+			"media_planning"
+		],
+		"primary_stats": [
+			"technical",
+			"strategy"
+		],
+		"available_from": 2014,
+		"base_salary": 3600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "ai_prompt_specialist",
+		"department": "digital",
+		"name_key": "ROLE_AI_PROMPT_SPECIALIST",
+		"title_keys": [
+			"POS_AI_PROMPT_SPECIALIST_0"
+		],
+		"specialty_focus": [
+			"production",
+			"copy"
+		],
+		"primary_stats": [
+			"technical",
+			"creative"
+		],
+		"available_from": 2024,
+		"base_salary": 3400,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "pr_specialist",
+		"department": "pr_event",
+		"name_key": "ROLE_PR_SPECIALIST",
+		"title_keys": [
+			"POS_PR_SPECIALIST_0"
+		],
+		"specialty_focus": [
+			"positioning"
+		],
+		"primary_stats": [
+			"communication",
+			"strategy"
+		],
+		"available_from": 1990,
+		"base_salary": 2800,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "event_coordinator",
+		"department": "pr_event",
+		"name_key": "ROLE_EVENT_COORDINATOR",
+		"title_keys": [
+			"POS_EVENT_COORDINATOR_0"
+		],
+		"specialty_focus": [
+			"production"
+		],
+		"primary_stats": [
+			"communication",
+			"technical"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "influencer_manager",
+		"department": "pr_event",
+		"name_key": "ROLE_INFLUENCER_MANAGER",
+		"title_keys": [
+			"POS_INFLUENCER_MANAGER_0"
+		],
+		"specialty_focus": [
+			"positioning"
+		],
+		"primary_stats": [
+			"communication"
+		],
+		"available_from": 2012,
+		"base_salary": 2800,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "traffic_manager",
+		"department": "operations",
+		"name_key": "ROLE_TRAFFIC_MANAGER",
+		"title_keys": [
+			"POS_TRAFFIC_MANAGER_0",
+			"POS_TRAFFIC_MANAGER_1"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"attention"
+		],
+		"available_from": 1990,
+		"base_salary": 2600,
+		"hireable": true,
+		"effects": [
+			"error_catch"
+		]
+	},
+	{
+		"id": "proofreader",
+		"department": "operations",
+		"name_key": "ROLE_PROOFREADER",
+		"title_keys": [
+			"POS_PROOFREADER_0"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"attention"
+		],
+		"available_from": 1990,
+		"base_salary": 2000,
+		"hireable": true,
+		"effects": [
+			"error_catch"
+		]
+	},
+	{
+		"id": "new_business_manager",
+		"department": "new_business",
+		"name_key": "ROLE_NEW_BUSINESS_MANAGER",
+		"title_keys": [
+			"POS_NEW_BUSINESS_MANAGER_0"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"communication"
+		],
+		"available_from": 1990,
+		"base_salary": 4000,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "accountant",
+		"department": "support",
+		"name_key": "ROLE_ACCOUNTANT",
+		"title_keys": [
+			"POS_ACCOUNTANT_0"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"attention"
+		],
+		"available_from": 1990,
+		"base_salary": 2400,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "hr_specialist",
+		"department": "support",
+		"name_key": "ROLE_HR_SPECIALIST",
+		"title_keys": [
+			"POS_HR_SPECIALIST_0"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"communication"
+		],
+		"available_from": 1990,
+		"base_salary": 2400,
+		"hireable": true,
+		"effects": [
+			"reveal_hidden"
+		]
+	},
+	{
+		"id": "office_assistant",
+		"department": "support",
+		"name_key": "ROLE_OFFICE_ASSISTANT",
+		"title_keys": [
+			"POS_OFFICE_ASSISTANT_0"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"attention"
+		],
+		"available_from": 1990,
+		"base_salary": 1600,
+		"hireable": true,
+		"effects": []
+	},
+	{
+		"id": "purchasing",
+		"department": "support",
+		"name_key": "ROLE_PURCHASING",
+		"title_keys": [
+			"POS_PURCHASING_0"
+		],
+		"specialty_focus": [],
+		"primary_stats": [
+			"communication"
+		],
+		"available_from": 1990,
+		"base_salary": 2400,
+		"hireable": true,
+		"effects": []
+	}
+]

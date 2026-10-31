@@ -73,7 +73,14 @@ func _has_pending(state: SimState, client_id: String) -> bool:
 ## prospect: portföy dışı yeni marka ise müşteri sözlüğü (kabul edilince portföye eklenir), değilse {}.
 func make_brief(state: SimState, client: Dictionary, prospect: Dictionary) -> Dictionary:
 	var b: Dictionary = data.bal("briefs")
-	var size: String = state.rng.pick("briefs", b["sizes_by_scale"][int(client["scale"])])
+	var allowed: Array = data.office(state.office_level)["allowed_sizes"]
+	var sizes: Array = []
+	for s: Variant in b["sizes_by_scale"][int(client["scale"])]:
+		if allowed.has(s):
+			sizes.append(s)
+	if sizes.is_empty():
+		sizes = [allowed[allowed.size() - 1]]
+	var size: String = state.rng.pick("briefs", sizes)
 	var infl: float = Economy.inflation(data, state.clock.year())
 	var objective: String = ""
 	if not state.rng.chance("briefs", float(b["free_objective_chance"])):

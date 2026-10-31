@@ -23,6 +23,16 @@ var tone_ids: Array[String] = []
 var channel_ids: Array[String] = []
 var focus_ids: Array[String] = []
 
+var positions: Dictionary = {}
+var traits: Dictionary = {}
+var hiring_channels: Dictionary = {}
+var offices: Dictionary = {}
+var backgrounds: Dictionary = {}
+var position_ids: Array[String] = []
+var trait_ids: Array[String] = []
+var hiring_channel_ids: Array[String] = []
+var background_ids: Array[String] = []
+
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
 var handcrafted_brands: Array = []
@@ -94,6 +104,20 @@ func channel_audience_size(channel_id: String, audience_id: String) -> float:
 	return 1.0
 
 
+## Ofis seviyesi (1..5) → offices.json kaydı.
+func office(level: int) -> Dictionary:
+	return offices.get("office_%d" % level, {})
+
+
+func max_office_level() -> int:
+	return offices.size()
+
+
+## Dil başına isim listesi (GDD 24.5): names_tr.json / names_en.json.
+func names(lang: String) -> Dictionary:
+	return raw.get("names_%s.json" % lang, raw.get("names_tr.json", {}))
+
+
 func channels_available(year: int) -> Array[String]:
 	var out: Array[String] = []
 	for id: String in channel_ids:
@@ -125,6 +149,12 @@ func _index() -> void:
 	_fit["tone"] = raw["fit/tone_fit.json"]["tables"]["tone"]["values"]
 	_fit["channel_objective"] = raw["fit/channel_fit.json"]["tables"]["objective"]["values"]
 	_fit["channel_audience"] = raw["fit/channel_fit.json"]["tables"]["audience"]["values"]
+	_index_list("positions.json", positions, position_ids)
+	_index_list("traits.json", traits, trait_ids)
+	_index_list("hiring_channels.json", hiring_channels, hiring_channel_ids)
+	_index_list("backgrounds.json", backgrounds, background_ids)
+	var office_ids: Array[String] = []
+	_index_list("offices.json", offices, office_ids)
 	calendar = raw.get("calendar.json", {})
 	name_parts = raw.get("brands/name_parts.json", {})
 	handcrafted_brands = raw.get("brands/handcrafted_brands.json", [])

@@ -15,7 +15,21 @@ func bot_name() -> String:
 	return "rastgele"
 
 
+const HIRE_CHANCE: float = 0.05
+
+
 func decide(sim: Simulation) -> void:
+	if rng.randf() < HIRE_CHANCE and sim.staff.headcount(sim.state) < sim.staff.capacity(sim.state):
+		var roles: Array[String] = []
+		for id: String in sim.data.position_ids:
+			if bool(sim.data.positions[id]["hireable"]) and int(sim.data.positions[id]["available_from"]) <= sim.state.clock.year():
+				roles.append(id)
+		var found: Array[Dictionary] = SearchCandidatesCommand.new(roles[rng.randi_range(0, roles.size() - 1)], "job_ad",
+			"tr").execute(sim)
+		if not found.is_empty():
+			HireEmployeeCommand.new(found[rng.randi_range(0, found.size() - 1)]["id"]).execute(sim)
+	if sim.offices.can_move(sim.state) and rng.randf() < HIRE_CHANCE:
+		MoveOfficeCommand.new().execute(sim)
 	if not sim.state.is_idle():
 		return
 	for brief: Dictionary in sim.state.inbox.duplicate():
@@ -30,7 +44,8 @@ func decide(sim: Simulation) -> void:
 			"audience": data.audience_ids[rng.randi_range(0, data.audience_ids.size() - 1)],
 			"tone": data.tone_ids[rng.randi_range(0, data.tone_ids.size() - 1)],
 			"mix": [{"channel": channels[rng.randi_range(0, channels.size() - 1)], "share": 1.0}],
-			"sliders": [_random_sliders(), _random_sliders(), _random_sliders()]}
+			"sliders": [_random_sliders(), _random_sliders(), _random_sliders()],
+			"team": BotUtil.available_team(sim)}
 		StartCampaignCommand.new(brief["id"], choices).execute(sim)
 		return
 

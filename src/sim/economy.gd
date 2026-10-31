@@ -67,9 +67,9 @@ func weekly(state: SimState) -> void:
 		state.red_weeks = 0
 
 
-## Her ay sonu: sabit giderler (M3'te maaşlar, M6'da kira, M7'de abonelikler eklenecek).
-func monthly(state: SimState) -> void:
-	pay(state, data.balf("cashflow.monthly_base_cost") * inflation(data, state.clock.year()))
+## Her ay sonu: sabit gider + extra (kira ve maaşlar+SGK; M7'de yazılım abonelikleri eklenecek).
+func monthly(state: SimState, extra: float = 0.0) -> void:
+	pay(state, data.balf("cashflow.monthly_base_cost") * inflation(data, state.clock.year()) + extra)
 
 
 ## Yıl sonu: kurumlar vergisi (kâr varsa) ve yıllık sayaçların sıfırlanması.

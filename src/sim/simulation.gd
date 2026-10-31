@@ -11,6 +11,9 @@ signal briefs_received(count: int)
 signal clients_lost(client_names: Array[String])
 signal went_bankrupt()
 signal week_passed()
+## Çalışan bildirimleri (izin, istifa, seviye atlama…): key yerelleştirme anahtarı.
+signal staff_note(key: String, args: Array, kind: String)
+signal offer_received(offer: Dictionary)
 
 var data: GameData
 var state: SimState
@@ -21,12 +24,17 @@ var clients: ClientSystem
 var briefs: BriefGenerator
 var production: CampaignProduction
 var reports: ReportWriter
+## Çalışan ve ofis sistemleri; komutlar (src/commands) doğrudan bunları çağırır.
+var staff: StaffSystem
+var staff_life: StaffLife
+var offices: OfficeSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
 
 
-func _init(game_data: GameData, seed_value: int) -> void:
+## background: oyuncunun geçmişi (data/backgrounds.json, GDD 11.5); boşsa varsayılan.
+func _init(game_data: GameData, seed_value: int, background: String = "") -> void:
 	data = game_data
 	state = SimState.new(data, seed_value)
 	scoring = Scoring.new(data)
@@ -36,7 +44,15 @@ func _init(game_data: GameData, seed_value: int) -> void:
 	briefs = BriefGenerator.new(data, clients)
 	production = CampaignProduction.new(data, scoring)
 	reports = ReportWriter.new(data)
-	clients.create_starting(state)
+	staff = StaffSystem.new(data)
+	staff_life = StaffLife.new(data)
+	offices = OfficeSystem.new(data)
+	var founder: Dictionary = staff.create_founder(state, background)
+	clients.create_starting(state, int(data.backgrounds[founder["background"]]["extra_start_clients"]))
+
+
+func set_overtime(on: bool) -> void:
+	state.overtime = on
 
 
 ## Kayıttan gelen durumla değiştirir (SaveSystem).
@@ -52,14 +68,17 @@ func step_day() -> void:
 	if not state.active_campaign.is_empty():
 		if pause_on_phase and _needs_phase_input():
 			return
-		production.produce_day(state.active_campaign, state.player, state.rng)
+		production.produce_day(state.active_campaign, state)
 		if production.is_finished(state.active_campaign):
 			_deliver()
+	staff_life.daily(state)
 	var ended: Dictionary = state.clock.advance_day()
 	if ended["week"]:
 		var inbox_before: int = state.inbox.size()
 		briefs.weekly(state)
 		_update_airing()
+		for note: Dictionary in staff_life.weekly(state):
+			staff_note.emit(note["key"], note["args"], note["kind"])
 		economy.weekly(state)
 		if state.inbox.size() > inbox_before:
 			briefs_received.emit(state.inbox.size() - inbox_before)
@@ -67,7 +86,9 @@ func step_day() -> void:
 		if state.bankrupt:
 			went_bankrupt.emit()
 	if ended["month"]:
-		economy.monthly(state)
+		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state))
+		for offer: Dictionary in staff_life.monthly_offers(state):
+			offer_received.emit(offer)
 	if ended["year"]:
 		_end_year()
 
@@ -133,7 +154,13 @@ func start_campaign(brief_id: String, choices: Dictionary) -> Dictionary:
 		"sliders": sliders, "name": choices.get("name", ""), "size": brief["size"],
 		"fee": brief["fee"], "media_budget": brief["media_budget"], "deadline_weeks": brief["deadline_weeks"],
 		"client_name": brief_client.get("name", ""), "client_scale": int(brief_client.get("scale", 0))}
+	var team: Array = choices.get("team", [])
+	if team.is_empty():
+		team = [state.founder()["id"]]
+	setup["team"] = team.duplicate()
 	var err: String = production.validate_setup(setup, state.clock.year())
+	if err.is_empty():
+		err = production.validate_team(team, state)
 	if not err.is_empty():
 		return {"ok": false, "error": err}
 	var prospect: Dictionary = brief["prospect"]
@@ -169,6 +196,9 @@ func _deliver() -> void:
 	var setup: Dictionary = camp["setup"]
 	var client: Dictionary = state.clients.get(setup["client_id"], {})
 	var size: String = setup["size"]
+	var caught: int = staff_life.catch_errors(state, int(camp["errors"]))
+	camp["errors"] = int(camp["errors"]) - caught
+	camp["errors_caught"] = caught
 	var report: Dictionary = scoring.evaluate(camp, client, state.history, state.clock.week_index, state.clock.year(),
 		float(state.best_raw.get(size, 0.0)), state.rng.stream("scoring"))
 	state.best_raw[size] = report["new_best"]
@@ -176,7 +206,6 @@ func _deliver() -> void:
 	var media: float = float(setup["media_budget"])
 	var income: Dictionary = kpi.agency_income(setup, 0.0)
 	economy.add_payable(state, media)
-	_grow_player(report)
 	if not client.is_empty():
 		economy.invoice(state, client, float(income["fee"]) + media + float(income["commission"]),
 			float(income["fee"]) + float(income["commission"]))
@@ -220,10 +249,17 @@ func _finish(camp: Dictionary) -> void:
 		var bonus: float = float(income["bonus"])
 		if bonus > 0.0:
 			economy.invoice(state, client, bonus, bonus)
-		var delta: float = clients.satisfaction_delta(client, score, ratio, setup["tone"], year)
+		var team: Array = setup.get("team", [])
+		var delta: float = clients.satisfaction_delta(client, score, ratio, setup["tone"], year,
+			staff_life.account_bonus(state, team))
 		camp["satisfaction_delta"] = delta
 		clients.apply_result(client, camp["id"], score, setup["objective"], year, delta)
 	_apply_reputation(score, setup["size"])
+	for emp_name: String in staff_life.campaign_finished(state, setup.get("team", []), camp["report"]):
+		if emp_name.is_empty():
+			staff_note.emit("NOTE_LEVEL_UP_FOUNDER", [], "good")
+		else:
+			staff_note.emit("NOTE_LEVEL_UP", [emp_name], "good")
 	camp["lines"] = reports.explanation_lines(camp["report"])
 	camp["reviews"] = reports.reviews(score, state.rng.stream("reviews"))
 	state.finished.append(camp)
@@ -256,25 +292,6 @@ func _apply_reputation(score: float, size: String) -> void:
 	elif score <= data.balf("reputation.bad_score"):
 		state.reputation -= float(data.bal("reputation.bad_loss")[size])
 	state.reputation = clampf(state.reputation, data.balf("reputation.min"), data.balf("reputation.max"))
-
-
-## Oyuncu karakteri kampanyalardan XP kazanır, seviye atlayınca statlar artar (GDD 11.2, 11.5).
-## M1'in geçici sade sürümü; M3'te çalışan modeliyle değiştirilecek (K-024).
-func _grow_player(report: Dictionary) -> void:
-	var g: Dictionary = data.bal("player_growth")
-	state.player["xp"] = float(state.player.get("xp", 0.0)) + float(report["score"]) * float(g["xp_per_score_point"])
-	var per_level: float = float(g["xp_per_level"])
-	var cap: float = float(g["stat_cap"])
-	while float(state.player["xp"]) >= per_level:
-		state.player["xp"] = float(state.player["xp"]) - per_level
-		state.player["level"] = int(state.player.get("level", 1)) + 1
-		var total: float = maxf(1.0, float(report["s"]) + float(report["k"]) + float(report["t"]))
-		var shares: Dictionary = {"strategy": float(report["s"]) / total, "creative": float(report["k"]) / total,
-			"technical": float(report["t"]) / total}
-		var points: float = float(g["stat_points_per_level"])
-		for stat: String in shares:
-			state.player[stat] = minf(cap, float(state.player[stat]) + points * float(shares[stat]))
-		state.player["speed"] = minf(cap, float(state.player["speed"]) + float(g["speed_per_level"]))
 
 
 func _end_year() -> void:

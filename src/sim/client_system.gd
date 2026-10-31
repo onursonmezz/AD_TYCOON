@@ -28,8 +28,13 @@ func create_client(state: SimState, sector: String, scale: int, brand_name: Stri
 
 
 ## Başlangıç müşterileri: el yapımı "starter" markalardan (GDD 6.1 örnekleri).
-func create_starting(state: SimState) -> void:
+## extra: oyuncu geçmişinin getirdiği ek müşteri (GDD 11.5 "müşteri ağı"); el yapımı liste bitince rastgele mahalle markası.
+func create_starting(state: SimState, extra: int = 0) -> void:
 	var count: int = data.bali("clients.start_count")
+	for i: int in extra:
+		var sector: String = state.rng.pick("clients", data.sectors_available(state.clock.year()))
+		var c: Dictionary = create_client(state, sector, 0)
+		state.clients[c["id"]] = c
 	for rec: Dictionary in data.handcrafted_brands:
 		if count <= 0:
 			break
@@ -69,9 +74,9 @@ func expectation(client: Dictionary, year: int) -> float:
 		+ (year - data.bali("time.base_year")) * data.balf("satisfaction.expectation_per_year")
 
 
-## GDD 6.4 Δmemnuniyet. M1'de revizyon, gecikme, bütçe aşımı ve account bonusu 0'dır.
+## GDD 6.4 Δmemnuniyet. Revizyon, gecikme ve bütçe aşımı henüz 0 (K-023); account_bonus ekipten gelir (0..+6).
 func satisfaction_delta(client: Dictionary, score: float, kpi_ratio: float, tone: String, year: int,
-		late_weeks: int = 0, over_budget: bool = false, revisions: int = 0) -> float:
+		account_bonus: float = 0.0, late_weeks: int = 0, over_budget: bool = false, revisions: int = 0) -> float:
 	var sat: Dictionary = data.bal("satisfaction")
 	var d: float = float(sat["quality_coef"]) * (score - expectation(client, year)) / float(sat["quality_div"])
 	d += float(sat["kpi_coef"]) * clampf(kpi_ratio - 1.0, -1.0, 1.0)
@@ -79,6 +84,7 @@ func satisfaction_delta(client: Dictionary, score: float, kpi_ratio: float, tone
 	if over_budget:
 		d += float(sat["over_budget"])
 	d -= revisions * float(client["personality"]["detail"]) / 100.0 * float(sat["revision_coef"])
+	d += account_bonus
 	if float(client["personality"]["risk"]) >= data.balf("clients.bold_risk_min") and tone == "bold":
 		d += float(sat["bold_match_bonus"])
 	return d

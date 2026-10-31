@@ -1,0 +1,78 @@
+[
+	{
+		"id": "job_ad",
+		"name_key": "HIRE_JOB_AD",
+		"desc_key": "HIRE_JOB_AD_DESC",
+		"available_from": 1990,
+		"cost_1990": 500,
+		"candidates": 3,
+		"level_range": [
+			1,
+			2
+		],
+		"primary_stat_mean": 42,
+		"stat_spread": 12,
+		"potential_range": [
+			45,
+			75
+		],
+		"salary_factor": 1
+	},
+	{
+		"id": "internship",
+		"name_key": "HIRE_INTERNSHIP",
+		"desc_key": "HIRE_INTERNSHIP_DESC",
+		"available_from": 1990,
+		"cost_1990": 200,
+		"candidates": 3,
+		"level_range": [
+			1,
+			1
+		],
+		"primary_stat_mean": 30,
+		"stat_spread": 8,
+		"potential_range": [
+			70,
+			95
+		],
+		"salary_factor": 0.5
+	},
+	{
+		"id": "career_site",
+		"name_key": "HIRE_CAREER_SITE",
+		"desc_key": "HIRE_CAREER_SITE_DESC",
+		"available_from": 2000,
+		"cost_1990": 1500,
+		"candidates": 4,
+		"level_range": [
+			1,
+			3
+		],
+		"primary_stat_mean": 48,
+		"stat_spread": 12,
+		"potential_range": [
+			50,
+			80
+		],
+		"salary_factor": 1
+	},
+	{
+		"id": "headhunter",
+		"name_key": "HIRE_HEADHUNTER",
+		"desc_key": "HIRE_HEADHUNTER_DESC",
+		"available_from": 1990,
+		"cost_1990": 8000,
+		"candidates": 3,
+		"level_range": [
+			3,
+			6
+		],
+		"primary_stat_mean": 62,
+		"stat_spread": 10,
+		"potential_range": [
+			60,
+			90
+		],
+		"salary_factor": 1.15
+	}
+]

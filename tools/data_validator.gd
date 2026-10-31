@@ -15,6 +15,11 @@ const ID_LISTS: Dictionary = {
 	"focus_areas.json": "focus",
 	"channels.json": "channel",
 	"combo_rules.json": "combo_rule",
+	"positions.json": "position",
+	"traits.json": "trait",
+	"hiring_channels.json": "hiring_channel",
+	"offices.json": "office",
+	"backgrounds.json": "background",
 }
 const FIT_FILES: Array[String] = [
 	"fit/sector_objective.json",
@@ -50,6 +55,7 @@ func validate(data: Dictionary) -> PackedStringArray:
 	_check_combo_rules(data, ids)
 	_check_calendar(data, ids)
 	_check_brands(data, ids)
+	_check_staff_data(data, ids)
 	var rules: Dictionary = _parse_row_rules(data)
 	for file_name: String in FIT_FILES:
 		_check_fit_file(data, file_name, ids, rules)
@@ -280,6 +286,27 @@ func _check_brands(data: Dictionary, ids: Dictionary) -> void:
 	for rec: Variant in hand:
 		if not (ids["sector"] as Array).has(rec.get("sector")):
 			_err("handcrafted_brands.json: '%s' bilinmeyen sektör" % str(rec.get("id")))
+
+
+## Pozisyon uzman alanları ve statlar geçerli mi; geçmişlerin statları tam mı; isim listeleri var mı (M3).
+func _check_staff_data(data: Dictionary, ids: Dictionary) -> void:
+	var balance: Variant = data.get("balance.json")
+	var stats: Array = balance.get("staff_rules", {}).get("stats", []) if typeof(balance) == TYPE_DICTIONARY else []
+	for rec: Dictionary in _records(data, "positions.json"):
+		for f: Variant in rec.get("specialty_focus", []):
+			if not (ids["focus"] as Array).has(f):
+				_err("positions.json: '%s' bilinmeyen odak alanı '%s'" % [str(rec["id"]), str(f)])
+		for s: Variant in rec.get("primary_stats", []):
+			if not stats.has(s):
+				_err("positions.json: '%s' bilinmeyen stat '%s'" % [str(rec["id"]), str(s)])
+		if (rec.get("title_keys", []) as Array).is_empty():
+			_err("positions.json: '%s' unvan listesi boş" % str(rec["id"]))
+	for rec: Dictionary in _records(data, "backgrounds.json"):
+		_check_keys_match("backgrounds.json '%s' stats" % str(rec["id"]), (rec.get("stats", {}) as Dictionary).keys(), stats)
+	for file_name: String in ["names_tr.json", "names_en.json"]:
+		var n: Variant = data.get(file_name)
+		if typeof(n) != TYPE_DICTIONARY or (n.get("surnames", []) as Array).is_empty():
+			_err("%s eksik veya soyad listesi boş" % file_name)
 
 
 func _parse_row_rules(data: Dictionary) -> Dictionary:

@@ -1,0 +1,58 @@
+[
+	{
+		"id": "copywriter",
+		"name_key": "BG_COPYWRITER",
+		"desc_key": "BG_COPYWRITER_DESC",
+		"stats": {
+			"strategy": 65,
+			"creative": 85,
+			"technical": 55,
+			"communication": 55,
+			"speed": 70,
+			"attention": 50
+		},
+		"extra_start_clients": 0
+	},
+	{
+		"id": "marketing_manager",
+		"name_key": "BG_MARKETING_MANAGER",
+		"desc_key": "BG_MARKETING_MANAGER_DESC",
+		"stats": {
+			"strategy": 85,
+			"creative": 65,
+			"technical": 55,
+			"communication": 65,
+			"speed": 65,
+			"attention": 50
+		},
+		"extra_start_clients": 1
+	},
+	{
+		"id": "graphic_designer",
+		"name_key": "BG_GRAPHIC_DESIGNER",
+		"desc_key": "BG_GRAPHIC_DESIGNER_DESC",
+		"stats": {
+			"strategy": 60,
+			"creative": 75,
+			"technical": 80,
+			"communication": 45,
+			"speed": 70,
+			"attention": 55
+		},
+		"extra_start_clients": 0
+	},
+	{
+		"id": "salesperson",
+		"name_key": "BG_SALESPERSON",
+		"desc_key": "BG_SALESPERSON_DESC",
+		"stats": {
+			"strategy": 70,
+			"creative": 65,
+			"technical": 55,
+			"communication": 90,
+			"speed": 65,
+			"attention": 45
+		},
+		"extra_start_clients": 0
+	}
+]
