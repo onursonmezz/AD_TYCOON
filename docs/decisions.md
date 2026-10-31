@@ -122,7 +122,73 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 
 ---
 
+## K-020 · 2026-10-31 · Kabul · Orgo onayı (M1 planı)
+**Konu:** M1 başlangıç değerleri (K-018 kapsamı). Hepsi `data/balance.json`'da.
+**Karar:**
+- `hata_ağırlığı(yıl, büyüklük) = 0.03 × dönem_tabanı(yıl, büyüklük)` (`scoring.error_weight_ratio`).
+- `talep(ilgi) = 0.6 + 0.8 × ilgi`; eğrisi olmayan kanalda ilgi = 1.0 (`kpi.demand_*`).
+- `hatırlanma(puan) = 0.2 + 0.06 × puan_10` (`kpi.recall_*`).
+- Pazar nüfusu 1990'da 56 milyon, yılda +%1. Kitle payları Genç 0.30 · Yetişkin 0.40 · Olgun 0.20 · B2B 0.10.
+- Müşteri ölçeğine göre erişim tavanı: Mahalle 0.02 · Yerel 0.1 · Ulusal 0.6 · Çok uluslu 1.0.
+- Kanal CPM/ER/CVR: kanal türü varsayılanları (`kpi.category_defaults`); kanalda `base_*` varsa o kullanılır (billboard, GDD 24.4).
+- Hedefe göre dönüşüm çarpanı (7.10'da yalnız Satış 1.5, Bilinirlik 0.4 verilmiş): Lansman 0.8, Yenileme 0.5, Etkileşim 0.9, SSR 0.3.
+- `ortalama_sepet(sektör)`: `data/sectors.json → avg_basket` (1990 ₺).
+- Ev ofisi aylık gideri ₺1.500 (enflasyonla artar).
+- Brief ücretleri (1990 ₺): fee küçük 6–15k / orta 25–60k; medya küçük 15–60k / orta 120–400k.
+
+## K-021 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** 7.5 "her üretim bir hata olasılığı taşır".
+**Karar:** Hata zarı çalışan başına günde bir kez atılır: `p = 0.06 × (1 − dikkat/100) × (acele ? 1.4 : 1)`. Teslim süresi 4 haftanın altındaysa "acele" sayılır (`production.rush_below_weeks`). Alan başına zar atılsaydı günde 3 kat hata çıkardı.
+
+## K-022 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** M1 mimarisi.
+**Karar:** Simülasyon `src/sim` altında, Node'dan bağımsız: `GameData` (veri), `SimRng` (sistem başına tohumlu akış), `SimState` (tüm durum, sözlük/dizi), `SimClock`, `Scoring`, `Kpi`, `Economy`, `ClientSystem`, `BriefGenerator`, `CampaignProduction`, `Simulation` (bağlayıcı). Oyuncu eylemleri `src/commands` (`StartCampaignCommand`, `DeclineBriefCommand`). M2'de `GameState`/`Clock`/`DataDB` autoload'ları bunları saracak (24.2'deki `clock.gd` autoload olarak kalır, saf hesap `sim_clock.gd`'de).
+
+## K-023 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** M1 sadeleştirmeleri (ilgili taşta gerçek sistemle değişecek).
+**Karar:** Tek üretici oyuncu karakteri; araç çarpanı 1.0 (M7), uzmanlık 1.0 (M3), ev odası kalitesi 50 → ofis çarpanı 1.05 (M6), moral 70 ve enerji 100 sabit (M3). Revizyon turu, gecikme, bütçe aşımı, account bonusu 0. Trend = 1, AI yorgunluğu yok (M7). Tedarikçi verimi 1, CPM'de mevsim 1, prodüksiyon marjı yok (M4). Çift hedef ve `combo_rules` uygulanmıyor (Ar-Ge, M7). Ar-Ge kilitleri yok: ton/kitle/çoklu kanal baştan açık (M7). Aynı anda tek kampanya üretimde (yayındakiler paralel). Memnuniyet < 20 olan müşteri ihaleye çıkmadan ayrılır (M5'te pitch). Yeni marka teklifleri doğrudan iştir (M5'te pitch daveti). Güven (trust) değişmiyor (M3 account ekibi).
+
+## K-024 · 2026-10-31 · Kabul · Uygulama kararı (geçici)
+**Konu:** M1'de büyüme mekaniği yok; dönem tabanı her yıl %8.5 artıyor.
+**Durum:** Hiç büyümeyen tek kişilik ajansta puanlar yıl yıl düşüyor (ilk ölçüm: bilgili bot Y1 5.2 → Y10 2.1).
+**Karar:** GDD 11.2/11.5'teki XP/seviye mekaniğinin sade hâli oyuncuya uygulandı: puan × 10 XP, 100 XP'de seviye, seviye başına +3 stat (o kampanyanın S/K/T payına göre) ve +1 hız, tavan 100 (`player_growth`). M3'te çalışan modeliyle değiştirilecek. Başlangıç statları: Strateji 75, Kreatif 75, Teknik 60, Hız 70, Dikkat 50.
+
+## K-025 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Kampanya para akışı (GDD 7.11, 13.3).
+**Karar:** Teslimde müşteriye tek fatura kesilir: fee + medya + %15 komisyon. Vade ödeme disiplinine göre 4/8/12 hafta (30/60/90 gün); geç ödeme olasılığı `(100 − ödeme)/100 × 0.1`, gecikme +4..8 hafta. Medya, tedarikçiye teslimden 6 hafta sonra ödenir (`cashflow.media_payment_weeks`; GDD "peşin veya 30 gün", ayarla 45 güne çekildi). Medya geçiş kalemidir, vergiye girmez. KPI aşılırsa yayın sonunda ayrı prim faturası: fee × min(%50, KPI oranı − 1). Yıl sonunda kârın %25'i kurumlar vergisi.
+
+## K-026 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Brief ve müşteri detayları.
+**Karar:** Oyun 2 başlangıç müşterisiyle açılır (Lezzetçi Köfte, Çınar Mobilya; mahalle ölçeği). Brief büyüklüğü müşteri ölçeğine göre (mahalle: küçük; yerel: küçük/orta; ulusal ve üstü: orta). Ev odasında büyük/mega yok (12.1). Teslim süreleri küçük 4–7, orta 8–12 hafta. Brief'lerin %40'ında hedef serbest. Brief 2 hafta sonra düşer. Haftalık brief olasılığı ölçeğe göre %5–8 × mevsim çarpanı (×1.5). KPI türü hedefe göre (Bilinirlik/Lansman/SSR → erişim, Satış → dönüşüm, Yenileme → bilinirlik artışı, Etkileşim → etkileşim). Hedef değer: ortalama kanal + ortalama kitle + puan 6 ile hesaplanan referans × 0.8–1.2.
+
+## K-027 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Formüllerdeki küçük yorumlar.
+**Karar:**
+- 6.4 `detaycılık` 0–100 tutulduğu için revizyon cezasında /100 ile kullanılır (yoksa tek revizyon −150 eder).
+- 7.3 `önerilen_kanal` formülündeki ₺10.000 enflasyonla ölçeklenir (8.4'teki min. bütçeler gibi 1990 bazlı).
+- 7.8 "öncü" bonusu yalnızca 1990'dan sonra çıkan kanallara verilir (oyun başında zaten var olanlar "yeni çıkmış" sayılmaz).
+- 7.10 viral mekaniği 2005'ten itibaren (formüldeki "2005+"; 5.2'de "2008 Viral mekaniği açılır" yazıyor, Bölüm 7 esas alındı). Viral zarı kanal başına atılır; olasılık × kanalın yıldız sayısı × ton bonusu (Esprili/Cesur ×1.5).
+- 14.1 itibar aralıkları büyüklüğe dağıtıldı: puan ≥ 8 → küçük +0.5, orta +1, büyük +1.5, mega +2; puan ≤ 4 → −1/−1.5/−2/−3; müşteri kaybı −2.
+
+---
+
+## M1 denge sonucu (200 koşu × 10 yıl, `tools/balance_sim.gd`)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan | Kampanya/koşu |
+|---|---|---|---|---|
+| Rastgele | %41.0 | %58.5 | 5.09 | 23.1 |
+| Bilgili | %0.0 | %0.0 | 6.60 | 54.2 |
+
+Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: Y1 5.62 → Y10 4.23.
+**M1 kabulü:** puan farkı **1.51** (hedef ≥ 2) ✗ · rastgele bot iflası **%41** (hedef %20–40, sınırda) ✗. Ayrıntı ve seçenekler: A-005, A-007.
+
+---
+
 ## Açık sorular (ilgili kilometre taşında sorulacak)
 
-- **A-005 (M1/M10):** M1 kabulü "akıllı bot rastgele bottan ≥ 2 puan iyi", 27.2 hedefi "≥ 2.5". Şimdilik M1 için ≥ 2, M10 için ≥ 2.5 olarak okunuyor.
+- **A-005 (M1 — karar bekliyor):** Puan farkı 1.5'te takılıyor; ayarla ≥ 2'ye çıkmıyor (serbest hedef oranı %100'de bile 1.74). Sebepler: (1) Göreceli puan (7.9): bilgili bot kendi rekoruyla (×1.05) yarışıyor, rastgele bot ise yalnızca dönem tabanıyla. İyi oyuncunun çıtası yükseldikçe fark sıkışıyor. (2) Hedefi çoğu zaman brief belirliyor, en ağır uyum (sektör × hedef, ağırlık 0.35) oyuncunun bilgisine bağlı değil. (3) F aralığı dar (0.8–1.2); rastgele slider'lar bile ~1.12 alıyor. M10 hedefi (27.2) ise ≥ 2.5.
+- **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6": 17'deki ayrıntılı koşul esas alınabilir.
+- **A-007 (M2/M3):** S/K oranı tek kişilik ajansta yapısal olarak ≥ ~1 çıkıyor, çünkü Strateji fazının bütün üretimi S'ye gidiyor. İdeal oranı 1'in altında olan hedefler (Bilinirlik 0.6, Yenileme 0.5, SSR 0.8, Etkileşim 0.9) her zaman B cezası alıyor. Ekip kurulunca (M3) kreatif ağırlıklı ekip bunu çözer; ya da faz sürelerinin oyuncuya bırakılması düşünülebilir.
+- **A-008 (M4):** 7.3 "Display + Retargeting" sinerjisi: kanal tablosunda "retargeting" kanalı yok (5.2'de özellik olarak geçiyor). Çift veride duruyor ama `b` tarafı boş, yani etkisiz.
+- **A-009 (M3):** K-024'teki geçici oyuncu XP büyümesi M3'te gerçek çalışan modeline devredilmeli.
 - **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6" — 17'deki ayrıntılı koşul esas alınabilir.

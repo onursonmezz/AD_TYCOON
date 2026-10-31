@@ -38,3 +38,5 @@ gereken bir şey varsa adım adım tarif et.
 - Temiz bir kopyada ya da yeni dosyalar eklendikten sonra testlerden önce bir kez içe aktar:
   `godot --headless --import` (GUT sınıfları ve strings.csv çevirileri bu adımda üretilir).
 - GUT 9.7.1 `addons/gut` altında. Veri doğrulayıcının çekirdeği `tools/data_validator.gd`.
+- Denge aracında dosyayı değiştirmeden değer denemek: `... balance_sim.gd -- --runs=50 --set=yol.alt=değer`.
+- Simülasyonun giriş noktası `src/sim/simulation.gd` (`Simulation`); veri erişimi `GameData.bal("yol")`.
