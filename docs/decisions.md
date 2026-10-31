@@ -104,11 +104,25 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 
 ---
 
+## K-016 · 2026-10-31 · Kabul · Orgo onayı (A-001)
+**Konu:** 7.2 `uyum_KN` içinde `(kanal_hedef + kanal_kitle) / 2` buçuklu değer verebilir (ör. +0.5); `f(x)` yalnızca tam sayılarda tanımlı.
+**Karar:** `f` buçuklu değerlerde komşu iki tam sayının çarpanları arasında doğrusal ara değer alır (ör. f(+0.5) = (1.00 + 1.06) / 2 = 1.03).
+
+## K-017 · 2026-10-31 · Kabul · Orgo onayı (A-002)
+**Konu:** 7.2'de `uyum_ton = f(…)^0.5`, M formülünde ayrıca `uyum_ton^0.10`.
+**Karar:** İkisi birlikte uygulanır (dokümandaki gibi; toplam etki üssü 0.05). Playtest'te ton etkisi fazla zayıf kalırsa yeniden ele alınır.
+
+## K-018 · 2026-10-31 · Kabul · Orgo onayı (A-003)
+**Konu:** 7.9 `hata_ağırlığı(yıl)`, 7.10 `talep()`, `hatırlanma()`, `kitle_büyüklüğü`, `pazar_nüfusu`, `ortalama_sepet(sektör)` için GDD'de sayı yok.
+**Karar:** Claude M1 planında başlangıç değerlerini önerir; Orgo onayından sonra `data/balance.json`'a yazılır ve burada listelenir.
+
+## K-019 · 2026-10-31 · Kabul · Orgo onayı (A-004)
+**Konu:** 6.4 `12*(kalite_puanı − marka.beklenti)/2`.
+**Karar:** Dokümandaki gibi bırakılır (etkin katsayı 6); `balance.json`'da tek katsayı olarak tutulur.
+
+---
+
 ## Açık sorular (ilgili kilometre taşında sorulacak)
 
-- **A-001 (M1):** 7.2 `uyum_KN` için `(kanal_hedef + kanal_kitle) / 2` buçuklu değer verebilir (ör. +0.5); `f(x)` yalnızca tam sayılarda tanımlı. Öneri: komşu değerler arasında doğrusal ara değer.
-- **A-002 (M1):** 7.2'de `uyum_ton` zaten `^0.5` alınıyor, M formülünde ayrıca `^0.10` ağırlığı var — ikisi birlikte mi uygulanacak (toplam üs 0.05)? Metin "tonun etkisi daha yumuşak" diyor; birlikte uygulamak doğrudan okunuş.
-- **A-003 (M1):** 7.9 `hata_ağırlığı(yıl)` ve 7.10 `talep()`, `hatırlanma()`, `kitle_büyüklüğü`, `pazar_nüfusu`, `ortalama_sepet(sektör)` için sayı/eğri verilmemiş.
-- **A-004 (M1):** 6.4 `12*(kalite_puanı − marka.beklenti)/2` — sadeleştirilmiş hâli `6*(…)`; bilinçli mi yazım mı?
 - **A-005 (M1/M10):** M1 kabulü "akıllı bot rastgele bottan ≥ 2 puan iyi", 27.2 hedefi "≥ 2.5". Şimdilik M1 için ≥ 2, M10 için ≥ 2.5 olarak okunuyor.
 - **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6" — 17'deki ayrıntılı koşul esas alınabilir.
