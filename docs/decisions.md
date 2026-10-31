@@ -274,6 +274,39 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - 10.4 tedarikçi verimi = 1 + yetenek/400 + hacim indirimi. Yetenek, ekipteki en iyi medya planlamacının (strateji + iletişim)/2'si. Hacim indirimi, yıllık medya hacminin her ₺1M'u (1990) için %2, en fazla %15. Verim etkin harcamayı (gösterimi) artırır.
 - Eşzamanlı kampanya kararı (A-013) M4'ten sonraya kaldı (Orgo, C kararı).
 
+## K-044 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Kanal kategorisi seçenekleri (9.2–9.5, 9.7).
+**Karar:** Hepsi `data/channel_options.json`'da; arayüz seçenekleri bu dosyadan otomatik çizer, varsayılan "Otomatik"tir.
+- **Açık hava:** Lokasyon A (maliyet ×2, gösterim ×2.5; 9.2) / B / C (×0.6 / ×0.5). Süre 1/2/4 hafta: hatırlanma ×0.9 / 1 / 1.1. Megalight için belediye izni gecikmesi %20 (gösterim ×0.5, memnuniyet −3). DOOH'ta ölçümleme slider payı etkileşimi en fazla %20 artırır.
+- **Yayın:** Kuşak: sabah ve gündüz Olgun'a, gece Genç'e uygun (9.4); prime pahalı ama geniş. Spot 15–60 sn: maliyet ×0.6–1.8, hatırlanma ×0.8–1.2. TV/sinema/CTV bütçesinin %20'si çekim prodüksiyonudur, ajans bunun %20'sini marj alır. Cesur tonda %10 olasılıkla Yayın Kurulu durdurması (gösterim ×0.3, memnuniyet −5).
+- **Dijital ve sosyal:** Teklif modeli CPM/CPC/CPA, hedefe göre etkili ("Bilinirlik + CPA = kötü", 9.5). Hedefleme geniş/dengeli/dar; dar hedeflemenin etkisi 2024'ten sonra zayıflar (çerezsiz dünya).
+- **Gerilla:** 9.3'teki 5 fikir kartı; her birinin etkisi ve riski farklı (ceza = bütçenin %10–25'i, memnuniyet −2..−6). Basına çıkma olasılığı = 0.25 + 0.05 × (puan − 6), ekipte PR varsa ×1.33; basına çıkarsa gösterim ×2.
+- **Etkinlik:** Bütçenin tamamı prodüksiyon, marj %20 (9.7 "%15–25"). Mekân, catering ve davetli seçenekleri; basın + influencer davetlisi 2012'den itibaren. Riskler: açık havada hava %20, her etkinlikte genel aksilik %12. PR & Etkinlik çalışanı riskleri yarıya indirir.
+- Telafi edilmeyen ertelemeler (B kararı): dijital canlı panel, A/B testi, reklam yorgunluğu, sponsorluk sezonu olayları, aylık sosyal medya retainer işi.
+
+## K-045 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Influencer pazarlaması (9.6).
+**Karar:**
+- Havuzda 12 kişi var, her oyun yılı yenilenir. Kademeler (9.6): nano/mikro "mikro" kanalında, makro/mega "makro" kanalında. Takipçi, etkileşim oranı ve ücret aralıkları `channel_options.json → influencers`'ta.
+- Gizli "gerçeklik oranı" %40–100 arası. PR & Etkinlik departmanından biri varsa görünür (11.1 "influencer sahte takipçi tespiti"; Ar-Ge'deki "Influencer Analitiği" M7'de).
+- Görülme = paylaşım (bütçe/ücret, en fazla 4) × takipçi × 0.35 × gerçeklik oranı. Etkileşim = influencer'ın oranı × kitle uyumu × niş uyumu (sektörle eşleşen niş ×1.3) × tekrar bonusu.
+- Aynı kişiyle tekrar çalışınca iş başına %10 indirim (en fazla %20) ve +%10 etkileşim.
+- Skandal olasılığı kişi başına %2–12; teslimde zarlanır. Oyuncu 1 hafta içinde karar verir, cevap vermezse sessiz kalmış sayılır:
+  - Feshet: gösterim ×0.3, memnuniyet −2.
+  - Sessiz kal: memnuniyet −8, itibar −2.
+  - Açıklama yap: ekipteki en iyi iletişim statıyla zar atılır; başarıda −2, başarısızlıkta −10.
+
+---
+
+## M4-B denge sonucu (200 koşu × 10 yıl)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan | Kampanya/koşu | Küçük ofis |
+|---|---|---|---|---|---|
+| Rastgele | %38.0 ✓ | %70.0 | 5.51 | 21.8 | %60 koşu, medyan Y4 |
+| Bilgili | %1.5 | %7.0 | 6.46 | 55.3 | %99 koşu, medyan Y4 |
+
+**30 yıllık koşu (50 koşu):** Y20'den sonra iki botun ortalama puanı da 1–2'ye çöküyor. Bilgili bot büyütülmüş ofise (₺3M × enflasyon) hiç çıkamıyor, ekip 6 kişide kalıyor. Dönem beklentisi ise 30 yılda ×11 büyüyor (7.9). Bkz. A-014.
+
 ---
 
 ## M4-A denge sonucu (200 koşu × 10 yıl)
@@ -320,4 +353,5 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **A-010:** Kapandı, bkz. K-034.
 - **A-011 (M10):** Ekonomi GDD 27.2 hedeflerinin gerisinde. Bilgili bot küçük ofise Y5'te geçiyor (hedef Y2–Y3), büyütülmüş ofise (₺3M) 10 yılda ulaşamıyor. Puanı Y2'de 7.8, Y10'da 5.0 (dönem beklentisi her yıl %8.5 büyüyor, ilandan alınan çalışanlar zayıf). Ayar kolları: brief ücretleri, ofis bedelleri, işe alım kalitesi, müşteri ölçeği büyümesi.
 - **A-012 (M10):** Rastgele bot ilk 3 yılda %45 iflas ediyor (hedef %20–40). Rastgele işe alım (maaş yükü) bunu artırıyor.
+- **A-014 (öncelikli denge konusu):** Uzun vadede oyun kırılıyor: 7.9'daki dönem tabanı yılda %8.5 büyüyor; buna yetişmek için ekibin ofis seviyeleriyle büyümesi gerekiyor (12.1: Y8 ₺3M, Y14 ₺15M, Y22 ₺80M). Mevcut ekonomide büyütülmüş ofise 30 yılda bile çıkılamıyor, puanlar Y20'den sonra 1'e iniyor. Ayar kolları: ofis bedelleri, büyük işlerin ücretleri ve sıklığı, müşteri ölçeğinin itibarla büyümesi, eşzamanlı kampanyalar (A-013), dönem büyüme oranı. Önerim: M5'ten önce kısa, ayrı bir denge adımı.
 - **A-013 (M4/M5):** GDD 11.1 Trafik "eşzamanlı kampanya sayısını ↑" diyor; şu an aynı anda tek kampanya üretimde. Eşzamanlı kampanyalar ekibin daha fazla iş, yani daha fazla gelir üretmesini sağlar (A-011'e de yardım eder), ama faz slider ekranının birden çok kampanyayı yönetmesi gerekir.

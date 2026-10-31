@@ -1,5 +1,26 @@
 # Değişiklik günlüğü
 
+## M4-B — Kanal seçenekleri ve influencer (2026-10-31)
+
+### Eklenenler
+- Kanal seçenekleri (veriden otomatik çizilen menüler; varsayılan "Otomatik"):
+  - Açık hava: lokasyon A/B/C, süre, megalight izin gecikmesi, DOOH ölçümleme bonusu.
+  - TV/radyo/sinema: kuşak, spot süresi, çekim prodüksiyonu (ajansa marj), cesur tonda Yayın Kurulu riski.
+  - Dijital/sosyal: teklif modeli (CPM/CPC/CPA), hedefleme (2024+ çerezsiz dünya).
+  - Gerilla: 5 fikir kartı, belediye cezası, basına çıkma (erişim ×2).
+  - Etkinlik: mekân, catering, davetliler; hava ve aksilik riskleri; %20 prodüksiyon marjı.
+- Influencer havuzu (2012+): kademe, niş, takipçi, etkileşim, ücret; gizli sahte takipçi oranı (PR ekibi görür); tekrar çalışma indirimi; skandal kararı penceresi.
+- PR & Etkinlik departmanı etkileri: etkinlik riskini yarıya indirir, sahte takipçiyi görür, gerilla işini basına taşır.
+- Raporda riskler, basına çıkma ve skandal satırları.
+- Testler: `tests/test_channel_options.gd` (15); toplam 94.
+
+### Nasıl test ederim
+1. Billboard seçince altında **Lokasyon paketi** ve **Süre** çıkar; A pahalı ama çok daha görünür.
+2. Ulusal TV'de **Kuşak** ve **Spot süresi** seç. Cesur tonla yaparsan Yayın Kurulu reklamı durdurabilir.
+3. 2012'den sonra (hızlı denemek için 2010 başlangıcı yoksa uzun oyun gerekir) **Influencer (mikro)** seç; havuzdan bir kişi seç. Skandal patlarsa karar penceresi açılır.
+4. Gerilla kartlarından "Sahte ürün kuyruğu" riskli ama etkili; raporda ceza ya da "basına çıktı" satırı görünür.
+5. Ekibe bir PR uzmanı alınca influencer listesinde gerçek takipçi oranı görünür.
+
 ## M4-A — Kanal karışımı ve matbaa (2026-10-31)
 
 ### Eklenenler
