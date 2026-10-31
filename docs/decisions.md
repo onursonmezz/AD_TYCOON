@@ -237,6 +237,54 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 **Konu:** Ekiple birlikte ekonomi ayarı.
 **Karar:** Brief ücretleri M1 önerisinin ~2.4 katına çıktı: küçük ₺15–36k, orta ₺60–150k, büyük ₺200–500k. Gerekçe: GDD Y2'de ₺500k'lık ofis bekliyor; eski ücretlerle yılda ~₺85k kâr çıkıyordu. Enerji dengesi düzeltildi (K-035): eski değerlerle sürekli çalışan ekibin enerjisi birkaç ayda 20'nin altına inip üretim yarıya düşüyordu. Kayıt sürümü 2: M2 kayıtları otomatik olarak kurucu çalışana göç eder (`SaveCodec.migrate_v1_to_v2`).
 
+## K-040 · 2026-10-31 · Kabul · Orgo onayı (M4 planı A) + uygulama kararı
+**Konu:** GDD'de olmayan kanal verisi.
+**Karar:** 45 kanalın hepsine ilgi eğrisi ve CPM/ER/CVR yazıldı (`data/channels.json`; gazete, InstaFoto ve billboard eğrileri 5.3'ten, billboard KPI'ı 24.4'ten). Eğriler 5.2'deki dönemlere göre kuruldu:
+- gazete/dergi/el ilanı/SMS/banner zamanla düşer, OOH dayanıklıdır;
+- ulusal TV özel TV patlamasıyla (1992+) zirve yapar, 2016'dan sonra düşer;
+- dijital ve sosyal kanallar çıkış yılında 0.3 civarı başlar ve yükselir;
+- reklam engelleyici (2014+) display'i, çerezsiz dünya (2024) programatiği düşürür;
+- Büyük Kapanma (2020) etkinlik ve sinemayı bir yıl çökertir.
+
+Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu eğriyle çarpılır"), CPM de talep üzerinden ilgiyle artar. CPM'e mevsim etkisi eklendi (`calendar.json → cpm_season`: Kasım ×1.1, Aralık ×1.2, Ramazan Bayramı ×1.1, Kurban Bayramı ×1.05).
+
+## K-041 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Basılı işler (9.1, 10.2).
+**Karar:**
+- Basılı iş yapan kanallar: el ilanı/broşür, katalog, POP. Gazete ve dergi ilanı medya alımı sayılır.
+- Bu kanalların bütçe payı medya değil prodüksiyondur: müşteriye fatura edilir, matbaaya baskı + dağıtım ödenir, aradaki fark prodüksiyon marjıdır (7.11); bu pay için komisyon alınmaz.
+- Ürünler, dağıtım yolları ve 1990 fiyatları `data/print_options.json`'da (ör. A5 el ilanı ₺0.15/adet @1.000, kurulum ₺300). Dağıtımın çöpe giden oranı: kapı kapı %35, gazete arası %45, mağaza %25, fuar %15. Görülme = adet × parça başı görülme × (1 − çöp oranı).
+- Kalite algıyı etkiler: ekonomik ×0.95, premium ×1.05; lüks grubunda ×0.85 / ×1.10.
+- Teslim = adet / haftalık kapasite + sıra + (prova 1 hafta). Baskı son fazdan (teslim süresi / 3) uzun sürerse gecikme olur (6.4, haftada −6 memnuniyet). Baskı hatasında yeniden basılır: ek maliyet + 1 hafta. Marj eksiye düşerse "bütçe aşımı" sayılır (−8).
+- **Otomatik baskı:** ilk ürün, standart kalite (lüks sektörde premium), Renkli Baskı, prova açık. Adet, bütçenin %20 marj bırakacak kısmı kadar ve son faza yetişecek kadarla sınırlı.
+- Matbaalar 10.2'deki 4 örnek; değerler `data/suppliers.json`'da. Hızlı Dijital'de ölçek ekonomisi neredeyse yok (üs −0.02).
+
+## K-042 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Tedarikçi teklifleri ve pazarlık (10.3).
+**Karar:**
+- Haftada %4 olasılıkla teklif gelir; 2 hafta içinde kabul edilmezse düşer.
+- Teklif türleri: hacim indirimi (10k–30k adet üzeri işlerde %10–20, 12 hafta) ya da yıllık taahhüt (50k–150k adet karşılığı %15–25 yıl sonuna kadar). Taahhüt tutmazsa ceza = eksik adet × ortalama birim fiyat × 0.1.
+- İlişki puanı 50 ile başlar; her iş +2. Puan 50'nin üstündeyse en fazla %5 indirim; 80 ve üstünde sırada öne geçilir (−1 hafta).
+- Pazarlık: gizli taban liste fiyatının %5–25 altında (iyi ilişki tabanı düşürür). 3 tur var; her ret %25 olasılıkla ilişkiyi −5 zedeler. Anlaşma olmazsa liste fiyatı geçerli. Satın alma uzmanı tabanı ±(liste × 0.2 × (1 − iletişim/100)) aralığıyla gösterir.
+
+## K-043 · 2026-10-31 · Kabul · Uygulama kararı
+**Konu:** Kanal karışımı ve medya satın alma (7.1, 10.4).
+**Karar:**
+- Çoklu kanal Y3'te açılır (17). Kanal sınırı ofise göre 2/3/4/6/8; ekipte medya planlamacı varsa +1. Bütçe payları faz slider'ları gibi bağımsız önceliklerle verilir (K-033).
+- 10.4 tedarikçi verimi = 1 + yetenek/400 + hacim indirimi. Yetenek, ekipteki en iyi medya planlamacının (strateji + iletişim)/2'si. Hacim indirimi, yıllık medya hacminin her ₺1M'u (1990) için %2, en fazla %15. Verim etkin harcamayı (gösterimi) artırır.
+- Eşzamanlı kampanya kararı (A-013) M4'ten sonraya kaldı (Orgo, C kararı).
+
+---
+
+## M4-A denge sonucu (200 koşu × 10 yıl)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan | Kampanya/koşu | Küçük ofis |
+|---|---|---|---|---|---|
+| Rastgele | %38.5 ✓ | %71.5 | 5.51 | 21.7 | %59 koşu, medyan Y5 |
+| Bilgili | %1.5 | %6.5 | 6.45 | 56.1 | %99 koşu, medyan Y4 |
+
+Rastgele botun iflası ilk kez GDD hedefinde (%20–40; A-012 ilerledi). Küçük ofis Y4 (hedef Y2–Y3) ve uzun vadede düşen puanlar (A-011) açık.
+
 ---
 
 ## M3 denge sonucu (200 koşu × 10 yıl)

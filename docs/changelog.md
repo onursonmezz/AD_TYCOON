@@ -1,5 +1,26 @@
 # Değişiklik günlüğü
 
+## M4-A — Kanal karışımı ve matbaa (2026-10-31)
+
+### Eklenenler
+- Çoklu kanal karışımı (3. yıldan itibaren): sihirbazda kanal ekle/çıkar, bütçe öncelikleri, gerçek pay ve bütçe yanında; kanal sınırı ofis ve medya planlamacıya bağlı.
+- 45 kanalın hepsinin ilgi eğrisi ve kendi CPM/ER/CVR değeri; kanal etkisi ve maliyeti yıllara göre değişiyor; CPM'de mevsim etkisi.
+- Raporda kanal bazında bütçe, gösterim, erişim, etkileşim, dönüşüm tablosu.
+- Basılı işler: ürün, kalite, adet, dağıtım, prova, matbaa; GDD 10.2 fiyat formülü; baskı hatası ve gecikme; prodüksiyon marjı geliri.
+- 4 matbaa, ilişki puanı, gelen kutusuna düşen hacim/yıllık taahhüt teklifleri, yıl sonu taahhüt cezası.
+- 3 turluk pazarlık penceresi; satın alma uzmanı gizli tabanı tahmin ediyor.
+- Medya satın alma verimi (medya planlamacı + yıllık hacim).
+- Finans ekranında matbaa ilişkileri ve aktif anlaşmalar.
+- Testler: `tests/test_media.gd` (19); toplam 79. Botlar çoklu kanal kullanıyor.
+
+### Nasıl test ederim
+1. Yeni oyunu 3. yıla kadar oyna (Y1–Y2'de tek kanal var).
+2. Bir brief kabul et → sihirbazda **+ Kanal ekle** → ikinci bir kanal seç; slider'larla bütçeyi böl, yanında gerçek payı gör.
+3. El ilanı/broşür, katalog ya da POP seçersen baskı ayarları açılır. Kaliteyi, adedi, matbaayı değiştir ve maliyet/marj/teslim satırını izle. Teslim, son faza sığmazsa kırmızı yanar.
+4. **Pazarlık et** → üç teklif hakkın var. Çok düşük teklif ilişkiyi zedeleyebilir.
+5. Rapor açılınca kanal tablosuna ve "Prodüksiyon marjı" satırına bak.
+6. Gelen kutusuna bir matbaa teklifi düşünce kabul et; Finans ekranında aktif anlaşmayı gör.
+
 ## M3 — Çalışanlar ve departmanlar (2026-10-31)
 
 ### Eklenenler
