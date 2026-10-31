@@ -196,6 +196,14 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 - Dil ana menüdeki düğmeyle seçilir, varsayılan Türkçe. Ayarlar ekranı M9'da.
 - M2 promptu sihirbazda "büyüklük" sayıyor, GDD 6.2'de ise büyüklük brief'in bir alanı. Bu yüzden sihirbazda brief'ten gelen büyüklük salt-okunur gösterilir.
 
+## K-033 · 2026-10-31 · Kabul · Orgo playtest'i
+**Konu:** Faz slider'larının davranışı (GDD 7.4).
+**Durum:** M2'de bir slider oynatılınca diğer ikisi toplamı %100'de tutmak için kayıyordu; playtest'te hedef yüzdeyi tutturmak zor bulundu.
+**Karar:** GDT'deki gibi her slider 0–100 arası bağımsız bir öncelik. İş payı = öncelik / öncelikler toplamı; hepsi 0 ise eşit. Ekranda her slider'ın yanında gerçek pay görünür. Simülasyona yine toplamı %100 olan paylar gider; 7.4'teki %60 azalan getiri kuralı bu paylara uygulanır, formül değişmedi. Varsayılan öncelik 50 (`focus.slider_default_priority`).
+
+## K-034 · 2026-10-31 · Kabul · Orgo playtest'i (A-005, A-010 kapandı)
+**Karar:** M2 playtest'inde puanlama ve müşteri tepkileri "adil", oyun hızı (1x'te haftada 3 sn, 5.1) "iyi" bulundu. Bölüm 7 formülleri ve `time.seconds_per_week_1x` olduğu gibi kalıyor. Bot puan farkı (1.5) M10'daki denge çalışmasında 27.2 hedefleriyle (≥ 2.5) yeniden ele alınacak. 4.1 ve 27.2'deki "yıl 10–15 dk" ifadesi, oyuncunun duraklattığı süreyle birlikte kaba bir tahmin olarak okunuyor.
+
 ---
 
 ## M1 denge sonucu (200 koşu × 10 yıl, `tools/balance_sim.gd`)
@@ -212,10 +220,10 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 
 ## Açık sorular (ilgili kilometre taşında sorulacak)
 
-- **A-005 (M2'ye ertelendi · Orgo kararı, 2026-10-31):** M1 bu hâliyle kabul edildi; Bölüm 7 formülleri ve tablolar M2 prototipi oynanırken birlikte ayarlanacak (GDD 26 M2 kontrol noktası). Rastgele bot iflası (%41) da o ayarda tekrar ölçülecek. Puan farkı 1.5'te takılıyor; ayarla ≥ 2'ye çıkmıyor (serbest hedef oranı %100'de bile 1.74). Sebepler: (1) Göreceli puan (7.9): bilgili bot kendi rekoruyla (×1.05) yarışıyor, rastgele bot ise yalnızca dönem tabanıyla. İyi oyuncunun çıtası yükseldikçe fark sıkışıyor. (2) Hedefi çoğu zaman brief belirliyor, en ağır uyum (sektör × hedef, ağırlık 0.35) oyuncunun bilgisine bağlı değil. (3) F aralığı dar (0.8–1.2); rastgele slider'lar bile ~1.12 alıyor. M10 hedefi (27.2) ise ≥ 2.5.
+- **A-005:** Kapandı, bkz. K-034 (M10'da 27.2 hedefleriyle tekrar bakılacak).
 - **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6": 17'deki ayrıntılı koşul esas alınabilir.
 - **A-007 (M2/M3):** S/K oranı tek kişilik ajansta yapısal olarak ≥ ~1 çıkıyor, çünkü Strateji fazının bütün üretimi S'ye gidiyor. İdeal oranı 1'in altında olan hedefler (Bilinirlik 0.6, Yenileme 0.5, SSR 0.8, Etkileşim 0.9) her zaman B cezası alıyor. Ekip kurulunca (M3) kreatif ağırlıklı ekip bunu çözer; ya da faz sürelerinin oyuncuya bırakılması düşünülebilir.
 - **A-008 (M4):** 7.3 "Display + Retargeting" sinerjisi: kanal tablosunda "retargeting" kanalı yok (5.2'de özellik olarak geçiyor). Çift veride duruyor ama `b` tarafı boş, yani etkisiz.
 - **A-009 (M3):** K-024'teki geçici oyuncu XP büyümesi M3'te gerçek çalışan modeline devredilmeli.
-- **A-010 (M2 playtest):** Oyun hızı çelişkisi. 5.1 "1x'te 1 hafta ≈ 3 saniye" diyor, bu da yılda 2.4 dakika eder. 4.1 ve 27.2 ise "bir oyun yılı 1x'te 10–15 dakika" diyor. Duraklamalar (sihirbaz, slider, rapor) süreyi uzatıyor ama bu kadar değil. Playtest'te hissedip birlikte karar verelim (`time.seconds_per_week_1x`).
+- **A-010:** Kapandı, bkz. K-034.
 - **A-006 (M3/M7):** 12.1 büyütülmüş ofis "Y8+", 17 "Y8 A6" — 17'deki ayrıntılı koşul esas alınabilir.
