@@ -107,7 +107,13 @@ static func market_value(data: GameData, emp: Dictionary, year: int) -> float:
 	avg = avg / maxf(1.0, prim.size()) if not prim.is_empty() else float(emp["stats"]["attention"])
 	return float(pos["base_salary"]) * Economy.inflation(data, year) \
 		* (1.0 + data.balf("staff_rules.market_seniority_step") * title_index(data, emp)) \
-		* (avg / data.balf("staff_rules.market_stat_reference"))
+		* (avg / data.balf("staff_rules.market_stat_reference")) * (1.0 + award_premium(data, emp))
+
+
+## Ödül alan çalışanın piyasa değeri artar (GDD 15 "rakipler teklif yapar").
+static func award_premium(data: GameData, emp: Dictionary) -> float:
+	return minf(float(emp.get("award_points", 0.0)) * data.balf("awards.market_value_per_point"),
+		data.balf("awards.market_value_max"))
 
 
 static func is_available(emp: Dictionary, week_index: int) -> bool:

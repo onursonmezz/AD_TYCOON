@@ -21,8 +21,13 @@ func bot_name() -> String:
 	return "bilgili"
 
 
+## BotUtil.enter_awards imzası için; bilgili bot olasılık 1 ile her umut vadeden işi gönderir.
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
+
 func decide(sim: Simulation) -> void:
 	_grow(sim)
+	BotUtil.enter_awards(sim, -0.5, 1.0, _rng)
 	if not sim.state.is_idle():
 		return
 	var data: GameData = sim.data

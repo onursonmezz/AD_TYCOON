@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## M5-A: Rakipler, ödüller, sıralamalar (2026-11-03)
+- **Sektör ekranı:** Sol menüde yeni. Ödül takvimi ve başvuru, kazandığımız ödüller, yıl sonu sıralamaları ("En Kreatif", "En Büyük", Yılın Ajansı) ve rakip ajanslar tablosu (tip, çalışan, itibar, güç; uzman olduğu sektörler ipucunda).
+- **12 rakip ajans:** Dört kişilik tipi var (dev network, kreatif butik, agresif fiyatçı, dijital start-up). Rakipler büyür, küçülür, kapanır; yeni ajanslar yıllar içinde sektöre girer.
+- **Rakip etkileşimleri:**
+  - memnuniyeti düşük müşteriyi rakip çalabilir;
+  - çalışanlara gelen transfer tekliflerinde artık teklifi yapan ajansın adı yazıyor;
+  - yeni işe alım kanalı "Rakipten transfer": pahalı ama deneyimli adaylar, işe aldığın kişi rakibi zayıflatır.
+- **5 ödül:** Altın Elma, Etkin Ödülleri (2008+), Kıyı Aslanları, Dijital Yıldızlar (2005+), İyilik İçin.
+  - Başvuru dönemi bildirimle açılır. Son 12 ayın kampanyalarını ücretle gönderirsin.
+  - Tören ayında sonuçlar tek tek açılan bir pencerede gösterilir.
+  - Ödüller itibar, ekip morali, ödül alan çalışanın piyasa değeri ve yeni müşteri getirir.
+- Nasıl test ederim:
+  1. Yeni oyun aç, sol menüden **Sektör**'e gir: ödül takvimini ve 4 rakip ajansı gör (diğerleri yıllar içinde açılır).
+  2. 8+ puan alan bir kampanyadan sonra bildirimde "… başvuruları açıldı" yazınca Sektör → **Başvur** → kampanyanın yanındaki **Gönder**; nakdin ücret kadar düştüğünü gör.
+  3. Ertesi ay tören penceresi açılır: sonucunu, rakiplerin aldığı ödül sayısını ve Grand Prix'yi gör. Ödül aldıysan itibarın arttığını, ödül "Kazandığımız ödüller" listesine düştüğünü kontrol et.
+  4. İlk yıl sonunda bildirimde sıralamanı ve Sektör ekranındaki iki listeyi gör.
+  5. Ekip → işe alım → kanal "Rakipten transfer": adayın hangi ajansta çalıştığı yazar. İşe alınca Sektör ekranında o ajansın çalışan sayısının 1 düştüğünü gör.
+  6. Bir müşterinin memnuniyetini düşük bırakırsan (40 altı) bir süre sonra "… ile çalışmaya başladı" bildirimi gelebilir.
+
 ## Denge adımı (2026-11-03, A-014)
 - Hata cezası artık işin kendi kalitesinin yüzdesi (hata başına %3, en fazla %40); dönemle büyümüyor.
 - Rekor çıtası her yıl %10 eriyor: tek şanslı bir iş yıllarca aşılamaz çıta bırakmıyor.

@@ -130,5 +130,30 @@
 	"satisfaction": { "quality_coef": 12.0, "quality_div": 2.0, "kpi_coef": 10.0, "on_time": 4.0, "late_per_week": -6.0,
 		"over_budget": -8.0, "revision_coef": 1.5, "bold_match_bonus": 5.0,
 		"expectation_base": 5.0, "expectation_per_scale": 0.6, "expectation_history": 0.3, "expectation_per_year": 0.02,
-		"history_default": 6.0 }
+		"history_default": 6.0 },
+	"_comment_m5": "M5 sabitleri; GDD'de sayısı olmayanlar docs/decisions.md K-051+ içinde.",
+	"rivals": {
+		"personalities": {
+			"network": { "growth": 0.012, "rep_target": 55, "creative": 0.9, "max_staff": 140 },
+			"creative_boutique": { "growth": 0.006, "rep_target": 62, "creative": 1.3, "max_staff": 30 },
+			"price_fighter": { "growth": 0.008, "rep_target": 25, "creative": 0.7, "max_staff": 45 },
+			"digital_startup": { "growth": 0.02, "rep_target": 35, "creative": 1.0, "max_staff": 70, "boost_from": 2010, "boost": 2.0 }
+		},
+		"rep_pull": 0.03, "rep_noise": 1.0, "staff_noise": 0.05, "close_below_staff": 2, "close_monthly_chance": 0.05,
+		"power_staff_exp": 0.6, "power_rep_div": 100,
+		"revenue_per_staff_1990": 70000, "revenue_noise": 0.15,
+		"steal_monthly_chance": 0.08, "transfer_staff_loss": 1, "transfer_rep_loss": 0.5,
+		"entries_per_rival": [0, 3], "entry_score_base": 4.6, "entry_creative_weight": 2.2, "entry_rep_weight": 0.025, "entry_sd": 1.0
+	},
+	"awards": {
+		"score_weight": 0.5, "novelty_weight": 2.0, "viral_bonus": 1.0, "category_match": 0.55, "jury_noise": 1.0,
+		"eligible_weeks": 48, "entry_window_weeks": 4,
+		"levels": ["shortlist", "bronze", "silver", "gold", "grand_prix"],
+		"reputation": { "shortlist": 1, "bronze": 2, "silver": 3, "gold": 5, "grand_prix": 10 },
+		"points": { "shortlist": 1, "bronze": 2, "silver": 3, "gold": 5, "grand_prix": 10 },
+		"morale": { "shortlist": 3, "bronze": 5, "silver": 7, "gold": 10, "grand_prix": 15 },
+		"market_value_per_point": 0.02, "market_value_max": 0.4,
+		"buzz_per_point": 0.002, "buzz_yearly_decay": 0.5,
+		"agency_of_year_growth_weight": 10.0, "agency_of_year_reputation": 5
+	}
 }

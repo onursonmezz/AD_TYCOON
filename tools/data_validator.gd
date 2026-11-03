@@ -4,6 +4,7 @@ extends RefCounted
 ## Hem tools/validate_data.gd (komut satırı) hem testler bu sınıfı kullanır.
 
 const DEFAULT_DATA_DIR: String = "res://data"
+const DataChecksM5: GDScript = preload("res://tools/data_checks_m5.gd")
 
 ## Kimlik listesi olan dosyalar: dosya → bu listeye atıf yapan "tip" adı.
 const ID_LISTS: Dictionary = {
@@ -21,6 +22,8 @@ const ID_LISTS: Dictionary = {
 	"offices.json": "office",
 	"backgrounds.json": "background",
 	"suppliers.json": "supplier",
+	"rivals.json": "rival",
+	"awards.json": "award",
 }
 const FIT_FILES: Array[String] = [
 	"fit/sector_objective.json",
@@ -58,6 +61,8 @@ func validate(data: Dictionary) -> PackedStringArray:
 	_check_brands(data, ids)
 	_check_staff_data(data, ids)
 	_check_print_data(data)
+	for e: String in DataChecksM5.check(data, ids):
+		_err(e)
 	var rules: Dictionary = _parse_row_rules(data)
 	for file_name: String in FIT_FILES:
 		_check_fit_file(data, file_name, ids, rules)

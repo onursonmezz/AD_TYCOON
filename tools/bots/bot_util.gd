@@ -71,3 +71,16 @@ static func valid_channels(sim: Simulation, brief: Dictionary) -> Array[String]:
 		if float(brief["media_budget"]) >= float(sim.data.channels[ch]["min_budget"]) * infl:
 			out.append(ch)
 	return out
+
+
+## Açık ödüllere başvurur (GDD 15). min_margin: beklenen skorun kısa liste eşiğini en az bu kadar aşması;
+## chance: her uygun kampanya için başvurma olasılığı (rastgele bot). Başvuru ücreti sonrası en az bir aylık gider kalmalı.
+static func enter_awards(sim: Simulation, min_margin: float, chance: float, rng: RandomNumberGenerator) -> void:
+	for award_id: String in sim.awards.open_awards(sim.state):
+		var shortlist: float = float(sim.data.awards[award_id]["thresholds"]["shortlist"])
+		for h: Dictionary in sim.awards.eligible_campaigns(sim.state, award_id):
+			if sim.awards.expected_score(award_id, h) < shortlist + min_margin or rng.randf() >= chance:
+				continue
+			if sim.state.cash - sim.awards.entry_fee(sim.state, award_id) < monthly_costs(sim):
+				return
+			EnterAwardCommand.new(award_id, h["campaign"]).execute(sim)

@@ -120,8 +120,14 @@ static func date_text(clock: SimClock) -> String:
 	return tr_fmt("FMT_DATE", [clock.year(), clock.month(), clock.week_in_month(), clock.game_year()])
 
 
+## Metin argümanları da çevrilir: simülasyon rakip/ödül adlarını anahtar olarak gönderir (anahtar olmayan metin aynen kalır).
 static func tr_fmt(key: String, args: Array) -> String:
-	return TranslationServer.translate(key) % args if not args.is_empty() else TranslationServer.translate(key)
+	if args.is_empty():
+		return TranslationServer.translate(key)
+	var shown: Array = []
+	for a: Variant in args:
+		shown.append(TranslationServer.translate(a) if a is String else a)
+	return TranslationServer.translate(key) % shown
 
 
 static func t(key: String) -> String:

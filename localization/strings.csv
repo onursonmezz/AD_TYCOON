@@ -654,3 +654,91 @@ SAT_ACCOUNT,Account ekibinin iletişimi,Account team communication
 SAT_BOLD_MATCH,"Cesur marka, cesur kampanya","Bold brand, bold campaign"
 SAT_RISKS,"Kanal riskleri (ceza, izin, hava…)","Channel risks (fines, permits, weather…)"
 SAT_SCANDAL,Influencer skandalı,Influencer scandal
+RIVAL_MAVI_OK,Mavi Ok Reklam,Mavi Ok Advertising
+RIVAL_KIVILCIM,Kıvılcım Kreatif,Kıvılcım Creative
+RIVAL_EKONOMIK,Ekonomik Ajans,Ekonomik Agency
+RIVAL_ANADOLU_TANITIM,Anadolu Tanıtım,Anadolu Promotion
+RIVAL_GLOBAL_GRUP,Global Grup TR,Global Group TR
+RIVAL_ATOLYE_34,Atölye 34,Atölye 34
+RIVAL_PIKSEL,Piksel Medya,Piksel Media
+RIVAL_MEGA_ILETISIM,Mega Holding İletişim,Mega Holding Communications
+RIVAL_TIK,Tık Ajans,Tık Agency
+RIVAL_YENI_NESIL,Yeni Nesil Kreatif,New Generation Creative
+RIVAL_HASHTAG_LAB,Hashtag Lab,Hashtag Lab
+RIVAL_VIRAL_FABRIKA,Viral Fabrika,Viral Factory
+PERS_NETWORK,Dev network ajansı,Big network agency
+PERS_CREATIVE_BOUTIQUE,Kreatif butik,Creative boutique
+PERS_PRICE_FIGHTER,Agresif fiyatçı,Aggressive price-cutter
+PERS_DIGITAL_STARTUP,Dijital start-up,Digital start-up
+AWARD_GOLDEN_APPLE,Altın Elma,Golden Apple
+AWARD_GOLDEN_APPLE_DESC,"Ulusal kreatif başarı ödülü. TV, basın, açık hava, dijital ve entegre kategorileri var.","National creative award with TV, print, outdoor, digital and integrated categories."
+AWARD_EFFIE,Etkin Ödülleri,Effective Awards
+AWARD_EFFIE_DESC,Sonucu ödüllendirir: KPI hedefini aşan kampanyalar öne çıkar.,Rewards results: campaigns that beat their KPI target stand out.
+AWARD_COASTAL_LIONS,Kıyı Aslanları Festivali,Coastal Lions Festival
+AWARD_COASTAL_LIONS_DESC,"Uluslararası festival. Çok zor, başvurusu pahalı; Grand Prix efsane statüsü getirir.","International festival. Very hard and expensive to enter; a Grand Prix is legendary."
+AWARD_DIGITAL_STARS,Dijital Yıldızlar,Digital Stars
+AWARD_DIGITAL_STARS_DESC,"Yalnızca dijital, sosyal medya ve influencer işleri.","Digital, social media and influencer work only."
+AWARD_GOOD_CAUSE,İyilik İçin Ödülleri,For Good Awards
+AWARD_GOOD_CAUSE_DESC,"Sosyal sorumluluk kampanyaları: sosyal sorumluluk hedefi, vakıf/STK veya belediye işleri.","Social responsibility campaigns: CSR objective, foundation/NGO or municipality work."
+LEVEL_SHORTLIST,Kısa liste,Shortlist
+LEVEL_BRONZE,Bronz,Bronze
+LEVEL_SILVER,Gümüş,Silver
+LEVEL_GOLD,Altın,Gold
+LEVEL_GRAND_PRIX,Grand Prix,Grand Prix
+LEVEL_NONE,Ödül yok,No award
+HIRE_RIVAL_TRANSFER,Rakipten transfer,Poach from a rival
+HIRE_RIVAL_TRANSFER_DESC,"Çok pahalı, deneyimli adaylar. İşe aldığın kişi rakibi zayıflatır.","Very expensive, experienced candidates. Hiring one weakens the rival."
+NOTE_RIVAL_OPENED,Sektöre yeni bir ajans girdi: %s,A new agency entered the market: %s
+NOTE_RIVAL_CLOSED,%s kapandı.,%s has closed down.
+NOTE_CLIENT_STOLEN,"%s, ajansımızdan memnun değildi; %s ile çalışmaya başladı.","%s was unhappy with us and moved to %s."
+NOTE_AWARD_OPEN,%s başvuruları açıldı (bu ay). Sektör ekranından başvurabilirsin.,%s entries are open this month. Apply from the Industry screen.
+NOTE_RANKINGS,"Yıl sonu sıralaması: En Kreatif listesinde %d., En Büyük listesinde %d. sıradayız.","Year-end rankings: we are #%d in Most Creative and #%d in Biggest."
+NOTE_AGENCY_OF_YEAR,Yılın Ajansı seçildik!,We were named Agency of the Year!
+ERR_AWARD_CLOSED,Bu ödülün başvuru dönemi değil.,Entries for this award are not open.
+ERR_AWARD_NOT_ELIGIBLE,Bu kampanya bu ödüle başvuramaz.,This campaign can't be entered for this award.
+MENU_INDUSTRY,Sektör,Industry
+UI_AWARD_CALENDAR,Ödül takvimi,Award calendar
+UI_AWARD_WHEN,Başvuru: %s · Tören: %s,Entries: %s · Ceremony: %s
+UI_AWARD_ENTER,Başvur,Enter
+UI_AWARD_CLOSED,Başvuru kapalı,Entries closed
+UI_AWARD_ENTRY_HINT,"Son 12 ayda biten kampanyalarından seç. Her başvuru %s. Jüri puanı, yeniliği, viral olmayı ve kategori uyumunu da tartar.","Pick from campaigns finished in the last 12 months. Each entry costs %s. The jury also weighs novelty, going viral and category fit."
+UI_AWARD_NO_CAMPAIGNS,Bu ödüle uygun kampanya yok.,No campaign is eligible for this award.
+UI_AWARD_SEND,Gönder,Submit
+UI_AWARD_SENT,Başvuru gönderildi. Sonuç tören ayında açıklanacak.,Entry submitted. Results come in the ceremony month.
+UI_OUR_AWARDS,Kazandığımız ödüller,Our awards
+UI_NO_AWARDS,Henüz ödülümüz yok.,No awards yet.
+UI_RANKINGS,Yıl sonu sıralamaları,Year-end rankings
+UI_NO_RANKINGS,İlk sıralama yıl sonunda yayınlanacak.,The first rankings come out at year end.
+UI_RANK_CREATIVE,En Kreatif Ajanslar %d (ödül puanı),Most Creative Agencies %d (award points)
+UI_RANK_BIGGEST,En Büyük Ajanslar %d (gelir),Biggest Agencies %d (revenue)
+UI_OUR_RANKS,"Bizim sıramız: En Kreatif %d., En Büyük %d.","Our place: Most Creative #%d, Biggest #%d"
+UI_AGENCY_OF_YEAR,Yılın Ajansı: %s,Agency of the Year: %s
+UI_US,Biz,Us
+UI_RIVALS,Rakip ajanslar,Rival agencies
+UI_COL_AGENCY,Ajans,Agency
+UI_COL_TYPE,Tip,Type
+UI_COL_STAFF,Çalışan,Staff
+UI_COL_REPUTATION,İtibar,Reputation
+UI_COL_POWER,Güç,Power
+UI_RIVAL_SECTORS,Uzman olduğu sektörler: %s,Specialist sectors: %s
+UI_RIVAL_CLOSED,%d'de kapandı,Closed in %d
+UI_FROM_RIVAL,Şu an %s'de çalışıyor.,Currently works at %s.
+UI_OFFER_TEXT_RIVAL,"%s (%s), %s ajansından ayda %s teklif aldı. Şu anki maaşı %s. Karşılık vermezsen iki hafta içinde ayrılacak.","%s (%s) got an offer from %s: %s per month. Current salary: %s. If you don't respond, they will leave within two weeks."
+UI_CEREMONY_TITLE,%s %d töreni,%s %d ceremony
+UI_CEREMONY_ROW,“%s” (%s): %s,“%s” (%s): %s
+UI_CEREMONY_RIVALS,Rakip ajanslar bu törende %d ödül aldı.,Rival agencies won %d awards at this ceremony.
+UI_CEREMONY_GP_US,Grand Prix bizim! Salon ayakta.,The Grand Prix is ours! Standing ovation.
+UI_CEREMONY_GP_RIVAL,Grand Prix %s ajansına gitti.,The Grand Prix went to %s.
+UI_CEREMONY_GP_NONE,Jüri bu yıl Grand Prix vermedi.,The jury awarded no Grand Prix this year.
+MONTH_1,Ocak,January
+MONTH_2,Şubat,February
+MONTH_3,Mart,March
+MONTH_4,Nisan,April
+MONTH_5,Mayıs,May
+MONTH_6,Haziran,June
+MONTH_7,Temmuz,July
+MONTH_8,Ağustos,August
+MONTH_9,Eylül,September
+MONTH_10,Ekim,October
+MONTH_11,Kasım,November
+MONTH_12,Aralık,December

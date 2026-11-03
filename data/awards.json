@@ -1,0 +1,22 @@
+[
+	{ "id": "golden_apple", "name_key": "AWARD_GOLDEN_APPLE", "desc_key": "AWARD_GOLDEN_APPLE_DESC", "available_from": 1990,
+		"month": 11, "entry_fee_1990": 3000, "difficulty": 0.0, "kpi_weight": 0.0,
+		"categories": ["broadcast", "print", "ooh", "digital", "social", "integrated"], "eligible_categories": [], "eligible_objectives": [], "eligible_sectors": [],
+		"thresholds": { "shortlist": 7.5, "bronze": 8.3, "silver": 8.9, "gold": 9.4, "grand_prix": 9.7 } },
+	{ "id": "effie", "name_key": "AWARD_EFFIE", "desc_key": "AWARD_EFFIE_DESC", "available_from": 2008,
+		"month": 10, "entry_fee_1990": 4000, "difficulty": -0.6, "kpi_weight": 3.0,
+		"categories": [], "eligible_categories": [], "eligible_objectives": [], "eligible_sectors": [],
+		"thresholds": { "shortlist": 7.5, "bronze": 8.3, "silver": 8.9, "gold": 9.4, "grand_prix": 9.7 } },
+	{ "id": "coastal_lions", "name_key": "AWARD_COASTAL_LIONS", "desc_key": "AWARD_COASTAL_LIONS_DESC", "available_from": 1990,
+		"month": 6, "entry_fee_1990": 15000, "difficulty": -1.0, "kpi_weight": 0.0,
+		"categories": ["broadcast", "print", "ooh", "digital", "social", "integrated"], "eligible_categories": [], "eligible_objectives": [], "eligible_sectors": [],
+		"thresholds": { "shortlist": 7.5, "bronze": 8.3, "silver": 8.9, "gold": 9.4, "grand_prix": 9.7 } },
+	{ "id": "digital_stars", "name_key": "AWARD_DIGITAL_STARS", "desc_key": "AWARD_DIGITAL_STARS_DESC", "available_from": 2005,
+		"month": 4, "entry_fee_1990": 2500, "difficulty": 0.0, "kpi_weight": 0.0,
+		"categories": ["digital", "social", "influencer"], "eligible_categories": ["digital", "social", "influencer"], "eligible_objectives": [], "eligible_sectors": [],
+		"thresholds": { "shortlist": 7.5, "bronze": 8.3, "silver": 8.9, "gold": 9.4, "grand_prix": 9.7 } },
+	{ "id": "good_cause", "name_key": "AWARD_GOOD_CAUSE", "desc_key": "AWARD_GOOD_CAUSE_DESC", "available_from": 1990,
+		"month": 3, "entry_fee_1990": 1500, "difficulty": 0.3, "kpi_weight": 0.0,
+		"categories": [], "eligible_categories": [], "eligible_objectives": ["csr"], "eligible_sectors": ["ngo_foundation", "public_municipality"],
+		"thresholds": { "shortlist": 7.5, "bronze": 8.3, "silver": 8.9, "gold": 9.4, "grand_prix": 9.7 } }
+]

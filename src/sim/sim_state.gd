@@ -57,6 +57,18 @@ var payables: Array[Dictionary] = []
 ## Büyüklük → en iyi ham puan (GDD 7.9 rekor).
 var best_raw: Dictionary = {}
 
+## Rakip ajanslar (GDD 14.3): id → { reputation, staff, alive, award_points, closed_year }.
+var rivals: Dictionary = {}
+## Ödüller (GDD 15): bekleyen başvurular, geçmiş sonuçlar, bu yılın ödül puanı, yeni müşteri çekimi.
+var award_entries: Array[Dictionary] = []
+var award_history: Array[Dictionary] = []
+var award_points_year: float = 0.0
+var award_buzz: float = 0.0
+## Son yıl sonu sıralaması ve yıllara göre oyuncunun sırası.
+var rankings: Dictionary = {}
+var ranking_history: Array[Dictionary] = []
+var last_year_income: float = 0.0
+
 ## Yıllık gelir/gider (vergi için).
 var year_income: float = 0.0
 var year_expense: float = 0.0
@@ -67,7 +79,8 @@ var _next_id: Dictionary = {}
 const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
 	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
-	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id"]
+	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id",
+	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -146,4 +159,12 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.year_income = float(saved.get("year_income", 0.0))
 	s.year_expense = float(saved.get("year_expense", 0.0))
 	s._next_id = saved.get("_next_id", {})
+	s.rivals = saved.get("rivals", {})
+	s.award_entries.assign(saved.get("award_entries", []))
+	s.award_history.assign(saved.get("award_history", []))
+	s.award_points_year = float(saved.get("award_points_year", 0.0))
+	s.award_buzz = float(saved.get("award_buzz", 0.0))
+	s.rankings = saved.get("rankings", {})
+	s.ranking_history.assign(saved.get("ranking_history", []))
+	s.last_year_income = float(saved.get("last_year_income", 0.0))
 	return s

@@ -86,6 +86,8 @@ func _attach(new_sim: Simulation) -> void:
 		EventBus.notification.emit(key, args, kind))
 	sim.offer_received.connect(func(offer: Dictionary) -> void: EventBus.offer_received.emit(offer))
 	sim.scandal_started.connect(func(scandal: Dictionary) -> void: EventBus.scandal_started.emit(scandal))
+	sim.award_ceremony.connect(func(result: Dictionary) -> void: EventBus.award_ceremony.emit(result))
+	sim.rankings_published.connect(_on_rankings)
 	sim.supplier_offer_received.connect(func(offer: Dictionary) -> void:
 		EventBus.notification.emit("NOTE_SUPPLIER_OFFER", [tr(DataDB.data.suppliers[offer["supplier"]]["name_key"])], "info"))
 
@@ -100,6 +102,12 @@ func employee_name(emp: Dictionary) -> String:
 	if bool(emp.get("is_founder", false)):
 		return tr("UI_YOU")
 	return str(emp.get("name", ""))
+
+
+func _on_rankings(result: Dictionary) -> void:
+	EventBus.notification.emit("NOTE_RANKINGS", [int(result["creative_rank"]), int(result["biggest_rank"])], "info")
+	if result["agency_of_year"] == "player":
+		EventBus.notification.emit("NOTE_AGENCY_OF_YEAR", [], "good")
 
 
 func _on_delivered(camp: Dictionary) -> void:

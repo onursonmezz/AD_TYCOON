@@ -16,9 +16,11 @@ func bot_name() -> String:
 
 
 const HIRE_CHANCE: float = 0.05
+const AWARD_CHANCE: float = 0.2
 
 
 func decide(sim: Simulation) -> void:
+	BotUtil.enter_awards(sim, -99.0, AWARD_CHANCE, rng)
 	if rng.randf() < HIRE_CHANCE and sim.staff.headcount(sim.state) < sim.staff.capacity(sim.state):
 		var roles: Array[String] = []
 		for id: String in sim.data.position_ids:

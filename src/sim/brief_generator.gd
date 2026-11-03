@@ -55,7 +55,9 @@ func weekly(state: SimState) -> void:
 		var p: float = float(chances[int(client["scale"])]) * season_multiplier(client["sector"], year, month)
 		if state.rng.chance("briefs", p):
 			state.inbox.append(make_brief(state, client, {}))
-	var p_new: float = data.balf("clients.new_client_base") + state.reputation / data.balf("clients.new_client_reputation_div")
+	# GDD 6.3: p_yeni = 0.04 + itibar/1000 + ödül_bonus (ödül bonusu her yıl yarıya iner, K-051).
+	var p_new: float = data.balf("clients.new_client_base") + state.reputation / data.balf("clients.new_client_reputation_div") \
+		+ state.award_buzz
 	if state.rng.chance("briefs", p_new):
 		var prospect: Dictionary = clients.create_prospect(state)
 		state.inbox.append(make_brief(state, prospect, prospect))

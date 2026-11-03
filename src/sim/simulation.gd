@@ -16,6 +16,9 @@ signal staff_note(key: String, args: Array, kind: String)
 signal offer_received(offer: Dictionary)
 signal supplier_offer_received(offer: Dictionary)
 signal scandal_started(scandal: Dictionary)
+## M5: ödül töreni sonucu (oyuncunun başvurusu varsa) ve yıl sonu sıralaması.
+signal award_ceremony(result: Dictionary)
+signal rankings_published(result: Dictionary)
 
 var data: GameData
 var state: SimState
@@ -36,6 +39,9 @@ var prints: PrintSystem
 var media: MediaPlanning
 var options: ChannelOptions
 var influencers: InfluencerSystem
+## Rakipler ve ödüller (M5).
+var rivals: RivalSystem
+var awards: AwardSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -60,10 +66,13 @@ func _init(game_data: GameData, seed_value: int, background: String = "") -> voi
 	options = ChannelOptions.new(data)
 	influencers = InfluencerSystem.new(data)
 	media = MediaPlanning.new(data, prints, options, influencers)
+	rivals = RivalSystem.new(data)
+	awards = AwardSystem.new(data, rivals)
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
 	clients.create_starting(state, int(data.backgrounds[founder["background"]]["extra_start_clients"]))
+	rivals.ensure(state)
 
 
 func set_overtime(on: bool) -> void:
@@ -73,6 +82,7 @@ func set_overtime(on: bool) -> void:
 ## Kayıttan gelen durumla değiştirir (SaveSystem).
 func load_state(saved: Dictionary) -> void:
 	state = SimState.from_dict(data, saved)
+	rivals.ensure(state)
 
 
 # --- zaman -------------------------------------------------------------------
@@ -108,7 +118,9 @@ func step_day() -> void:
 	if ended["month"]:
 		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state))
 		for offer: Dictionary in staff_life.monthly_offers(state):
+			offer["rival"] = rivals.pick_by_power(state)
 			offer_received.emit(offer)
+		_monthly_industry()
 	if ended["year"]:
 		_end_year()
 
@@ -252,7 +264,9 @@ func _deliver() -> void:
 		"week": state.clock.week_index, "year": state.clock.year(), "score": report["score"],
 		"factors": {"m": report["combination"]["m"], "f": report["focus"]["f"], "b": report["balance"]["b"],
 			"n": report["novelty"]["n"], "synergy": report["synergy"]["synergy"], "r": report["r"],
-			"errors": report["errors"], "points": report["s"] + report["k"] + report["t"]}})
+			"errors": report["errors"], "points": report["s"] + report["k"] + report["t"]},
+		"client_name": setup.get("client_name", ""), "name": setup.get("name", ""), "team": setup.get("team", []).duplicate(),
+		"channel_count": (setup["mix"] as Array).size()})
 	for inf: Dictionary in settled["scandal_candidates"]:
 		var scandal: Dictionary = influencers.maybe_scandal(state, camp["id"], inf)
 		if not scandal.is_empty():
@@ -320,7 +334,14 @@ func _finish(camp: Dictionary) -> void:
 			state.history[i]["viral"] = result["viral"]
 			break
 	var lost_names: Array[String] = []
-	var lost: Array[String] = clients.remove_unhappy(state, lost_names)
+	_drop_clients(clients.remove_unhappy(state, lost_names))
+	campaign_finished.emit(camp)
+	if not lost_names.is_empty():
+		clients_lost.emit(lost_names)
+
+
+## Kaybedilen müşteriler: itibar −2 (14.1), gelen kutusundaki brief'leri silinir.
+func _drop_clients(lost: Array[String]) -> void:
 	state.reputation -= lost.size() * data.balf("reputation.client_lost")
 	if not lost.is_empty():
 		var kept: Array[Dictionary] = []
@@ -329,9 +350,25 @@ func _finish(camp: Dictionary) -> void:
 				kept.append(b)
 		state.inbox = kept
 	state.reputation = clampf(state.reputation, data.balf("reputation.min"), data.balf("reputation.max"))
-	campaign_finished.emit(camp)
-	if not lost_names.is_empty():
-		clients_lost.emit(lost_names)
+
+
+## Ay başı (M5): rakiplerin güncellemesi, müşteri çalma, açılan başvuru pencereleri, bu ayın törenleri.
+func _monthly_industry() -> void:
+	for note: Dictionary in rivals.monthly(state):
+		staff_note.emit(note["key"], note["args"], note["kind"])
+	var stolen: Array[String] = []
+	for s: Dictionary in rivals.steal_clients(state):
+		staff_note.emit("NOTE_CLIENT_STOLEN", [state.clients[s["client_id"]]["name"], data.rivals[s["rival_id"]]["name_key"]], "bad")
+		state.clients.erase(s["client_id"])
+		stolen.append(str(s["client_id"]))
+	_drop_clients(stolen)
+	for id: String in awards.open_awards(state):
+		staff_note.emit("NOTE_AWARD_OPEN", [data.awards[id]["name_key"]], "info")
+	for id: String in awards.available(state):
+		if int(data.awards[id]["month"]) == state.clock.month():
+			var result: Dictionary = awards.ceremony(state, id)
+			if not (result["player"] as Array).is_empty():
+				award_ceremony.emit(result)
 
 
 ## GDD 14.1 itibar: iyi puan +, kötü puan − (büyüklükle ölçeklenir).
@@ -348,6 +385,7 @@ func _end_year() -> void:
 	if penalty > 0.0:
 		economy.pay(state, penalty)
 		staff_note.emit("NOTE_COMMIT_PENALTY", [penalty], "bad")
+	rankings_published.emit(awards.year_end(state))
 	state.year_media = 0.0
 	economy.yearly(state)
 	# Rekor çıtası her yıl biraz erir (K-047): tek bir şanslı iş yıllarca aşılamaz çıta bırakmasın.

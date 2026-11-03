@@ -74,5 +74,25 @@
 			90
 		],
 		"salary_factor": 1.15
+	},
+	{
+		"id": "rival_transfer",
+		"name_key": "HIRE_RIVAL_TRANSFER",
+		"desc_key": "HIRE_RIVAL_TRANSFER_DESC",
+		"available_from": 1990,
+		"cost_1990": 20000,
+		"candidates": 2,
+		"level_range": [
+			4,
+			7
+		],
+		"primary_stat_mean": 66,
+		"stat_spread": 8,
+		"potential_range": [
+			55,
+			85
+		],
+		"salary_factor": 1.3,
+		"from_rival": true
 	}
 ]

@@ -324,6 +324,82 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 **Durum:** Ajans müşterinin medya bütçesini teslimden 6 hafta sonra ödüyor, müşteri ise bunu 4–12 hafta sonra geri ödüyordu. Büyük bir işte (Y15'te ₺2–6M) bu açık hiçbir ajansın taşıyamayacağı kadar büyüktü. Bilgili bot 3. ofiste bile büyük iş alamıyor, ekip 6 kişide kalıyordu.
 **Karar:** Müşteri, medya bütçesinin bir kısmını kampanya başında avans olarak öder: mahalle esnafı %0, yerel %50, ulusal ve çok uluslu %100 (`cashflow.media_advance_by_scale`). Faturada avans düşülür. Ev odası dönemindeki nakit gerilimi korunur. Avans sihirbazda gösterilir.
 
+## K-051 · 2026-11-03 · Kabul · Orgo onayı (M5 planı) + uygulama kararı
+**Konu:** Rakip ajanslar (14.3).
+**Karar:** `data/rivals.json`'da 12 ajans var; GDD 8–15 diyor. 1990'da 4 ajans açık, sonrakiler açılış yıllarında gelir (1993, 1995, 2000, 2001, 2006, 2009, 2012, 2016). Dijital start-up'lar dijital çağı temsil ediyor. Kişilikler balance.json `rivals.personalities`'te:
+
+| Kişilik | Aylık büyüme | İtibar hedefi | Kreatiflik | En fazla çalışan |
+|---|---|---|---|---|
+| Dev network | %1.2 | 55 | 0.9 | 140 |
+| Kreatif butik | %0.6 | 62 | 1.3 | 30 |
+| Agresif fiyatçı | %0.8 | 25 | 0.7 | 45 |
+| Dijital start-up | %2 (2010'dan sonra ×2) | 35 | 1.0 | 70 |
+
+- Aylık gürültü var. İtibar her ay hedefe %3 yaklaşır.
+- 2 kişinin altına düşen ajans her ay %5 olasılıkla kapanır.
+- Güç skoru = çalışan^0.6 × (0.5 + itibar/100).
+- Tam simülasyon yok: GDD 14.3'teki "basitleştirme" uygulandı.
+- Birleşme, satın alma teklifi, fiyat savaşı ve konsorsiyum M11'de.
+
+## K-052 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Rakip etkileşimleri (14.3, 11.3).
+**Karar:**
+- **Müşteri çalma:** Memnuniyeti risk eşiğinin (40) altında olan ve o an üretimde ya da yayında işi olmayan müşteriyi, her ay %8 olasılıkla güce göre seçilen bir rakip alır. Etkisi müşteri kaybıyla aynı: itibar −2 (14.1).
+- **Transfer teklifi:** M3'teki teklif olayına teklifi yapan rakibin adı eklendi.
+- **Rakipten transfer** (yeni işe alım kanalı, 11.3 "çok pahalı, rakibi zayıflatır"):
+  - ₺20.000 (1990), 2 aday, seviye 4–7, ana stat ortalaması 66, maaş ×1.3;
+  - işe alınan kişinin geldiği rakip 1 çalışan ve 0.5 itibar kaybeder.
+
+## K-053 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Ödül takvimi ve jüri (15).
+**Karar:** `data/awards.json`'da 5 ödül var. Başvuru dönemi törenden önceki ay.
+
+| Ödül | Tören | Başvuru ücreti (1990) | Zorluk | Koşul |
+|---|---|---|---|---|
+| Altın Elma | Kasım | ₺3.000 | 0 | — |
+| Etkin Ödülleri (2008+) | Ekim | ₺4.000 | −0.6 | KPI aşımı ×3 |
+| Kıyı Aslanları | Haziran | ₺15.000 | −1.0 | — |
+| Dijital Yıldızlar (2005+) | Nisan | ₺2.500 | 0 | Yalnızca dijital, sosyal, influencer |
+| İyilik İçin | Mart | ₺1.500 | +0.3 | Sosyal sorumluluk hedefi veya STK/belediye |
+
+- Jüri skoru 15'teki formül: puan × 0.5 + N × 2 + viral 1 + kategori uyumu 0.55 + jüri ±1 + zorluk. Kategori uyumu GDD'de sayısız; 0.8 ile bilgili bot ilk ödülü Y3'te alıyordu, 0.55 ile koşuların %63'ünde Y4 (hedef Y5–Y8; puanlar Y5'ten sonra düştüğü için ödüller erken yıllarda toplanıyor, A-014).
+- Kategori, ana kanalın türüdür; 3+ kanallı işler "entegre" sayılır.
+- Eşikler bütün ödüllerde Altın Elma örneğindeki gibi (7.5 / 8.3 / 8.9 / 9.4 / 9.7).
+- **Grand Prix:** O törendeki en yüksek skor (oyuncu ve rakipler) ve ≥ 9.7. GDD "yılın en yüksek skoru" diyor; her ödülün yılda tek töreni olduğu için aynı şey.
+- Rakipler her törene 0–3 iş gönderir. Ortalama skor = 4.6 + 2.2 × kreatiflik + 0.025 × itibar, sapma 1.
+- Yılın Ajansı: ayrı bir başvuru değil, yıl sonunda hesaplanır (K-055).
+
+## K-054 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Ödüllerin etkisi (15, 6.3).
+**Karar:**
+- **İtibar:** GDD'deki gibi: kısa liste +1, bronz +2, gümüş +3, altın +5, Grand Prix +10.
+- **Ekip:** Kampanya ekibinin morali +3 / +5 / +7 / +10 / +15. Ödül puanı her kişiye yazılır, çalışanın piyasa değeri puan başına %2 artar (en fazla %40). Bu, rakip transfer teklifini doğal olarak tetikler.
+- **Yeni müşteri:** 6.3'teki "ödül_bonus" ödül puanı başına +0.002 haftalık olasılık, her yıl yarıya iner.
+- **Sıralama puanı:** Ödül puanları itibar değerleriyle aynı (1/2/3/5/10).
+
+## K-055 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Yıllık sıralamalar ve Yılın Ajansı (14.3, 15).
+**Karar:**
+- **"En Kreatif":** Yılın ödül puanına göre sıralanır.
+- **"En Büyük":** Gelire göre sıralanır. Oyuncunun geliri gerçek ajans geliri; rakibinki çalışan × ₺70.000 (1990) × enflasyon ± %15.
+- **Yılın Ajansı:** Ödül puanı + 10 × büyüme oranı en yüksek olan ajans; en az bir ödül şart. Rakibin büyümesi kişiliğindeki büyüme oranından alınır. Oyuncu kazanırsa itibar +5 (GDD'de sayı yok).
+- Sıralamalar yıl sonunda Sektör ekranında ve bildirimde yayınlanır.
+
+## K-056 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Bildirimlerde yerelleştirilmiş ad.
+**Karar:** Simülasyon rakip ve ödül adlarını yerelleştirme anahtarı olarak gönderir; `UiUtil.tr_fmt` metin argümanlarını da çevirir. Anahtar olmayan metinler (müşteri adı gibi) aynen kalır. Böylece simülasyon çeviri bilmeden çalışmaya devam ediyor.
+
+---
+
+## M5-A denge sonucu (200 koşu × 10 yıl)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan | Küçük ofis | İlk ödül (bronz+) | Ödül/koşu | İtibar Y5 / Y10 |
+|---|---|---|---|---|---|---|---|
+| Rastgele | %35.5 ✓ | %73.5 | 5.89 | %72, Y5 | %2 | 0.0 | 3.3 / 1.5 |
+| Bilgili | %1.0 | %5.0 | 7.11 ✓ | %99, Y3 ✓ | %67, Y4 (hedef Y5–Y8) | 1.2 | 20.0 / 22.9 |
+
+Bilgili botun itibarı 30 yıllık koşuda 13. yılda ~28'e çıkıyor, sonra düşen puanlarla geriliyor. Plaza katı (40) hâlâ açılmıyor. M5-B'de pitch kazanmak itibar ekleyecek; sonra yeniden ölçülecek (A-014).
+
 ---
 
 ## Denge adımı sonucu (K-047..K-050)

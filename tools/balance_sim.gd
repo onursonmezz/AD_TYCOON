@@ -58,11 +58,15 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 	var cash_by_year: Array = []
 	var campaigns: int = 0
 	var staff_by_year: Array = []
+	var rep_by_year: Array = []
+	var first_award: Array = []
+	var awards_won: int = 0
 	var office_reach: Dictionary = {}
 	for y: int in years:
 		scores_by_year.append([])
 		cash_by_year.append([])
 		staff_by_year.append([])
+		rep_by_year.append([])
 	for run: int in runs:
 		var sim: Simulation = Simulation.new(data, seed_base * 100000 + run)
 		var bot: RefCounted = _make_bot(kind, seed_base * 100000 + run + 7)
@@ -79,6 +83,7 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 				var yi: int = (week + 1) / weeks_per_year - 1
 				(cash_by_year[yi] as Array).append(sim.state.cash)
 				(staff_by_year[yi] as Array).append(sim.state.staff.size())
+				(rep_by_year[yi] as Array).append(sim.state.reputation)
 		if sim.state.bankrupt:
 			bankrupt_any += 1
 			if sim.state.clock.week_index < 3 * weeks_per_year:
@@ -89,10 +94,19 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 			if yi < years:
 				(scores_by_year[yi] as Array).append(float(h["score"]))
 		campaigns += sim.state.history.size()
+		var first: int = 0
+		for r: Dictionary in sim.state.award_history:
+			if not str(r["level"]).is_empty() and str(r["level"]) != "shortlist":
+				awards_won += 1
+				if first == 0:
+					first = int(r["year"]) - data.bali("time.start_year") + 1
+		if first > 0:
+			first_award.append(first)
 	return {"bankrupt_3y": float(bankrupt_3y) / runs, "bankrupt_any": float(bankrupt_any) / runs,
 		"avg_score": _mean(scores), "campaigns_per_run": float(campaigns) / runs,
 		"scores_by_year": scores_by_year, "cash_by_year": cash_by_year, "staff_by_year": staff_by_year,
-		"office_reach": office_reach, "runs": runs}
+		"office_reach": office_reach, "runs": runs,
+		"rep_by_year": rep_by_year, "first_award": first_award, "awards_per_run": float(awards_won) / runs}
 
 
 func _print_report(results: Dictionary, runs: int, years: int) -> void:
@@ -107,14 +121,14 @@ func _print_report(results: Dictionary, runs: int, years: int) -> void:
 	print("Yıl sonu medyan nakit (₺, hayatta kalanlar) ve yıllık ortalama puan:")
 	var header: String = "%-5s" % "Yıl"
 	for kind: String in results:
-		header += " | %14s | %6s | %5s" % [_label(kind) + " nakit", "puan", "ekip"]
+		header += " | %14s | %6s | %5s | %5s" % [_label(kind) + " nakit", "puan", "ekip", "itibar"]
 	print(header)
 	for y: int in years:
 		var line: String = "Y%-4d" % (y + 1)
 		for kind: String in results:
 			var r: Dictionary = results[kind]
-			line += " | %14s | %6.2f | %5.1f" % [_money(_median(r["cash_by_year"][y])), _mean(r["scores_by_year"][y]),
-				_mean(r["staff_by_year"][y])]
+			line += " | %14s | %6.2f | %5.1f | %5.1f" % [_money(_median(r["cash_by_year"][y])), _mean(r["scores_by_year"][y]),
+				_mean(r["staff_by_year"][y]), _mean(r["rep_by_year"][y])]
 		print(line)
 	print("")
 	print("Ofis taşınma (ulaşan koşu oranı, medyan oyun yılı) — GDD 27.2 hedefi: küçük ofis Y2–Y3, plaza Y12–Y16:")
@@ -126,6 +140,12 @@ func _print_report(results: Dictionary, runs: int, years: int) -> void:
 			if not reached.is_empty():
 				parts.append("seviye %d: %%%d, Y%d" % [level, int(100.0 * reached.size() / int(r["runs"])), int(_median(reached))])
 		print("  %-9s %s" % [_label(kind), " · ".join(parts) if not parts.is_empty() else "—"])
+	print("İlk ödül (bronz+; ulaşan koşu oranı, medyan oyun yılı) — GDD 27.2 hedefi: bilgili bot Y5–Y8:")
+	for kind: String in results:
+		var r: Dictionary = results[kind]
+		var fa: Array = r["first_award"]
+		print("  %-9s %s · koşu başına %.1f ödül" % [_label(kind), ("%%%d, Y%d" % [int(100.0 * fa.size() / int(r["runs"])), int(_median(fa))]) if not fa.is_empty() else "—",
+			float(r["awards_per_run"])])
 	var diff: float = float(results["smart"]["avg_score"]) - float(results["random"]["avg_score"])
 	var rb: float = 100.0 * float(results["random"]["bankrupt_3y"])
 	print("")

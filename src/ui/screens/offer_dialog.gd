@@ -20,8 +20,13 @@ func _ready() -> void:
 		* (1.0 + data.balf("staff_rules.offer_raise_over_market"))
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(540.0, 280.0))
 	col.add_child(UiUtil.label(tr("UI_OFFER_TITLE"), 24, UiUtil.TERRACOTTA))
-	col.add_child(UiUtil.wrapped(tr("UI_OFFER_TEXT") % [GameState.employee_name(emp), tr(Employee.title_key(data, emp)),
-		UiUtil.money(_offer["offer_salary"]), UiUtil.money(emp["salary"])], 16, UiUtil.TEXT, 480.0))
+	var rival: String = str(_offer.get("rival", ""))
+	var text: String = tr("UI_OFFER_TEXT") % [GameState.employee_name(emp), tr(Employee.title_key(data, emp)),
+		UiUtil.money(_offer["offer_salary"]), UiUtil.money(emp["salary"])]
+	if data.rivals.has(rival):
+		text = tr("UI_OFFER_TEXT_RIVAL") % [GameState.employee_name(emp), tr(Employee.title_key(data, emp)),
+			UiUtil.name_of(data.rivals, rival), UiUtil.money(_offer["offer_salary"]), UiUtil.money(emp["salary"])]
+	col.add_child(UiUtil.wrapped(text, 16, UiUtil.TEXT, 480.0))
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())
 	buttons.add_child(UiUtil.button(tr("UI_OFFER_RELEASE"), func() -> void: _resolve("release")))

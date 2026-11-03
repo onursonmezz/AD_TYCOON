@@ -38,6 +38,11 @@ var distributions: Dictionary = {}
 var suppliers: Dictionary = {}
 var supplier_ids: Array[String] = []
 
+var rivals: Dictionary = {}
+var awards: Dictionary = {}
+var rival_ids: Array[String] = []
+var award_ids: Array[String] = []
+
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
 var handcrafted_brands: Array = []
@@ -161,6 +166,8 @@ func _index() -> void:
 	var office_ids: Array[String] = []
 	_index_list("offices.json", offices, office_ids)
 	_index_list("suppliers.json", suppliers, supplier_ids)
+	_index_list("rivals.json", rivals, rival_ids)
+	_index_list("awards.json", awards, award_ids)
 	var print_opts: Dictionary = raw.get("print_options.json", {})
 	for rec: Dictionary in print_opts.get("products", []):
 		print_products[rec["id"]] = rec

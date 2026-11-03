@@ -82,6 +82,8 @@ func _candidate_card(cand: Dictionary) -> PanelContainer:
 	var top: HBoxContainer = UiUtil.hbox()
 	top.add_child(UiUtil.label(str(cand["name"]), 18, UiUtil.SAGE_DARK))
 	top.add_child(UiUtil.label("%s · %s" % [tr(Employee.title_key(data, cand)), tr("UI_LEVEL") % int(cand["level"])], 14, UiUtil.WOOD))
+	if data.rivals.has(str(cand.get("from_rival", ""))):
+		top.add_child(UiUtil.label(tr("UI_FROM_RIVAL") % UiUtil.name_of(data.rivals, cand["from_rival"]), 14, UiUtil.TERRACOTTA))
 	top.add_child(UiUtil.spacer())
 	top.add_child(UiUtil.label(tr("UI_EXPECTED_SALARY") % UiUtil.money(cand["salary"]), 14))
 	col.add_child(top)

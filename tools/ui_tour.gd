@@ -143,6 +143,35 @@ func _tour_options(screen: Control, sim: Simulation) -> void:
 	var scandal: Dictionary = {"id": "sc_demo", "campaign_id": "", "influencer": "@ece42", "expires_week": sim.state.clock.week_index + 1}
 	screen.call("open_modal", ScandalDialog.new(scandal))
 	await _shot("15_scandal")
+	await _tour_industry(screen, sim)
+
+
+## M5-A: sektör ekranı (ödül takvimi, sıralama, rakipler), başvuru ve tören pencereleri.
+func _tour_industry(screen: Control, sim: Simulation) -> void:
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	sim.state.cash = 900000.0
+	while sim.state.clock.month() != sim.awards.entry_month("golden_apple"):
+		GameState.step_day()
+		if GameState.is_waiting():
+			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+	if not sim.state.history.is_empty():
+		var last: Dictionary = sim.state.history[sim.state.history.size() - 1]
+		last["week"] = sim.state.clock.week_index
+		last["score"] = 9.2
+	sim.state.rankings = sim.awards.year_end(sim.state)
+	screen.call("show_panel", "industry")
+	await _shot("16_industry")
+	var entry: AwardEntryDialog = AwardEntryDialog.new("golden_apple", func() -> void: pass)
+	screen.call("open_modal", entry)
+	await _shot("17_award_entry")
+	entry.queue_free()
+	var fake: Dictionary = {"award": "golden_apple", "year": sim.state.clock.year(), "rivals": [{"rival": "mavi_ok", "level": "gold"}],
+		"player": [{"name": "Yaz Kampanyası", "client_name": "Lezzetçi Köfte", "level": "silver"}],
+		"grand_prix": {"who": "kivilcim", "campaign": ""}}
+	screen.call("open_modal", CeremonyDialog.new(fake))
+	await get_tree().create_timer(4.0).timeout
+	await _shot("18_ceremony")
 
 
 func _shot(file_name: String) -> void:
