@@ -1,5 +1,21 @@
 # Değişiklik günlüğü
 
+## M6-A: 3D ofis (gri kutu) (2026-11-03)
+- **Ana ekran:** Ortada 3D ofis var. Menü ekranları ofisin üstünde pencere olarak açılıyor (✕ ya da aynı menü düğmesi kapatır).
+- **Her ofis seviyesinin hazır binası:** ev odası (çaycı köşesi ve minder dahil), küçük ofis (toplantı odası, mutfak), büyütülmüş ofis, plaza, bina. Taşınınca yeni bina yükleniyor.
+- **Kamera:** Fare tekerleği yakınlaştırır; sağ tuşla sürükleme, WASD ya da ok tuşları kaydırır; Q/E 90° döndürür. Kameraya bakan dış duvarlar alçalır (bebek evi görünümü).
+- **Çalışanlar:** Departman renginde kapsüller masalarına yürüyor. İzindeyken görünmüyorlar, pitch hazırlığında toplantı odasına, yorgunken mutfağa gidiyorlar.
+- **Baloncuklar:** Kampanyada çalışanların başında fazın harfi çıkıyor (S yeşil, K turuncu, T mavi); hata olunca kırmızı "!", seviye atlayınca "★".
+- **Bilgi kartı:** Bir çalışana tıklayınca adı, unvanı, enerjisi, morali ve ne yaptığı görünüyor. "Ekip ekranında aç" düğmesi var.
+- Nasıl test ederim:
+  1. Yeni oyun aç: ortada ev odasını ve masanda oturan seni (sarı halkalı kapsül) gör.
+  2. Tekerlekle yakınlaş/uzaklaş, sağ tuşla sürükle, Q ve E ile döndür. Döndükçe öndeki duvarların alçaldığını gör.
+  3. Sol menüden bir ekran aç, ✕ ile ya da aynı düğmeyle kapat.
+  4. Bir kampanya başlat, oyunu 1x'te oynat: başının üstünde S/K/T baloncuklarını gör.
+  5. Kendine tıkla: bilgi kartını gör. Fazla mesaiyle enerjin düşünce mutfağa yürüdüğünü izle.
+  6. Küçük ofise taşın: yeni binayı (toplantı odası, mutfak) ve yeni çalışanların kendi masalarına yürüdüğünü gör.
+  7. Akıcılık ve kamera rahatlığı hakkında bana not yaz (bilgisayarına göre değişir).
+
 ## M5-B: Pitch (2026-11-03)
 - **İhale davetleri:** Küçük ofisten itibaren büyük markalar (ulusal, çok uluslu) ihale daveti gönderir. Davette rakip ajanslar, hazırlık süresi ve varsa katılım ücreti yazar.
 - **Hazırlık:** Pitch ekibini ve ücret teklifini (%85 / %100 / %115) seçersin. Ekip hazırlık boyunca Strateji ve Kreatif puan biriktirir, bu sürede kampanyada çalışmaz. Gelen kutusunda ilerleme görünür.

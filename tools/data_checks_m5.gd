@@ -1,5 +1,5 @@
 extends RefCounted
-## M5 veri kontrolleri (rakipler, ödüller); data_validator.gd 400 satırı aşmasın diye ayrı dosyada.
+## M5+ veri kontrolleri (rakipler, ödüller, pitch kartları, ofis yerleşimleri); data_validator.gd 400 satırı aşmasın diye ayrı dosyada.
 
 const LEVELS: Array[String] = ["shortlist", "bronze", "silver", "gold", "grand_prix"]
 const CATEGORIES_EXTRA: Array[String] = ["integrated"]
@@ -60,4 +60,20 @@ static func check(data: Dictionary, ids: Dictionary) -> PackedStringArray:
 		keys.sort()
 		if keys != ["budget", "digital", "humor", "risk"]:
 			errors.append("pitch_cards.json: '%s' prefs risk/budget/digital/humor olmalı" % str(rec.get("id", "?")))
+	var room_types: Array[String] = ["work", "meeting", "kitchen", "lounge", "empty"]
+	var layout_ids: Array = []
+	for rec: Variant in data.get("office_layouts.json", []):
+		if typeof(rec) != TYPE_DICTIONARY:
+			continue
+		layout_ids.append(rec.get("id"))
+		var sz: Array = rec.get("size", [0, 0])
+		for room: Variant in rec.get("rooms", []):
+			var r: Array = room.get("rect", [])
+			if not room_types.has(room.get("type")):
+				errors.append("office_layouts.json: '%s' bilinmeyen oda tipi '%s'" % [str(rec.get("id")), str(room.get("type"))])
+			if r.size() != 4 or float(r[0]) < 0 or float(r[1]) < 0 or float(r[0]) + float(r[2]) > float(sz[0]) or float(r[1]) + float(r[3]) > float(sz[1]):
+				errors.append("office_layouts.json: '%s' oda bina dışına taşıyor" % str(rec.get("id")))
+	for off: Variant in data.get("offices.json", []):
+		if typeof(off) == TYPE_DICTIONARY and not layout_ids.has(off.get("id")):
+			errors.append("office_layouts.json: '%s' için yerleşim yok" % str(off.get("id")))
 	return errors

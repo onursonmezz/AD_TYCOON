@@ -2,6 +2,7 @@ extends Control
 ## Oyun ekranı (GDD 20, M2 sade sürüm): üst bar, sol menü, içerik paneli, bildirim akışı, modal pencereler.
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
+const WINDOW_MARGIN: float = 14.0
 
 var _cash: Label
 var _date: Label
@@ -9,7 +10,10 @@ var _rep: Label
 var _speed_buttons: Array[Button] = []
 var _pause_button: Button
 var _overtime: CheckButton
-var _content: PanelContainer
+var _content: VBoxContainer
+var _window: PanelContainer
+var _office: OfficeView
+var _employee_card: EmployeeCard = null
 var _feed: VBoxContainer
 var _menu_buttons: Dictionary = {}
 var _panel: Control = null
@@ -30,7 +34,6 @@ func _ready() -> void:
 	EventBus.scandal_started.connect(func(scandal: Dictionary) -> void: open_modal(ScandalDialog.new(scandal)))
 	EventBus.award_ceremony.connect(func(result: Dictionary) -> void: open_modal(CeremonyDialog.new(result)))
 	EventBus.pitch_ready.connect(func() -> void: open_modal(PitchDialog.new()))
-	show_panel("inbox")
 	_refresh()
 	_refresh_speed()
 	if GameState.is_bankrupt():
@@ -56,9 +59,7 @@ func _build() -> void:
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	root.add_child(body)
 	body.add_child(_build_menu())
-	_content = UiUtil.card()
-	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	body.add_child(_content)
+	body.add_child(_build_center())
 	var feed_card: PanelContainer = UiUtil.card()
 	feed_card.custom_minimum_size.x = 260.0
 	var feed_col: VBoxContainer = UiUtil.vbox(6)
@@ -109,17 +110,79 @@ func _build_top_bar() -> PanelContainer:
 	return bar
 
 
+## Orta alan (M6): 3D ofis her zaman görünür; menü ekranları üstünde kapatılabilir pencere olarak açılır.
+func _build_center() -> Control:
+	var center: Control = Control.new()
+	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	center.clip_contents = true
+	_office = OfficeView.new()
+	center.add_child(_office)
+	_office.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_office.employee_clicked.connect(_on_employee_clicked)
+	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 12, UiUtil.MUTED)
+	center.add_child(hint)
+	hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	hint.position += Vector2(WINDOW_MARGIN, -WINDOW_MARGIN)
+	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_window = UiUtil.card()
+	center.add_child(_window)
+	_window.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side: String in ["left", "top", "right", "bottom"]:
+		_window.set("offset_" + side, WINDOW_MARGIN if side in ["left", "top"] else -WINDOW_MARGIN)
+	var col: VBoxContainer = UiUtil.vbox(6)
+	_window.add_child(col)
+	var header: HBoxContainer = UiUtil.hbox()
+	header.add_child(UiUtil.spacer())
+	var close: Button = Button.new()
+	close.text = "✕"
+	close.tooltip_text = tr("TIP_CLOSE_WINDOW")
+	close.pressed.connect(close_panel)
+	header.add_child(close)
+	col.add_child(header)
+	_content = UiUtil.vbox(0)
+	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col.add_child(_content)
+	_window.visible = false
+	return center
+
+
+## Pencereyi kapatır, ofis görünür.
+func close_panel() -> void:
+	_window.visible = false
+	UiUtil.clear(_content)
+	_panel = null
+	_panel_id = ""
+
+
+## Ofiste bir çalışana tıklandı: küçük bilgi kartı.
+func _on_employee_clicked(employee_id: String) -> void:
+	if _employee_card != null:
+		_employee_card.queue_free()
+	_employee_card = EmployeeCard.new(employee_id, func() -> void: show_panel("team"))
+	_office.get_parent().add_child(_employee_card)
+	_employee_card.position = Vector2(WINDOW_MARGIN, WINDOW_MARGIN)
+
+
 func _build_menu() -> PanelContainer:
 	var card: PanelContainer = UiUtil.card()
 	card.custom_minimum_size.x = 190.0
 	var col: VBoxContainer = UiUtil.vbox(8)
 	card.add_child(col)
 	for id: String in ["inbox", "clients", "campaign", "team", "office", "finance", "industry", "history"]:
-		var b: Button = UiUtil.button(tr("MENU_" + id.to_upper()), func() -> void: show_panel(id))
+		var b: Button = UiUtil.button(tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		_menu_buttons[id] = b
 		col.add_child(b)
 	return card
+
+
+## Menü düğmesi: aynı pencere açıksa kapatır.
+func toggle_panel(id: String) -> void:
+	if _panel_id == id and _window.visible:
+		close_panel()
+	else:
+		show_panel(id)
 
 
 func show_panel(id: String) -> void:
@@ -127,6 +190,7 @@ func show_panel(id: String) -> void:
 		return
 	UiUtil.clear(_content)
 	_panel_id = id
+	_window.visible = true
 	match id:
 		"inbox":
 			_panel = InboxPanel.new(self)
@@ -144,6 +208,7 @@ func show_panel(id: String) -> void:
 			_panel = IndustryPanel.new(self)
 		"history":
 			_panel = HistoryPanel.new(self)
+	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_child(_panel)
 	_panel.call("refresh")
 

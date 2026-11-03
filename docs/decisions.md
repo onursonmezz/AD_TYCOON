@@ -422,6 +422,24 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - Rakip katsayısı 1.5 iken bilgili bot ihalelerin %16'sını kazanıyordu, 1.0 ile %32'sini (2–4 rakiple adil pay).
 - **Kazanan:** softmax(skor / en yüksek skor / 0.12).
 
+## K-059 · 2026-11-03 · Kabul · Orgo kararı (M6 planı: ofis ortada, oda inşası büyütülmüş ofisten)
+**Konu:** 3D ofis ve ana ekran (12.1, 20, 21.1).
+**Karar:**
+- **Ana ekran:** Ortada her zaman 3D ofis görünür. Sol menü ekranları ofisin üstünde ✕ ile kapanan pencere olarak açılır; aynı menü düğmesine tekrar basmak pencereyi kapatır. Oyun pencere açık değilken başlar.
+- **Oda inşası** (M6-B) büyütülmüş ofisten (seviye 3) itibaren açılacak. GDD plaza katı (seviye 4) diyor; plaza A-014 yüzünden şu an açılmıyor.
+- **Hazır yerleşimler:** Her ofis seviyesinin hazır yerleşimi `data/office_layouts.json`'da: çalışma alanı, toplantı, mutfak, dinlenme, boş alan.
+  - Masalar çalışma alanında 2 × 2.5 m aralıkla otomatik dizilir. Her seviyede masa sayısı kapasiteyi karşılar (test).
+- **Karakterler:** Kapsül karakterler, departmana göre renkli; kurucunun başında sarı bir halka var.
+  - Yerleri simülasyondan okunur: izin/eğitim → görünmez; pitch hazırlığı → toplantı odası; enerji eşiğin altında → mutfak; yoksa masası.
+  - Baloncuklar yalnızca görsel: masadaki kampanya ekibinden günde ~%45'i fazın harfini çıkarır (S/K/T), yeni hata "!", seviye atlama "★".
+
+## K-060 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Yürüme için NavigationAgent3D yerine AStarGrid2D.
+**Karar:** GDD 26'daki M6 metni NavigationAgent3D diyor. Yerleşim 0.5 m'lik ızgarada `AStarGrid2D` ile yürünüyor: duvarlar ve mobilyalar engel, kapılar boşluk. Gerekçe:
+- sahnesiz test edilebilir (yerleşim saf veri, `OfficeLayout`);
+- çalışma anında navmesh pişirmeye gerek yok;
+- M6-B'deki ızgaralı oda ve mobilya yerleştirme aynı ızgarayı kullanacak.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

@@ -24,6 +24,8 @@ func _run() -> void:
 	GameState.new_game(5, "marketing_manager")
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
 	add_child(screen)
+	await get_tree().create_timer(3.0).timeout
+	await _shot("01c_office_home")
 	var sim: Simulation = GameState.sim
 	while sim.state.inbox.size() < 2:
 		GameState.step_day()
@@ -200,6 +202,30 @@ func _tour_pitch(screen: Control, sim: Simulation) -> void:
 	pd.call("_play", "bold_concept")
 	pd.call("_play", "meet_the_team")
 	await _shot("22_pitch_result")
+	await _tour_office(screen, sim)
+
+
+## M6-A: 3D ofis (ev odası ve büyütülmüş ofis, döndürülmüş), çalışan kartı.
+func _tour_office(screen: Control, sim: Simulation) -> void:
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	screen.call("close_panel")
+	sim.state.office_level = 3
+	sim.state.cash = 5000000.0
+	for role: String in ["art_director", "copywriter", "planner", "producer", "account", "graphic_designer", "media_planner"]:
+		var found: Array[Dictionary] = SearchCandidatesCommand.new(role, "job_ad", "tr").execute(sim)
+		if not found.is_empty():
+			HireEmployeeCommand.new(found[0]["id"]).execute(sim)
+	EventBus.state_changed.emit()
+	await get_tree().create_timer(6.0).timeout
+	await _shot("23_office_3d")
+	var view: OfficeView = screen.get("_office")
+	view.world.rig.rotate_quarter(1)
+	await get_tree().create_timer(1.0).timeout
+	await _shot("24_office_rotated")
+	var ids: Array = sim.state.staff.keys()
+	screen.call("_on_employee_clicked", ids[1])
+	await _shot("25_employee_card")
 
 
 func _shot(file_name: String) -> void:

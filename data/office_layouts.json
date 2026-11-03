@@ -1,0 +1,38 @@
+[
+	{ "id": "office_1", "name_key": "OFFICE_1", "size": [7, 5], "entrance": "s",
+		"rooms": [
+			{ "type": "work", "rect": [0, 0, 5, 5], "open": true },
+			{ "type": "kitchen", "rect": [5, 0, 2, 3], "open": true },
+			{ "type": "lounge", "rect": [5, 3, 2, 2], "open": true }
+		] },
+	{ "id": "office_2", "name_key": "OFFICE_2", "size": [14, 9], "entrance": "s",
+		"rooms": [
+			{ "type": "work", "rect": [0, 0, 9, 9], "open": true },
+			{ "type": "meeting", "rect": [9, 0, 5, 5], "door": "w" },
+			{ "type": "kitchen", "rect": [9, 5, 5, 4], "door": "w" }
+		] },
+	{ "id": "office_3", "name_key": "OFFICE_3", "size": [20, 13], "entrance": "s",
+		"rooms": [
+			{ "type": "work", "rect": [0, 0, 12, 8], "open": true },
+			{ "type": "meeting", "rect": [12, 0, 8, 5], "door": "w" },
+			{ "type": "kitchen", "rect": [12, 5, 8, 4], "door": "w" },
+			{ "type": "empty", "rect": [0, 8, 12, 5], "open": true },
+			{ "type": "lounge", "rect": [12, 9, 8, 4], "open": true }
+		] },
+	{ "id": "office_4", "name_key": "OFFICE_4", "size": [30, 20], "entrance": "s",
+		"rooms": [
+			{ "type": "work", "rect": [0, 0, 20, 12], "open": true },
+			{ "type": "meeting", "rect": [20, 0, 10, 6], "door": "w" },
+			{ "type": "kitchen", "rect": [20, 6, 10, 6], "door": "w" },
+			{ "type": "empty", "rect": [0, 12, 20, 8], "open": true },
+			{ "type": "lounge", "rect": [20, 12, 10, 8], "open": true }
+		] },
+	{ "id": "office_5", "name_key": "OFFICE_5", "size": [44, 32], "entrance": "s",
+		"rooms": [
+			{ "type": "work", "rect": [0, 0, 32, 22], "open": true },
+			{ "type": "meeting", "rect": [32, 0, 12, 10], "door": "w" },
+			{ "type": "kitchen", "rect": [32, 10, 12, 12], "door": "w" },
+			{ "type": "empty", "rect": [0, 22, 32, 10], "open": true },
+			{ "type": "lounge", "rect": [32, 22, 12, 10], "open": true }
+		] }
+]

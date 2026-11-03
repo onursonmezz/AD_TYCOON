@@ -427,7 +427,7 @@ BG_MARKETING_MANAGER_DESC,Strateji yüksek + müşteri ağı (bir başlangıç m
 BG_GRAPHIC_DESIGNER,Grafik Tasarımcı,Graphic Designer
 BG_GRAPHIC_DESIGNER_DESC,Görsel tasarım ve teknik yüksek.,Strong visual design and technical skills.
 BG_SALESPERSON,Satışçı,Salesperson
-BG_SALESPERSON_DESC,İletişim yüksek (müşteri memnuniyeti; pitch'te avantaj yakında).,High communication (client satisfaction; pitch advantage coming soon).
+BG_SALESPERSON_DESC,İletişim yüksek (müşteri memnuniyeti ve pitch sunumu).,High communication (client satisfaction and pitch presentations).
 MENU_TEAM,Ekip,Team
 MENU_OFFICE,Ofis,Office
 UI_YOU,Sen,You
@@ -804,3 +804,11 @@ ERR_NO_PITCH,Bu davet artık geçerli değil.,This invitation is no longer valid
 ERR_PITCH_BUSY,Zaten bir pitch hazırlığı var.,A pitch is already in preparation.
 ERR_PITCH_FEE,Geçersiz ücret teklifi.,Invalid fee offer.
 UI_PITCH_MEMBER,%s (%s · İletişim %d),%s (%s · Communication %d)
+TIP_CLOSE_WINDOW,Pencereyi kapat (ofis görünür),Close the window (back to the office)
+UI_OPEN_TEAM,Ekip ekranında aç,Open in Team
+UI_EMP_CARD,Enerji %d · Moral %d · %s,Energy %d · Morale %d · %s
+UI_EMP_AWAY,İzinde / eğitimde,On leave / in training
+UI_EMP_PITCH,Pitch hazırlığında,Preparing a pitch
+UI_EMP_CAMPAIGN,Kampanyada çalışıyor,Working on a campaign
+UI_EMP_IDLE,Boşta,Idle
+UI_OFFICE_CONTROLS,"Ofis: tekerlek yakınlaştırır · sağ tuşla sürükle ya da WASD kaydırır · Q/E döndürür · çalışana tıkla","Office: wheel zooms · right-drag or WASD pans · Q/E rotates · click a person"
