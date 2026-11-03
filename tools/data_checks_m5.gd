@@ -49,4 +49,15 @@ static func check(data: Dictionary, ids: Dictionary) -> PackedStringArray:
 			if float(th[l]) <= last:
 				errors.append("awards.json: '%s' eşikler artan sırada olmalı (%s)" % [id, l])
 			last = float(th[l])
+	for rec: Variant in data.get("pitch_cards.json", []):
+		if typeof(rec) != TYPE_DICTIONARY:
+			continue
+		if not ["opening", "idea", "closing"].has(rec.get("round")):
+			errors.append("pitch_cards.json: '%s' tur opening/idea/closing olmalı" % str(rec.get("id", "?")))
+		if not ["strategy", "creative"].has(rec.get("stat")):
+			errors.append("pitch_cards.json: '%s' stat strategy/creative olmalı" % str(rec.get("id", "?")))
+		var keys: Array = (rec.get("prefs", {}) as Dictionary).keys()
+		keys.sort()
+		if keys != ["budget", "digital", "humor", "risk"]:
+			errors.append("pitch_cards.json: '%s' prefs risk/budget/digital/humor olmalı" % str(rec.get("id", "?")))
 	return errors

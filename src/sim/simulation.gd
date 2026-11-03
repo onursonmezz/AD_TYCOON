@@ -19,6 +19,8 @@ signal scandal_started(scandal: Dictionary)
 ## M5: ödül töreni sonucu (oyuncunun başvurusu varsa) ve yıl sonu sıralaması.
 signal award_ceremony(result: Dictionary)
 signal rankings_published(result: Dictionary)
+## Pitch hazırlığı bitti, sunum bekleniyor (oyunda zaman durur).
+signal pitch_ready()
 
 var data: GameData
 var state: SimState
@@ -42,6 +44,7 @@ var influencers: InfluencerSystem
 ## Rakipler ve ödüller (M5).
 var rivals: RivalSystem
 var awards: AwardSystem
+var pitches: PitchSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -68,6 +71,7 @@ func _init(game_data: GameData, seed_value: int, background: String = "") -> voi
 	media = MediaPlanning.new(data, prints, options, influencers)
 	rivals = RivalSystem.new(data)
 	awards = AwardSystem.new(data, rivals)
+	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
@@ -90,6 +94,8 @@ func load_state(saved: Dictionary) -> void:
 func step_day() -> void:
 	if state.bankrupt or state.waiting_for_input:
 		return
+	if pause_on_phase and pitches.is_waiting(state):
+		return
 	if not state.active_campaign.is_empty():
 		if pause_on_phase and _needs_phase_input():
 			return
@@ -97,6 +103,7 @@ func step_day() -> void:
 		if production.is_finished(state.active_campaign):
 			_deliver()
 	staff_life.daily(state)
+	pitches.produce_day(state)
 	var ended: Dictionary = state.clock.advance_day()
 	if ended["week"]:
 		var inbox_before: int = state.inbox.size()
@@ -105,6 +112,7 @@ func step_day() -> void:
 		for note: Dictionary in staff_life.weekly(state):
 			staff_note.emit(note["key"], note["args"], note["kind"])
 		influencers.weekly(state)
+		IndustryCalendar.weekly(self)
 		influencers.expire_scandals(state)
 		var supplier_offer: Dictionary = suppliers.weekly(state)
 		if not supplier_offer.is_empty():
@@ -120,7 +128,7 @@ func step_day() -> void:
 		for offer: Dictionary in staff_life.monthly_offers(state):
 			offer["rival"] = rivals.pick_by_power(state)
 			offer_received.emit(offer)
-		_monthly_industry()
+		IndustryCalendar.monthly(self)
 	if ended["year"]:
 		_end_year()
 
@@ -334,14 +342,14 @@ func _finish(camp: Dictionary) -> void:
 			state.history[i]["viral"] = result["viral"]
 			break
 	var lost_names: Array[String] = []
-	_drop_clients(clients.remove_unhappy(state, lost_names))
+	drop_clients(clients.remove_unhappy(state, lost_names))
 	campaign_finished.emit(camp)
 	if not lost_names.is_empty():
 		clients_lost.emit(lost_names)
 
 
 ## Kaybedilen müşteriler: itibar −2 (14.1), gelen kutusundaki brief'leri silinir.
-func _drop_clients(lost: Array[String]) -> void:
+func drop_clients(lost: Array[String]) -> void:
 	state.reputation -= lost.size() * data.balf("reputation.client_lost")
 	if not lost.is_empty():
 		var kept: Array[Dictionary] = []
@@ -350,25 +358,6 @@ func _drop_clients(lost: Array[String]) -> void:
 				kept.append(b)
 		state.inbox = kept
 	state.reputation = clampf(state.reputation, data.balf("reputation.min"), data.balf("reputation.max"))
-
-
-## Ay başı (M5): rakiplerin güncellemesi, müşteri çalma, açılan başvuru pencereleri, bu ayın törenleri.
-func _monthly_industry() -> void:
-	for note: Dictionary in rivals.monthly(state):
-		staff_note.emit(note["key"], note["args"], note["kind"])
-	var stolen: Array[String] = []
-	for s: Dictionary in rivals.steal_clients(state):
-		staff_note.emit("NOTE_CLIENT_STOLEN", [state.clients[s["client_id"]]["name"], data.rivals[s["rival_id"]]["name_key"]], "bad")
-		state.clients.erase(s["client_id"])
-		stolen.append(str(s["client_id"]))
-	_drop_clients(stolen)
-	for id: String in awards.open_awards(state):
-		staff_note.emit("NOTE_AWARD_OPEN", [data.awards[id]["name_key"]], "info")
-	for id: String in awards.available(state):
-		if int(data.awards[id]["month"]) == state.clock.month():
-			var result: Dictionary = awards.ceremony(state, id)
-			if not (result["player"] as Array).is_empty():
-				award_ceremony.emit(result)
 
 
 ## GDD 14.1 itibar: iyi puan +, kötü puan − (büyüklükle ölçeklenir).

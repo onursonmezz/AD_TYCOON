@@ -66,6 +66,11 @@ func is_waiting() -> bool:
 	return sim != null and sim.state.waiting_for_input
 
 
+## Pitch hazırlığı bitti, sunum bekleniyor (zaman durur).
+func is_pitch_waiting() -> bool:
+	return sim != null and sim.pitches.is_waiting(sim.state)
+
+
 func is_bankrupt() -> bool:
 	return sim != null and sim.state.bankrupt
 
@@ -88,6 +93,7 @@ func _attach(new_sim: Simulation) -> void:
 	sim.scandal_started.connect(func(scandal: Dictionary) -> void: EventBus.scandal_started.emit(scandal))
 	sim.award_ceremony.connect(func(result: Dictionary) -> void: EventBus.award_ceremony.emit(result))
 	sim.rankings_published.connect(_on_rankings)
+	sim.pitch_ready.connect(func() -> void: EventBus.pitch_ready.emit())
 	sim.supplier_offer_received.connect(func(offer: Dictionary) -> void:
 		EventBus.notification.emit("NOTE_SUPPLIER_OFFER", [tr(DataDB.data.suppliers[offer["supplier"]]["name_key"])], "info"))
 

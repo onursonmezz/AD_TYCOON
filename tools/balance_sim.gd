@@ -61,6 +61,8 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 	var rep_by_year: Array = []
 	var first_award: Array = []
 	var awards_won: int = 0
+	var pitches: int = 0
+	var pitch_wins: int = 0
 	var office_reach: Dictionary = {}
 	for y: int in years:
 		scores_by_year.append([])
@@ -102,11 +104,15 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 					first = int(r["year"]) - data.bali("time.start_year") + 1
 		if first > 0:
 			first_award.append(first)
+		for p: Dictionary in sim.state.pitch_history:
+			pitches += 1
+			pitch_wins += 1 if bool(p["won"]) else 0
 	return {"bankrupt_3y": float(bankrupt_3y) / runs, "bankrupt_any": float(bankrupt_any) / runs,
 		"avg_score": _mean(scores), "campaigns_per_run": float(campaigns) / runs,
 		"scores_by_year": scores_by_year, "cash_by_year": cash_by_year, "staff_by_year": staff_by_year,
 		"office_reach": office_reach, "runs": runs,
-		"rep_by_year": rep_by_year, "first_award": first_award, "awards_per_run": float(awards_won) / runs}
+		"rep_by_year": rep_by_year, "first_award": first_award, "awards_per_run": float(awards_won) / runs,
+		"pitches_per_run": float(pitches) / runs, "pitch_win_rate": float(pitch_wins) / maxf(1.0, pitches)}
 
 
 func _print_report(results: Dictionary, runs: int, years: int) -> void:
@@ -146,6 +152,10 @@ func _print_report(results: Dictionary, runs: int, years: int) -> void:
 		var fa: Array = r["first_award"]
 		print("  %-9s %s · koşu başına %.1f ödül" % [_label(kind), ("%%%d, Y%d" % [int(100.0 * fa.size() / int(r["runs"])), int(_median(fa))]) if not fa.is_empty() else "—",
 			float(r["awards_per_run"])])
+	print("Pitch (koşu başına, kazanma oranı):")
+	for kind: String in results:
+		print("  %-9s %.1f pitch · %%%d kazanma" % [_label(kind), float(results[kind]["pitches_per_run"]),
+			int(100.0 * float(results[kind]["pitch_win_rate"]))])
 	var diff: float = float(results["smart"]["avg_score"]) - float(results["random"]["avg_score"])
 	var rb: float = 100.0 * float(results["random"]["bankrupt_3y"])
 	print("")

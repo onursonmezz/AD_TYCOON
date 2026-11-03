@@ -172,6 +172,34 @@ func _tour_industry(screen: Control, sim: Simulation) -> void:
 	screen.call("open_modal", CeremonyDialog.new(fake))
 	await get_tree().create_timer(4.0).timeout
 	await _shot("18_ceremony")
+	await _tour_pitch(screen, sim)
+
+
+## M5-B: ihale daveti (gelen kutusu + katılım penceresi) ve sunum mini oyunu.
+func _tour_pitch(screen: Control, sim: Simulation) -> void:
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	sim.state.office_level = 3
+	sim.state.pitch = {}
+	sim.state.pitch_invites = [sim.pitches.make_invite(sim.state)]
+	screen.call("show_panel", "inbox")
+	screen.call("_refresh")
+	await _shot("19_pitch_invite")
+	var dialog: PitchInviteDialog = PitchInviteDialog.new(sim.state.pitch_invites[0])
+	screen.call("open_modal", dialog)
+	await _shot("20_pitch_join")
+	dialog.call("_on_start")
+	await get_tree().process_frame
+	while not sim.pitches.is_waiting(sim.state):
+		sim.step_day()
+	var pd: PitchDialog = PitchDialog.new()
+	screen.call("open_modal", pd)
+	await get_tree().process_frame
+	pd.call("_play", "insight_story")
+	await _shot("21_pitch_round")
+	pd.call("_play", "bold_concept")
+	pd.call("_play", "meet_the_team")
+	await _shot("22_pitch_result")
 
 
 func _shot(file_name: String) -> void:

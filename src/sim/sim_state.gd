@@ -68,6 +68,11 @@ var award_buzz: float = 0.0
 var rankings: Dictionary = {}
 var ranking_history: Array[Dictionary] = []
 var last_year_income: float = 0.0
+## Pitch (GDD 14.2): bekleyen davetler, yürüyen pitch, kısa listede kaldığımız "sıcak" markalar, sonuçlar.
+var pitch_invites: Array[Dictionary] = []
+var pitch: Dictionary = {}
+var warm_clients: Dictionary = {}
+var pitch_history: Array[Dictionary] = []
 
 ## Yıllık gelir/gider (vergi için).
 var year_income: float = 0.0
@@ -80,7 +85,8 @@ const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bank
 	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id",
-	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income"]
+	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income",
+	"pitch_invites", "pitch", "warm_clients", "pitch_history"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -167,4 +173,8 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.rankings = saved.get("rankings", {})
 	s.ranking_history.assign(saved.get("ranking_history", []))
 	s.last_year_income = float(saved.get("last_year_income", 0.0))
+	s.pitch_invites.assign(saved.get("pitch_invites", []))
+	s.pitch = saved.get("pitch", {})
+	s.warm_clients = saved.get("warm_clients", {})
+	s.pitch_history.assign(saved.get("pitch_history", []))
 	return s

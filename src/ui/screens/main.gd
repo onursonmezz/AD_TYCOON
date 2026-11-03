@@ -29,11 +29,14 @@ func _ready() -> void:
 	EventBus.offer_received.connect(func(offer: Dictionary) -> void: open_modal(OfferDialog.new(offer)))
 	EventBus.scandal_started.connect(func(scandal: Dictionary) -> void: open_modal(ScandalDialog.new(scandal)))
 	EventBus.award_ceremony.connect(func(result: Dictionary) -> void: open_modal(CeremonyDialog.new(result)))
+	EventBus.pitch_ready.connect(func() -> void: open_modal(PitchDialog.new()))
 	show_panel("inbox")
 	_refresh()
 	_refresh_speed()
 	if GameState.is_bankrupt():
 		_on_bankrupt()
+	elif GameState.is_pitch_waiting():
+		open_modal(PitchDialog.new())
 
 
 func _build() -> void:

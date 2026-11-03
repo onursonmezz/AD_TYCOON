@@ -1,0 +1,20 @@
+[
+	{ "id": "market_data", "name_key": "CARD_MARKET_DATA", "desc_key": "CARD_MARKET_DATA_DESC", "round": "opening", "stat": "strategy",
+		"prefs": { "risk": -0.5, "budget": 0.5, "digital": 0.0, "humor": -0.2 } },
+	{ "id": "insight_story", "name_key": "CARD_INSIGHT_STORY", "desc_key": "CARD_INSIGHT_STORY_DESC", "round": "opening", "stat": "strategy",
+		"prefs": { "risk": 0.3, "budget": -0.3, "digital": 0.0, "humor": 0.0 } },
+	{ "id": "humor_opening", "name_key": "CARD_HUMOR_OPENING", "desc_key": "CARD_HUMOR_OPENING_DESC", "round": "opening", "stat": "creative",
+		"prefs": { "risk": 0.4, "budget": 0.0, "digital": 0.0, "humor": 1.0 } },
+	{ "id": "safe_concept", "name_key": "CARD_SAFE_CONCEPT", "desc_key": "CARD_SAFE_CONCEPT_DESC", "round": "idea", "stat": "strategy",
+		"prefs": { "risk": -1.0, "budget": 0.2, "digital": 0.0, "humor": 0.0 } },
+	{ "id": "bold_concept", "name_key": "CARD_BOLD_CONCEPT", "desc_key": "CARD_BOLD_CONCEPT_DESC", "round": "idea", "stat": "creative",
+		"prefs": { "risk": 1.0, "budget": -0.2, "digital": 0.0, "humor": 0.2 } },
+	{ "id": "digital_concept", "name_key": "CARD_DIGITAL_CONCEPT", "desc_key": "CARD_DIGITAL_CONCEPT_DESC", "round": "idea", "stat": "creative",
+		"prefs": { "risk": 0.2, "budget": 0.0, "digital": 1.0, "humor": 0.0 } },
+	{ "id": "price_advantage", "name_key": "CARD_PRICE_ADVANTAGE", "desc_key": "CARD_PRICE_ADVANTAGE_DESC", "round": "closing", "stat": "strategy",
+		"prefs": { "risk": -0.2, "budget": 1.0, "digital": 0.0, "humor": 0.0 } },
+	{ "id": "meet_the_team", "name_key": "CARD_MEET_THE_TEAM", "desc_key": "CARD_MEET_THE_TEAM_DESC", "round": "closing", "stat": "creative",
+		"prefs": { "risk": -0.3, "budget": -0.5, "digital": 0.0, "humor": 0.3 } },
+	{ "id": "live_demo", "name_key": "CARD_LIVE_DEMO", "desc_key": "CARD_LIVE_DEMO_DESC", "round": "closing", "stat": "creative",
+		"prefs": { "risk": 0.5, "budget": 0.0, "digital": 0.8, "humor": 0.0 } }
+]

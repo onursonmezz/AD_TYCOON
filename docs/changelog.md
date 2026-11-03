@@ -1,5 +1,21 @@
 # Değişiklik günlüğü
 
+## M5-B: Pitch (2026-11-03)
+- **İhale davetleri:** Küçük ofisten itibaren büyük markalar (ulusal, çok uluslu) ihale daveti gönderir. Davette rakip ajanslar, hazırlık süresi ve varsa katılım ücreti yazar.
+- **Hazırlık:** Pitch ekibini ve ücret teklifini (%85 / %100 / %115) seçersin. Ekip hazırlık boyunca Strateji ve Kreatif puan biriktirir, bu sürede kampanyada çalışmaz. Gelen kutusunda ilerleme görünür.
+- **Sunum mini oyunu:**
+  - müşteri hakkında 2–3 ipucu;
+  - 3 tur (açılış, fikir, kapanış), her turda 3 kart;
+  - her karttan sonra müşterinin yüz ifadesi (😊 😐 😠);
+  - sonunda rakiplerle birlikte skor çubukları ve kazanma olasılığı.
+- **Kazanırsan** marka portföye girer ve ilk brief'i hemen gelir. **2. olursan** itibar +0.5 alırsın ve marka ileride doğrudan iş teklif edebilir.
+- Nasıl test ederim:
+  1. Küçük ofise taşın ve oynamaya devam et. Bir süre sonra "… ihaleye çağırıyor" bildirimi gelir.
+  2. Gelen kutusunda ihale kartında **Katıl**'a bas. Ekibi ve ücret teklifini seç, **Hazırlığa başla**. Pitch ekibindekilerin yeni kampanyanın ekip listesinde seçilemediğini gör.
+  3. Gelen kutusunun üstünde hazırlığın kalan haftasını ve biriken S/K puanını izle.
+  4. Sunum günü pencere kendiliğinden açılır (oyun durur). İpuçlarına göre kart seç, her kartın tepkisini gör.
+  5. Sonuçta kazandıysan müşteri listesinde yeni markayı ve gelen kutusunda ilk brief'ini gör. 2. olduysan itibarın 0.5 arttığını kontrol et.
+
 ## M5-A: Rakipler, ödüller, sıralamalar (2026-11-03)
 - **Sektör ekranı:** Sol menüde yeni. Ödül takvimi ve başvuru, kazandığımız ödüller, yıl sonu sıralamaları ("En Kreatif", "En Büyük", Yılın Ajansı) ve rakip ajanslar tablosu (tip, çalışan, itibar, güç; uzman olduğu sektörler ipucunda).
 - **12 rakip ajans:** Dört kişilik tipi var (dev network, kreatif butik, agresif fiyatçı, dijital start-up). Rakipler büyür, küçülür, kapanır; yeni ajanslar yıllar içinde sektöre girer.

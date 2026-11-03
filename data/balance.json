@@ -155,5 +155,21 @@
 		"market_value_per_point": 0.02, "market_value_max": 0.4,
 		"buzz_per_point": 0.002, "buzz_yearly_decay": 0.5,
 		"agency_of_year_growth_weight": 10.0, "agency_of_year_reputation": 5
+	},
+	"pitch": {
+		"min_office_level": 2, "invite_weekly_base": 0.015, "invite_reputation_div": 2000, "invite_expiry_weeks": 2,
+		"client_scale_weights": [0.0, 0.0, 0.75, 0.25], "rivals_invited": [2, 4], "prep_weeks": [2, 4],
+		"participation_fee_chance": 0.3, "participation_fee_1990": 5000,
+		"prep_rate": 0.5, "s_weight": 0.4, "k_weight": 0.6, "reputation_div": 200,
+		"card_effect": 0.18, "presenter_base": 0.5, "presenter_div": 100, "stat_bonus": 0.1, "reaction_threshold": 0.25,
+		"hints_base": 2, "hint_bonus_strategy": 25,
+		"fee_options": [0.85, 1.0, 1.15], "price_elasticity": 0.8, "price_budget_weight": 0.5,
+		"digital_year_zero": 2005, "digital_year_span": 12, "digital_sector_bonus": 0.4,
+		"digital_sectors": ["technology", "ecommerce", "mobile_startup", "gaming_entertainment", "crypto_fintech", "telecom"],
+		"rival_points_per_power_week": 1.0, "rival_card_range": [0.9, 1.12], "rival_specialist_bonus": 1.15,
+		"rival_fee": { "network": 1.1, "creative_boutique": 1.05, "price_fighter": 0.85, "digital_startup": 0.95 },
+		"softmax_temperature": 0.12, "warm_bonus": 0.1,
+		"win_reputation": 2.0, "shortlist_reputation": 0.5, "win_satisfaction_bonus": 10,
+		"warm_weekly_offer_chance": 0.03, "auto_present_after_weeks": 1
 	}
 }

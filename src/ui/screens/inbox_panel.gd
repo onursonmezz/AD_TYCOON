@@ -27,10 +27,17 @@ func refresh() -> void:
 		sig += str(b["id"])
 	for o: Dictionary in s.supplier_offers:
 		sig += str(o["id"])
+	for inv: Dictionary in s.pitch_invites:
+		sig += str(inv["id"])
+	sig += str(s.pitch.get("phase", ""))
 	if sig == _signature:
 		return
 	_signature = sig
 	UiUtil.clear(_list)
+	if not s.pitch.is_empty():
+		_list.add_child(_pitch_status_card(s))
+	for inv: Dictionary in s.pitch_invites:
+		_list.add_child(_pitch_invite_card(inv, s))
 	for offer: Dictionary in s.supplier_offers:
 		_list.add_child(_supplier_offer_card(offer, s))
 	if s.inbox.is_empty():
@@ -96,4 +103,44 @@ func _brief_card(brief: Dictionary, s: SimState) -> PanelContainer:
 	accept.disabled = not s.is_idle()
 	buttons.add_child(accept)
 	col.add_child(buttons)
+	return card
+
+
+## İhale daveti (GDD 14.2): büyük marka, davetli rakipler, hazırlık süresi, varsa katılım ücreti.
+func _pitch_invite_card(inv: Dictionary, s: SimState) -> PanelContainer:
+	var data: GameData = DataDB.data
+	var client: Dictionary = inv["client"]
+	var card: PanelContainer = UiUtil.card()
+	var col: VBoxContainer = UiUtil.vbox(4)
+	card.add_child(col)
+	var top: HBoxContainer = UiUtil.hbox()
+	top.add_child(UiUtil.label(str(client["name"]), 19, UiUtil.SAGE_DARK))
+	top.add_child(UiUtil.label(tr("UI_PITCH_INVITE"), 14, UiUtil.MUSTARD))
+	top.add_child(UiUtil.spacer())
+	top.add_child(UiUtil.label(tr("UI_EXPIRES") % (int(inv["expires_week"]) - s.clock.week_index), 13, UiUtil.MUTED))
+	col.add_child(top)
+	col.add_child(UiUtil.label("%s · %s" % [UiUtil.name_of(data.sectors, client["sector"]), tr("SCALE_%d" % int(client["scale"]))],
+		14, UiUtil.WOOD))
+	col.add_child(UiUtil.wrapped(PitchInviteDialog.summary(inv), 15, UiUtil.TEXT, 400.0))
+	var buttons: HBoxContainer = UiUtil.hbox()
+	buttons.add_child(UiUtil.spacer())
+	buttons.add_child(UiUtil.button(tr("UI_DECLINE"), func() -> void: GameState.execute(DeclinePitchCommand.new(inv["id"]))))
+	buttons.add_child(UiUtil.button(tr("UI_PITCH_JOIN"), func() -> void: _main.call("open_modal", PitchInviteDialog.new(inv))))
+	col.add_child(buttons)
+	return card
+
+
+## Yürüyen pitch: hazırlıkta kalan süre ve biriken puan ya da sunuma geçiş düğmesi.
+func _pitch_status_card(s: SimState) -> PanelContainer:
+	var p: Dictionary = s.pitch
+	var card: PanelContainer = UiUtil.card()
+	var row: HBoxContainer = UiUtil.hbox()
+	card.add_child(row)
+	if p["phase"] == "prep":
+		row.add_child(UiUtil.label(tr("UI_PITCH_PREP") % [p["client"]["name"], maxi(0, int(p["end_week"]) - s.clock.week_index),
+			float(p["s"]), float(p["k"])], 15, UiUtil.WOOD))
+	else:
+		row.add_child(UiUtil.label(tr("UI_PITCH_READY") % p["client"]["name"], 15, UiUtil.SAGE_DARK))
+		row.add_child(UiUtil.spacer())
+		row.add_child(UiUtil.button(tr("UI_PITCH_PRESENT"), func() -> void: _main.call("open_modal", PitchDialog.new())))
 	return card

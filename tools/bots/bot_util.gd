@@ -84,3 +84,44 @@ static func enter_awards(sim: Simulation, min_margin: float, chance: float, rng:
 			if sim.state.cash - sim.awards.entry_fee(sim.state, award_id) < monthly_costs(sim):
 				return
 			EnterAwardCommand.new(award_id, h["campaign"]).execute(sim)
+
+
+## Pitch (GDD 14.2). Bilgili bot: kampanyada olmayan en iyi iki kişiyle katılır, bilinen ipuçlarına göre kart seçer.
+## Rastgele bot: yarı yarıya katılır, rastgele ekip ve kart.
+static func handle_pitch(sim: Simulation, smart: bool, rng: RandomNumberGenerator) -> void:
+	var state: SimState = sim.state
+	if sim.pitches.is_waiting(state):
+		var cards: Array = []
+		for r: String in PitchSystem.ROUNDS:
+			var options: Array[String] = sim.pitches.cards_of_round(r)
+			cards.append(_best_card(sim, options) if smart else options[rng.randi_range(0, options.size() - 1)])
+		sim.pitches.present(state, cards)
+		return
+	if state.pitch_invites.is_empty() or (not smart and rng.randf() < 0.5):
+		return
+	var on_campaign: Array = state.active_campaign.get("setup", {}).get("team", [])
+	var free: Array[Dictionary] = []
+	for emp: Dictionary in state.staff.values():
+		if Employee.is_available(emp, state.clock.week_index) and not on_campaign.has(emp["id"]):
+			free.append(emp)
+	if free.is_empty() or (smart and state.staff.size() < 3):
+		return
+	free.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return float(a["stats"]["strategy"]) + float(a["stats"]["creative"]) > float(b["stats"]["strategy"]) + float(b["stats"]["creative"]))
+	var size: int = mini(2, free.size()) if smart else rng.randi_range(1, mini(2, free.size()))
+	var team: Array = []
+	for i: int in size:
+		team.append(free[i]["id"])
+	sim.pitches.accept(state, state.pitch_invites[0]["id"], team, 1.0)
+
+
+static func _best_card(sim: Simulation, options: Array[String]) -> String:
+	var pitch: Dictionary = sim.state.pitch
+	var known: Dictionary = {"prefs": {"risk": 0.0, "budget": 0.0, "digital": 0.0, "humor": 0.0}}
+	for key: String in sim.pitches.hints(pitch):
+		known["prefs"][key] = pitch["prefs"][key]
+	var best: String = options[0]
+	for id: String in options:
+		if sim.pitches.card_fit(known, id) > sim.pitches.card_fit(known, best):
+			best = id
+	return best

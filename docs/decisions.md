@@ -389,6 +389,51 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 **Konu:** Bildirimlerde yerelleştirilmiş ad.
 **Karar:** Simülasyon rakip ve ödül adlarını yerelleştirme anahtarı olarak gönderir; `UiUtil.tr_fmt` metin argümanlarını da çevirir. Anahtar olmayan metinler (müşteri adı gibi) aynen kalır. Böylece simülasyon çeviri bilmeden çalışmaya devam ediyor.
 
+## K-057 · 2026-11-03 · Kabul · Orgo onayı (M5 planı: pitch hazırlığı kampanyayla paralel)
+**Konu:** Pitch akışı (14.2).
+**Karar:**
+- **Davet:** Küçük ofisten itibaren gelir. Haftalık olasılık 0.015 + itibar/2000; aynı anda tek davet ya da tek pitch olabilir.
+  - Davet eden marka ulusal (%75) ya da çok uluslu (%25).
+  - 2–4 rakip güce göre davet edilir. Hazırlık süresi 2–4 hafta.
+  - Davetlerin %30'u katılım ücreti öder: ₺5.000 (1990), ajansa kabulde ödenir.
+  - Davetin süresi 2 hafta.
+- **Hazırlık:** Seçilen ekip hazırlık bitene kadar kampanyada çalışmaz (`pitch_until`). Aktif kampanyadaki biri seçilirse o kampanyaya katkısı durur; arayüz bunu uyarır.
+  - Her çalışan günde 0.5 × kişi çarpanı × Strateji/50 S ve aynı biçimde Kreatif/50 K biriktirir.
+- **Sunum:** Hazırlık bitince oyunda zaman durur ve sunum penceresi açılır. Bot ve test modunda unutulan sunum bir hafta sonra her turun ilk kartıyla kendiliğinden yapılır.
+- **Ödül:**
+  - Kazanırsak marka portföye girer (memnuniyet +10) ve hemen ilk brief'i gelir; brief'in ücreti teklif oranıyla çarpılır. İtibar +2 (GDD'de sayı yok).
+  - 2. olursak GDD'deki gibi itibar +0.5 alırız ve marka "sıcak" olur: her hafta %3 olasılıkla doğrudan brief gönderir, sonraki ihalesinde ilişki bonusu +%10.
+
+## K-058 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Pitch skoru ve kartlar (14.2).
+**Karar:**
+- **Gizli tercihler** (−1..+1):
+  - risk = (risk kişiliği − 50) / 50;
+  - fiyat hassasiyeti rastgele;
+  - dijital yakınlık = (yıl − 2005) / 12, dijital sektörlerde +0.4;
+  - mizah = sektörün "Esprili" ton uyumu / 3.
+- **İpuçları:** Varsayılan olarak 2 tercih görünür; hazırlıkta S ≥ 25 birikmişse 3.
+- **Kartlar:** 9 kart `data/pitch_cards.json`'da. Kart uyumu = kartın tercih ağırlıkları · müşterinin tercihleri.
+  - Kartın çarpanı = 1 + 0.18 × uyum × (0.5 + İletişim/100) + 0.1 × (kartın statındaki hazırlık payı − 0.5).
+  - Uyum ≥ 0.25 ise müşteri gülümser, ≤ −0.25 ise kaşlarını çatar.
+- **Oyuncu skoru:** 14.2 formülü: (S × 0.4 + K × 0.6) × üç kartın çarpımı × (1 + itibar/200) × (1 + ilişki) × fiyat. Fiyat = teklif^(−0.8 × (1 + 0.5 × fiyat hassasiyeti)); teklif seçenekleri %85 / %100 / %115.
+- **Rakip skoru:** güç × 1.0 × hazırlık haftası × rastgele kart (her tur 0.9–1.12) × (1 + itibar/200) × sektör uzmanlığı 1.15 × fiyat.
+  - Rakiplerin teklif oranı: fiyatçı %85, start-up %95, butik %105, network %110.
+  - Rakip katsayısı 1.5 iken bilgili bot ihalelerin %16'sını kazanıyordu, 1.0 ile %32'sini (2–4 rakiple adil pay).
+- **Kazanan:** softmax(skor / en yüksek skor / 0.12).
+
+---
+
+## M5 denge sonucu (M5-A + M5-B)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan (10 yıl) | Büyütülmüş ofis | İlk ödül | Pitch/koşu, kazanma |
+|---|---|---|---|---|---|---|
+| Rastgele (200×10) | %35.0 ✓ | %65.5 | 5.74 | %1 | %2 | 0.7, %43 |
+| Bilgili (200×10) | %1.0 | %6.0 | 6.95 (hedef 7.0–8.5, sınırda) | %58, Y9 | %70, Y4 | 3.9, %52 |
+| Bilgili (50×30) | %0 | %6 (30 yıl) | 5.05 (30 yıl) | %96, Y10 | %96, Y5 ✓ | 15.0, %30 |
+
+İtibar (bilgili, 30 yıl): Y5 19.9 → Y10 24.4 → Y13 23.3 → Y16 15.6 → Y20 5.5 → Y25 0.3. Ödüller ve pitch ilk 13 yılda itibarı taşıyor. 15. yıldan sonra kişi başı üretkenlik dönem tabanına yetişemiyor; puanlar düşüyor, kötü puanlar ve müşteri kayıpları itibarı eritiyor. Plaza katı (itibar 40) bu yüzden açılmıyor. Kök neden M5 değil, A-014.
+
 ---
 
 ## M5-A denge sonucu (200 koşu × 10 yıl)
@@ -469,5 +514,5 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **A-010:** Kapandı, bkz. K-034.
 - **A-011 (M10, ilerledi):** Küçük ofis Y3 ✓, bilgili botun 10 yıllık ortalama puanı 7.11 ✓ (denge adımı). Büyütülmüş ofis Y11, plaza katı açılmıyor (A-014).
 - **A-012:** Kapandı. Rastgele bot ilk 3 yılda %22 iflas ediyor (200×10, hedef %20–40).
-- **A-014 (açık, ilerledi):** Denge adımı (K-047..K-050) ilk 13 yılı düzeltti, ama 15. yıldan sonra puan yine düşüyor. Kalan iki engel: (1) plaza katı açılmıyor, itibar 40 gerekiyor ve itibar kaynakları (ödül, pitch, basın) M5'te; (2) kişi başı üretkenlik 30 yıl boyunca sabit, dönem tabanı ise ×10.6 büyüyor. Yetişmenin tek yolu ekibi 2'den ~22 kişiye çıkarmak; plaza katının kirası da bunu zorlaştırıyor. Ayar kolları: dönem büyüme oranı (1.085), dönemsel araç ve yazılım çarpanı (12.3, M7), çalışan gelişimi, plaza katı kirası.
+- **A-014 (açık, ilerledi):** M5 sonrası: ödül ve pitch ilk 13 yılda itibarı ~24'e taşıyor, ama 15. yıldan sonra puanlar düştüğü için itibar sıfıra iniyor ve plaza katı açılmıyor (M5 denge sonucu). Denge adımı (K-047..K-050) ilk 13 yılı düzeltti, ama 15. yıldan sonra puan yine düşüyor. Kalan iki engel: (1) plaza katı açılmıyor, itibar 40 gerekiyor ve itibar kaynakları (ödül, pitch, basın) M5'te; (2) kişi başı üretkenlik 30 yıl boyunca sabit, dönem tabanı ise ×10.6 büyüyor. Yetişmenin tek yolu ekibi 2'den ~22 kişiye çıkarmak; plaza katının kirası da bunu zorlaştırıyor. Ayar kolları: dönem büyüme oranı (1.085), dönemsel araç ve yazılım çarpanı (12.3, M7), çalışan gelişimi, plaza katı kirası.
 - **A-013 (M4/M5):** GDD 11.1 Trafik "eşzamanlı kampanya sayısını ↑" diyor; şu an aynı anda tek kampanya üretimde. Eşzamanlı kampanyalar ekibin daha fazla iş, yani daha fazla gelir üretmesini sağlar (A-011'e de yardım eder), ama faz slider ekranının birden çok kampanyayı yönetmesi gerekir.

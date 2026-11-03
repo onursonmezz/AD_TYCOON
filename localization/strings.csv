@@ -742,3 +742,65 @@ MONTH_9,Eylül,September
 MONTH_10,Ekim,October
 MONTH_11,Kasım,November
 MONTH_12,Aralık,December
+CARD_MARKET_DATA,Pazar verisi,Market data
+CARD_MARKET_DATA_DESC,"Rakamlarla açılış: güven verir, temkinli ve bütçesine dikkat eden müşteriyi ikna eder.","Open with numbers: reassuring, wins over careful, budget-minded clients."
+CARD_INSIGHT_STORY,İçgörü hikâyesi,Insight story
+CARD_INSIGHT_STORY_DESC,"Tüketiciyi anlatan bir hikâye. Yeniliğe açık, bütçeye takılmayan müşteri sever.","A story about the consumer. Loved by open-minded clients who don't fuss over budget."
+CARD_HUMOR_OPENING,Esprili giriş,Funny opener
+CARD_HUMOR_OPENING_DESC,"Salonu güldür. Mizahı seven, risk alan müşteride harika; ciddi müşteride tehlikeli.","Make the room laugh. Great with bold, humour-loving clients; risky with serious ones."
+CARD_SAFE_CONCEPT,Güvenli konsept,Safe concept
+CARD_SAFE_CONCEPT_DESC,Kanıtlanmış bir yaklaşım. Muhafazakâr müşteri rahatlar; cesur müşteri sıkılır.,A proven approach. Conservative clients relax; bold ones get bored.
+CARD_BOLD_CONCEPT,Cesur konsept,Bold concept
+CARD_BOLD_CONCEPT_DESC,"Kuralları yıkan fikir. Risk iştahı yüksek müşteriyi kazanır, temkinliyi korkutur.","A rule-breaking idea. Wins risk-takers, scares the cautious."
+CARD_DIGITAL_CONCEPT,Dijital odaklı konsept,Digital-first concept
+CARD_DIGITAL_CONCEPT_DESC,Fikrin merkezinde dijital kanallar. Dijitale yakın müşteri ve yeni dönemlerde güçlü.,Digital channels at the heart of the idea. Strong with digital-minded clients and in later eras.
+CARD_PRICE_ADVANTAGE,Fiyat avantajı,Price advantage
+CARD_PRICE_ADVANTAGE_DESC,Teklifin ne kadar verimli olduğunu vurgula. Fiyat hassasiyeti yüksek müşteriye birebir.,Stress how efficient your offer is. Perfect for price-sensitive clients.
+CARD_MEET_THE_TEAM,Ekibi tanıtma,Meet the team
+CARD_MEET_THE_TEAM_DESC,"İşi yapacak insanları sahneye çıkar. Kaliteye para vermeye hazır, ilişkiye önem veren müşteri sever.","Put the people doing the work on stage. Loved by clients who pay for quality and value relationships."
+CARD_LIVE_DEMO,Canlı demo,Live demo
+CARD_LIVE_DEMO_DESC,"Fikri orada, canlı göster. Dijitale yakın ve risk alan müşteride etkili.","Show the idea live, right there. Effective with digital-minded, bold clients."
+ROUND_OPENING,Açılış,Opening
+ROUND_IDEA,Fikir,Idea
+ROUND_CLOSING,Kapanış,Closing
+PREF_RISK,Risk iştahı,Risk appetite
+PREF_BUDGET,Fiyat hassasiyeti,Price sensitivity
+PREF_DIGITAL,Dijitale yakınlık,Digital affinity
+PREF_HUMOR,Mizaha açıklık,Openness to humour
+PREF_LEVEL_HIGH,yüksek,high
+PREF_LEVEL_MID,orta,medium
+PREF_LEVEL_LOW,düşük,low
+UI_PITCH_INVITE,İhale daveti,Pitch invitation
+UI_PITCH_JOIN,Katıl,Join
+UI_PITCH_SUMMARY,"Hazırlık %d hafta. Davetli rakipler: %s.","Preparation: %d weeks. Invited rivals: %s."
+UI_PITCH_PAID,Müşteri katılım ücreti olarak %s ödüyor.,The client pays a participation fee of %s.
+UI_PITCH_INVITE_TITLE,%s ihalesi,%s pitch
+UI_PITCH_HOW,"Seçtiğin ekip hazırlık boyunca Strateji ve Kreatif puan biriktirir, bu sürede kampanyada çalışmaz. Sonunda üç turluk bir sunum yaparsın; en yüksek İletişim statlı kişi sunar. Kazanırsan marka portföyüne girer.","The team you pick builds Strategy and Creative points during prep and does not work on campaigns meanwhile. Then you give a three-round presentation; the best communicator presents. Win and the brand joins your portfolio."
+UI_PITCH_TEAM,Pitch ekibi,Pitch team
+UI_PITCH_ON_CAMPAIGN,"Şu an kampanyada çalışıyor; pitch'e alırsan kampanyaya katkısı durur.","Currently on a campaign; joining the pitch stops their campaign work."
+UI_PITCH_FEE,Ücret teklifimiz,Our fee offer
+UI_PITCH_FEE_85,Rekabetçi (%85),Competitive (85%)
+UI_PITCH_FEE_100,Normal (%100),Standard (100%)
+UI_PITCH_FEE_115,Primli (%115),Premium (115%)
+UI_PITCH_FEE_HINT,"Düşük teklif kazanma şansını artırır ama kazanırsan ilk işin ücreti de o oranda olur. Fiyat hassasiyeti yüksek müşteride etkisi büyük.","A lower offer improves your chances, but the first job's fee scales with it. Matters most with price-sensitive clients."
+UI_PITCH_START,Hazırlığa başla,Start preparing
+UI_PITCH_PREP,"Pitch hazırlığı: %s · %d hafta kaldı · S %.0f · K %.0f","Pitch prep: %s · %d weeks left · S %.0f · C %.0f"
+UI_PITCH_READY,%s sunumu hazır.,The %s presentation is ready.
+UI_PITCH_PRESENT,Sunuma geç,Go to presentation
+UI_PITCH_TITLE,%s sunumu,%s presentation
+UI_PITCH_PREPARED,"Hazırlık: S %.0f · K %.0f · Sunan: %s (İletişim %d)","Prep: S %.0f · C %.0f · Presenter: %s (Communication %d)"
+UI_PITCH_HINTS,İpuçları (müşteri hakkında bildiklerimiz),Hints (what we know about the client)
+UI_PITCH_ROUND,%d. tur: %s,Round %d: %s
+UI_PITCH_PLAY,Bu kartı oyna,Play this card
+UI_PITCH_WON,Kazandık! %s artık müşterimiz; ilk brief gelen kutusunda.,We won! %s is now our client; the first brief is in the inbox.
+UI_PITCH_LOST,İhaleyi %s kazandı. Biz %d. olduk.,%s won the pitch. We came #%d.
+UI_PITCH_SHORTLIST,"Kısa listeye kaldık: itibar +0.5 ve bu marka ileride doğrudan teklif getirebilir.","We made the shortlist: reputation +0.5, and this brand may come to us directly later."
+UI_PITCH_CHANCE,Kazanma olasılığımız %%%d idi.,Our chance of winning was %d%%.
+NOTE_PITCH_INVITE,%s ihaleye çağırıyor. Gelen kutusuna bak.,%s invites us to pitch. Check the inbox.
+NOTE_PITCH_STARTED,%s pitch hazırlığı başladı (%d hafta).,%s pitch preparation started (%d weeks).
+NOTE_PITCH_READY,%s sunum günü geldi!,Presentation day for %s!
+NOTE_WARM_OFFER,"%s, ihaledeki sunumumuzu hatırladı ve doğrudan iş teklif etti.","%s remembered our pitch and offered us work directly."
+ERR_NO_PITCH,Bu davet artık geçerli değil.,This invitation is no longer valid.
+ERR_PITCH_BUSY,Zaten bir pitch hazırlığı var.,A pitch is already in preparation.
+ERR_PITCH_FEE,Geçersiz ücret teklifi.,Invalid fee offer.
+UI_PITCH_MEMBER,%s (%s · İletişim %d),%s (%s · Communication %d)

@@ -116,8 +116,9 @@ static func award_premium(data: GameData, emp: Dictionary) -> float:
 		data.balf("awards.market_value_max"))
 
 
+## İzinde, eğitimde ya da pitch hazırlığında (M5) olan çalışan kampanyada çalışmaz.
 static func is_available(emp: Dictionary, week_index: int) -> bool:
-	return int(emp.get("busy_until", -1)) <= week_index
+	return maxi(int(emp.get("busy_until", -1)), int(emp.get("pitch_until", -1))) <= week_index
 
 
 static func is_creative(data: GameData, emp: Dictionary) -> bool:
