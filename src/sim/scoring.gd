@@ -26,6 +26,8 @@ func fit_mult(x: float) -> float:
 
 ## Ton değeri: sektör grubunun ton uyumu + marka kişiliği (8.3 notu: cesur marka Cesur/Esprili +1, muhafazakâr marka Cesur −1).
 func tone_value(sector_id: String, tone_id: String, client: Dictionary) -> int:
+	if tone_id.is_empty():
+		return 0
 	var group: String = data.sectors[sector_id]["tone_group"]
 	var v: int = data.fit("tone", group, tone_id)
 	var risk: float = float(client.get("personality", {}).get("risk", 50))
@@ -41,11 +43,13 @@ func combination(setup: Dictionary, client: Dictionary) -> Dictionary:
 	var objective: String = setup["objective"]
 	var audience: String = setup["audience"]
 	var sh: float = fit_mult(data.fit("sector_objective", sector, objective))
-	var sk: float = fit_mult(data.fit("sector_audience", sector, audience))
+	var sk: float = fit_mult(data.fit("sector_audience", sector, audience)) if not audience.is_empty() else 1.0
 	var kn: float = 0.0
 	for entry: Dictionary in setup["mix"]:
 		var ch: String = entry["channel"]
-		var avg: float = (data.fit("channel_objective", ch, objective) + data.fit("channel_audience", ch, audience)) / 2.0
+		var avg: float = float(data.fit("channel_objective", ch, objective))
+		if not audience.is_empty():
+			avg = (avg + data.fit("channel_audience", ch, audience)) / 2.0
 		kn += float(entry["share"]) * fit_mult(avg)
 	var tone: float = pow(fit_mult(tone_value(sector, setup["tone"], client)), data.balf("scoring.tone_exponent"))
 	var trend: float = 1.0  # M7: aktif trend bonusları
@@ -149,8 +153,8 @@ func novelty(setup: Dictionary, history: Array[Dictionary], week_index: int, yea
 		var h: Dictionary = history[i]
 		if week_index - int(h["week"]) > client_weeks:
 			break
-		if h["client_id"] == setup["client_id"] and h["objective"] == setup["objective"]:
-			n *= float(nv["same_client_12w"])  # M7: "Seri Kampanya" Ar-Ge'si bu cezayı kaldırır
+		if h["client_id"] == setup["client_id"] and h["objective"] == setup["objective"] and not bool(setup.get("series", false)):
+			n *= float(nv["same_client_12w"])  # "Seri Kampanya" araştırması bu cezayı kaldırır (GDD 17)
 			flags.append("same_client")
 			break
 	var start_year: int = data.bali("time.base_year")

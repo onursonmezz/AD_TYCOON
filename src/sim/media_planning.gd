@@ -18,7 +18,8 @@ func _init(game_data: GameData, print_system: PrintSystem, channel_options: Chan
 
 ## 7.1: kanal sayısı ofis seviyesi ve medya planlama yeteneğiyle sınırlı; çoklu kanal Y3'te açılır (17).
 func channel_limit(state: SimState, team: Array) -> int:
-	if state.clock.game_year() < data.bali("mix.multi_from_game_year"):
+	# Medya Planlama araştırması (GDD 17) olmadan tek kanal.
+	if not (state.research["done"] as Array).has("media_planning"):
 		return 1
 	var by_office: Array = data.bal("mix.limit_by_office")
 	var limit: int = int(by_office[clampi(state.office_level - 1, 0, by_office.size() - 1)])
@@ -74,7 +75,7 @@ func prepare_mix(setup: Dictionary, state: SimState) -> String:
 			for key: String in defaults:
 				if not opts.has(key):
 					opts[key] = defaults[key]
-			err = options.validate(ch, opts, year)
+			err = options.validate(ch, opts, year, state.research["done"])
 		entry["options"] = opts
 		if not err.is_empty():
 			return err

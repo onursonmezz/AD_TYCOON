@@ -10,5 +10,9 @@
 		"effects": { "burnout_recovery_mult": 1.5 } },
 	{ "id": "award_lobby", "name_key": "ROOM_AWARD_LOBBY", "desc_key": "ROOM_AWARD_LOBBY_DESC", "buildable": true, "cost_per_m2_1990": 900,
 		"effects": { "pitch_mult": 1.05 } },
+	{ "id": "rd_lab", "name_key": "ROOM_RD_LAB", "desc_key": "ROOM_RD_LAB_DESC", "buildable": true, "cost_per_m2_1990": 1200,
+		"requires": { "position": "planner", "title_index": 2 }, "effects": { "research_weekly": 3.0 } },
+	{ "id": "studio", "name_key": "ROOM_STUDIO", "desc_key": "ROOM_STUDIO_DESC", "buildable": true, "cost_per_m2_1990": 1500,
+		"requires": { "position": "producer", "room": "rd_lab" }, "effects": { "focus_mult": { "production": 1.1 } } },
 	{ "id": "empty", "name_key": "ROOM_EMPTY", "desc_key": "ROOM_EMPTY_DESC", "buildable": false, "cost_per_m2_1990": 0, "effects": {} }
 ]

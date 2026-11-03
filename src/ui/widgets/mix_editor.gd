@@ -20,7 +20,8 @@ func _init(brief: Dictionary, limit: int, main_screen: Control) -> void:
 	var data: GameData = DataDB.data
 	var year: int = GameState.sim.state.clock.year()
 	for id: String in data.channels_available(year):
-		if float(brief["media_budget"]) >= float(data.channels[id]["min_budget"]) * Economy.inflation(data, year):
+		if float(brief["media_budget"]) >= float(data.channels[id]["min_budget"]) * Economy.inflation(data, year) \
+				and GameState.sim.research.channel_unlocked(GameState.sim.state, id):
 			_channel_ids.append(id)
 	var head: HBoxContainer = UiUtil.hbox()
 	head.add_child(UiUtil.label(tr("UI_CHANNEL_MIX") % _limit, 16))

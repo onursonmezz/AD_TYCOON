@@ -89,6 +89,8 @@ func fee(state: SimState, inf: Dictionary) -> float:
 
 ## PR & Etkinlik ekibinden biri varsa sahte takipçi (gerçeklik oranı) görünür (GDD 11.1).
 func can_see_authenticity(state: SimState) -> bool:
+	if (state.research["done"] as Array).has("influencer_analytics"):
+		return true
 	for emp: Dictionary in state.staff.values():
 		if Employee.has_effect(data, emp, str(_cfg()["reveal_effect"])):
 			return true
@@ -117,6 +119,11 @@ func audience_match(inf: Dictionary, setup: Dictionary) -> float:
 	var aud: String = setup["audience"]
 	if aud == "b2b":
 		return float(_cfg()["b2b_match"])
+	if aud.is_empty():
+		var sum: float = 0.0
+		for v: Variant in (inf["audience"] as Dictionary).values():
+			sum += float(v)
+		return sum / maxf(1.0, (inf["audience"] as Dictionary).size()) * float(_cfg()["audience_norm"])
 	return float(inf["audience"].get(aud, 0.0)) * float(_cfg()["audience_norm"])
 
 
@@ -165,7 +172,8 @@ func resolve_scandal(state: SimState, scandal_id: String, choice: String) -> Dic
 		var best: float = 0.0
 		for emp: Dictionary in state.staff.values():
 			best = maxf(best, float(emp["stats"][opt["check_stat"]]))
-		success = state.rng.range_f("influencers", 0.0, 100.0) + best / 2.0 >= float(opt["dc"])
+		var crisis: float = 100.0 * data.balf("research.crisis_statement_bonus") if (state.research["done"] as Array).has("crisis_comms") else 0.0
+		success = state.rng.range_f("influencers", 0.0, 100.0) + best / 2.0 + crisis >= float(opt["dc"])
 		satisfaction = float(opt["success_satisfaction"] if success else opt["fail_satisfaction"])
 	var result: Dictionary = {"choice": choice, "success": success, "satisfaction": satisfaction,
 		"impressions_mult": float(opt["impressions_mult"]), "reputation": float(opt.get("reputation", 0.0))}

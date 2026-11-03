@@ -31,6 +31,7 @@ const ID_LISTS: Dictionary = {
 	"tools.json": "tool",
 	"hardware.json": "hardware",
 	"eras.json": "era",
+	"research.json": "research",
 }
 const FIT_FILES: Array[String] = [
 	"fit/sector_objective.json",

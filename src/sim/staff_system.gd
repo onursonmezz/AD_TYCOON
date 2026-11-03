@@ -45,6 +45,9 @@ func search(state: SimState, economy: Economy, role: String, channel_id: String,
 	if ch.is_empty() or pos.is_empty() or not bool(pos.get("hireable", false)) \
 			or int(ch["available_from"]) > year or int(pos["available_from"]) > year:
 		return []
+	# Dijital pozisyonlar Dijital Departman araştırmasını ister (GDD 17).
+	if str(pos["department"]) == "digital" and not (state.research["done"] as Array).has("digital_department"):
+		return []
 	var cost: float = float(ch["cost_1990"]) * Economy.inflation(data, year)
 	economy.pay(state, cost)
 	var out: Array[Dictionary] = []

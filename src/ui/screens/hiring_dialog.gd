@@ -21,7 +21,7 @@ func _ready() -> void:
 	_role = OptionButton.new()
 	for id: String in data.position_ids:
 		var pos: Dictionary = data.positions[id]
-		if bool(pos["hireable"]) and int(pos["available_from"]) <= s.clock.year():
+		if bool(pos["hireable"]) and int(pos["available_from"]) <= s.clock.year() and GameState.sim.research.position_unlocked(s, id):
 			_role_ids.append(id)
 			_role.add_item("%s (%s)" % [tr(pos["name_key"]), tr("DEPT_" + str(pos["department"]).to_upper())])
 	_add_row(col, "UI_ROLE", _role)

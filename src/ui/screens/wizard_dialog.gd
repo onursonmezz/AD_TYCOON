@@ -9,6 +9,7 @@ var _name_edit: LineEdit
 var _objective: OptionButton
 var _audience: OptionButton
 var _tone: OptionButton
+var _estimate: Label
 var _mix: MixEditor
 var _team_checks: Dictionary = {}
 var _error: Label
@@ -49,6 +50,9 @@ func _ready() -> void:
 	_add_row(col, "UI_AUDIENCE", _audience)
 	_tone = _option_for(data.tones, data.tone_ids)
 	_add_row(col, "UI_TONE", _tone)
+	# Araştırılmadıysa (GDD 17) otomatik: seçim kapalı, nötr sayılır.
+	_lock_unless(_audience, "audience_analysis", "UI_AUTO_AUDIENCE")
+	_lock_unless(_tone, "tone_choice", "UI_AUTO_TONE")
 	var free_staff: Array = []
 	for emp: Dictionary in s.staff.values():
 		if Employee.is_available(emp, s.clock.week_index):
@@ -72,9 +76,39 @@ func _ready() -> void:
 	col.add_child(_error)
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())
+	if GameState.sim.research.has(GameState.sim.state, "focus_group"):
+		_estimate = UiUtil.label("", 14, UiUtil.WOOD)
+		buttons.add_child(UiUtil.button(tr("UI_FOCUS_GROUP"), _on_focus_group))
+		buttons.add_child(_estimate)
 	buttons.add_child(UiUtil.button(tr("UI_CANCEL"), queue_free))
 	buttons.add_child(UiUtil.button(tr("UI_START_CAMPAIGN"), _on_start))
 	col.add_child(buttons)
+
+
+func _lock_unless(o: OptionButton, research_id: String, key: String) -> void:
+	if GameState.sim.research.has(GameState.sim.state, research_id):
+		return
+	o.clear()
+	o.add_item(tr(key))
+	o.disabled = true
+
+
+## Fokus Grup (GDD 17): yayından önce kombinasyonun uyumuna dair kaba bir tahmin (iyi / orta / zayıf).
+func _on_focus_group() -> void:
+	var sim: Simulation = GameState.sim
+	var mix: Array = _mix.get_mix()
+	if mix.is_empty():
+		return
+	var client: Dictionary = _brief["prospect"] if not (_brief["prospect"] as Dictionary).is_empty() \
+		else sim.state.clients.get(_brief["client_id"], {})
+	var setup: Dictionary = {"sector": _brief["sector"], "mix": mix,
+		"objective": DataDB.data.objective_ids[_objective.selected] if not _objective.disabled else _brief["objective"],
+		"audience": DataDB.data.audience_ids[_audience.selected] if not _audience.disabled else "",
+		"tone": DataDB.data.tone_ids[_tone.selected] if not _tone.disabled else ""}
+	var m: float = float(sim.scoring.combination(setup, client)["m"])
+	var band: String = "GOOD" if m >= DataDB.data.balf("research.focus_good") \
+		else ("WEAK" if m < DataDB.data.balf("research.focus_weak") else "MID")
+	_estimate.text = tr("UI_FOCUS_" + band)
 
 
 func _picked_team() -> Array:

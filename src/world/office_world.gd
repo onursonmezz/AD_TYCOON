@@ -11,7 +11,7 @@ const BUBBLE_CHANCE: float = 0.45
 const FLOOR_COLORS: Dictionary = {
 	"work": Color(0.86, 0.78, 0.64), "meeting": Color(0.62, 0.72, 0.62), "kitchen": Color(0.86, 0.66, 0.58),
 	"lounge": Color(0.9, 0.8, 0.55), "empty": Color(0.8, 0.79, 0.76), "brainstorm": Color(0.75, 0.82, 0.88),
-	"award_lobby": Color(0.92, 0.85, 0.62),
+	"award_lobby": Color(0.92, 0.85, 0.62), "rd_lab": Color(0.7, 0.78, 0.86), "studio": Color(0.6, 0.6, 0.66),
 }
 const PROP_STYLE: Dictionary = {
 	"desk": [0.75, Color(0.65, 0.49, 0.32)], "counter": [0.95, Color(0.95, 0.93, 0.88)],

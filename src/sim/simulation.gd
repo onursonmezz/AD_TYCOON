@@ -49,6 +49,7 @@ var awards: AwardSystem
 var pitches: PitchSystem
 var build: BuildSystem
 var tools: ToolSystem
+var research: ResearchSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -83,6 +84,7 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
 	build = BuildSystem.new(data)
 	tools = ToolSystem.new(data)
+	research = ResearchSystem.new(data)
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
@@ -90,6 +92,7 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	rivals.ensure(state)
 	build.refresh(state)
 	tools.start(state)
+	research.start(state)
 
 
 func set_overtime(on: bool) -> void:
@@ -106,6 +109,9 @@ func load_state(saved: Dictionary) -> void:
 		tools.start(state)
 	else:
 		tools.refresh(state)
+	# M7-B öncesi kayıt: o güne dek kendiliğinden açık olan ton, kitle, çoklu kanal ve dijital kanallar araştırılmış sayılır.
+	if not saved.has("research"):
+		research.grant_reachable(state)
 
 
 # --- zaman -------------------------------------------------------------------
@@ -133,6 +139,9 @@ func step_day() -> void:
 		influencers.weekly(state)
 		IndustryCalendar.weekly(self)
 		build.refresh(state)
+		var done: String = research.weekly(state)
+		if not done.is_empty():
+			staff_note.emit("NOTE_RESEARCH_DONE", [data.research[done]["name_key"]], "good")
 		influencers.expire_scandals(state)
 		var supplier_offer: Dictionary = suppliers.weekly(state)
 		if not supplier_offer.is_empty():
@@ -197,51 +206,7 @@ func step_week() -> void:
 ## choices: { "objective" (brief serbestse), "audience", "tone", "mix": [{channel, share}], "sliders": [[..]x3], "name" }
 ## Dönüş: { "ok": bool, "error": hata anahtarı, "campaign_id" }
 func start_campaign(brief_id: String, choices: Dictionary) -> Dictionary:
-	if not state.is_idle():
-		return {"ok": false, "error": "ERR_BUSY"}
-	var brief: Dictionary = state.find_brief(brief_id)
-	if brief.is_empty():
-		return {"ok": false, "error": "ERR_NO_BRIEF"}
-	var objective: String = brief["objective"] if not str(brief["objective"]).is_empty() else str(choices.get("objective", ""))
-	var sliders: Array = choices.get("sliders", [])
-	if sliders.is_empty():
-		var third: float = 1.0 / 3.0
-		sliders = [[third, third, third], [third, third, third], [third, third, third]]
-	var brief_client: Dictionary = brief["prospect"] if not (brief["prospect"] as Dictionary).is_empty() \
-		else state.clients.get(brief["client_id"], {})
-	var setup: Dictionary = {"client_id": brief["client_id"], "sector": brief["sector"], "objective": objective,
-		"audience": choices.get("audience", ""), "tone": choices.get("tone", ""), "mix": choices.get("mix", []),
-		"sliders": sliders, "name": choices.get("name", ""), "size": brief["size"],
-		"fee": brief["fee"], "media_budget": brief["media_budget"], "deadline_weeks": brief["deadline_weeks"],
-		"client_name": brief_client.get("name", ""), "client_scale": int(brief_client.get("scale", 0)),
-		"ai_penalty": state.ai_penalty}
-	var team: Array = choices.get("team", [])
-	if team.is_empty():
-		team = [state.founder()["id"]]
-	setup["team"] = team.duplicate()
-	var err: String = production.validate_setup(setup, state.clock.year())
-	if err.is_empty():
-		err = production.validate_team(team, state)
-	if err.is_empty():
-		err = media.prepare_mix(setup, state)
-	if not err.is_empty():
-		return {"ok": false, "error": err}
-	var prospect: Dictionary = brief["prospect"]
-	if prospect.is_empty() and not state.clients.has(brief["client_id"]):
-		state.inbox.erase(brief)
-		return {"ok": false, "error": "ERR_NO_BRIEF"}
-	if not prospect.is_empty():
-		state.clients[prospect["id"]] = prospect
-	var client: Dictionary = state.clients[setup["client_id"]]
-	setup["kpi_type"] = kpi.kpi_type(objective)
-	setup["kpi_target"] = kpi.reference_value(objective, float(setup["media_budget"]), client, state.clock.year()) \
-		* float(brief["kpi_factor"])
-	setup["media_advance"] = economy.media_advance(client, float(setup["media_budget"]))
-	state.cash += float(setup["media_advance"])
-	state.inbox.erase(brief)
-	var id: String = state.next_id("cp")
-	state.active_campaign = production.create(setup, id, state.clock.week_index)
-	return {"ok": true, "error": "", "campaign_id": id}
+	return CampaignStarter.start(self, brief_id, choices)
 
 
 func decline_brief(brief_id: String) -> bool:
@@ -348,6 +313,8 @@ func _finish(camp: Dictionary) -> void:
 		camp["satisfaction_delta"] = delta
 		clients.apply_result(client, camp["id"], score, setup["objective"], year, delta)
 	_apply_reputation(score, setup["size"])
+	camp["ap"] = research.on_campaign(state, score, setup["size"])
+	camp["learned"] = research.learn_from(state, setup)
 	for emp_name: String in staff_life.campaign_finished(state, setup.get("team", []), camp["report"]):
 		if emp_name.is_empty():
 			staff_note.emit("NOTE_LEVEL_UP_FOUNDER", [], "good")

@@ -16,9 +16,10 @@ func _init(game_data: GameData, scoring_ref: Scoring) -> void:
 func validate_setup(setup: Dictionary, year: int) -> String:
 	if not data.objectives.has(setup.get("objective", "")):
 		return "ERR_OBJECTIVE"
-	if not data.audiences.has(setup.get("audience", "")):
+	# "" = otomatik: Hedef Kitle / Ton araştırması yapılmadan önce (M7-B) nötr sayılır.
+	if str(setup.get("audience", "")) != "" and not data.audiences.has(setup["audience"]):
 		return "ERR_AUDIENCE"
-	if not data.tones.has(setup.get("tone", "")):
+	if str(setup.get("tone", "")) != "" and not data.tones.has(setup["tone"]):
 		return "ERR_TONE"
 	var mix: Array = setup.get("mix", [])
 	if mix.is_empty():

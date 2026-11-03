@@ -87,6 +87,8 @@ func _run() -> void:
 
 ## M4: 3. yılda çoklu kanal + basılı iş, pazarlık penceresi, kanal bazında rapor.
 func _tour_media(screen: Control, sim: Simulation) -> void:
+	# M7-B: çoklu kanal, ton, kitle ve dijital kanallar araştırmayla açılır; tur için hazır sayılır.
+	(sim.state.research["done"] as Array).append_array(["media_planning", "tone_choice", "audience_analysis", "digital_department"])
 	while sim.state.clock.game_year() < 3 or not sim.state.is_idle() or sim.state.inbox.is_empty():
 		if GameState.is_waiting():
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
@@ -270,6 +272,28 @@ func _tour_tools(screen: Control, sim: Simulation) -> void:
 	screen.call("close_panel")
 	screen.call("open_modal", EraDialog.new("mobile"))
 	await _shot("29_era")
+	await _tour_research(screen, sim)
+
+
+## M7-B: Ar-Ge ekranı ve Bilgi Defteri.
+func _tour_research(screen: Control, sim: Simulation) -> void:
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	sim.state.research["points"] = 120.0
+	(sim.state.research["done"] as Array).append_array(["tone_choice", "audience_analysis", "market_research"])
+	sim.state.research["active"] = {"id": "media_planning", "weeks_left": 2}
+	for h: Dictionary in sim.state.history:
+		sim.research.reveal(sim.state, "sector_objective", h["sector"], h["objective"])
+	sim.research.reveal(sim.state, "sector_objective", "fast_food", "sales")
+	sim.research.reveal(sim.state, "sector_audience", "fast_food", "young")
+	screen.call("show_panel", "research")
+	await _shot("30_research")
+	var panel: ResearchPanel = screen.get("_panel")
+	panel.set("_sector", "fast_food")
+	panel.call("rebuild")
+	var scrolls: Array[Node] = panel.find_children("*", "ScrollContainer", true, false)
+	(scrolls[0] as ScrollContainer).scroll_vertical = 100000
+	await _shot("31_knowledge_book")
 
 
 func _shot(file_name: String) -> void:

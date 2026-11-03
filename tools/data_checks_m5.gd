@@ -61,7 +61,7 @@ static func check(data: Dictionary, ids: Dictionary) -> PackedStringArray:
 		if keys != ["budget", "digital", "humor", "risk"]:
 			errors.append("pitch_cards.json: '%s' prefs risk/budget/digital/humor olmalı" % str(rec.get("id", "?")))
 	var room_types: Array = []
-	var effect_keys: Array[String] = ["satisfaction", "focus_mult", "energy_rest_mult", "burnout_recovery_mult", "pitch_mult"]
+	var effect_keys: Array[String] = ["satisfaction", "focus_mult", "energy_rest_mult", "burnout_recovery_mult", "pitch_mult", "research_weekly"]
 	for rt: Variant in data.get("room_types.json", []):
 		room_types.append(rt.get("id"))
 		for k: Variant in (rt.get("effects", {}) as Dictionary).keys():

@@ -191,7 +191,7 @@ func _build_menu() -> PanelContainer:
 	card.custom_minimum_size.x = 190.0
 	var col: VBoxContainer = UiUtil.vbox(8)
 	card.add_child(col)
-	for id: String in ["inbox", "clients", "campaign", "team", "office", "tools", "finance", "industry", "history"]:
+	for id: String in ["inbox", "clients", "campaign", "team", "office", "tools", "research", "finance", "industry", "history"]:
 		var b: Button = UiUtil.button(tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		_menu_buttons[id] = b
@@ -229,6 +229,8 @@ func show_panel(id: String) -> void:
 			_panel = FinancePanel.new()
 		"tools":
 			_panel = ToolsPanel.new()
+		"research":
+			_panel = ResearchPanel.new()
 		"industry":
 			_panel = IndustryPanel.new(self)
 		"history":

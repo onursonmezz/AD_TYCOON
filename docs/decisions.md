@@ -508,6 +508,39 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **M7-A denge (200×10):** bilgili bot ort. puan 7.51 (hedef 7.0–8.5 ✓), iflas ilk 3 yıl %2; rastgele %30 ✓; ilk ödül %82 Y4. 50×30: bilgili ort. 6.63, plaza %90 Y16 ✓, ilk ödül Y5 ✓, puan Y22 6.30 → Y30 3.37.
 - **Hâlâ açık:** 25. yıldan sonra puan yine düşüyor (bilgili bot Y30 ~3.5). Bina seviyesi 5 (₺80M, itibar 70) 30 yılda açılmıyor. Ar-Ge (M7-B) ve geç oyun (M11) ele alacak.
 
+## K-065 · 2026-11-04 · Kabul · Orgo kararı (M7 planı: araştırma GDT gibi kilit açar)
+**Konu:** Ar-Ge (17).
+**Karar:**
+- **Araştırma puanı (AP):** Kampanya bitince puan × büyüklük (küçük 1, orta 2, büyük 3, mega 5) kadar gelir. Ar-Ge lab odası haftada +3 AP üretir.
+- **Araştırma:** AP + para (1990 ₺, enflasyonla artar) + hafta ister. Aynı anda tek araştırma yürür. 12 araştırma `data/research.json`'da; AP, para ve süre sayıları GDD'de yok.
+- **Kilitler:**
+  - Ton Seçimi (Y2) ve Hedef Kitle Analizi (Y3) yapılana kadar ton ve kitle "otomatik": seçim kapalı, uyum nötr (0). KPI'da otomatik kitle yetişkin payı kadar geniş sayılır.
+  - Medya Planlama (Y3) yapılana kadar tek kanal. Eski `mix.multi_from_game_year` kaldırıldı.
+  - Dijital Departman (1998) yapılana kadar dijital ve sosyal kategorideki kanallar ve dijital departmandaki pozisyonlar kilitli.
+  - CPA teklif modeli Performans Pazarlama (2010) ister.
+- **Etkiler:**
+  - Pazar Araştırması: Bilgi Defteri'nde ₺3.000 (1990) karşılığı bir sektörün bilinmeyen hedef ya da kitle hücresini açar.
+  - Fokus Grup: sihirbazda kombinasyon uyumunu kaba olarak söyler (M ≥ 1.08 "çok beğendi", < 0.92 "ikna olmadı"). GDD "tahmini puan aralığı" diyor; puan emek ve faz dengesine de bağlı olduğundan yalnızca uyumu gösterdik.
+  - Seri Kampanya (Y8): aynı müşteri ve aynı hedef cezası kalkar.
+  - Sosyal Medya Yönetimi (2008): sosyal kanallarda etkileşim +%15. GDD'deki aylık retainer hizmeti M11'e kaldı.
+  - Influencer Analitiği (2015): sahte takipçi oranı PR uzmanı olmadan görünür.
+  - Kriz İletişimi (Y10): skandal açıklamasının başarı zarına +20. Olaylardaki ek seçenekler M7-C'de.
+  - AI Atölyesi (2023): AI araçlarının yenilik bedeli yarıya iner.
+- **Oyunda zaten başka yolla olanlar:** Büyük Kampanya ofis 3 ile açılıyor. Çift Hedef, Mega Kampanya, Kendi Prodüksiyon Evi, Kendi Medya Ajansı ve Global Ağ M11'e kaldı.
+- **Yeni odalar:**
+  - Ar-Ge lab: kurmak için ekipte Strateji Direktörü (planner, 3. unvan) gerekli.
+  - Prodüksiyon stüdyosu: Ar-Ge lab ve bir Prodüktör gerekli; Prodüksiyon odağına +%10.
+  - Aynı türden sözlük etkiler (ör. beyin fırtınası + stüdyo odak çarpanları) birleşir.
+
+## K-066 · 2026-11-04 · Kabul · Uygulama kararı
+**Konu:** Bilgi Defteri, hızlı başlangıç ve eski kayıtlarda araştırma.
+**Karar:**
+- **Bilgi Defteri:** Biten her kampanya kullandığı hücreleri deftere yazar: sektör × hedef, sektör × kitle, ton grubu × ton, kanal × hedef, kanal × kitle. Ekran şimdilik sektör × hedef ve sektör × kitle tablolarını gösteriyor. Rapor kaç yeni bilgi öğrenildiğini söylüyor.
+- **Hızlı başlangıç:** Mutlak yıla bağlı araştırmalar (Dijital Departman 1998, Sosyal 2008, Performans 2010) başlangıç yılına kadar "dünyanın bildiği" sayılır, tamam başlar. Ajansın kendi gelişimi (ton, kitle, medya planlama…) yine araştırılır.
+- **Eski kayıt** (araştırma alanı yok): o güne kadar koşulu tutan bütün araştırmalar tamam sayılır, eski oyun kilitlenmeden devam eder.
+- **Denge (60×10):** bilgili bot 7.48 (önce 7.51), rastgele bot 6.30 (önce 6.23), rastgele bot ilk 3 yılda %30 iflas. Rastgele bot araştırma yapmadığı için tonu ve kitleyi yanlış seçemiyor (otomatik = nötr); iki bot arasındaki fark 1.18'e indi (M10 hedefi ≥ 2.5, A-005 notu).
+- **Dosya bölme:** `simulation.gd` 400 satırın altına indi; kampanya kurulumu `CampaignStarter`'a taşındı.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

@@ -49,10 +49,11 @@ func defaults(channel_id: String) -> Dictionary:
 	return out
 
 
-func validate(channel_id: String, options: Dictionary, year: int) -> String:
+## done: tamamlanan araştırmalar (ör. CPA teklif modeli Performans Pazarlama ister, GDD 17).
+func validate(channel_id: String, options: Dictionary, year: int, done: Array = []) -> String:
 	for def: Dictionary in option_defs(channel_id):
 		var c: Dictionary = _choice(def, str(options.get(def["id"], "")))
-		if c.is_empty() or int(c.get("from_year", 0)) > year:
+		if c.is_empty() or int(c.get("from_year", 0)) > year or (c.has("research") and not done.has(c["research"])):
 			return "ERR_CHANNEL_OPTION"
 	return ""
 

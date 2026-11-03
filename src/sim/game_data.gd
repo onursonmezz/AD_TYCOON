@@ -55,6 +55,8 @@ var hardware: Dictionary = {}
 var hardware_ids: Array[String] = []
 var eras: Dictionary = {}
 var era_ids: Array[String] = []
+var research: Dictionary = {}
+var research_ids: Array[String] = []
 
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
@@ -197,6 +199,7 @@ func _index() -> void:
 	_index_list("tools.json", tools, tool_ids)
 	_index_list("hardware.json", hardware, hardware_ids)
 	_index_list("eras.json", eras, era_ids)
+	_index_list("research.json", research, research_ids)
 	var print_opts: Dictionary = raw.get("print_options.json", {})
 	for rec: Dictionary in print_opts.get("products", []):
 		print_products[rec["id"]] = rec

@@ -143,6 +143,8 @@ func _money_block() -> VBoxContainer:
 	var late: int = int(_camp["setup"].get("late_weeks", 0))
 	if late > 0:
 		v.add_child(UiUtil.label(tr("UI_LATE_DELIVERY") % late, 15, UiUtil.TERRACOTTA))
+	if _camp.has("ap"):
+		v.add_child(UiUtil.label(tr("UI_REPORT_AP") % [float(_camp["ap"]), int(_camp.get("learned", 0))], 14, UiUtil.WOOD))
 	var delta: float = float(_camp.get("satisfaction_delta", 0.0))
 	v.add_child(UiUtil.label(tr("UI_SATISFACTION_DELTA") % ("%+.1f" % delta), 15,
 		UiUtil.SAGE_DARK if delta >= 0.0 else UiUtil.TERRACOTTA))

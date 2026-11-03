@@ -136,6 +136,9 @@ func room_error(state: SimState, type: String, rect: Rect2) -> String:
 		return "ERR_ROOM_LEVEL"
 	if not data.room_types.has(type) or not bool(data.room_types[type]["buildable"]):
 		return "ERR_ROOM_TYPE"
+	var need: String = room_requirement_error(state, type)
+	if not need.is_empty():
+		return need
 	var min_size: float = float(_b("min_room_size"))
 	if rect.size.x < min_size or rect.size.y < min_size:
 		return "ERR_ROOM_SMALL"
@@ -156,6 +159,21 @@ func room_error(state: SimState, type: String, rect: Rect2) -> String:
 	(trial["rooms"] as Array).append({"type": type, "rect": [rect.position.x, rect.position.y, rect.size.x, rect.size.y]})
 	if not OfficeLayout.build(data.office_layouts["office_%d" % state.office_level], trial, data.furniture).all_reachable():
 		return "ERR_PLACE_PATH"
+	return ""
+
+
+## Oda koşulu (GDD 17): Ar-Ge lab bir Strateji Direktörü, prodüksiyon stüdyosu Ar-Ge lab ve bir Prodüktör ister.
+func room_requirement_error(state: SimState, type: String) -> String:
+	var req: Dictionary = data.room_types[type].get("requires", {})
+	if req.has("position"):
+		var found: bool = false
+		for emp: Dictionary in state.staff.values():
+			if emp["role"] == req["position"] and Employee.title_index(data, emp) >= int(req.get("title_index", 0)):
+				found = true
+		if not found:
+			return "ERR_ROOM_NEEDS_" + str(req["position"]).to_upper()
+	if req.has("room") and not layout(state).has_closed_room(str(req["room"])):
+		return "ERR_ROOM_NEEDS_" + str(req["room"]).to_upper()
 	return ""
 
 
@@ -227,5 +245,9 @@ func refresh(state: SimState) -> void:
 	for type: String in data.room_type_ids:
 		if l.has_closed_room(type):
 			for k: String in data.room_types[type]["effects"]:
-				effects[k] = data.room_types[type]["effects"][k]
+				var v: Variant = data.room_types[type]["effects"][k]
+				if v is Dictionary:
+					(effects.get_or_add(k, {}) as Dictionary).merge(v)
+				else:
+					effects[k] = v
 	state.office_effects = effects

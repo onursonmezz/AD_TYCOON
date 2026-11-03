@@ -27,7 +27,7 @@
 		"annual_discount": [0.15, 0.25], "annual_commit_qty": [50000, 150000], "annual_penalty_rate": 0.1 },
 	"negotiation": { "rounds": 3, "min_discount": [0.05, 0.25], "relationship_effect": 0.1, "break_chance": 0.25,
 		"break_relationship": -5, "hint_spread": 0.2 },
-	"mix": { "limit_by_office": [2, 3, 4, 6, 8], "media_planner_bonus": 1, "multi_from_game_year": 3 },
+	"mix": { "limit_by_office": [2, 3, 4, 6, 8], "media_planner_bonus": 1 },
 	"media_buying": { "skill_div": 400, "volume_unit_1990": 1000000, "volume_rate": 0.02, "volume_max": 0.15 },
 	"staff": { "overtime_output": 1.35, "overtime_energy_mult": 2.0, "burnout_per_overtime_week": 6,
 		"specialty_bonus": 1.3, "offspec_penalty": 0.6, "base_error_rate": 0.06 },
@@ -83,7 +83,7 @@
 	},
 	"kpi": {
 		"market_population_1990": 56000000, "population_growth": 0.01,
-		"audience_share": { "young": 0.30, "adult": 0.40, "mature": 0.20, "b2b": 0.10 },
+		"audience_share": { "young": 0.30, "adult": 0.40, "mature": 0.20, "b2b": 0.10 }, "audience_share_auto": 0.40,
 		"scale_reach_cap": [0.02, 0.1, 0.6, 1.0],
 		"demand_base": 0.6, "demand_range": 0.8,
 		"recall_base": 0.2, "recall_per_point": 0.06,
@@ -190,5 +190,10 @@
 			"copy": "copy", "visual": "design", "production": "production", "media_planning": "analytics", "measurement": "analytics" },
 		"areas": ["strategy", "copy", "design", "production", "analytics"],
 		"start_years": [1990, 2000, 2010]
+	},
+	"research": {
+		"ap_per_score": 1.0, "size_mult": { "small": 1.0, "medium": 2.0, "large": 3.0, "mega": 5.0 },
+		"digital_categories": ["digital", "social"], "ai_workshop_mult": 0.5, "market_research_cost_1990": 3000,
+		"social_er_mult": 1.15, "crisis_statement_bonus": 0.2, "focus_good": 1.08, "focus_weak": 0.92
 	}
 }

@@ -182,7 +182,7 @@ func _furnish(room: Dictionary) -> void:
 		"kitchen":
 			props.append({"kind": "counter", "rect": Rect2(r.position + Vector2(0.3, 0.2), Vector2(r.size.x - 0.6, 0.6))})
 			list = _row(r.position.x + 0.8, r.end.x - 0.8, minf(r.position.y + 1.4, r.end.y - 0.6))
-		"meeting", "brainstorm":
+		"meeting", "brainstorm", "rd_lab", "studio":
 			var table: Rect2 = Rect2(r.get_center() - r.size * Vector2(0.25, 0.15), r.size * Vector2(0.5, 0.3))
 			props.append({"kind": "table", "rect": table})
 			list = _row(table.position.x + 0.4, table.end.x - 0.4, table.position.y - 0.6)

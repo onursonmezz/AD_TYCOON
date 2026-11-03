@@ -68,7 +68,8 @@ func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng
 	var audience: String = setup["audience"]
 	var pop: float = population(year)
 	var infl: float = Economy.inflation(data, year)
-	var share_of_pop: float = float(data.bal("kpi.audience_share")[audience])
+	# Otomatik kitle (Hedef Kitle araştırması öncesi, M7-B): geniş, yetişkin payı kadar.
+	var share_of_pop: float = float((data.bal("kpi.audience_share") as Dictionary).get(audience, data.balf("kpi.audience_share_auto")))
 	var conv_mult: float = float(data.bal("kpi.objective_conversion")[setup["objective"]])
 	var reach: float = 0.0
 	var engagements: float = 0.0
@@ -102,9 +103,10 @@ func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng
 			var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest_now) * season * float(fx.get("cost_mult", 1.0))
 			impressions = spend / cpm * 1000.0
 		impressions *= interest_now * float(fx.get("impressions_mult", 1.0)) * float(opts.get("_press", 1.0))
+		er *= float((setup.get("category_er_mult", {}) as Dictionary).get(data.channels[ch]["category"], 1.0))
 		var pool: float = maxf(1.0, pop * share_of_pop * data.channel_audience_size(ch, audience) * reach_cap(client))
 		var r: float = pool * (1.0 - exp(-impressions / pool))
-		var aud_fit: float = scoring.fit_mult(data.fit("channel_audience", ch, audience))
+		var aud_fit: float = scoring.fit_mult(data.fit("channel_audience", ch, audience)) if not audience.is_empty() else 1.0
 		var e: float = r * er * (data.balf("kpi.er_score_base") + data.balf("kpi.er_score_per_point") * score) \
 			* aud_fit * quality * float(fx.get("er_mult", 1.0))
 		var c: float = e * data.channel_param(ch, "cvr") * conv_mult * float(fx.get("cvr_mult", 1.0))

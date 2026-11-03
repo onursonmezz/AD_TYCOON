@@ -68,7 +68,7 @@ static func valid_channels(sim: Simulation, brief: Dictionary) -> Array[String]:
 	var infl: float = Economy.inflation(sim.data, year)
 	var out: Array[String] = []
 	for ch: String in sim.data.channels_available(year):
-		if float(brief["media_budget"]) >= float(sim.data.channels[ch]["min_budget"]) * infl:
+		if float(brief["media_budget"]) >= float(sim.data.channels[ch]["min_budget"]) * infl and sim.research.channel_unlocked(sim.state, ch):
 			out.append(ch)
 	return out
 
@@ -167,3 +167,21 @@ const TOOL_RESERVE_MONTHS: float = 3.0
 const TOOL_HORIZON_WEEKS: int = 26
 const TOOL_BUDGET_SHARE: float = 0.2
 const RANDOM_TOOL_CHANCE: float = 0.05
+
+
+## Ar-Ge (GDD 17). Bilgili bot: boştaysa veri sırasıyla ilk başlatılabilir araştırmayı (ucuzsa) başlatır.
+## Rastgele bot: arada bir rastgele başlatılabilir bir araştırma.
+static func manage_research(sim: Simulation, smart: bool, rng: RandomNumberGenerator) -> void:
+	var state: SimState = sim.state
+	if not (state.research["active"] as Dictionary).is_empty():
+		return
+	var ready: Array[String] = []
+	for id: String in sim.data.research_ids:
+		if sim.research.can_start(state, id) and sim.research.cost(state, id) < state.cash - TOOL_RESERVE_MONTHS * monthly_costs(sim):
+			ready.append(id)
+	if ready.is_empty() or (not smart and rng.randf() >= RANDOM_RESEARCH_CHANCE):
+		return
+	ResearchActionCommand.new("begin", ready[0] if smart else ready[rng.randi_range(0, ready.size() - 1)]).execute(sim)
+
+
+const RANDOM_RESEARCH_CHANCE: float = 0.1

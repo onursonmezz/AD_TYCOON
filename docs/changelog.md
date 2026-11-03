@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## M7-B: Ar-Ge ve Bilgi Defteri (2026-11-04)
+- **Ar-Ge ekranı** (sol menüde yeni):
+  - araştırma puanı (AP), yürüyen araştırma;
+  - 12 araştırma, her birinin AP, para ve süre bedeli ve koşulları (✓/✗).
+  - AP her kampanyadan gelir (puan × iş büyüklüğü).
+- **GDT gibi kilitler:** Oyunun başında ton ve kitle "otomatik" (nötr) ve tek kanal var.
+  - Ton Seçimi (Y2), Hedef Kitle Analizi (Y3) ve Medya Planlama (Y3, çoklu kanal) araştırmayla açılıyor.
+  - Dijital ve sosyal kanallar ile dijital pozisyonlar Dijital Departman (1998) ister; CPA teklif modeli Performans Pazarlama (2010) ister.
+- **Diğer araştırmalar:** Pazar Araştırması, Fokus Grup (sihirbazda "fokus grup" düğmesi), Seri Kampanya, Sosyal Medya Yönetimi, Influencer Analitiği, Kriz İletişimi, AI Atölyesi.
+- **Yeni odalar:** Ar-Ge lab (Strateji Direktörü gerekir, haftada +3 AP) ve prodüksiyon stüdyosu (Ar-Ge lab ve Prodüktör gerekir, Prodüksiyon +%10).
+- **Bilgi Defteri:** Ar-Ge ekranının altında. Sektör seçince öğrendiğin hedef ve kitle uyumlarını (+++ … −−−) görürsün; bilinmeyenler "?". Pazar Araştırması varsa parayla bir hücre açabilirsin.
+- **Hızlı başlangıç** 2000 ya da 2010'da dijital araştırmalar hazır gelir. Eski kayıtlar kilitlenmeden devam eder.
+- Nasıl test ederim:
+  1. Yeni oyun (1990) aç, bir brief kabul et: kitle ve ton "Otomatik (… araştırması gerekli)" yazar, en fazla 1 kanal seçilir.
+  2. Birkaç kampanya bitir: raporda "Araştırma puanı +…" satırını gör. 2. yılda Ar-Ge → Ton Seçimi → **Araştır**; 2 hafta sonra bildirim gelir ve sihirbazda ton seçilebilir.
+  3. 3. yılda Medya Planlama'yı araştır: sihirbazda "+ Kanal ekle" açılır.
+  4. Ar-Ge ekranında Bilgi Defteri'ne in, kampanya yaptığın sektörü seç: kullandığın hedef ve kitlenin işaretlerini gör.
+  5. 1998'den önce dijital kanalların listede olmadığını, Dijital Departman'dan sonra geldiğini kontrol et.
+
 ## M7-A: Dönemler ve araçlar (2026-11-03)
 - **Araçlar ekranı** (sol menüde yeni). Beş alanın (Strateji, Metin, Görsel, Prodüksiyon, Ölçümleme) çarpanını ve araçlarını gösteriyor.
   - Al, güncelle, aboneliğe geç, aboneliği bitir.

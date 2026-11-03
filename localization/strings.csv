@@ -956,3 +956,58 @@ ERR_TOOL_SUB_ONLY,Bu araç artık yalnızca abonelikle güncellenir.,This tool n
 ERR_TOOL_LATEST,Zaten en son sürüm.,Already the latest version.
 ERR_HARDWARE,Bilgisayarların bu sürümü çalıştıramıyor; önce bilgisayarları yenile.,Your computers can't run this version; upgrade them first.
 ERR_HARDWARE_NA,Bu bilgisayar kuşağı alınamaz.,This computer generation isn't available.
+MENU_RESEARCH,Ar-Ge,R&D
+UI_AP,Araştırma puanı: %.0f AP,Research points: %.0f RP
+UI_RESEARCH_HINT,"Araştırma puanı (AP) her kampanyadan gelir: puan × iş büyüklüğü. Ar-Ge lab odası her hafta ayrıca AP üretir. Araştırma AP, para ve zaman ister; aynı anda bir tane yürür.","Research points (RP) come from every campaign: score × job size. An R&D lab also produces RP every week. Research costs RP, money and time; one at a time."
+UI_RESEARCH_ACTIVE,Şu an araştırılıyor: %s (%d hafta kaldı),Researching: %s (%d weeks left)
+UI_RESEARCH_COST,%d AP · %s · %d hafta,%d RP · %s · %d weeks
+UI_RESEARCH_START,Araştır,Research
+REQ_YEAR_SHORT,Y%s,Y%s
+REQ_CAL_YEAR_SHORT,%s yılı,year %s
+REQ_RESEARCH_SHORT,%s,%s
+REQ_AP_SHORT,%s AP,%s RP
+UI_KNOWLEDGE_BOOK,Bilgi Defteri,Knowledge Book
+UI_KNOWLEDGE_HINT,"Raporlarla öğrendiğin uyumlar: sektör × hedef ve sektör × kitle. Her biten kampanya kullandığı hücreleri açar; ""?"" henüz bilinmiyor.","What reports have taught you: sector × objective and sector × audience. Each finished campaign reveals the cells it used; ""?"" is still unknown."
+UI_BUY_INSIGHT,Pazar araştırması (%s): bir hücre aç,Market research (%s): reveal a cell
+UI_AUTO_AUDIENCE,Otomatik (Hedef Kitle Analizi araştırması gerekli),Automatic (needs Audience Analysis research)
+UI_AUTO_TONE,Otomatik (Ton Seçimi araştırması gerekli),Automatic (needs Tone Choice research)
+UI_FOCUS_GROUP,Fokus grup,Focus group
+UI_FOCUS_GOOD,Fokus grup: çok beğendi,Focus group: loved it
+UI_FOCUS_MID,Fokus grup: kararsız,Focus group: lukewarm
+UI_FOCUS_WEAK,Fokus grup: pek ikna olmadı,Focus group: not convinced
+UI_REPORT_AP,Araştırma puanı +%.0f · Bilgi Defteri'ne %d yeni bilgi,Research points +%.0f · %d new Knowledge Book entries
+NOTE_RESEARCH_DONE,Araştırma tamamlandı: %s,Research complete: %s
+ERR_RESEARCH,Bu araştırma şu an başlatılamaz.,This research can't be started now.
+ERR_ALL_KNOWN,Bu sektör hakkında her şeyi biliyoruz.,We already know everything about this sector.
+ERR_CHANNEL_LOCKED,Bu kanal için Dijital Departman araştırması gerekli.,This channel needs the Digital Department research.
+ERR_ROOM_NEEDS_PLANNER,Ar-Ge lab için bir Strateji Direktörü gerekli.,An R&D lab needs a Strategy Director.
+ERR_ROOM_NEEDS_PRODUCER,Prodüksiyon stüdyosu için bir Prodüktör gerekli.,A production studio needs a Producer.
+ERR_ROOM_NEEDS_RD_LAB,Prodüksiyon stüdyosu için önce Ar-Ge lab gerekli.,A production studio needs an R&D lab first.
+ROOM_RD_LAB,Ar-Ge lab,R&D lab
+ROOM_RD_LAB_DESC,Ar-Ge lab: her hafta +3 araştırma puanı,R&D lab: +3 research points every week
+ROOM_STUDIO,Prodüksiyon stüdyosu,Production studio
+ROOM_STUDIO_DESC,Prodüksiyon stüdyosu: Prodüksiyon odağında +%10,Production studio: +10% on the Production focus
+RES_TONE,Ton Seçimi,Tone Choice
+RES_TONE_DESC,"Kampanyanın tonunu (duygusal, esprili…) sen seçersin. Öncesinde ton otomatik ve nötrdür.","You choose the campaign's tone (emotional, humorous…). Until then tone is automatic and neutral."
+RES_AUDIENCE,Hedef Kitle Analizi,Audience Analysis
+RES_AUDIENCE_DESC,Hedef kitleyi sen seçersin. Öncesinde kitle otomatik ve geniştir.,You choose the target audience. Until then the audience is automatic and broad.
+RES_MEDIA_PLANNING,Medya Planlama,Media Planning
+RES_MEDIA_PLANNING_DESC,Birden fazla kanalı bütçe paylarıyla karıştırabilirsin.,You can mix several channels with budget shares.
+RES_MARKET_RESEARCH,Pazar Araştırması Hizmeti,Market Research Service
+RES_MARKET_RESEARCH_DESC,Bilgi Defteri'nde parayla bir sektörün bilinmeyen bir uyumunu açarsın.,Reveal an unknown fit for a sector in the Knowledge Book for a fee.
+RES_FOCUS_GROUP,Fokus Grup,Focus Group
+RES_FOCUS_GROUP_DESC,"Kampanyayı başlatmadan önce kombinasyonun uyumuna dair kaba bir tahmin alırsın.","Get a rough read on your combination's fit before launching."
+RES_SERIES,Seri Kampanya,Campaign Series
+RES_SERIES_DESC,Aynı müşteriye aynı hedefle arka arkaya iş yapmanın yenilik cezası kalkar.,Removes the novelty penalty for back-to-back work for the same client and objective.
+RES_DIGITAL,Dijital Departman,Digital Department
+RES_DIGITAL_DESC,"Dijital ve sosyal kanallar ile dijital pozisyonlar (web geliştirici, SEM uzmanı…) açılır.","Unlocks digital and social channels and digital roles (web developer, SEM specialist…)."
+RES_SOCIAL,Sosyal Medya Yönetimi,Social Media Management
+RES_SOCIAL_DESC,Sosyal kanallarda etkileşim %15 artar.,Engagement on social channels +15%.
+RES_PERFORMANCE,Performans Pazarlama,Performance Marketing
+RES_PERFORMANCE_DESC,Dijital kanallarda CPA teklif modeli açılır.,Unlocks the CPA bid model on digital channels.
+RES_INFLUENCER,Influencer Analitiği,Influencer Analytics
+RES_INFLUENCER_DESC,Influencer'ların sahte takipçi oranını PR uzmanı olmadan görürsün.,See influencers' fake-follower rate without a PR specialist.
+RES_CRISIS,Kriz İletişimi,Crisis Communication
+RES_CRISIS_DESC,Skandallarda açıklama yapmanın başarı şansı artar.,Public statements during scandals succeed more often.
+RES_AI_WORKSHOP,AI Atölyesi,AI Workshop
+RES_AI_WORKSHOP_DESC,AI araçlarının yenilik bedeli yarıya iner.,Halves the novelty cost of AI tools.

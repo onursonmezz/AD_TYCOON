@@ -81,8 +81,9 @@ func test_auto_job_is_delivered_on_time() -> void:
 func test_channel_limit_by_year_office_and_media_planner() -> void:
 	var sim: Simulation = Simulation.new(data, 1)
 	var team: Array = [sim.state.founder()["id"]]
-	assert_eq(sim.media.channel_limit(sim.state, team), 1, "Y1–Y2 tek kanal (17: Medya Planlama Y3)")
+	assert_eq(sim.media.channel_limit(sim.state, team), 1, "Medya Planlama araştırması olmadan tek kanal (17)")
 	sim.state.clock.week_index = 2 * 48
+	sim.research.grant_reachable(sim.state)
 	assert_eq(sim.media.channel_limit(sim.state, team), 2, "ev odası: 2")
 	var mp: Dictionary = sim.staff._blank(sim.state, "media_planner", 1)
 	mp["stats"] = {"strategy": 60.0, "creative": 40.0, "technical": 50.0, "communication": 60.0, "speed": 50.0, "attention": 50.0}
@@ -95,6 +96,7 @@ func test_channel_limit_by_year_office_and_media_planner() -> void:
 func test_multi_channel_campaign_with_print_runs_end_to_end() -> void:
 	var sim: Simulation = Simulation.new(data, 4)
 	sim.state.clock.week_index = 2 * 48
+	sim.research.grant_reachable(sim.state)
 	sim.state.cash = 500000.0
 	while sim.state.inbox.is_empty():
 		sim.step_week()
