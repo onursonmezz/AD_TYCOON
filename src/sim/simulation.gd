@@ -45,6 +45,7 @@ var influencers: InfluencerSystem
 var rivals: RivalSystem
 var awards: AwardSystem
 var pitches: PitchSystem
+var build: BuildSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -72,11 +73,13 @@ func _init(game_data: GameData, seed_value: int, background: String = "") -> voi
 	rivals = RivalSystem.new(data)
 	awards = AwardSystem.new(data, rivals)
 	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
+	build = BuildSystem.new(data)
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
 	clients.create_starting(state, int(data.backgrounds[founder["background"]]["extra_start_clients"]))
 	rivals.ensure(state)
+	build.refresh(state)
 
 
 func set_overtime(on: bool) -> void:
@@ -87,6 +90,7 @@ func set_overtime(on: bool) -> void:
 func load_state(saved: Dictionary) -> void:
 	state = SimState.from_dict(data, saved)
 	rivals.ensure(state)
+	build.refresh(state)
 
 
 # --- zaman -------------------------------------------------------------------
@@ -113,6 +117,7 @@ func step_day() -> void:
 			staff_note.emit(note["key"], note["args"], note["kind"])
 		influencers.weekly(state)
 		IndustryCalendar.weekly(self)
+		build.refresh(state)
 		influencers.expire_scandals(state)
 		var supplier_offer: Dictionary = suppliers.weekly(state)
 		if not supplier_offer.is_empty():
@@ -317,6 +322,7 @@ func _finish(camp: Dictionary) -> void:
 			float(setup.get("production_margin", 0.0)) < 0.0)
 		parts["risks"] = float(setup.get("option_satisfaction", 0.0))
 		parts["scandal"] = float(camp.get("scandal", {}).get("satisfaction", 0.0))
+		parts["office"] = float(state.office_effects.get("satisfaction", 0.0))
 		parts["expectation"] = clients.expectation(client, year)
 		var delta: float = 0.0
 		for key: String in parts:

@@ -1,0 +1,14 @@
+[
+	{ "id": "work", "name_key": "ROOM_WORK", "desc_key": "ROOM_WORK_DESC", "buildable": true, "cost_per_m2_1990": 400, "effects": {} },
+	{ "id": "meeting", "name_key": "ROOM_MEETING", "desc_key": "ROOM_MEETING_DESC", "buildable": true, "cost_per_m2_1990": 700,
+		"effects": { "satisfaction": 2.0 } },
+	{ "id": "brainstorm", "name_key": "ROOM_BRAINSTORM", "desc_key": "ROOM_BRAINSTORM_DESC", "buildable": true, "cost_per_m2_1990": 600,
+		"effects": { "focus_mult": { "concept": 1.1 } } },
+	{ "id": "kitchen", "name_key": "ROOM_KITCHEN", "desc_key": "ROOM_KITCHEN_DESC", "buildable": true, "cost_per_m2_1990": 800,
+		"effects": { "energy_rest_mult": 1.25 } },
+	{ "id": "lounge", "name_key": "ROOM_LOUNGE", "desc_key": "ROOM_LOUNGE_DESC", "buildable": true, "cost_per_m2_1990": 600,
+		"effects": { "burnout_recovery_mult": 1.5 } },
+	{ "id": "award_lobby", "name_key": "ROOM_AWARD_LOBBY", "desc_key": "ROOM_AWARD_LOBBY_DESC", "buildable": true, "cost_per_m2_1990": 900,
+		"effects": { "pitch_mult": 1.05 } },
+	{ "id": "empty", "name_key": "ROOM_EMPTY", "desc_key": "ROOM_EMPTY_DESC", "buildable": false, "cost_per_m2_1990": 0, "effects": {} }
+]

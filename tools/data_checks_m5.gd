@@ -60,7 +60,17 @@ static func check(data: Dictionary, ids: Dictionary) -> PackedStringArray:
 		keys.sort()
 		if keys != ["budget", "digital", "humor", "risk"]:
 			errors.append("pitch_cards.json: '%s' prefs risk/budget/digital/humor olmalı" % str(rec.get("id", "?")))
-	var room_types: Array[String] = ["work", "meeting", "kitchen", "lounge", "empty"]
+	var room_types: Array = []
+	var effect_keys: Array[String] = ["satisfaction", "focus_mult", "energy_rest_mult", "burnout_recovery_mult", "pitch_mult"]
+	for rt: Variant in data.get("room_types.json", []):
+		room_types.append(rt.get("id"))
+		for k: Variant in (rt.get("effects", {}) as Dictionary).keys():
+			if not effect_keys.has(k):
+				errors.append("room_types.json: '%s' bilinmeyen etki '%s'" % [str(rt.get("id")), str(k)])
+	for f: Variant in data.get("furniture.json", []):
+		var sz: Array = f.get("size", [])
+		if sz.size() != 2 or fmod(float(sz[0]), 0.5) != 0.0 or fmod(float(sz[1]), 0.5) != 0.0 or float(sz[0]) <= 0.0 or float(sz[1]) <= 0.0:
+			errors.append("furniture.json: '%s' boyutu 0.5 m'nin katı olmalı" % str(f.get("id")))
 	var layout_ids: Array = []
 	for rec: Variant in data.get("office_layouts.json", []):
 		if typeof(rec) != TYPE_DICTIONARY:

@@ -226,6 +226,36 @@ func _tour_office(screen: Control, sim: Simulation) -> void:
 	var ids: Array = sim.state.staff.keys()
 	screen.call("_on_employee_clicked", ids[1])
 	await _shot("25_employee_card")
+	await _tour_build(screen, sim)
+
+
+## M6-B: ofis penceresi (kalite dökümü), çizilmiş oda ve mobilyalar, inşa modu araç çubuğu ve önizleme.
+func _tour_build(screen: Control, sim: Simulation) -> void:
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	var empty: Rect2 = Rect2()
+	for room: Dictionary in l.rooms:
+		if room["type"] == "empty":
+			empty = room["rect"]
+	GameState.execute(BuildRoomCommand.new("brainstorm", Rect2(empty.position + Vector2(1, 1), Vector2(5, 3))))
+	var placed: int = 0
+	for id: String in ["plant_big", "office_cat", "record_player", "plant_small", "whiteboard", "water_cooler"]:
+		for x: int in range(2, 40):
+			var p: Vector2 = Vector2(x * 0.5, 7.5 if placed % 2 == 0 else 0.5)
+			if sim.build.place_error(sim.state, id, p, 0).is_empty():
+				GameState.execute(PlaceFurnitureCommand.new(id, p, 0))
+				placed += 1
+				break
+	GameState.execute(SetDeskTierCommand.new("ergonomic"))
+	screen.call("show_panel", "office")
+	await _shot("26_office_panel")
+	screen.call("enter_build_mode")
+	var view: OfficeView = screen.get("_office")
+	var bar: BuildToolbar = screen.get("_build_bar")
+	await get_tree().process_frame
+	bar.call("_select", {"kind": "furniture", "id": "plant_big", "rot": 0})
+	view.call("_build_hover", view.size * 0.5)
+	await get_tree().create_timer(1.0).timeout
+	await _shot("27_build_mode")
 
 
 func _shot(file_name: String) -> void:

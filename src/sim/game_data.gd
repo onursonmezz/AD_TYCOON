@@ -45,6 +45,10 @@ var award_ids: Array[String] = []
 var pitch_cards: Dictionary = {}
 var pitch_card_ids: Array[String] = []
 var office_layouts: Dictionary = {}
+var furniture: Dictionary = {}
+var furniture_ids: Array[String] = []
+var room_types: Dictionary = {}
+var room_type_ids: Array[String] = []
 
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
@@ -174,6 +178,8 @@ func _index() -> void:
 	_index_list("pitch_cards.json", pitch_cards, pitch_card_ids)
 	var layout_ids: Array[String] = []
 	_index_list("office_layouts.json", office_layouts, layout_ids)
+	_index_list("furniture.json", furniture, furniture_ids)
+	_index_list("room_types.json", room_types, room_type_ids)
 	var print_opts: Dictionary = raw.get("print_options.json", {})
 	for rec: Dictionary in print_opts.get("products", []):
 		print_products[rec["id"]] = rec

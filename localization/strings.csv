@@ -812,3 +812,69 @@ UI_EMP_PITCH,Pitch hazırlığında,Preparing a pitch
 UI_EMP_CAMPAIGN,Kampanyada çalışıyor,Working on a campaign
 UI_EMP_IDLE,Boşta,Idle
 UI_OFFICE_CONTROLS,"Ofis: tekerlek yakınlaştırır · sağ tuşla sürükle ya da WASD kaydırır · Q/E döndürür · çalışana tıkla","Office: wheel zooms · right-drag or WASD pans · Q/E rotates · click a person"
+ROOM_WORK,Kreatif atölye,Creative studio
+ROOM_WORK_DESC,"Çalışma alanı; masa kalitesi ve içindeki mobilyalar oda kalitesini en çok etkiler.","Work area; desk quality and furniture inside it matter most for room quality."
+ROOM_MEETING,Toplantı odası,Meeting room
+ROOM_MEETING_DESC,Toplantı odası: müşteri memnuniyeti +2,Meeting room: client satisfaction +2
+ROOM_BRAINSTORM,Beyin fırtınası odası,Brainstorm room
+ROOM_BRAINSTORM_DESC,Beyin fırtınası odası: Konsept odağında +%10,Brainstorm room: +10% on the Concept focus
+ROOM_KITCHEN,Mutfak,Kitchen
+ROOM_KITCHEN_DESC,Mutfak: enerji %25 daha hızlı dolar,Kitchen: energy recovers 25% faster
+ROOM_LOUNGE,Dinlenme odası,Lounge
+ROOM_LOUNGE_DESC,Dinlenme odası: tükenmişlik %50 daha hızlı geçer,Lounge: burnout heals 50% faster
+ROOM_AWARD_LOBBY,Ödül lobisi,Award lobby
+ROOM_AWARD_LOBBY_DESC,Ödül lobisi: ziyaretçiler etkilenir; pitch skoru +%5,Award lobby: visitors are impressed; pitch score +5%
+ROOM_EMPTY,Boş alan,Empty space
+ROOM_EMPTY_DESC,Oda çizebileceğin boş alan.,Empty space where you can draw rooms.
+FURN_PLANT_SMALL,Küçük bitki,Small plant
+FURN_PLANT_BIG,Büyük bitki,Big plant
+FURN_TEA_URN,Semaver,Tea urn
+FURN_FILTER_COFFEE,Filtre kahve makinesi,Filter coffee maker
+FURN_ESPRESSO,Espresso makinesi,Espresso machine
+FURN_WATER_COOLER,Su sebili,Water cooler
+FURN_WHITEBOARD,Beyaz tahta,Whiteboard
+FURN_MOOD_BOARD,Mood board,Mood board
+FURN_BOOKSHELF,Kitaplık,Bookshelf
+FURN_RECORD_PLAYER,Plak çalar,Record player
+FURN_AWARD_CASE,Ödül vitrini,Award case
+FURN_NEON_SIGN,Neon tabela,Neon sign
+FURN_OFFICE_CAT,Ofis kedisi,Office cat
+DESK_BASIC,Basit,Basic
+DESK_ERGONOMIC,Ergonomik,Ergonomic
+DESK_ADJUSTABLE,Ayarlanabilir,Adjustable
+UI_QUALITY_PARTS,"Oda kalitesi: taban %.0f + konfor %.1f + çeşitlilik %.0f %+.1f kalabalık · üretim çarpanı ×%.2f","Room quality: base %.0f + comfort %.1f + variety %.0f %+.1f crowding · output multiplier ×%.2f"
+UI_ROOM_EFFECTS,Oda etkileri: %s,Room effects: %s
+UI_NONE,yok,none
+UI_DESK_TIER,Masa ve sandalyeler:,Desks and chairs:
+UI_BUILD_MODE,İnşa moduna geç,Enter build mode
+UI_BUILD_TITLE,İnşa modu,Build mode
+UI_BUILD_KEYS,R: döndür · Esc: aracı bırak,R: rotate · Esc: drop tool
+UI_BUILD_DONE,Bitir,Done
+UI_BUILD_REMOVE,Kaldır / sat,Remove / sell
+UI_BUILD_ROOM,Oda çiz,Draw room
+UI_BUILD_ROOM_HINT,Boş alanda (gri zemin) sürükleyerek çiz; en az 3×3 m.,Drag on empty space (grey floor); at least 3×3 m.
+UI_BUILD_ROOMS_LOCKED,Oda çizmek büyütülmüş ofiste açılır.,Drawing rooms unlocks in the enlarged office.
+UI_BUILD_PICK,Paletten bir mobilya ya da araç seç.,Pick a piece of furniture or a tool.
+UI_BUILD_PICK_FURNITURE,Yerleştirmek için ofiste bir yere tıkla.,Click a spot in the office to place it.
+UI_BUILD_PICK_ROOM,Boş alanda sürükleyerek odayı çiz.,Drag on empty space to draw the room.
+UI_BUILD_PICK_REMOVE,"Satmak için mobilyaya, yıkmak için çizdiğin odaya tıkla.","Click furniture to sell it, or a room you drew to demolish it."
+UI_BUILD_OK,Buraya konabilir.,Fits here.
+UI_BUILD_PLACED,Yerleştirildi.,Placed.
+UI_BUILD_ROOM_DONE,Oda yapıldı.,Room built.
+UI_BUILD_SOLD,Satıldı (bedelin yarısı geri geldi).,Sold (half the price refunded).
+UI_BUILD_DEMOLISHED,Oda yıkıldı.,Room demolished.
+UI_BUILD_NOTHING,Burada kaldırılacak bir şey yok.,Nothing to remove here.
+UI_BUILD_QUALITY,Oda kalitesi %.0f · üretim ×%.2f,Room quality %.0f · output ×%.2f
+SAT_OFFICE,Toplantı odası,Meeting room
+NOTE_FURNITURE_SOLD,"Taşınırken eski mobilyalar satıldı: %s geri geldi.","Old furniture was sold during the move: %s refunded."
+ERR_FURNITURE,Bu mobilya şu an alınamaz.,This furniture isn't available now.
+ERR_FURNITURE_LIMIT,Bu mobilyadan en fazla sayıda var.,You already have the maximum of this item.
+ERR_PLACE_BLOCKED,"Buraya sığmıyor (duvar, masa ya da başka bir eşya).","It doesn't fit here (wall, desk or another item)."
+ERR_PLACE_PATH,Bu yerleşim birinin masasına ya da bir odaya giden yolu kapatıyor.,This would block the way to someone's desk or a room.
+ERR_NO_CASH,Yeterli nakit yok.,Not enough cash.
+ERR_DESK_TIER,Bu masa kalitesi seçilemez.,This desk tier can't be chosen.
+ERR_ROOM_LEVEL,Oda çizmek büyütülmüş ofiste açılır.,Drawing rooms unlocks in the enlarged office.
+ERR_ROOM_TYPE,Bu oda tipi çizilemez.,This room type can't be built.
+ERR_ROOM_SMALL,Oda en az 3×3 m olmalı.,A room must be at least 3×3 m.
+ERR_ROOM_OVERLAP,Başka bir oda ya da eşyayla çakışıyor.,It overlaps another room or item.
+ERR_ROOM_NOT_EMPTY,Odalar yalnızca boş alana (gri zemin) çizilir.,Rooms can only be drawn on empty space (grey floor).

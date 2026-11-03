@@ -14,6 +14,7 @@ var _content: VBoxContainer
 var _window: PanelContainer
 var _office: OfficeView
 var _employee_card: EmployeeCard = null
+var _build_bar: BuildToolbar = null
 var _feed: VBoxContainer
 var _menu_buttons: Dictionary = {}
 var _panel: Control = null
@@ -155,6 +156,26 @@ func close_panel() -> void:
 	_panel_id = ""
 
 
+## İnşa modu (M6-B): pencere kapanır, ofisin altında araç çubuğu açılır.
+func enter_build_mode() -> void:
+	close_panel()
+	if _build_bar != null:
+		return
+	_build_bar = BuildToolbar.new(_office, exit_build_mode)
+	_office.get_parent().add_child(_build_bar)
+	_build_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_build_bar.offset_left = WINDOW_MARGIN
+	_build_bar.offset_right = -WINDOW_MARGIN
+	_build_bar.offset_bottom = -WINDOW_MARGIN
+	_build_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
+
+
+func exit_build_mode() -> void:
+	if _build_bar != null:
+		_build_bar.queue_free()
+		_build_bar = null
+
+
 ## Ofiste bir çalışana tıklandı: küçük bilgi kartı.
 func _on_employee_clicked(employee_id: String) -> void:
 	if _employee_card != null:
@@ -186,6 +207,7 @@ func toggle_panel(id: String) -> void:
 
 
 func show_panel(id: String) -> void:
+	exit_build_mode()
 	if _panel_id == id and _panel != null:
 		return
 	UiUtil.clear(_content)
@@ -201,7 +223,7 @@ func show_panel(id: String) -> void:
 		"team":
 			_panel = TeamPanel.new(self)
 		"office":
-			_panel = OfficePanel.new()
+			_panel = OfficePanel.new(self)
 		"finance":
 			_panel = FinancePanel.new()
 		"industry":

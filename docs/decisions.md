@@ -440,6 +440,47 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - çalışma anında navmesh pişirmeye gerek yok;
 - M6-B'deki ızgaralı oda ve mobilya yerleştirme aynı ızgarayı kullanacak.
 
+## K-061 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Oda kalitesi formülü (12.3).
+**Karar:** `oda_kalitesi = taban + 30 × Σkonfor / çalışma_alanı + 1.5 × dekor_türü (en fazla 6) − 200 × max(0, kişi/alan − 0.125)`, sonuç 0..100.
+- **Taban:** Eski sabit değer (50/60/70/80/90). Mobilyasız ofiste kalite ve üretim değişmez, mevcut denge korunur (test).
+- **Konfor:**
+  - Masa kalitesi masa başına: basit 0, ergonomik 1, ayarlanabilir 2 (2005+).
+  - Mobilya kendi konfor değerini verir; çalışma alanındaysa tam, başka odadaysa yarısını (12.3 "yakınlık etkisi" sadeleştirildi).
+- **Kalabalık:** Kişi başı 8 m²'den az çalışma alanı düşürür.
+- **Çarpan:** `ofis_çarpanı = 0.85 + 0.40 × kalite/100` (GDD). Oda kalitesi `SimState.room_quality`'de tutulur, düzenden her hafta ve her inşa işleminde yeniden hesaplanır, kaydedilmez.
+- **Katsayılar:** İlk denemede konfor katsayısı 40, çeşitlilik 2 idi; tam döşenmiş büyütülmüş ofis kaliteyi 70'ten 93'e çıkarıyordu. Biraz yumuşatıldı (~+17).
+- **Ertelendi:** Bitkilerin sulanması (12.3 "sulanmazsa kurur") M7 ya da M9'a kaldı.
+
+## K-062 · 2026-11-03 · Kabul · Uygulama kararı
+**Konu:** Oda etkileri, mobilya ve oda çizme kuralları (12.2, 12.3).
+**Karar:**
+- **Oda etkileri** (`data/room_types.json`; GDD'de yalnızca beyin fırtınası için sayı var):
+
+  | Oda | Etki |
+  |---|---|
+  | Toplantı odası | müşteri memnuniyeti +2 (raporda "Toplantı odası" kalemi) |
+  | Beyin fırtınası odası | Konsept odağı +%10 (GDD) |
+  | Mutfak | enerji %25 daha hızlı dolar |
+  | Dinlenme odası | tükenmişlik %50 daha hızlı geçer |
+  | Ödül lobisi | pitch skoru +%5 |
+
+  - Etkiler yalnızca kapılı (kapalı) odalardan gelir. Ev odasındaki çaycı ve minder köşeleri süs, etkisi yok. Küçük ofisin hazır toplantı odası ve mutfağı etki veriyor; bu küçük bir denge değişikliği.
+  - Aynı tipte ikinci oda etkiyi artırmaz.
+  - Stüdyolar (fotoğraf, kurgu, film) ve Ar-Ge lab M7'de.
+- **Mobilya:** 13 parça `data/furniture.json`'da.
+  - Fiyatlar 1990 parası, enflasyonla artar. Kahve makinesi döneme göre değişir: semaver 1990–2004, filtre kahve 2005–2014, espresso 2015+.
+  - 0.5 m'lik ızgaraya oturur, 90° döner.
+  - Duvar, masa ya da başka bir eşyanın üstüne konmaz; bir masanın, odanın ya da girişin yolunu kapatamaz.
+  - Satışta yarı fiyatı geri gelir. Taşınınca mobilyalar ve çizilen odalar yeni binaya gelmez, mobilya bedelinin yarısı iade edilir; masa kalitesi taşınır.
+- **Oda çizme** (büyütülmüş ofisten, K-059):
+  - Yalnızca hazır "boş alan"a (gri zemin) çizilir; en az 3 × 3 m, 1 m'lik ızgara.
+  - Başka çizilmiş oda ya da eşyayla çakışmaz, yolu kesmez.
+  - Bedeli m² başına (₺400–900, 1990). Kapı otomatik olarak boş alana bakan ilk kenara açılır. Yıkınca bedel geri gelmez.
+- **Yerleşim düzeltmesi:** Masalar kapalı odaların kapı önüne dizilmiyor (bina seviyesi 5'te mutfak kapısı kapanıyordu). Duvara çok yakın düşen bekleme noktaları atılıyor. Testler artık her seviyede bütün masa ve noktaların girişten ulaşılabildiğini doğruluyor.
+- **Kayıt:** Ofis düzeni `SimState.build` olarak kaydediliyor. Eski kayıtlar boş düzenle açılır, sürüm değişmedi (planda kayıt sürümü 3 diyordum; varsayılan değer yetti).
+- **Denge (200×10):** Botlar mobilya almıyor; yalnızca küçük ofisin oda etkileri değişti. Bilgili bot ort. puan 6.95 → 6.90, iflas %1 / %6.5, büyütülmüş ofis %58 → %66 (Y10), rastgele bot ilk 3 yılda %35 iflas (değişmedi).
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

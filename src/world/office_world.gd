@@ -10,7 +10,8 @@ const WALL_THICKNESS: float = 0.15
 const BUBBLE_CHANCE: float = 0.45
 const FLOOR_COLORS: Dictionary = {
 	"work": Color(0.86, 0.78, 0.64), "meeting": Color(0.62, 0.72, 0.62), "kitchen": Color(0.86, 0.66, 0.58),
-	"lounge": Color(0.9, 0.8, 0.55), "empty": Color(0.8, 0.79, 0.76),
+	"lounge": Color(0.9, 0.8, 0.55), "empty": Color(0.8, 0.79, 0.76), "brainstorm": Color(0.75, 0.82, 0.88),
+	"award_lobby": Color(0.92, 0.85, 0.62),
 }
 const PROP_STYLE: Dictionary = {
 	"desk": [0.75, Color(0.65, 0.49, 0.32)], "counter": [0.95, Color(0.95, 0.93, 0.88)],
@@ -27,6 +28,7 @@ const BUBBLES: Array[Array] = [["S", Color(0.24, 0.55, 0.32)], ["K", Color(0.9, 
 var rig: CameraRig
 var layout: OfficeLayout
 var _level: int = 0
+var _build_version: int = -1
 var _building: Node3D
 var _walls: Array[Dictionary] = []
 var _chars: Dictionary = {}
@@ -63,19 +65,24 @@ func _ready() -> void:
 
 # --- bina ---------------------------------------------------------------------
 
+## Bina geometrisi. Yalnızca düzen değiştiyse (mobilya, oda) çalışanlar yerinde kalır ve yeniden yol bulur;
+## taşınınca hepsi kapıdan yeniden girer.
 func _build(level: int) -> void:
+	var moved: bool = level != _level
 	_level = level
+	_build_version = int(GameState.sim.state.build.get("version", 0))
 	if _building != null:
 		_building.queue_free()
-	for c: OfficeCharacter in _chars.values():
-		c.queue_free()
-	_chars.clear()
-	_desk_of.clear()
+	if moved:
+		for c: OfficeCharacter in _chars.values():
+			c.queue_free()
+		_chars.clear()
+		_desk_of.clear()
 	_place_of.clear()
 	_walls.clear()
 	_building = Node3D.new()
 	add_child(_building)
-	layout = OfficeLayout.build(DataDB.data.office_layouts["office_%d" % level])
+	layout = GameState.sim.build.layout(GameState.sim.state)
 	_box(Vector3(layout.size.x * 0.5, -0.06, layout.size.y * 0.5), Vector3(layout.size.x + 6.0, 0.1, layout.size.y + 6.0),
 		Color(0.7, 0.78, 0.6))
 	for room: Dictionary in layout.rooms:
@@ -93,13 +100,20 @@ func _build(level: int) -> void:
 		_walls.append({"mesh": mesh, "side": w["side"], "outer": w["outer"], "height": height, "mid": mid})
 	for prop: Dictionary in layout.props:
 		var pr: Rect2 = prop["rect"]
+		if prop["kind"] == "furniture":
+			var def: Dictionary = DataDB.data.furniture[prop["id"]]
+			var c: Array = def["color"]
+			_box(Vector3(pr.get_center().x, float(def["height"]) * 0.5, pr.get_center().y),
+				Vector3(pr.size.x * 0.9, float(def["height"]), pr.size.y * 0.9), Color(float(c[0]), float(c[1]), float(c[2])))
+			continue
 		var style: Array = PROP_STYLE[prop["kind"]]
 		_box(Vector3(pr.get_center().x, float(style[0]) * 0.5, pr.get_center().y), Vector3(pr.size.x, float(style[0]), pr.size.y),
 			style[1])
 		if prop["kind"] == "desk":
 			_box(Vector3(pr.get_center().x, float(style[0]) + 0.2, pr.get_center().y - 0.1), Vector3(0.5, 0.35, 0.06),
 				Color(0.25, 0.25, 0.28))
-	rig.frame(layout.size)
+	if moved:
+		rig.frame(layout.size)
 	_update_cut()
 
 
@@ -137,7 +151,7 @@ func sync() -> void:
 	if not GameState.has_game():
 		return
 	var s: SimState = GameState.sim.state
-	if s.office_level != _level:
+	if s.office_level != _level or int(s.build.get("version", 0)) != _build_version:
 		_build(s.office_level)
 	for id: String in _chars.keys():
 		if not s.staff.has(id):
@@ -264,3 +278,29 @@ func pick(camera_ray_from: Vector3, camera_ray_dir: Vector3) -> String:
 	if hit.is_empty() or not (hit["collider"] as Object).has_meta("employee_id"):
 		return ""
 	return str((hit["collider"] as Object).get_meta("employee_id"))
+
+
+# --- inşa modu önizlemesi ------------------------------------------------------------
+
+var _ghost: MeshInstance3D
+
+
+## Yerleştirme/oda önizlemesi: yeşil uygun, kırmızı değil.
+func show_ghost(rect: Rect2, height: float, ok: bool) -> void:
+	if _ghost == null:
+		_ghost = MeshInstance3D.new()
+		_ghost.mesh = BoxMesh.new()
+		var mat: StandardMaterial3D = StandardMaterial3D.new()
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		_ghost.material_override = mat
+		add_child(_ghost)
+	_ghost.visible = true
+	(_ghost.mesh as BoxMesh).size = Vector3(rect.size.x, height, rect.size.y)
+	_ghost.position = Vector3(rect.get_center().x, height * 0.5, rect.get_center().y)
+	(_ghost.material_override as StandardMaterial3D).albedo_color = Color(0.3, 0.75, 0.4, 0.45) if ok else Color(0.85, 0.3, 0.25, 0.45)
+
+
+func hide_ghost() -> void:
+	if _ghost != null:
+		_ghost.visible = false

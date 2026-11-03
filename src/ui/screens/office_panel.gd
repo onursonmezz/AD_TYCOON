@@ -1,12 +1,14 @@
 class_name OfficePanel
 extends VBoxContainer
-## Ofis (GDD 12.1): şimdiki ofis ve bir sonrakinin koşulları; taşınma. 3D ofis M6'da.
+## Ofis (GDD 12.1–12.3): oda kalitesi dökümü, oda etkileri, masa kalitesi, inşa moduna geçiş; sonraki ofisin koşulları ve taşınma.
 
+var _main: Control
 var _body: VBoxContainer
 var _signature: String = ""
 
 
-func _init() -> void:
+func _init(main_screen: Control) -> void:
+	_main = main_screen
 	add_theme_constant_override("separation", 10)
 	add_child(UiUtil.heading(tr("MENU_OFFICE")))
 	_body = UiUtil.vbox(8)
@@ -16,7 +18,7 @@ func _init() -> void:
 func refresh() -> void:
 	var sim: Simulation = GameState.sim
 	var s: SimState = sim.state
-	var sig: String = "%d%d%d%d%d" % [s.office_level, s.staff.size(), int(s.cash / 1000.0), s.clock.game_year(), int(s.reputation)]
+	var sig: String = "%d%d%d%d%d" % [s.office_level, s.staff.size(), int(s.cash / 1000.0), s.clock.game_year(), int(s.reputation)] + str(s.build.get("version", 0))
 	if sig == _signature:
 		return
 	_signature = sig
@@ -24,7 +26,8 @@ func refresh() -> void:
 	var cur: Dictionary = sim.offices.current(s)
 	_body.add_child(UiUtil.label(tr(cur["name_key"]), 20, UiUtil.SAGE_DARK))
 	_body.add_child(UiUtil.label(tr("UI_OFFICE_LINE") % [s.staff.size(), int(cur["capacity"]),
-		UiUtil.money(sim.offices.monthly_rent(s)), int(cur["room_quality"])], 15))
+		UiUtil.money(sim.offices.monthly_rent(s)), int(roundf(s.room_quality))], 15))
+	_quality_block(sim, s)
 	_body.add_child(UiUtil.label(tr("UI_OFFICE_SIZES") % _sizes_text(cur["allowed_sizes"]), 14, UiUtil.WOOD))
 	var next: Dictionary = sim.offices.next_office(s)
 	if next.is_empty():
@@ -51,6 +54,35 @@ func refresh() -> void:
 		refresh())
 	move.disabled = not sim.offices.can_move(s)
 	_body.add_child(move)
+
+
+## Oda kalitesi dökümü (12.3), etkin oda etkileri (12.2), masa kalitesi ve inşa modu düğmesi.
+func _quality_block(sim: Simulation, s: SimState) -> void:
+	var q: Dictionary = sim.build.quality_parts(s)
+	_body.add_child(UiUtil.label(tr("UI_QUALITY_PARTS") % [float(q["base"]), float(q["comfort"]), float(q["variety"]),
+		float(q["crowding"]), Employee.office_mult(DataDB.data, s.room_quality)], 14, UiUtil.WOOD))
+	var effects: PackedStringArray = PackedStringArray()
+	for type: String in DataDB.data.room_type_ids:
+		if not (DataDB.data.room_types[type]["effects"] as Dictionary).is_empty() and sim.build.layout(s).has_closed_room(type):
+			effects.append(tr(DataDB.data.room_types[type]["desc_key"]))
+	_body.add_child(UiUtil.wrapped(tr("UI_ROOM_EFFECTS") % ("; ".join(effects) if not effects.is_empty() else tr("UI_NONE")), 14,
+		UiUtil.TEXT, 600.0))
+	var tiers: HBoxContainer = UiUtil.hbox()
+	tiers.add_child(UiUtil.label(tr("UI_DESK_TIER"), 14))
+	var defs: Dictionary = DataDB.data.bal("build.desk_tiers")
+	for tier: String in defs:
+		var current: bool = s.build["desk_tier"] == tier
+		var text: String = tr(defs[tier]["name_key"]) + ("" if current else " (%s)" % UiUtil.money(sim.build.desk_tier_cost(s, tier)))
+		var b: Button = UiUtil.button(text, func() -> void:
+			var err: String = GameState.execute(SetDeskTierCommand.new(tier))
+			if not err.is_empty():
+				EventBus.notification.emit(err, [], "bad")
+			_signature = ""
+			refresh())
+		b.disabled = current or int(defs[tier]["available_from"]) > s.clock.year()
+		tiers.add_child(b)
+	_body.add_child(tiers)
+	_body.add_child(UiUtil.button(tr("UI_BUILD_MODE"), func() -> void: _main.call("enter_build_mode")))
 
 
 func _sizes_text(sizes: Array) -> String:

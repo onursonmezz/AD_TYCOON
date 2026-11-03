@@ -26,6 +26,8 @@ const ID_LISTS: Dictionary = {
 	"awards.json": "award",
 	"pitch_cards.json": "pitch_card",
 	"office_layouts.json": "office_layout",
+	"furniture.json": "furniture",
+	"room_types.json": "room_type",
 }
 const FIT_FILES: Array[String] = [
 	"fit/sector_objective.json",

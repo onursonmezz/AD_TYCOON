@@ -62,18 +62,19 @@ static func area_stat(data: GameData, emp: Dictionary, area: String) -> float:
 	return v
 
 
-static func office_mult(data: GameData, office_level: int) -> float:
-	var quality: float = clampf(float(data.office(office_level).get("room_quality", 50)) / 100.0, 0.0, 1.0)
+## GDD 12.3: ofis_çarpanı = 0.85 + 0.40 × oda_kalitesi/100. room_quality: SimState.room_quality (BuildSystem hesaplar).
+static func office_mult(data: GameData, room_quality: float) -> float:
+	var quality: float = clampf(room_quality / 100.0, 0.0, 1.0)
 	return data.balf("office.quality_base") + data.balf("office.quality_range") * quality
 
 
 ## GDD 7.5: alana bağlı olmayan kişisel çarpanlar (hız, araç, ofis, moral, enerji, özellikler).
-static func person_mult(data: GameData, emp: Dictionary, office_level: int) -> float:
+static func person_mult(data: GameData, emp: Dictionary, room_quality: float) -> float:
 	var ref: float = data.balf("production.stat_reference")
 	var speed: float = float(emp["stats"]["speed"]) / ref * trait_effect(data, emp, "speed_mult")
 	var morale: float = data.balf("morale.mult_base") + data.balf("morale.mult_range") * float(emp["morale"]) / 100.0
 	var energy: float = data.balf("energy.low_mult") if float(emp["energy"]) < data.balf("energy.low_threshold") else 1.0
-	return speed * data.balf("founder.tool_mult") * office_mult(data, office_level) * morale * energy \
+	return speed * data.balf("founder.tool_mult") * office_mult(data, room_quality) * morale * energy \
 		* trait_effect(data, emp, "output_mult")
 
 

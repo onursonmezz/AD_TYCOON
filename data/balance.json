@@ -171,5 +171,16 @@
 		"softmax_temperature": 0.12, "warm_bonus": 0.1,
 		"win_reputation": 2.0, "shortlist_reputation": 0.5, "win_satisfaction_bonus": 10,
 		"warm_weekly_offer_chance": 0.03, "auto_present_after_weeks": 1
+	},
+	"_comment_m6": "M6 inşa sabitleri; GDD 12.3 formülünün GDD'de olmayan sayıları docs/decisions.md K-061+ içinde.",
+	"build": {
+		"from_level": 3, "min_room_size": 3, "sell_refund": 0.5, "move_refund": 0.5,
+		"comfort_weight": 30.0, "outside_comfort_factor": 0.5, "variety_per_kind": 1.5, "variety_cap": 6,
+		"crowd_density": 0.125, "crowd_penalty": 200.0,
+		"desk_tiers": {
+			"basic": { "name_key": "DESK_BASIC", "cost_per_desk_1990": 0, "comfort": 0.0, "available_from": 1990 },
+			"ergonomic": { "name_key": "DESK_ERGONOMIC", "cost_per_desk_1990": 1500, "comfort": 1.0, "available_from": 1990 },
+			"adjustable": { "name_key": "DESK_ADJUSTABLE", "cost_per_desk_1990": 4000, "comfort": 2.0, "available_from": 2005 }
+		}
 	}
 }

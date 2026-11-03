@@ -25,7 +25,8 @@ func daily(state: SimState) -> void:
 	var team: Array = _team(state)
 	var drain: float = _r("energy_work_per_day") * (data.balf("staff.overtime_energy_mult") if state.overtime else 1.0)
 	for emp: Dictionary in state.staff.values():
-		var delta: float = -drain if team.has(emp["id"]) else _r("energy_rest_per_day")
+		var delta: float = -drain if team.has(emp["id"]) \
+			else _r("energy_rest_per_day") * float(state.office_effects.get("energy_rest_mult", 1.0))
 		emp["energy"] = clampf(float(emp["energy"]) + delta, 0.0, 100.0)
 
 
@@ -56,7 +57,7 @@ func weekly(state: SimState) -> Array[Dictionary]:
 		if state.overtime and on_team:
 			b += data.balf("staff.burnout_per_overtime_week") * Employee.trait_effect(data, emp, "overtime_burnout_mult")
 		else:
-			b -= _r("burnout_recovery_per_week")
+			b -= _r("burnout_recovery_per_week") * float(state.office_effects.get("burnout_recovery_mult", 1.0))
 		emp["burnout"] = clampf(b, 0.0, 100.0)
 		if not bool(emp["hidden_revealed"]) and (has_hr or state.clock.week_index - int(emp["hired_week"]) >= int(_r("reveal_hidden_weeks"))):
 			emp["hidden_revealed"] = true

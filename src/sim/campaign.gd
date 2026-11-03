@@ -94,16 +94,18 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 	var overtime_out: float = data.balf("staff.overtime_output") if state.overtime else 1.0
 	var rush: bool = int(setup["deadline_weeks"]) < data.bali("production.rush_below_weeks")
 	var points: Dictionary = campaign["points"]
+	# Oda etkisi (12.2): ör. beyin fırtınası odası konsepte +%10.
+	var focus_mult: Dictionary = state.office_effects.get("focus_mult", {})
 	for id: Variant in setup.get("team", []):
 		var emp: Dictionary = state.staff.get(str(id), {})
 		if emp.is_empty() or not Employee.is_available(emp, state.clock.week_index):
 			continue
-		var base: float = data.balf("production.base_per_day") * Employee.person_mult(data, emp, state.office_level) \
+		var base: float = data.balf("production.base_per_day") * Employee.person_mult(data, emp, state.room_quality) \
 			* Employee.campaign_mult(data, emp, setup, year) * overtime_out
 		for i: int in ids.size():
 			var share: float = scoring.effective_share(float(sliders[i]))
 			points[ids[i]] = float(points[ids[i]]) + base * Employee.area_stat(data, emp, ids[i]) / ref \
-				* Employee.specialty_mult(data, emp, ids[i]) * share
+				* Employee.specialty_mult(data, emp, ids[i]) * share * float(focus_mult.get(ids[i], 1.0))
 		var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(emp["stats"]["attention"]) / 100.0) \
 			* Employee.trait_effect(data, emp, "error_mult")
 		if rush:

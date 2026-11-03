@@ -73,6 +73,10 @@ var pitch_invites: Array[Dictionary] = []
 var pitch: Dictionary = {}
 var warm_clients: Dictionary = {}
 var pitch_history: Array[Dictionary] = []
+## Ofis düzeni (M6-B): çizilen odalar, mobilyalar, masa kalitesi. room_quality ve office_effects ondan hesaplanır, kaydedilmez.
+var build: Dictionary = BuildSystem.empty_build()
+var room_quality: float = 50.0
+var office_effects: Dictionary = {}
 
 ## Yıllık gelir/gider (vergi için).
 var year_income: float = 0.0
@@ -86,7 +90,7 @@ const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bank
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id",
 	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income",
-	"pitch_invites", "pitch", "warm_clients", "pitch_history"]
+	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -177,4 +181,5 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.pitch = saved.get("pitch", {})
 	s.warm_clients = saved.get("warm_clients", {})
 	s.pitch_history.assign(saved.get("pitch_history", []))
+	s.build = saved.get("build", BuildSystem.empty_build())
 	return s

@@ -14,6 +14,7 @@ func test_every_office_has_enough_reachable_desks() -> void:
 		var capacity: int = int(data.office(level)["capacity"])
 		assert_gte(l.desks.size(), capacity, "seviye %d: masa sayısı kapasiteyi karşılamalı" % level)
 		assert_true(l.is_walkable(l.entrance), "seviye %d: giriş yürünebilir" % level)
+		assert_true(l.all_reachable(), "seviye %d: bütün masalar ve noktalar girişten ulaşılabilir" % level)
 		for d: Dictionary in l.desks:
 			assert_false(l.path(l.entrance, d["seat"]).is_empty(), "seviye %d: masaya yol var %s" % [level, str(d["seat"])])
 		for kind: String in ["kitchen", "meeting", "lounge"]:

@@ -1,5 +1,26 @@
 # Değişiklik günlüğü
 
+## M6-B: İnşa modu (2026-11-03)
+- **Ofis penceresi:**
+  - oda kalitesi dökümü (taban, konfor, çeşitlilik, kalabalık) ve üretim çarpanı;
+  - etkin oda etkileri;
+  - masa ve sandalye kalitesi (basit, ergonomik, 2005'ten ayarlanabilir);
+  - **İnşa moduna geç** düğmesi.
+- **İnşa modu:** Ofisin altında bir araç çubuğu açılıyor.
+  - 13 mobilya: bitkiler, döneme göre kahve makinesi, su sebili, beyaz tahta, mood board, kitaplık, plak çalar, ödül vitrini, neon tabela, ofis kedisi.
+  - Ofiste fareyle gezerken yeşil ya da kırmızı önizleme kutusu çıkıyor, tıklayınca yerleşiyor. R döndürür, Esc aracı bırakır.
+  - "Kaldır / sat" aracı mobilyayı yarı fiyatına satar, çizdiğin odayı yıkar.
+- **Oda çizme (büyütülmüş ofisten):** Gri boş alanda sürükleyerek kreatif atölye, toplantı, beyin fırtınası, mutfak, dinlenme ya da ödül lobisi yaparsın.
+- **Oda etkileri:** toplantı odası müşteri memnuniyeti +2; beyin fırtınası odası Konsept +%10; mutfak enerji +%25; dinlenme odası tükenmişlik iyileşmesi +%50; ödül lobisi pitch +%5.
+- Nasıl test ederim:
+  1. **Ofis** penceresini aç, oda kalitesi dökümünü ve üretim çarpanını oku.
+  2. **İnşa moduna geç**, "Küçük bitki" seç, ofiste gez: önizleme masaların ve duvarların üstünde kırmızı, boş yerde yeşil olur. Tıkla, nakdin düştüğünü ve üstteki oda kalitesinin arttığını gör.
+  3. Bir kapının önüne büyük bitki koymaya çalış: "yolu kapatıyor" uyarısı çıkmalı.
+  4. **Kaldır / sat** ile bitkiye tıkla: yarı parası geri gelir.
+  5. Ofis penceresinden masaları **Ergonomik** yap, kalitenin arttığını gör.
+  6. Büyütülmüş ofiste **Oda çiz** → "Beyin fırtınası odası" seç, gri zeminde sürükle. Ofis penceresinde "Konsept odağında +%10" etkisini gör.
+  7. Küçük ofise taşındığında raporun memnuniyet dökümünde "+2.0 Toplantı odası" kalemini gör.
+
 ## M6-A: 3D ofis (gri kutu) (2026-11-03)
 - **Ana ekran:** Ortada 3D ofis var. Menü ekranları ofisin üstünde pencere olarak açılıyor (✕ ya da aynı menü düğmesi kapatır).
 - **Her ofis seviyesinin hazır binası:** ev odası (çaycı köşesi ve minder dahil), küçük ofis (toplantı odası, mutfak), büyütülmüş ofis, plaza, bina. Taşınınca yeni bina yükleniyor.

@@ -161,7 +161,7 @@ func produce_day(state: SimState) -> void:
 		if emp.is_empty() or int(emp.get("busy_until", -1)) > state.clock.week_index:
 			continue
 		var base: float = data.balf("production.base_per_day") * float(_p("prep_rate")) \
-			* Employee.person_mult(data, emp, state.office_level)
+			* Employee.person_mult(data, emp, state.room_quality)
 		state.pitch["s"] = float(state.pitch["s"]) + base * float(emp["stats"]["strategy"]) / ref
 		state.pitch["k"] = float(state.pitch["k"]) + base * float(emp["stats"]["creative"]) / ref
 
@@ -221,6 +221,8 @@ func player_score(state: SimState, pitch: Dictionary, cards: Array) -> float:
 	for c: Variant in cards:
 		fit *= card_mult(state, pitch, str(c))
 	var warm: float = float(_p("warm_bonus")) if state.warm_clients.has(pitch["client"]["id"]) else 0.0
+	# Ödül lobisi (12.2): müşteri ziyaretinde itibar etkisi.
+	fit *= float(state.office_effects.get("pitch_mult", 1.0))
 	return (float(pitch["s"]) * float(_p("s_weight")) + float(pitch["k"]) * float(_p("k_weight"))) * fit \
 		* (1.0 + state.reputation / float(_p("reputation_div"))) * (1.0 + warm) * price_mult(pitch, float(pitch["fee_ratio"]))
 
