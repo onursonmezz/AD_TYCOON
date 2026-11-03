@@ -33,10 +33,11 @@ static func min_projected_cash(sim: Simulation, weeks: int, extra_out: float = 0
 		var terms: Array = sim.data.bal("cashflow.payment_terms")
 		var delivery: int = int(camp["start_week"]) + int(setup["deadline_weeks"])
 		var media: float = float(setup["media_budget"])
+		var advance: float = float(setup.get("media_advance", 0.0))
 		var media_week: int = delivery + sim.data.bali("cashflow.media_payment_weeks")
 		var in_week: int = delivery + int(terms[terms.size() - 1]["weeks"])
 		outs[media_week] = float(outs.get(media_week, 0.0)) + media
-		ins[in_week] = float(ins.get(in_week, 0.0)) + float(setup["fee"]) + media * (1.0 + sim.data.balf("media_commission.default"))
+		ins[in_week] = float(ins.get(in_week, 0.0)) + float(setup["fee"]) + media * (1.0 + sim.data.balf("media_commission.default")) - advance
 	var cash: float = sim.state.cash
 	var lowest: float = cash
 	for w: int in range(1, weeks + 1):

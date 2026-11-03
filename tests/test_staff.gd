@@ -158,6 +158,7 @@ func test_office_move_requirements() -> void:
 	sim.state.clock.week_index = 48
 	assert_true(sim.offices.can_move(sim.state))
 	var cost: float = sim.offices.move_cost(sim.state, sim.offices.next_office(sim.state))
+	assert_almost_eq(cost, 500000.0, 0.01, "GDD 12.1 tutarı, enflasyonsuz (K-048)")
 	assert_eq(MoveOfficeCommand.new().execute(sim), "")
 	assert_eq(sim.state.office_level, 2)
 	assert_almost_eq(2000000.0 - sim.state.cash, cost, 0.01)

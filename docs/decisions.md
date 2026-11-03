@@ -227,7 +227,7 @@ Adı grupta geçen diğer 25 sektör doğrudan o gruba bağlandı (ör. Gıda & 
 
 ## K-037 · 2026-10-31 · Kabul · Orgo onayı (A) + uygulama kararı
 **Konu:** Ofis seviyeleri M3'te (`data/offices.json`, 12.1).
-**Karar:** Kapasite 2 / 6 / 12 / 30 / 120. Koşullar 12.1 ve 17'deki gibi (büyütülmüş ofis Y8 A6). 12.1'deki nakit tutarı **taşınma bedeli** olarak ödenir (GDT'deki gibi; enflasyonla ölçeklenir). GDD'de olmayan değerler: aylık kira (1990 ₺) 0 / 3.000 / 12.000 / 50.000 / 250.000; oda kalitesi 50 / 60 / 70 / 80 / 90 (ofis çarpanı 7.5); konfor 0 / 2 / 4 / 6 / 8 (moral). Büyük işler büyütülmüş ofisle (seviye 3) açılır (17 "Büyük Kampanya: Ofis 3"); büyük brief ücret/medya aralıkları eklendi.
+**Karar:** Kapasite 2 / 6 / 12 / 30 / 120. Koşullar 12.1 ve 17'deki gibi (büyütülmüş ofis Y8 A6). 12.1'deki nakit tutarı **taşınma bedeli** olarak ödenir (GDT'deki gibi; enflasyonla ölçekleme K-048 ile kaldırıldı). GDD'de olmayan değerler: aylık kira (1990 ₺) 0 / 3.000 / 12.000 / 50.000 / 250.000; oda kalitesi 50 / 60 / 70 / 80 / 90 (ofis çarpanı 7.5); konfor 0 / 2 / 4 / 6 / 8 (moral). Büyük işler büyütülmüş ofisle (seviye 3) açılır (17 "Büyük Kampanya: Ofis 3"); büyük brief ücret/medya aralıkları eklendi.
 
 ## K-038 · 2026-10-31 · Kabul · Uygulama kararı
 **Konu:** M3'te ertelenenler.
@@ -304,6 +304,38 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - Memnuniyet değişimi 6.4 formülünün kalemleriyle gösteriliyor: kalite (puan ve beklenti), KPI, zamanlama, bütçe, revizyon, account, cesur eşleşme, kanal riskleri, skandal.
 - Formüller değişmedi; yalnızca açıklama eklendi.
 
+## K-047 · 2026-11-03 · Kabul · Orgo onayı (denge adımı)
+**Konu:** 7.9 hata cezası ve rekor çıtası uzun vadede puanı çökertiyordu (A-014).
+**Durum:** Hata başına ceza dönem tabanının %3'üydü. Taban yılda %8.5 büyürken ekibin emeği büyümüyor, 23. yılda hatalar işin tamamını siliyordu (446 puanlık işten 45 kalıyordu). Rekor (en_iyi_ham) hiç düşmüyordu: 7. yıldaki tek bir şanslı iş, ekip büyüyemediği için yıllarca aşılamayan bir çıta bırakıyordu.
+**Karar (GDD formülünden sapma):**
+- `Ham = (S+K+T) × M × F × B × N × sinerji × (1 − hata_payı)`; hata_payı = hata sayısı × %3, en fazla %40 (`scoring.error_penalty_per_error`, `error_penalty_max`). GDD'nin "hata ağırlığı kampanya büyüdükçe artar" ilkesi korunuyor: ceza işin kendi emeğiyle ölçekleniyor.
+- Rekor her yıl sonunda %10 erir (`score.best_yearly_decay`). Hedef yine `max(rekor × 1.05, dönem tabanı)`.
+
+## K-048 · 2026-11-03 · Kabul · Orgo onayı (denge adımı) · K-037'yi değiştirir
+**Konu:** Ofis taşınma bedeli.
+**Karar:** 12.1'deki tutarlar açılma yılının parası olarak okunur, enflasyonla büyümez (₺500k, ₺3M, ₺15M, ₺80M). Gerekçe: enflasyonla büyüyen ₺3M (Y15'te ₺8.8M) gerçek kârla hiç birikmiyordu. Kira hâlâ enflasyonla büyür.
+
+## K-049 · 2026-11-03 · Kabul · Orgo onayı (denge adımı)
+**Konu:** Yeni müşterilerin ölçeği (6.1, 6.3).
+**Karar:** Dışarıdan gelen markanın ölçek olasılığı ofis seviyesine bağlı (`clients.scale_weights_by_office`). Ev odasına çoğunlukla mahalle esnafı gelir, plaza katına ulusal ve çok uluslu markalar. Eski sabit dağılım (%50/35/13/2) ev odası ile küçük ofis arasında bir yerdeydi; büyük ofiste büyük iş hiç gelmiyordu.
+
+## K-050 · 2026-11-03 · Kabul · Orgo kararı (seçenek: büyük markalar avans verir)
+**Konu:** Medya bütçesinin nakit yükü (13.3).
+**Durum:** Ajans müşterinin medya bütçesini teslimden 6 hafta sonra ödüyor, müşteri ise bunu 4–12 hafta sonra geri ödüyordu. Büyük bir işte (Y15'te ₺2–6M) bu açık hiçbir ajansın taşıyamayacağı kadar büyüktü. Bilgili bot 3. ofiste bile büyük iş alamıyor, ekip 6 kişide kalıyordu.
+**Karar:** Müşteri, medya bütçesinin bir kısmını kampanya başında avans olarak öder: mahalle esnafı %0, yerel %50, ulusal ve çok uluslu %100 (`cashflow.media_advance_by_scale`). Faturada avans düşülür. Ev odası dönemindeki nakit gerilimi korunur. Avans sihirbazda gösterilir.
+
+---
+
+## Denge adımı sonucu (K-047..K-050)
+
+| Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan (10 yıl) | Küçük ofis | Büyütülmüş ofis |
+|---|---|---|---|---|---|
+| Rastgele (200×10) | %22.0 ✓ | %48.0 | 5.92 | %82, Y4 | %4 |
+| Bilgili (200×10) | %2.0 | %6.0 | **7.11 ✓** | %99, **Y3 ✓** | %38 (10 yılda) |
+| Bilgili (50×30) | %2.0 | %6 (30 yıl) | 5.25 (30 yıl) | Y3 | %94, Y11 |
+
+Bilgili bot, 30 yıllık koşu: puan Y4 7.7 → Y13 6.6 → Y22 3.95 → Y28 2.4 (önce: Y13 4.2, Y22 1.7, Y28 1.0). Ekip Y13'te 11, sonra 12'de kalıyor. Çöküş ertelendi ama bitmedi: plaza katı (seviye 4) hiç açılmıyor, çünkü itibar en fazla ~15'e çıkıyor. İtibarı 40'a taşıyacak ödül, pitch ve basın M5'te gelecek. İtibar engeli kaldırılarak yapılan denemede bile plaza katı Y25'te açılıyor, %55 iflas oluyor (kira yükü). Bkz. A-014.
+
 ---
 
 ## M4-B denge sonucu (200 koşu × 10 yıl)
@@ -359,7 +391,7 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **A-008 (M4):** 7.3 "Display + Retargeting" sinerjisi: kanal tablosunda "retargeting" kanalı yok (5.2'de özellik olarak geçiyor). Çift veride duruyor ama `b` tarafı boş, yani etkisiz.
 - **A-009:** Kapandı: M3'te kurucu gerçek bir çalışan oldu (K-035); M1'deki geçici oyuncu büyümesi kaldırıldı.
 - **A-010:** Kapandı, bkz. K-034.
-- **A-011 (M10):** Ekonomi GDD 27.2 hedeflerinin gerisinde. Bilgili bot küçük ofise Y5'te geçiyor (hedef Y2–Y3), büyütülmüş ofise (₺3M) 10 yılda ulaşamıyor. Puanı Y2'de 7.8, Y10'da 5.0 (dönem beklentisi her yıl %8.5 büyüyor, ilandan alınan çalışanlar zayıf). Ayar kolları: brief ücretleri, ofis bedelleri, işe alım kalitesi, müşteri ölçeği büyümesi.
-- **A-012 (M10):** Rastgele bot ilk 3 yılda %45 iflas ediyor (hedef %20–40). Rastgele işe alım (maaş yükü) bunu artırıyor.
-- **A-014 (öncelikli denge konusu):** Uzun vadede oyun kırılıyor: 7.9'daki dönem tabanı yılda %8.5 büyüyor; buna yetişmek için ekibin ofis seviyeleriyle büyümesi gerekiyor (12.1: Y8 ₺3M, Y14 ₺15M, Y22 ₺80M). Mevcut ekonomide büyütülmüş ofise 30 yılda bile çıkılamıyor, puanlar Y20'den sonra 1'e iniyor. Ayar kolları: ofis bedelleri, büyük işlerin ücretleri ve sıklığı, müşteri ölçeğinin itibarla büyümesi, eşzamanlı kampanyalar (A-013), dönem büyüme oranı. Önerim: M5'ten önce kısa, ayrı bir denge adımı.
+- **A-011 (M10, ilerledi):** Küçük ofis Y3 ✓, bilgili botun 10 yıllık ortalama puanı 7.11 ✓ (denge adımı). Büyütülmüş ofis Y11, plaza katı açılmıyor (A-014).
+- **A-012:** Kapandı. Rastgele bot ilk 3 yılda %22 iflas ediyor (200×10, hedef %20–40).
+- **A-014 (açık, ilerledi):** Denge adımı (K-047..K-050) ilk 13 yılı düzeltti, ama 15. yıldan sonra puan yine düşüyor. Kalan iki engel: (1) plaza katı açılmıyor, itibar 40 gerekiyor ve itibar kaynakları (ödül, pitch, basın) M5'te; (2) kişi başı üretkenlik 30 yıl boyunca sabit, dönem tabanı ise ×10.6 büyüyor. Yetişmenin tek yolu ekibi 2'den ~22 kişiye çıkarmak; plaza katının kirası da bunu zorlaştırıyor. Ayar kolları: dönem büyüme oranı (1.085), dönemsel araç ve yazılım çarpanı (12.3, M7), çalışan gelişimi, plaza katı kirası.
 - **A-013 (M4/M5):** GDD 11.1 Trafik "eşzamanlı kampanya sayısını ↑" diyor; şu an aynı anda tek kampanya üretimde. Eşzamanlı kampanyalar ekibin daha fazla iş, yani daha fazla gelir üretmesini sağlar (A-011'e de yardım eder), ama faz slider ekranının birden çok kampanyayı yönetmesi gerekir.

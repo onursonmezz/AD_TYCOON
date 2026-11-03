@@ -165,6 +165,7 @@ SIZE_LARGE,Büyük iş,Large job
 SIZE_MEGA,Mega iş,Mega job
 UI_BRIEF_OBJECTIVE,Hedef: %s,Objective: %s
 UI_BRIEF_MONEY,Ücret %s · Medya bütçesi %s · Süre %d hafta,Fee %s · Media budget %s · %d weeks
+UI_MEDIA_ADVANCE,"Müşteri medya bütçesinin %s kadarını kampanya başında avans olarak öder.","The client pays %s of the media budget up front."
 UI_DECLINE,Reddet,Decline
 UI_ACCEPT,Kabul et,Accept
 UI_NO_CLIENTS,Hiç müşterin kalmadı.,You have no clients left.

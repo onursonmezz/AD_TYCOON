@@ -42,6 +42,11 @@ func invoice(state: SimState, client: Dictionary, amount: float, income_part: fl
 		"due_week": state.clock.week_index + weeks})
 
 
+## Müşterinin kampanya başında ödediği medya avansı (K-050): mahalle esnafı vermez, yerel yarısını, ulusal ve çok uluslu tamamını.
+func media_advance(client: Dictionary, media_budget: float) -> float:
+	return media_budget * float(data.bal("cashflow.media_advance_by_scale")[int(client.get("scale", 0))])
+
+
 ## Her hafta sonu: vadesi gelen faturaları tahsil et, kırmızı süreyi say, iflası kontrol et.
 func weekly(state: SimState) -> void:
 	var remaining: Array[Dictionary] = []

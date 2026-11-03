@@ -30,6 +30,9 @@ func _ready() -> void:
 		tr("SIZE_" + str(_brief["size"]).to_upper()), tr("UI_WEEKS") % int(_brief["deadline_weeks"])], 15, UiUtil.WOOD))
 	col.add_child(UiUtil.label(tr("UI_BRIEF_MONEY") % [UiUtil.money(_brief["fee"]), UiUtil.money(_brief["media_budget"]),
 		int(_brief["deadline_weeks"])], 15))
+	var advance: float = GameState.sim.economy.media_advance(client, float(_brief["media_budget"]))
+	if advance > 0.0:
+		col.add_child(UiUtil.label(tr("UI_MEDIA_ADVANCE") % UiUtil.money(advance), 14, UiUtil.SAGE_DARK))
 	_name_edit = LineEdit.new()
 	_name_edit.placeholder_text = tr("UI_CAMPAIGN_NAME_HINT")
 	_name_edit.max_length = 40

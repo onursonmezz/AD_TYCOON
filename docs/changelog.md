@@ -1,5 +1,18 @@
 # Değişiklik günlüğü
 
+## Denge adımı (2026-11-03, A-014)
+- Hata cezası artık işin kendi kalitesinin yüzdesi (hata başına %3, en fazla %40); dönemle büyümüyor.
+- Rekor çıtası her yıl %10 eriyor: tek şanslı bir iş yıllarca aşılamaz çıta bırakmıyor.
+- Ofis taşınma bedelleri GDD 12.1'deki tutarlar (₺500k / ₺3M / ₺15M / ₺80M), enflasyonla büyümüyor.
+- Büyük ofise daha büyük markalar geliyor.
+- Yerel markalar medya bütçesinin yarısını, ulusal ve çok uluslu markalar tamamını kampanya başında avans ödüyor (sihirbazda yazıyor).
+- Sonuç: bilgili botun 10 yıllık ortalama puanı 6.45 → 7.11 (GDD hedefi 7.0–8.5); küçük ofis Y3; büyütülmüş ofis Y11'de (önce hiç); rastgele bot ilk 3 yılda %22 iflas.
+- Kalan: 15. yıldan sonra puan hâlâ düşüyor; plaza katı itibar (M5) bekliyor. Bkz. decisions.md A-014.
+- Nasıl test ederim:
+  1. Yeni oyun aç, 2–3. yılda ₺500k biriktirip küçük ofise taşın; bedelin tam ₺500.000 olduğunu gör.
+  2. Yerel veya ulusal bir markanın brief'ini aç; sihirbazda yeşil "avans" satırını gör, kampanyayı başlatınca nakdin o kadar arttığını kontrol et.
+  3. Hatalı bir kampanyanın raporunda "Puan dökümü"nü aç; hata payının puanı yüzdeyle düşürdüğünü gör.
+
 ## Rapor açıklamaları (2026-11-03, playtest geri bildirimi)
 - "Neden bu puan?" bölümü artık iş miktarını da söylüyor: emek dönem beklentisinin çok altındaysa "daha büyük ekip / uzmanlar / daha uzun iş gerekir" satırı çıkıyor.
 - Müşteri memnuniyeti değişimi kalem kalem gösteriliyor (puan ve beklenti, KPI, gecikme, account, riskler, skandal).

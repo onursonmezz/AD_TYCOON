@@ -50,8 +50,12 @@ func _affordable(sim: Simulation, brief: Dictionary, reserve: float) -> bool:
 	var delivery: int = now + int(brief["deadline_weeks"])
 	var terms: Array = sim.data.bal("cashflow.payment_terms")
 	var worst_term: int = int(terms[terms.size() - 1]["weeks"])
-	var media: float = float(brief["media_budget"])
-	var income: float = float(brief["fee"]) + media * (1.0 + sim.data.balf("media_commission.default"))
+	var client: Dictionary = brief["prospect"] if not (brief["prospect"] as Dictionary).is_empty() \
+		else sim.state.clients.get(brief["client_id"], {})
+	# Avans hemen gelir; medya ödemesinden düşmek temkinli bir yaklaşıklıktır (K-050).
+	var advance: float = sim.economy.media_advance(client, float(brief["media_budget"]))
+	var media: float = float(brief["media_budget"]) - advance
+	var income: float = float(brief["fee"]) + float(brief["media_budget"]) * sim.data.balf("media_commission.default") + media
 	var horizon: int = int(brief["deadline_weeks"]) + worst_term + PAYMENT_SAFETY_WEEKS
 	return BotUtil.min_projected_cash(sim, horizon, media, delivery + sim.data.bali("cashflow.media_payment_weeks"),
 		income, delivery + worst_term + PAYMENT_SAFETY_WEEKS) >= reserve

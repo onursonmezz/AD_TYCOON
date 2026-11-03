@@ -44,9 +44,10 @@ func create_starting(state: SimState, extra: int = 0) -> void:
 			count -= 1
 
 
-## Ajans dışından gelen potansiyel müşteri (henüz portföyde değil).
+## Ajans dışından gelen potansiyel müşteri (henüz portföyde değil). Büyük ofis büyük markaları çeker (K-049).
 func create_prospect(state: SimState) -> Dictionary:
-	var scale: int = state.rng.pick_weighted_index("clients", data.bal("clients.scale_weights_new"))
+	var weights: Array = data.bal("clients.scale_weights_by_office")[state.office_level - 1]
+	var scale: int = state.rng.pick_weighted_index("clients", weights)
 	var sector: String = state.rng.pick("clients", data.sectors_available(state.clock.year()))
 	return create_client(state, sector, scale)
 

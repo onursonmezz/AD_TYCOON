@@ -195,6 +195,8 @@ func start_campaign(brief_id: String, choices: Dictionary) -> Dictionary:
 	setup["kpi_type"] = kpi.kpi_type(objective)
 	setup["kpi_target"] = kpi.reference_value(objective, float(setup["media_budget"]), client, state.clock.year()) \
 		* float(brief["kpi_factor"])
+	setup["media_advance"] = economy.media_advance(client, float(setup["media_budget"]))
+	state.cash += float(setup["media_advance"])
 	state.inbox.erase(brief)
 	var id: String = state.next_id("cp")
 	state.active_campaign = production.create(setup, id, state.clock.week_index)
@@ -239,7 +241,8 @@ func _deliver() -> void:
 	var income: Dictionary = kpi.agency_income(setup, 0.0)
 	economy.add_payable(state, float(settled["payable"]))
 	if not client.is_empty():
-		economy.invoice(state, client, float(income["fee"]) + media_budget + float(income["commission"]),
+		var media_due: float = media_budget - float(setup.get("media_advance", 0.0))
+		economy.invoice(state, client, float(income["fee"]) + media_due + float(income["commission"]),
 			float(income["fee"]) + float(income["commission"]) + float(income["production_margin"]))
 	var airing: Array = data.bal("briefs.airing_weeks")
 	camp["air_end_week"] = state.clock.week_index + state.rng.range_i("airing", int(airing[0]), int(airing[1]))
@@ -347,6 +350,9 @@ func _end_year() -> void:
 		staff_note.emit("NOTE_COMMIT_PENALTY", [penalty], "bad")
 	state.year_media = 0.0
 	economy.yearly(state)
+	# Rekor çıtası her yıl biraz erir (K-047): tek bir şanslı iş yıllarca aşılamaz çıta bırakmasın.
+	for size: Variant in state.best_raw:
+		state.best_raw[size] = float(state.best_raw[size]) * (1.0 - data.balf("score.best_yearly_decay"))
 	clients.yearly(state)
 	if state.reputation > data.balf("reputation.decay_threshold"):
 		state.reputation *= 1.0 - data.balf("reputation.decay_above_50")

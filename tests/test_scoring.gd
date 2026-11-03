@@ -157,4 +157,7 @@ func test_errors_reduce_raw_score() -> void:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	var a: float = scoring.evaluate(clean, NEUTRAL_CLIENT, [], 0, 1990, 0.0, rng)["raw"]
 	var b: float = scoring.evaluate(buggy, NEUTRAL_CLIENT, [], 0, 1990, 0.0, rng)["raw"]
-	assert_almost_eq(a - b, 3.0 * scoring.error_weight(1990, "small"), 0.001)
+	assert_almost_eq(b, a * (1.0 - 3.0 * 0.03), 0.001, "hata başına kalitenin %3'ü")
+	buggy["errors"] = 40
+	var c: float = scoring.evaluate(buggy, NEUTRAL_CLIENT, [], 0, 1990, 0.0, rng)["raw"]
+	assert_almost_eq(c, a * 0.6, 0.001, "toplam ceza en fazla %40")

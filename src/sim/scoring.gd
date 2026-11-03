@@ -202,8 +202,10 @@ func era_base(year: int, size: String) -> float:
 		* pow(data.balf("score.era_growth"), year - data.bali("time.base_year"))
 
 
-func error_weight(year: int, size: String) -> float:
-	return data.balf("scoring.error_weight_ratio") * era_base(year, size)
+## Hataların toplam payı (K-047): hata başına işin kendi kalitesinin bir yüzdesi, toplamda üst sınırlı.
+## GDD 7.9 "hata_ağırlığı kampanya büyüdükçe artar": ceza işin kendi emeğiyle ölçeklenir, dönemle değil.
+func error_penalty(errors: int) -> float:
+	return minf(errors * data.balf("scoring.error_penalty_per_error"), data.balf("scoring.error_penalty_max"))
 
 
 ## Ham puandan 1–10 puan. best: bu büyüklükteki rekor ham puan (yoksa 0).
@@ -249,8 +251,7 @@ func evaluate(campaign: Dictionary, client: Dictionary, history: Array[Dictionar
 	var syn: Dictionary = synergy(setup["mix"], float(setup["media_budget"]), year)
 	var errors: int = int(campaign["errors"])
 	var raw: float = (s + k + t) * float(comb["m"]) * float(foc["f"]) * float(bal_sk["b"]) * float(nov["n"]) \
-		* float(syn["synergy"]) - errors * error_weight(year, setup["size"])
-	raw = maxf(0.0, raw)
+		* float(syn["synergy"]) * (1.0 - error_penalty(errors))
 	var fin: Dictionary = final_score(raw, errors, year, setup["size"], best, rng)
 	return {"s": s, "k": k, "t": t, "errors": errors, "combination": comb, "focus": foc, "balance": bal_sk,
 		"novelty": nov, "synergy": syn, "raw": raw, "score": fin["score"], "r": fin["r"], "target": fin["target"],

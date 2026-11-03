@@ -18,9 +18,9 @@ func next_office(state: SimState) -> Dictionary:
 	return data.office(state.office_level + 1)
 
 
-## Taşınma bedeli = koşuldaki nakit (enflasyona göre ölçeklenir, K-037).
-func move_cost(state: SimState, office: Dictionary) -> float:
-	return float(office["requirements"].get("cash", 0)) * Economy.inflation(data, state.clock.year())
+## Taşınma bedeli = koşuldaki nakit. GDD 12.1 tutarları açılma yılının parasıyla verilir, enflasyonla büyümez (K-048).
+func move_cost(_state: SimState, office: Dictionary) -> float:
+	return float(office["requirements"].get("cash", 0))
 
 
 ## Sonraki ofisin koşulları: [{ "key", "need", "have", "ok" }]. Hepsi ok ise taşınılabilir.
