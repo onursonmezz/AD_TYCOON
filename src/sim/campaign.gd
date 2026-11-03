@@ -105,7 +105,8 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 		for i: int in ids.size():
 			var share: float = scoring.effective_share(float(sliders[i]))
 			points[ids[i]] = float(points[ids[i]]) + base * Employee.area_stat(data, emp, ids[i]) / ref \
-				* Employee.specialty_mult(data, emp, ids[i]) * share * float(focus_mult.get(ids[i], 1.0))
+				* Employee.specialty_mult(data, emp, ids[i]) * share * float(focus_mult.get(ids[i], 1.0)) \
+				* ToolSystem.focus_mult(data, state, ids[i])
 		var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(emp["stats"]["attention"]) / 100.0) \
 			* Employee.trait_effect(data, emp, "error_mult")
 		if rush:

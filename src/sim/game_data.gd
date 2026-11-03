@@ -49,6 +49,12 @@ var furniture: Dictionary = {}
 var furniture_ids: Array[String] = []
 var room_types: Dictionary = {}
 var room_type_ids: Array[String] = []
+var tools: Dictionary = {}
+var tool_ids: Array[String] = []
+var hardware: Dictionary = {}
+var hardware_ids: Array[String] = []
+var eras: Dictionary = {}
+var era_ids: Array[String] = []
 
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
@@ -121,6 +127,14 @@ func channel_audience_size(channel_id: String, audience_id: String) -> float:
 	return 1.0
 
 
+## Yılın dönemi (GDD 5.2, data/eras.json).
+func era_of(year: int) -> String:
+	for id: String in era_ids:
+		if int(eras[id]["from"]) <= year and year <= int(eras[id]["to"]):
+			return id
+	return era_ids[era_ids.size() - 1]
+
+
 ## Ofis seviyesi (1..5) → offices.json kaydı.
 func office(level: int) -> Dictionary:
 	return offices.get("office_%d" % level, {})
@@ -180,6 +194,9 @@ func _index() -> void:
 	_index_list("office_layouts.json", office_layouts, layout_ids)
 	_index_list("furniture.json", furniture, furniture_ids)
 	_index_list("room_types.json", room_types, room_type_ids)
+	_index_list("tools.json", tools, tool_ids)
+	_index_list("hardware.json", hardware, hardware_ids)
+	_index_list("eras.json", eras, era_ids)
 	var print_opts: Dictionary = raw.get("print_options.json", {})
 	for rec: Dictionary in print_opts.get("products", []):
 		print_products[rec["id"]] = rec

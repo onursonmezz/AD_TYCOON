@@ -481,6 +481,33 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Kayıt:** Ofis düzeni `SimState.build` olarak kaydediliyor. Eski kayıtlar boş düzenle açılır, sürüm değişmedi (planda kayıt sürümü 3 diyordum; varsayılan değer yetti).
 - **Denge (200×10):** Botlar mobilya almıyor; yalnızca küçük ofisin oda etkileri değişti. Bilgili bot ort. puan 6.95 → 6.90, iflas %1 / %6.5, büyütülmüş ofis %58 → %66 (Y10), rastgele bot ilk 3 yılda %35 iflas (değişmedi).
 
+## K-063 · 2026-11-03 · Kabul · Orgo kararı (M7 planı: alan başına araç seti; araştırma GDT gibi)
+**Konu:** Araçlar, yazılım ve donanım (5.4, 12.4, 12.5).
+**Karar:**
+- **Alanlar:** Strateji, Metin, Görsel, Prodüksiyon, Ölçümleme. Her odak alanının bir araç alanı var (`tools.focus_area`): araştırma/medya planlama/ölçümleme → Ölçümleme; içgörü/konumlandırma/konsept → Strateji; metin → Metin; görsel → Görsel; prodüksiyon → Prodüksiyon. Üretimde her odak kendi alanının çarpanıyla çarpılır. Pitch hazırlığında S Strateji, K Görsel çarpanıyla çarpılır.
+- **Formül:** GDD'deki gibi `0.6 + Σ katkı × güncellik`, en fazla 1.6. Katkı sahip olunan sürümün değeri. Güncellik 1.0 / 0.85 / 0.7 / 0.5 (0, 1, 2, 3+ sürüm geride).
+- **Başlangıç araçları:** Her alanın ücretsiz bir başlangıç aracı var (defter, daktilo, çizim masası, fotokopi, anket formu), katkısı 0.4. Böylece başlangıçta her alan ×1.0, M6'ya kadarki denge korunuyor (test). Eski `founder.tool_mult` 1.0 olarak kaldı.
+- **Araç listesi:** 18 parodi araç `data/tools.json`'da (GDD 12.5'teki adlarla). Strateji için GDD'de araç yoktu; TabloPro ve SlaytUstası eklendi.
+- **Lisans ve abonelik:**
+  - Lisans tek seferlik ve ajans başına (koltuk başı değil, sadeleştirme). Sürüm yükseltme lisansın %60'ı.
+  - Abonelik dönemi başlayınca (büyük yazılımlarda 2013) lisans donar: güncellenmez, giderek eskir. Aboneliğe geçen araç hep son sürümde kalır, her ay çalışan başına ücret alınır.
+  - Abonelik iptal edilirse araç bırakılır.
+- **AI araçları** (Hayalci, Yazgan, Video AI): Her biri yenilik (N) çarpanından %4 düşer. 2026'dan sonra ek ×0.95 ("AI'dan bıktık", 5.2). AI Atölyesi araştırması bu bedeli yarıya indirecek (M7-B).
+- **Donanım:** 4 bilgisayar kuşağı (PC-386, Elmacık G4, iMak, M-çip Pro). Her kuşak belli bir yıla kadar çıkan sürümleri çalıştırır. Yeni kuşak çalışan başına ücretle alınır. Kuşağın doğrudan hız etkisi yok (sadeleştirme): eski donanım güncellemeyi engelleyerek dolaylı yoldan yavaşlatır.
+- **Kanvaz'ın kalite tavanı** (−%15) uygulanmadı; katkısı düşük, ucuz bir araç.
+- **Bilgili bot:** Ayda bir, güvenli nakdin %20'siyle araç alır ve günceller, aboneliğe geçer, bilgisayarları yeniler. AI araçlarını almaz; yenilik bedeli oyuncunun kararı.
+
+## K-064 · 2026-11-03 · Kabul · Uygulama kararı (A-014) · GDD 7.9 sayısından sapma
+**Konu:** Dönem tabanı büyümesi ve hızlı başlangıç.
+**Karar:**
+- **Dönem büyümesi** `score.era_growth` 1.085 → 1.075. Gerekçe: araçlar kişi başı üretkenliği en fazla ×1.6 artırıyor, ekip plaza katında 25–30 kişide kalıyor; 30 yılda ×10.6 büyüyen dönem tabanına yetişilemiyordu. 1.075 ile taban 30 yılda ×8.2 büyüyor.
+  - 20 koşu × 30 yıl, bilgili bot (1.085 → 1.075): ortalama puan 6.24 → 6.60; Y22'de 5.87 → 6.40; Y30'da 3.15 → 3.50; plaza katı %75 → %90 (Y16).
+- **Hızlı başlangıç** (5.1): 2000 ya da 2010'da başlayan oyunda dönem tabanı oyunun başladığı yıldan büyümeye başlar (`Scoring.era_offset`). Yoksa ev odasındaki tek kişilik ajans 2010'da 1990'ın 2 katı beklentiyle karşılaşırdı.
+  - Başlangıç nakdi enflasyonla ölçeklenir. Rakipler, kanallar ve bilgisayar kuşağı o yılın durumundadır.
+  - Başlangıç yılı kayda girer; eski kayıtlar 1990 sayılır.
+- **M7-A denge (200×10):** bilgili bot ort. puan 7.51 (hedef 7.0–8.5 ✓), iflas ilk 3 yıl %2; rastgele %30 ✓; ilk ödül %82 Y4. 50×30: bilgili ort. 6.63, plaza %90 Y16 ✓, ilk ödül Y5 ✓, puan Y22 6.30 → Y30 3.37.
+- **Hâlâ açık:** 25. yıldan sonra puan yine düşüyor (bilgili bot Y30 ~3.5). Bina seviyesi 5 (₺80M, itibar 70) 30 yılda açılmıyor. Ar-Ge (M7-B) ve geç oyun (M11) ele alacak.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

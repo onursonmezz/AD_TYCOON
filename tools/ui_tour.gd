@@ -256,6 +256,20 @@ func _tour_build(screen: Control, sim: Simulation) -> void:
 	view.call("_build_hover", view.size * 0.5)
 	await get_tree().create_timer(1.0).timeout
 	await _shot("27_build_mode")
+	await _tour_tools(screen, sim)
+
+
+## M7-A: araçlar penceresi ve yeni dönem ekranı.
+func _tour_tools(screen: Control, sim: Simulation) -> void:
+	screen.call("exit_build_mode")
+	sim.state.hardware = "imak"
+	for id: String in ["pixelshop", "vektorel", "tablo_pro", "kelime_ustasi", "gooble_analitik", "sosyal_panel"]:
+		GameState.execute(ToolActionCommand.new("buy", id))
+	screen.call("show_panel", "tools")
+	await _shot("28_tools")
+	screen.call("close_panel")
+	screen.call("open_modal", EraDialog.new("mobile"))
+	await _shot("29_era")
 
 
 func _shot(file_name: String) -> void:

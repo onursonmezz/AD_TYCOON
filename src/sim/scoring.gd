@@ -124,6 +124,9 @@ static func main_channel(mix: Array) -> String:
 	return best
 
 
+const AI_FATIGUE_YEAR: int = 2026
+
+
 func novelty(setup: Dictionary, history: Array[Dictionary], week_index: int, year: int) -> Dictionary:
 	var n: float = 1.0
 	var flags: Array[String] = []
@@ -157,6 +160,13 @@ func novelty(setup: Dictionary, history: Array[Dictionary], week_index: int, yea
 			n *= float(nv["pioneer_bonus"])
 			flags.append("pioneer")
 			break
+	# AI araçları (12.5): araç başına özgünlük bedeli; 2026'dan sonra "AI'dan bıktık" (5.2) ek ceza.
+	var ai: float = float(setup.get("ai_penalty", 0.0))
+	if ai > 0.0:
+		n *= 1.0 - ai
+		if year >= AI_FATIGUE_YEAR:
+			n *= float(nv["ai_fatigue_from_2026"])
+		flags.append("ai")
 	return {"n": n, "flags": flags}
 
 
@@ -197,9 +207,12 @@ func _side_matches(side: Dictionary, ids: Array[String], cats: Array[String]) ->
 
 # --- 7.9 Toplam kalite ve 1–10 puan ------------------------------------------
 
+## Hızlı başlangıçta (GDD 5.1) dönem tabanı oyunun başladığı yıldan büyümeye başlar (K-064): başlangıç yılı − 1990.
+var era_offset: int = 0
+
 func era_base(year: int, size: String) -> float:
 	return float(data.bal("size_multiplier")[size]) * data.balf("score.era_base") \
-		* pow(data.balf("score.era_growth"), year - data.bali("time.base_year"))
+		* pow(data.balf("score.era_growth"), year - data.bali("time.base_year") - era_offset)
 
 
 ## Hataların toplam payı (K-047): hata başına işin kendi kalitesinin bir yüzdesi, toplamda üst sınırlı.

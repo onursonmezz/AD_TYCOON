@@ -9,10 +9,11 @@ func has_game() -> bool:
 
 
 ## background: oyuncunun geçmişi (data/backgrounds.json, GDD 11.5).
-func new_game(seed_value: int = -1, background: String = "") -> void:
+## start_year: hızlı başlangıç yılı (GDD 5.1), 0 = 1990.
+func new_game(seed_value: int = -1, background: String = "", start_year: int = 0) -> void:
 	if seed_value < 0:
 		seed_value = int(Time.get_unix_time_from_system()) % 1000000
-	_attach(Simulation.new(DataDB.data, seed_value, background))
+	_attach(Simulation.new(DataDB.data, seed_value, background, start_year))
 	EventBus.game_started.emit()
 	EventBus.notification.emit("NOTE_WELCOME", [], "info")
 	EventBus.state_changed.emit()
@@ -94,6 +95,7 @@ func _attach(new_sim: Simulation) -> void:
 	sim.award_ceremony.connect(func(result: Dictionary) -> void: EventBus.award_ceremony.emit(result))
 	sim.rankings_published.connect(_on_rankings)
 	sim.pitch_ready.connect(func() -> void: EventBus.pitch_ready.emit())
+	sim.era_started.connect(func(era: String) -> void: EventBus.era_started.emit(era))
 	sim.supplier_offer_received.connect(func(offer: Dictionary) -> void:
 		EventBus.notification.emit("NOTE_SUPPLIER_OFFER", [tr(DataDB.data.suppliers[offer["supplier"]]["name_key"])], "info"))
 

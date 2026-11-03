@@ -162,8 +162,8 @@ func produce_day(state: SimState) -> void:
 			continue
 		var base: float = data.balf("production.base_per_day") * float(_p("prep_rate")) \
 			* Employee.person_mult(data, emp, state.room_quality)
-		state.pitch["s"] = float(state.pitch["s"]) + base * float(emp["stats"]["strategy"]) / ref
-		state.pitch["k"] = float(state.pitch["k"]) + base * float(emp["stats"]["creative"]) / ref
+		state.pitch["s"] = float(state.pitch["s"]) + base * float(emp["stats"]["strategy"]) / ref * ToolSystem.focus_mult(data, state, "positioning")
+		state.pitch["k"] = float(state.pitch["k"]) + base * float(emp["stats"]["creative"]) / ref * ToolSystem.focus_mult(data, state, "visual")
 
 
 # --- sunum --------------------------------------------------------------------

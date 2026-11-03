@@ -60,9 +60,11 @@ func advance_day() -> Dictionary:
 
 
 func to_dict() -> Dictionary:
-	return {"week_index": week_index, "day_in_week": day_in_week}
+	return {"week_index": week_index, "day_in_week": day_in_week, "start_year": start_year}
 
 
+## Eski kayıtlarda start_year yok: varsayılan (1990) kalır.
 func load_dict(d: Dictionary) -> void:
+	start_year = int(d.get("start_year", start_year))
 	week_index = int(d.get("week_index", 0))
 	day_in_week = int(d.get("day_in_week", 0))

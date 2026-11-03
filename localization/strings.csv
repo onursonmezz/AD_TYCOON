@@ -878,3 +878,81 @@ ERR_ROOM_TYPE,Bu oda tipi çizilemez.,This room type can't be built.
 ERR_ROOM_SMALL,Oda en az 3×3 m olmalı.,A room must be at least 3×3 m.
 ERR_ROOM_OVERLAP,Başka bir oda ya da eşyayla çakışıyor.,It overlaps another room or item.
 ERR_ROOM_NOT_EMPTY,Odalar yalnızca boş alana (gri zemin) çizilir.,Rooms can only be drawn on empty space (grey floor).
+MENU_TOOLS,Araçlar,Tools
+AREA_STRATEGY,Strateji,Strategy
+AREA_COPY,Metin,Copy
+AREA_DESIGN,Görsel,Design
+AREA_PRODUCTION,Prodüksiyon,Production
+AREA_ANALYTICS,Ölçümleme,Analytics
+TOOL_NOTEBOOK,Defter ve mantar pano,Notebook and corkboard
+TOOL_TYPEWRITER,Daktilo,Typewriter
+TOOL_DRAWING_TABLE,Çizim masası,Drawing table
+TOOL_PHOTOCOPIER,Fotokopi ve faks,Photocopier and fax
+TOOL_SURVEY_FORMS,Kâğıt anket formları,Paper survey forms
+TOOL_TABLO_PRO,TabloPro,TabloPro
+TOOL_SLAYT_USTASI,SlaytUstası,SlideMaster
+TOOL_SLAK,Slak,Slak
+TOOL_KELIME_USTASI,KelimeUstası,WordMaster
+TOOL_YAZGAN_AI,Yazgan AI,Yazgan AI
+TOOL_PIXELSHOP,PixelShop,PixelShop
+TOOL_VEKTOREL,Vektörel,Vektorel
+TOOL_KANVAZ,Kanvaz,Kanvaz
+TOOL_FIGMO,Figmo,Figmo
+TOOL_HAYALCI_AI,Hayalci AI,Dreamer AI
+TOOL_SAYFA_USTASI,SayfaUstası / InDizayn,PageMaster / InDizayn
+TOOL_KURGU_PRO,Kurgu Pro,Kurgu Pro
+TOOL_EFEKT_SONRASI,EfektSonrası,AfterFx
+TOOL_KUBIK_3D,Kübik 3D,Cubic 3D
+TOOL_VIDEO_AI,Video AI,Video AI
+TOOL_ANKET_PRO,AnketPro,SurveyPro
+TOOL_GOOBLE_ANALITIK,Gooble Analitik,Gooble Analytics
+TOOL_SOSYAL_PANEL,SosyalPanel,SocialPanel
+HW_PC386,PC-386 ve Elmacık Macintosh,PC-386 and Apple-ish Macintosh
+HW_G4,Elmacık G4,Apple-ish G4
+HW_IMAK,iMak,iMak
+HW_MCHIP,M-çip Pro,M-chip Pro
+ERA_CLASSIC,Klasik Çağ,The Classic Age
+ERA_CLASSIC_DESC,"Gazete, radyo ve televizyon dönemi. Özel TV kanalları patlıyor, reklamcılık çizim masasında ve faks makinesinde yapılıyor.","The age of newspapers, radio and TV. Private TV channels are booming and advertising happens on drawing tables and fax machines."
+ERA_WEB_DAWN,Web Şafağı,Web Dawn
+ERA_WEB_DAWN_DESC,"İnternet geliyor: kurumsal siteler, banner reklamlar, e-posta bültenleri. Dot-com balonu dijital müşterileri sallayabilir.","The internet arrives: corporate sites, banner ads, email newsletters. The dot-com bubble may shake digital clients."
+ERA_SOCIAL_BIRTH,Sosyal Doğuş,Social Birth
+ERA_SOCIAL_BIRTH_DESC,"Video siteleri ve sosyal ağlar doğuyor. Viral video artık bir strateji.","Video sites and social networks are born. Viral video is now a strategy."
+ERA_MOBILE,Mobil Çağ,The Mobile Age
+ERA_MOBILE_DESC,"Herkesin cebinde bir ekran var: InstaFoto, programatik reklam, influencer'ların ilk dalgası. Reklam engelleyiciler display'i zorluyor.","Everyone carries a screen: InstaFoto, programmatic ads, the first wave of influencers. Ad blockers squeeze display."
+ERA_CREATOR,Video ve Creator Çağı,The Video and Creator Age
+ERA_CREATOR_DESC,"Kısa video, canlı yayın ve creator ekonomisi. Büyük Kapanma etkinlikleri ve açık havayı vurabilir.","Short video, live streaming and the creator economy. The Great Lockdown may hit events and outdoor."
+ERA_AI,Yapay Zekâ Çağı,The AI Age
+ERA_AI_DESC,"AI araçları prodüksiyonu hızlandırıyor ama çok kullananın özgünlüğü sorgulanıyor. Çerezsiz dünya hedeflemeyi zorlaştırıyor.","AI tools speed up production, but heavy users face questions about originality. A cookieless world makes targeting harder."
+ERA_FUTURE,Gelecek,The Future
+ERA_FUTURE_DESC,"AR gözlükler, hologram açık hava, sanal influencer'lar. Yeni mecralar riskli ama ödülü büyük.","AR glasses, hologram outdoor, virtual influencers. New media are risky but rewarding."
+UI_ERA_TITLE,%d: %s başladı,%d: %s begins
+UI_ERA_CHANNELS,Bu dönemde açılan kanallar,Channels opening in this era
+UI_ERA_TOOLS,Yeni araçlar ve bilgisayarlar,New tools and computers
+UI_ERA_GO,Hadi bakalım,Let's go
+UI_START_YEAR,Başlangıç yılı:,Start year:
+UI_START_YEAR_HINT,"1990 tam oyundur. 2000 ve 2010 hızlı başlangıçtır: o yılın kanalları ve rakipleriyle ev odasında başlarsın.","1990 is the full game. 2000 and 2010 are quick starts: you begin in a spare room with that year's channels and rivals."
+UI_TOOLS_HINT,"Her alanın verimi araçlarına bağlı (çarpan ×0.6–×1.6). Yeni sürüm çıkınca eski sürüm gitgide daha az verir. 2013'ten sonra büyük yazılımlar yalnızca abonelikle güncellenir. AI araçları hızlıdır ama kampanyanın yenilik puanını düşürür.","Each area's output depends on its tools (×0.6–×1.6). When a new version comes out, older versions give less and less. From 2013, big software updates only by subscription. AI tools are fast but lower a campaign's novelty."
+UI_HARDWARE,"Bilgisayarlar: %s (en fazla %d yılı yazılımları çalıştırır)","Computers: %s (runs software up to %d)"
+UI_HARDWARE_BUY,%s al (%s),Buy %s (%s)
+UI_TOOLS_MONTHLY,Aylık abonelik gideri: %s,Monthly subscriptions: %s
+UI_TOOL_AREA,%s · ×%.2f,%s · ×%.2f
+UI_TOOL_VERSION,%d sürümü,%d version
+UI_TOOL_SUB,"abonelik, kişi başı %s/ay","subscription, %s per person/month"
+UI_TOOL_BEHIND,%d sürüm geride,%d versions behind
+UI_TOOL_NOT_OWNED,Yok,Not owned
+UI_TOOL_AI,AI: yenilik −,AI: novelty −
+UI_TOOL_SEAT,kişi başı %s/ay,%s per person/month
+UI_TOOL_BUY,Al (%s),Buy (%s)
+UI_TOOL_UPDATE,Güncelle (%s),Update (%s)
+UI_TOOL_SUBSCRIBE,Aboneliğe geç (kişi başı %s/ay),Switch to subscription (%s per person/month)
+UI_TOOL_CANCEL,Aboneliği bitir,Cancel subscription
+NOTE_TOOL_NEW,Yeni araç çıktı: %s (Araçlar ekranı),New tool released: %s (Tools screen)
+NOTE_TOOL_UPDATE,%s yeni sürümü çıktı; seninki eskidi.,A new %s version is out; yours is getting old.
+NOTE_TOOL_SUBSCRIPTION,"%s artık yalnızca abonelikle güncelleniyor. Lisansın donuyor; Araçlar ekranından aboneliğe geçebilirsin.","%s now only updates by subscription. Your license is frozen; you can switch in the Tools screen."
+NOTE_HARDWARE_NEW,Yeni bilgisayar kuşağı: %s,New computer generation: %s
+ERR_TOOL_NA,Bu araç için bu işlem yapılamaz.,That action isn't possible for this tool.
+ERR_TOOL_OWNED,Bu araç zaten var.,You already own this tool.
+ERR_TOOL_SUB_ONLY,Bu araç artık yalnızca abonelikle güncellenir.,This tool now only updates by subscription.
+ERR_TOOL_LATEST,Zaten en son sürüm.,Already the latest version.
+ERR_HARDWARE,Bilgisayarların bu sürümü çalıştıramıyor; önce bilgisayarları yenile.,Your computers can't run this version; upgrade them first.
+ERR_HARDWARE_NA,Bu bilgisayar kuşağı alınamaz.,This computer generation isn't available.

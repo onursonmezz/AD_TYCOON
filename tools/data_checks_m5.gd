@@ -86,4 +86,21 @@ static func check(data: Dictionary, ids: Dictionary) -> PackedStringArray:
 	for off: Variant in data.get("offices.json", []):
 		if typeof(off) == TYPE_DICTIONARY and not layout_ids.has(off.get("id")):
 			errors.append("office_layouts.json: '%s' için yerleşim yok" % str(off.get("id")))
+	var areas: Array = balance.get("tools", {}).get("areas", [])
+	for t: Variant in data.get("tools.json", []):
+		if typeof(t) != TYPE_DICTIONARY:
+			continue
+		if not areas.has(t.get("area")):
+			errors.append("tools.json: '%s' bilinmeyen alan '%s'" % [str(t.get("id")), str(t.get("area"))])
+		var last: int = 0
+		for v: Variant in t.get("versions", []):
+			if int(v[0]) < last:
+				errors.append("tools.json: '%s' sürümler yıla göre sıralı olmalı" % str(t.get("id")))
+			last = int(v[0])
+		if (t.get("versions", []) as Array).is_empty():
+			errors.append("tools.json: '%s' sürüm yok" % str(t.get("id")))
+	var focus_map: Dictionary = balance.get("tools", {}).get("focus_area", {})
+	for f: Variant in data.get("focus_areas.json", []):
+		if typeof(f) == TYPE_DICTIONARY and not areas.has(focus_map.get(f.get("id"))):
+			errors.append("balance.json tools.focus_area: '%s' odağının araç alanı yok" % str(f.get("id")))
 	return errors

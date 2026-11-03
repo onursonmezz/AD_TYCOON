@@ -1,0 +1,9 @@
+[
+	{ "id": "classic", "name_key": "ERA_CLASSIC", "desc_key": "ERA_CLASSIC_DESC", "from": 1990, "to": 1996 },
+	{ "id": "web_dawn", "name_key": "ERA_WEB_DAWN", "desc_key": "ERA_WEB_DAWN_DESC", "from": 1997, "to": 2004 },
+	{ "id": "social_birth", "name_key": "ERA_SOCIAL_BIRTH", "desc_key": "ERA_SOCIAL_BIRTH_DESC", "from": 2005, "to": 2010 },
+	{ "id": "mobile", "name_key": "ERA_MOBILE", "desc_key": "ERA_MOBILE_DESC", "from": 2011, "to": 2016 },
+	{ "id": "creator", "name_key": "ERA_CREATOR", "desc_key": "ERA_CREATOR_DESC", "from": 2017, "to": 2022 },
+	{ "id": "ai", "name_key": "ERA_AI", "desc_key": "ERA_AI_DESC", "from": 2023, "to": 2029 },
+	{ "id": "future", "name_key": "ERA_FUTURE", "desc_key": "ERA_FUTURE_DESC", "from": 2030, "to": 2099 }
+]

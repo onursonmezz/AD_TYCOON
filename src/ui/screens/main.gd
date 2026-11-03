@@ -35,6 +35,7 @@ func _ready() -> void:
 	EventBus.scandal_started.connect(func(scandal: Dictionary) -> void: open_modal(ScandalDialog.new(scandal)))
 	EventBus.award_ceremony.connect(func(result: Dictionary) -> void: open_modal(CeremonyDialog.new(result)))
 	EventBus.pitch_ready.connect(func() -> void: open_modal(PitchDialog.new()))
+	EventBus.era_started.connect(func(era: String) -> void: open_modal(EraDialog.new(era)))
 	_refresh()
 	_refresh_speed()
 	if GameState.is_bankrupt():
@@ -190,7 +191,7 @@ func _build_menu() -> PanelContainer:
 	card.custom_minimum_size.x = 190.0
 	var col: VBoxContainer = UiUtil.vbox(8)
 	card.add_child(col)
-	for id: String in ["inbox", "clients", "campaign", "team", "office", "finance", "industry", "history"]:
+	for id: String in ["inbox", "clients", "campaign", "team", "office", "tools", "finance", "industry", "history"]:
 		var b: Button = UiUtil.button(tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		_menu_buttons[id] = b
@@ -226,6 +227,8 @@ func show_panel(id: String) -> void:
 			_panel = OfficePanel.new(self)
 		"finance":
 			_panel = FinancePanel.new()
+		"tools":
+			_panel = ToolsPanel.new()
 		"industry":
 			_panel = IndustryPanel.new(self)
 		"history":

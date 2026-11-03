@@ -1,0 +1,6 @@
+[
+	{ "id": "pc386", "name_key": "HW_PC386", "available_from": 1990, "max_tool_year": 1999, "cost_per_seat_1990": 0 },
+	{ "id": "g4", "name_key": "HW_G4", "available_from": 2000, "max_tool_year": 2009, "cost_per_seat_1990": 2500 },
+	{ "id": "imak", "name_key": "HW_IMAK", "available_from": 2010, "max_tool_year": 2019, "cost_per_seat_1990": 2200 },
+	{ "id": "mchip", "name_key": "HW_MCHIP", "available_from": 2020, "max_tool_year": 2099, "cost_per_seat_1990": 2000 }
+]

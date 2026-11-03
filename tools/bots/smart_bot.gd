@@ -29,6 +29,7 @@ func decide(sim: Simulation) -> void:
 	_grow(sim)
 	BotUtil.enter_awards(sim, -0.5, 1.0, _rng)
 	BotUtil.handle_pitch(sim, true, _rng)
+	BotUtil.manage_tools(sim, true, _rng)
 	if not sim.state.is_idle():
 		return
 	var data: GameData = sim.data

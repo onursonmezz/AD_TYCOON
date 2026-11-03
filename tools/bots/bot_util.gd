@@ -125,3 +125,45 @@ static func _best_card(sim: Simulation, options: Array[String]) -> String:
 		if sim.pitches.card_fit(known, id) > sim.pitches.card_fit(known, best):
 			best = id
 	return best
+
+
+## Araçlar (GDD 12.5). Bilgili bot: ayda bir, güvenli nakdin küçük bir kısmıyla eksik araçları alır (AI araçları hariç:
+## yenilik bedeli oyuncunun kararı), eski sürümleri günceller,
+## abonelik dönemine geçer, bilgisayarları yeniler. Rastgele bot: arada bir rastgele bir araç alır.
+static func manage_tools(sim: Simulation, smart: bool, rng: RandomNumberGenerator) -> void:
+	var state: SimState = sim.state
+	if state.clock.week_in_month() != 1 or state.clock.day_in_week != 0:
+		return
+	# Önümüzdeki yarım yılın en dip nakdi, yedek ve orta boy bir işin medya yükü düşüldükten sonra kalanın bir kısmı.
+	var media_float: float = float(sim.data.bal("briefs.media.medium")[0]) * Economy.inflation(sim.data, state.clock.year())
+	var budget: float = (min_projected_cash(sim, TOOL_HORIZON_WEEKS) - TOOL_RESERVE_MONTHS * monthly_costs(sim) - media_float) \
+		* TOOL_BUDGET_SHARE
+	if not smart:
+		var ids: Array[String] = sim.tools.available(state)
+		if not ids.is_empty() and rng.randf() < RANDOM_TOOL_CHANCE:
+			ToolActionCommand.new("buy", ids[rng.randi_range(0, ids.size() - 1)]).execute(sim)
+		return
+	for hw: String in sim.data.hardware_ids:
+		if int(sim.data.hardware[hw]["available_from"]) <= state.clock.year() \
+				and sim.data.hardware_ids.find(hw) > sim.data.hardware_ids.find(state.hardware) and sim.tools.hardware_cost(state, hw) < budget:
+			ToolActionCommand.new("hardware", hw).execute(sim)
+	for id: String in sim.tools.available(state):
+		var year: int = state.clock.year()
+		if float(sim.data.tools[id]["ai_penalty"]) > 0.0:
+			continue
+		if not sim.tools.owned(state, id):
+			var cost: float = sim.tools.seat_cost(state, id) * state.staff.size() * 12.0 if sim.tools.is_subscription_era(id, year) \
+				else sim.tools.license_cost(state, id)
+			if cost < budget:
+				ToolActionCommand.new("buy", id).execute(sim)
+		elif not bool(state.tools[id]["sub"]):
+			if sim.tools.is_subscription_era(id, year):
+				ToolActionCommand.new("subscribe", id).execute(sim)
+			elif sim.tools.update_cost(state, id) < budget:
+				ToolActionCommand.new("update", id).execute(sim)
+
+
+const TOOL_RESERVE_MONTHS: float = 3.0
+const TOOL_HORIZON_WEEKS: int = 26
+const TOOL_BUDGET_SHARE: float = 0.2
+const RANDOM_TOOL_CHANCE: float = 0.05

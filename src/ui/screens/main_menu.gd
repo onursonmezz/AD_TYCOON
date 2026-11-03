@@ -49,8 +49,8 @@ func _build() -> void:
 func _on_new_game() -> void:
 	if not DataDB.is_ok():
 		return
-	add_child(BackgroundDialog.new(func(background: String) -> void:
-		GameState.new_game(-1, background)
+	add_child(BackgroundDialog.new(func(background: String, start_year: int) -> void:
+		GameState.new_game(-1, background, start_year)
 		get_tree().change_scene_to_file(GAME_SCENE)))
 
 

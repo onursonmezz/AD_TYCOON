@@ -21,6 +21,8 @@ signal award_ceremony(result: Dictionary)
 signal rankings_published(result: Dictionary)
 ## Pitch hazırlığı bitti, sunum bekleniyor (oyunda zaman durur).
 signal pitch_ready()
+## Yeni dönem başladı (GDD 5.2): kısa "yeni dönem" ekranı.
+signal era_started(era_id: String)
 
 var data: GameData
 var state: SimState
@@ -46,16 +48,22 @@ var rivals: RivalSystem
 var awards: AwardSystem
 var pitches: PitchSystem
 var build: BuildSystem
+var tools: ToolSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
 
 
 ## background: oyuncunun geçmişi (data/backgrounds.json, GDD 11.5); boşsa varsayılan.
-func _init(game_data: GameData, seed_value: int, background: String = "") -> void:
+## start_year: hızlı başlangıç (GDD 5.1: 1990 / 2000 / 2010); 0 = varsayılan. Başlangıç nakdi enflasyonla ölçeklenir.
+func _init(game_data: GameData, seed_value: int, background: String = "", start_year: int = 0) -> void:
 	data = game_data
 	state = SimState.new(data, seed_value)
+	if start_year > 0:
+		state.clock.start_year = start_year
+		state.cash = data.balf("start.cash") * Economy.inflation(data, start_year)
 	scoring = Scoring.new(data)
+	scoring.era_offset = state.clock.start_year - data.bali("time.base_year")
 	kpi = Kpi.new(data, scoring)
 	economy = Economy.new(data)
 	clients = ClientSystem.new(data)
@@ -74,12 +82,14 @@ func _init(game_data: GameData, seed_value: int, background: String = "") -> voi
 	awards = AwardSystem.new(data, rivals)
 	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
 	build = BuildSystem.new(data)
+	tools = ToolSystem.new(data)
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
 	clients.create_starting(state, int(data.backgrounds[founder["background"]]["extra_start_clients"]))
 	rivals.ensure(state)
 	build.refresh(state)
+	tools.start(state)
 
 
 func set_overtime(on: bool) -> void:
@@ -89,8 +99,13 @@ func set_overtime(on: bool) -> void:
 ## Kayıttan gelen durumla değiştirir (SaveSystem).
 func load_state(saved: Dictionary) -> void:
 	state = SimState.from_dict(data, saved)
+	scoring.era_offset = state.clock.start_year - data.bali("time.base_year")
 	rivals.ensure(state)
 	build.refresh(state)
+	if state.tools.is_empty():
+		tools.start(state)
+	else:
+		tools.refresh(state)
 
 
 # --- zaman -------------------------------------------------------------------
@@ -129,7 +144,7 @@ func step_day() -> void:
 		if state.bankrupt:
 			went_bankrupt.emit()
 	if ended["month"]:
-		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state))
+		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state) + tools.monthly_cost(state))
 		for offer: Dictionary in staff_life.monthly_offers(state):
 			offer["rival"] = rivals.pick_by_power(state)
 			offer_received.emit(offer)
@@ -198,7 +213,8 @@ func start_campaign(brief_id: String, choices: Dictionary) -> Dictionary:
 		"audience": choices.get("audience", ""), "tone": choices.get("tone", ""), "mix": choices.get("mix", []),
 		"sliders": sliders, "name": choices.get("name", ""), "size": brief["size"],
 		"fee": brief["fee"], "media_budget": brief["media_budget"], "deadline_weeks": brief["deadline_weeks"],
-		"client_name": brief_client.get("name", ""), "client_scale": int(brief_client.get("scale", 0))}
+		"client_name": brief_client.get("name", ""), "client_scale": int(brief_client.get("scale", 0)),
+		"ai_penalty": state.ai_penalty}
 	var team: Array = choices.get("team", [])
 	if team.is_empty():
 		team = [state.founder()["id"]]
@@ -380,7 +396,7 @@ func _end_year() -> void:
 	if penalty > 0.0:
 		economy.pay(state, penalty)
 		staff_note.emit("NOTE_COMMIT_PENALTY", [penalty], "bad")
-	rankings_published.emit(awards.year_end(state))
+	IndustryCalendar.yearly(self)
 	state.year_media = 0.0
 	economy.yearly(state)
 	# Rekor çıtası her yıl biraz erir (K-047): tek bir şanslı iş yıllarca aşılamaz çıta bırakmasın.

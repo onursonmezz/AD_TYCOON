@@ -1,5 +1,25 @@
 # Değişiklik günlüğü
 
+## M7-A: Dönemler ve araçlar (2026-11-03)
+- **Araçlar ekranı** (sol menüde yeni). Beş alanın (Strateji, Metin, Görsel, Prodüksiyon, Ölçümleme) çarpanını ve araçlarını gösteriyor.
+  - Al, güncelle, aboneliğe geç, aboneliği bitir.
+  - Bilgisayarlar ve aylık abonelik gideri de burada.
+  - Her alan ücretsiz bir başlangıç aracıyla ×1.0'dan başlıyor, araç aldıkça ×1.6'ya kadar çıkıyor.
+- **Sürümler:** Yeni sürüm çıkınca bildirim geliyor; eski sürüm gitgide daha az verim veriyor.
+  - Eski bilgisayarlar yeni sürümleri çalıştıramıyor (PC-386 → Elmacık G4 → iMak → M-çip Pro).
+  - 2013'te büyük yazılımlar aboneliğe geçiyor: lisansın donuyor, aboneliğe geçersen hep güncel kalıyorsun ama her ay çalışan başına ödüyorsun.
+- **AI araçları (2022+):** Çok verimli ama kampanyanın yenilik puanını düşürüyor; 2026'dan sonra daha da çok.
+- **Dönemler:** Yeni bir döneme girilince (1997 Web Şafağı, 2005 Sosyal Doğuş …) o dönemin kanallarını ve araçlarını anlatan bir pencere açılıyor.
+- **Başlangıç yılı:** Yeni oyunda 1990, 2000 ya da 2010 seçebiliyorsun.
+- **Denge:** Dönem beklentisi biraz daha yavaş büyüyor (yılda %8.5 yerine %7.5). Bilgili bot 30 yılda plaza katına ulaşıyor, puanları 22. yıla kadar 6–8 arasında kalıyor.
+- Nasıl test ederim:
+  1. **Araçlar** ekranını aç: her alan ×1.00. 1990'da PixelShop'u al; Görsel'in ×1.15'e çıktığını ve nakdin düştüğünü gör.
+  2. Birkaç yıl oyna: "PixelShop yeni sürümü çıktı" bildiriminden sonra satırda "1 sürüm geride" ve düşen çarpanı gör. **Güncelle**.
+  3. 2000'den sonra bir sürüm "Bilgisayarların bu sürümü çalıştıramıyor" derse üstten Elmacık G4'ü al, sonra güncelle.
+  4. Yeni oyunu 2010'dan başlat: 2013'te abonelik bildirimini gör, **Aboneliğe geç**, aylık giderin arttığını Finans'ta gör.
+  5. 1996'nın sonunu geç: "1997: Web Şafağı başladı" penceresini gör.
+  6. 2022'den sonra Hayalci AI'ı al. Görsel çarpanının arttığını, sonraki kampanyanın raporunda yeniliğin biraz düştüğünü (Puan dökümü) gör.
+
 ## M6-B: İnşa modu (2026-11-03)
 - **Ofis penceresi:**
   - oda kalitesi dökümü (taban, konfor, çeşitlilik, kalabalık) ve üretim çarpanı;

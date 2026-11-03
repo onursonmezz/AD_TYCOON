@@ -1,6 +1,7 @@
 class_name IndustryCalendar
 extends RefCounted
-## Sektör takvimi (M5): ay başında rakipler, müşteri çalma, ödül pencereleri ve törenler; hafta sonunda pitch.
+## Sektör takvimi (M5–M7): ay başında rakipler, müşteri çalma, ödül pencereleri ve törenler; hafta sonunda pitch;
+## yıl sonunda sıralamalar, araç sürümleri ve dönem değişimi.
 ## simulation.gd 400 satırı aşmasın diye ayrı; yalnızca Simulation'ın sistemlerini çağırır ve sinyallerini yayar.
 
 
@@ -38,3 +39,13 @@ static func weekly(sim: Simulation) -> void:
 		for r: String in PitchSystem.ROUNDS:
 			cards.append(sim.pitches.cards_of_round(r)[0])
 		sim.pitches.present(sim.state, cards)
+
+
+## Yıl sonu (gelir sayaçları sıfırlanmadan önce): sıralamalar, araç sürümleri ve abonelikler, dönem değişimi.
+static func yearly(sim: Simulation) -> void:
+	sim.rankings_published.emit(sim.awards.year_end(sim.state))
+	for note: Dictionary in sim.tools.yearly(sim.state):
+		sim.staff_note.emit(note["key"], note["args"], note["kind"])
+	var year: int = sim.state.clock.year()
+	if sim.data.era_of(year) != sim.data.era_of(year - 1):
+		sim.era_started.emit(sim.data.era_of(year))

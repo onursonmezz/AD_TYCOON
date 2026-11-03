@@ -28,6 +28,9 @@ const ID_LISTS: Dictionary = {
 	"office_layouts.json": "office_layout",
 	"furniture.json": "furniture",
 	"room_types.json": "room_type",
+	"tools.json": "tool",
+	"hardware.json": "hardware",
+	"eras.json": "era",
 }
 const FIT_FILES: Array[String] = [
 	"fit/sector_objective.json",

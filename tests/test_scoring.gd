@@ -134,7 +134,7 @@ func test_relative_score_uses_era_base_and_soft_record() -> void:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	var base: float = scoring.era_base(1990, "small")
 	assert_almost_eq(base, 120.0, 0.0001)
-	assert_almost_eq(scoring.era_base(1991, "medium"), 120.0 * 2.6 * 1.085, 0.001)
+	assert_almost_eq(scoring.era_base(1991, "medium"), 120.0 * 2.6 * data.balf("score.era_growth"), 0.001, "K-064: 1.075")
 	var fin: Dictionary = scoring.final_score(200.0, 0, 1990, "small", 100.0, rng)
 	assert_almost_eq(float(fin["target"]), 120.0, 0.0001, "rekor×1.05 < dönem tabanı → taban")
 	assert_almost_eq(float(fin["new_best"]), 160.0, 0.0001, "en_iyi + 0.6*(ham − en_iyi)")
