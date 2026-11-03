@@ -146,7 +146,30 @@ func _money_block() -> VBoxContainer:
 	var delta: float = float(_camp.get("satisfaction_delta", 0.0))
 	v.add_child(UiUtil.label(tr("UI_SATISFACTION_DELTA") % ("%+.1f" % delta), 15,
 		UiUtil.SAGE_DARK if delta >= 0.0 else UiUtil.TERRACOTTA))
+	v.add_child(_satisfaction_parts())
 	return v
+
+
+## Memnuniyet değişiminin kalemleri (GDD 6.4): hangi kalem ne kadar ekledi/götürdü.
+func _satisfaction_parts() -> VBoxContainer:
+	var box: VBoxContainer = UiUtil.vbox(1)
+	var parts: Dictionary = _camp.get("satisfaction_parts", {})
+	if parts.is_empty():
+		return box
+	var score: float = float(_camp["report"]["score"])
+	for key: String in ["quality", "kpi", "timing", "budget", "revisions", "account", "bold_match", "risks", "scandal"]:
+		var value: float = float(parts.get(key, 0.0))
+		if absf(value) < 0.05:
+			continue
+		var text: String = tr("SAT_" + key.to_upper())
+		if key == "quality":
+			text = tr("SAT_QUALITY") % [score, float(parts.get("expectation", 0.0))]
+		elif key == "kpi":
+			text = tr("SAT_KPI") % int(roundf(100.0 * float(_camp.get("kpi_ratio", 0.0))))
+		elif key == "timing" and value < 0.0:
+			text = tr("SAT_LATE") % int(_camp["setup"].get("late_weeks", 0))
+		box.add_child(UiUtil.label("    %+.1f  %s" % [value, text], 13, UiUtil.SAGE_DARK if value >= 0.0 else UiUtil.TERRACOTTA))
+	return box
 
 
 func _breakdown_block(report: Dictionary) -> VBoxContainer:

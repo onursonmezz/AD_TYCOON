@@ -77,17 +77,27 @@ func expectation(client: Dictionary, year: int) -> float:
 ## GDD 6.4 Δmemnuniyet. Revizyon, gecikme ve bütçe aşımı henüz 0 (K-023); account_bonus ekipten gelir (0..+6).
 func satisfaction_delta(client: Dictionary, score: float, kpi_ratio: float, tone: String, year: int,
 		account_bonus: float = 0.0, late_weeks: int = 0, over_budget: bool = false, revisions: int = 0) -> float:
+	var total: float = 0.0
+	for v: Variant in satisfaction_parts(client, score, kpi_ratio, tone, year, account_bonus, late_weeks, over_budget,
+			revisions).values():
+		total += float(v)
+	return total
+
+
+## 6.4 formülünün kalemleri ayrı ayrı (raporda "memnuniyet neden değişti" dökümü için). Sıfır olanlar da döner.
+func satisfaction_parts(client: Dictionary, score: float, kpi_ratio: float, tone: String, year: int,
+		account_bonus: float = 0.0, late_weeks: int = 0, over_budget: bool = false, revisions: int = 0) -> Dictionary:
 	var sat: Dictionary = data.bal("satisfaction")
-	var d: float = float(sat["quality_coef"]) * (score - expectation(client, year)) / float(sat["quality_div"])
-	d += float(sat["kpi_coef"]) * clampf(kpi_ratio - 1.0, -1.0, 1.0)
-	d += float(sat["on_time"]) if late_weeks <= 0 else float(sat["late_per_week"]) * late_weeks
-	if over_budget:
-		d += float(sat["over_budget"])
-	d -= revisions * float(client["personality"]["detail"]) / 100.0 * float(sat["revision_coef"])
-	d += account_bonus
-	if float(client["personality"]["risk"]) >= data.balf("clients.bold_risk_min") and tone == "bold":
-		d += float(sat["bold_match_bonus"])
-	return d
+	var parts: Dictionary = {}
+	parts["quality"] = float(sat["quality_coef"]) * (score - expectation(client, year)) / float(sat["quality_div"])
+	parts["kpi"] = float(sat["kpi_coef"]) * clampf(kpi_ratio - 1.0, -1.0, 1.0)
+	parts["timing"] = float(sat["on_time"]) if late_weeks <= 0 else float(sat["late_per_week"]) * late_weeks
+	parts["budget"] = float(sat["over_budget"]) if over_budget else 0.0
+	parts["revisions"] = -revisions * float(client["personality"]["detail"]) / 100.0 * float(sat["revision_coef"])
+	parts["account"] = account_bonus
+	var bold: bool = float(client["personality"]["risk"]) >= data.balf("clients.bold_risk_min") and tone == "bold"
+	parts["bold_match"] = float(sat["bold_match_bonus"]) if bold else 0.0
+	return parts
 
 
 func apply_result(client: Dictionary, campaign_id: String, score: float, objective: String, year: int, delta: float) -> void:

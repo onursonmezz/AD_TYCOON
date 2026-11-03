@@ -75,7 +75,37 @@ func test_corrupt_save_is_rejected() -> void:
 func _fake_report(sh: float, b: float, ratio: float, ideal: float, n: float) -> Dictionary:
 	return {"combination": {"sh": sh, "sk": 1.0, "kn": 1.0, "tone": 1.0, "m": 1.0}, "focus": {"f": 1.0},
 		"balance": {"b": b, "ratio": ratio, "ideal": ideal}, "novelty": {"n": n},
-		"synergy": {"fragmentation": 0.0, "pairs": []}, "errors": 0}
+		"synergy": {"fragmentation": 0.0, "pairs": []}, "errors": 0, "s": 30.0, "k": 30.0, "t": 10.0, "target": 100.0}
+
+
+func test_low_work_volume_is_explained_even_when_choices_are_perfect() -> void:
+	# Oyuncu geri bildirimi: her şey yeşil ama puan 5.4. Sebep emeğin azlığıydı; rapor bunu söylemeli.
+	var w: ReportWriter = ReportWriter.new(data)
+	var report: Dictionary = _fake_report(1.25, 0.95, 1.0, 1.0, 1.0)
+	report.merge({"s": 30.0, "k": 26.0, "t": 10.0, "target": 130.2}, true)
+	var keys: Array[String] = []
+	for line: Dictionary in w.explanation_lines(report):
+		keys.append(str(line["key"]))
+	assert_has(keys, "RL_VOLUME_LOW")
+	assert_has(keys, "RL_SH_GOOD")
+	report.merge({"s": 60.0, "k": 50.0, "t": 20.0}, true)
+	keys.clear()
+	for line: Dictionary in w.explanation_lines(report):
+		keys.append(str(line["key"]))
+	assert_has(keys, "RL_VOLUME_HIGH")
+
+
+func test_satisfaction_parts_sum_to_delta() -> void:
+	var clients: ClientSystem = ClientSystem.new(data)
+	var client: Dictionary = {"scale": 0, "history": [], "personality": {"risk": 80, "detail": 50}}
+	var parts: Dictionary = clients.satisfaction_parts(client, 5.4, 0.35, "bold", 1991, 3.0, 3, false, 1)
+	var sum: float = 0.0
+	for v: Variant in parts.values():
+		sum += float(v)
+	assert_almost_eq(sum, clients.satisfaction_delta(client, 5.4, 0.35, "bold", 1991, 3.0, 3, false, 1), 0.0001)
+	assert_almost_eq(float(parts["timing"]), -18.0, 0.0001, "3 hafta gecikme")
+	assert_almost_eq(float(parts["kpi"]), -6.5, 0.0001)
+	assert_almost_eq(float(parts["bold_match"]), 5.0, 0.0001)
 
 
 func test_report_lines_follow_thresholds() -> void:

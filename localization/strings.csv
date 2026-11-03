@@ -641,3 +641,15 @@ NOTE_GUERRILLA_FINE,%s: gerilla uygulaması belediye cezası aldı.,%s: the guer
 NOTE_GUERRILLA_BACKLASH,"%s: sahte kuyruk ortaya çıktı, basın tepki gösterdi ve ceza geldi.",%s: the fake queue was exposed; the press reacted and a fine followed.
 NOTE_EVENT_WEATHER,%s: açık hava etkinliğini yağmur vurdu.,%s: rain hit the open-air event.
 NOTE_EVENT_TROUBLE,%s: etkinlikte aksilik (katılım düşük / teknik arıza / ünlü gelmedi).,%s: trouble at the event (low turnout / technical failure / celebrity no-show).
+RL_VOLUME_LOW,"Fikir ne kadar iyi olursa olsun bu iş için harcanan emek az kaldı: daha büyük bir ekip, uzmanlar ya da daha uzun süreli işler gerekir.","However good the idea, too little work went into this job: you need a bigger team, specialists or longer jobs."
+RL_VOLUME_HIGH,Ekip bu işe bolca emek verdi.,The team put plenty of work into this job.
+SAT_QUALITY,"Puan %.1f, müşterinin beklentisi %.1f",Score %.1f vs the client's expectation of %.1f
+SAT_KPI,KPI hedefinin %%%d'i tuttu,KPI target reached %d%%
+SAT_TIMING,Zamanında teslim,Delivered on time
+SAT_LATE,%d hafta gecikme,%d week(s) late
+SAT_BUDGET,Bütçe aşıldı,Over budget
+SAT_REVISIONS,Revizyon turları,Revision rounds
+SAT_ACCOUNT,Account ekibinin iletişimi,Account team communication
+SAT_BOLD_MATCH,"Cesur marka, cesur kampanya","Bold brand, bold campaign"
+SAT_RISKS,"Kanal riskleri (ceza, izin, hava…)","Channel risks (fines, permits, weather…)"
+SAT_SCANDAL,Influencer skandalı,Influencer scandal

@@ -1,37 +1,231 @@
 {
 	"_note": "GDD 7.12: her çarpan için eşik tabanlı açıklama. metric: rapordaki değer; and: ek koşul. sign: +1 olumlu, -1 olumsuz.",
 	"explanations": [
-		{ "id": "sh_good", "metric": "sh", "op": ">=", "value": 1.15, "key": "RL_SH_GOOD", "sign": 1 },
-		{ "id": "sh_bad", "metric": "sh", "op": "<=", "value": 0.85, "key": "RL_SH_BAD", "sign": -1 },
-		{ "id": "sk_good", "metric": "sk", "op": ">=", "value": 1.12, "key": "RL_SK_GOOD", "sign": 1 },
-		{ "id": "sk_bad", "metric": "sk", "op": "<=", "value": 0.85, "key": "RL_SK_BAD", "sign": -1 },
-		{ "id": "kn_good", "metric": "kn", "op": ">=", "value": 1.12, "key": "RL_KN_GOOD", "sign": 1 },
-		{ "id": "kn_bad", "metric": "kn", "op": "<=", "value": 0.85, "key": "RL_KN_BAD", "sign": -1 },
-		{ "id": "tone_good", "metric": "tone", "op": ">=", "value": 1.06, "key": "RL_TONE_GOOD", "sign": 1 },
-		{ "id": "tone_bad", "metric": "tone", "op": "<=", "value": 0.91, "key": "RL_TONE_BAD", "sign": -1 },
-		{ "id": "f_good", "metric": "f", "op": ">=", "value": 1.15, "key": "RL_F_GOOD", "sign": 1 },
-		{ "id": "f_bad", "metric": "f", "op": "<=", "value": 0.95, "key": "RL_F_BAD", "sign": -1 },
-		{ "id": "b_analytic", "metric": "b", "op": "<=", "value": 0.85, "and": { "metric": "sk_vs_ideal", "op": ">", "value": 1.0 }, "key": "RL_B_ANALYTIC", "sign": -1 },
-		{ "id": "b_creative", "metric": "b", "op": "<=", "value": 0.85, "and": { "metric": "sk_vs_ideal", "op": "<", "value": 1.0 }, "key": "RL_B_CREATIVE", "sign": -1 },
-		{ "id": "b_good", "metric": "b", "op": ">=", "value": 0.97, "key": "RL_B_GOOD", "sign": 1 },
-		{ "id": "n_bad", "metric": "n", "op": "<=", "value": 0.8, "key": "RL_N_BAD", "sign": -1 },
-		{ "id": "n_pioneer", "metric": "n", "op": ">=", "value": 1.05, "key": "RL_N_PIONEER", "sign": 1 },
-		{ "id": "fragmented", "metric": "fragmentation", "op": ">", "value": 0.0, "key": "RL_FRAGMENTED", "sign": -1 },
-		{ "id": "synergy", "metric": "synergy_pairs", "op": ">", "value": 0, "key": "RL_SYNERGY", "sign": 1 },
-		{ "id": "errors", "metric": "errors", "op": ">", "value": 3, "key": "RL_ERRORS", "sign": -1 }
+		{
+			"id": "volume_high",
+			"metric": "volume",
+			"op": ">=",
+			"value": 0.85,
+			"key": "RL_VOLUME_HIGH",
+			"sign": 1
+		},
+		{
+			"id": "volume_low",
+			"metric": "volume",
+			"op": "<=",
+			"value": 0.6,
+			"key": "RL_VOLUME_LOW",
+			"sign": -1
+		},
+		{
+			"id": "sh_good",
+			"metric": "sh",
+			"op": ">=",
+			"value": 1.15,
+			"key": "RL_SH_GOOD",
+			"sign": 1
+		},
+		{
+			"id": "sh_bad",
+			"metric": "sh",
+			"op": "<=",
+			"value": 0.85,
+			"key": "RL_SH_BAD",
+			"sign": -1
+		},
+		{
+			"id": "sk_good",
+			"metric": "sk",
+			"op": ">=",
+			"value": 1.12,
+			"key": "RL_SK_GOOD",
+			"sign": 1
+		},
+		{
+			"id": "sk_bad",
+			"metric": "sk",
+			"op": "<=",
+			"value": 0.85,
+			"key": "RL_SK_BAD",
+			"sign": -1
+		},
+		{
+			"id": "kn_good",
+			"metric": "kn",
+			"op": ">=",
+			"value": 1.12,
+			"key": "RL_KN_GOOD",
+			"sign": 1
+		},
+		{
+			"id": "kn_bad",
+			"metric": "kn",
+			"op": "<=",
+			"value": 0.85,
+			"key": "RL_KN_BAD",
+			"sign": -1
+		},
+		{
+			"id": "tone_good",
+			"metric": "tone",
+			"op": ">=",
+			"value": 1.06,
+			"key": "RL_TONE_GOOD",
+			"sign": 1
+		},
+		{
+			"id": "tone_bad",
+			"metric": "tone",
+			"op": "<=",
+			"value": 0.91,
+			"key": "RL_TONE_BAD",
+			"sign": -1
+		},
+		{
+			"id": "f_good",
+			"metric": "f",
+			"op": ">=",
+			"value": 1.15,
+			"key": "RL_F_GOOD",
+			"sign": 1
+		},
+		{
+			"id": "f_bad",
+			"metric": "f",
+			"op": "<=",
+			"value": 0.95,
+			"key": "RL_F_BAD",
+			"sign": -1
+		},
+		{
+			"id": "b_analytic",
+			"metric": "b",
+			"op": "<=",
+			"value": 0.85,
+			"and": {
+				"metric": "sk_vs_ideal",
+				"op": ">",
+				"value": 1
+			},
+			"key": "RL_B_ANALYTIC",
+			"sign": -1
+		},
+		{
+			"id": "b_creative",
+			"metric": "b",
+			"op": "<=",
+			"value": 0.85,
+			"and": {
+				"metric": "sk_vs_ideal",
+				"op": "<",
+				"value": 1
+			},
+			"key": "RL_B_CREATIVE",
+			"sign": -1
+		},
+		{
+			"id": "b_good",
+			"metric": "b",
+			"op": ">=",
+			"value": 0.97,
+			"key": "RL_B_GOOD",
+			"sign": 1
+		},
+		{
+			"id": "n_bad",
+			"metric": "n",
+			"op": "<=",
+			"value": 0.8,
+			"key": "RL_N_BAD",
+			"sign": -1
+		},
+		{
+			"id": "n_pioneer",
+			"metric": "n",
+			"op": ">=",
+			"value": 1.05,
+			"key": "RL_N_PIONEER",
+			"sign": 1
+		},
+		{
+			"id": "fragmented",
+			"metric": "fragmentation",
+			"op": ">",
+			"value": 0,
+			"key": "RL_FRAGMENTED",
+			"sign": -1
+		},
+		{
+			"id": "synergy",
+			"metric": "synergy_pairs",
+			"op": ">",
+			"value": 0,
+			"key": "RL_SYNERGY",
+			"sign": 1
+		},
+		{
+			"id": "errors",
+			"metric": "errors",
+			"op": ">",
+			"value": 3,
+			"key": "RL_ERRORS",
+			"sign": -1
+		}
 	],
 	"reviewers": [
-		{ "id": "reklam_dunyasi", "name_key": "REVIEWER_REKLAM_DUNYASI" },
-		{ "id": "pazarlama_gazetesi", "name_key": "REVIEWER_PAZARLAMA_GAZETESI" },
-		{ "id": "kreatif_blog", "name_key": "REVIEWER_KREATIF_BLOG" },
-		{ "id": "musteri", "name_key": "REVIEWER_MUSTERI" }
+		{
+			"id": "reklam_dunyasi",
+			"name_key": "REVIEWER_REKLAM_DUNYASI"
+		},
+		{
+			"id": "pazarlama_gazetesi",
+			"name_key": "REVIEWER_PAZARLAMA_GAZETESI"
+		},
+		{
+			"id": "kreatif_blog",
+			"name_key": "REVIEWER_KREATIF_BLOG"
+		},
+		{
+			"id": "musteri",
+			"name_key": "REVIEWER_MUSTERI"
+		}
 	],
 	"review_spread": 0.6,
 	"review_bands": [
-		{ "min": 1.0, "keys": ["REV_BAND1_A", "REV_BAND1_B"] },
-		{ "min": 3.5, "keys": ["REV_BAND2_A", "REV_BAND2_B"] },
-		{ "min": 5.5, "keys": ["REV_BAND3_A", "REV_BAND3_B"] },
-		{ "min": 7.0, "keys": ["REV_BAND4_A", "REV_BAND4_B"] },
-		{ "min": 8.5, "keys": ["REV_BAND5_A", "REV_BAND5_B"] }
+		{
+			"min": 1,
+			"keys": [
+				"REV_BAND1_A",
+				"REV_BAND1_B"
+			]
+		},
+		{
+			"min": 3.5,
+			"keys": [
+				"REV_BAND2_A",
+				"REV_BAND2_B"
+			]
+		},
+		{
+			"min": 5.5,
+			"keys": [
+				"REV_BAND3_A",
+				"REV_BAND3_B"
+			]
+		},
+		{
+			"min": 7,
+			"keys": [
+				"REV_BAND4_A",
+				"REV_BAND4_B"
+			]
+		},
+		{
+			"min": 8.5,
+			"keys": [
+				"REV_BAND5_A",
+				"REV_BAND5_B"
+			]
+		}
 	]
 }

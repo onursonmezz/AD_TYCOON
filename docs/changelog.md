@@ -1,5 +1,10 @@
 # Değişiklik günlüğü
 
+## Rapor açıklamaları (2026-11-03, playtest geri bildirimi)
+- "Neden bu puan?" bölümü artık iş miktarını da söylüyor: emek dönem beklentisinin çok altındaysa "daha büyük ekip / uzmanlar / daha uzun iş gerekir" satırı çıkıyor.
+- Müşteri memnuniyeti değişimi kalem kalem gösteriliyor (puan ve beklenti, KPI, gecikme, account, riskler, skandal).
+- Nasıl test ederim: Ekipsiz, kısa süreli bir işi iyi kombinasyonla yap; raporda yeşil uyum satırlarının yanında kırmızı "emek az kaldı" satırını ve memnuniyetin altındaki dökümü gör.
+
 ## M4-B — Kanal seçenekleri ve influencer (2026-10-31)
 
 ### Eklenenler

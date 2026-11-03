@@ -287,10 +287,17 @@ func _finish(camp: Dictionary) -> void:
 		if bonus > 0.0:
 			economy.invoice(state, client, bonus, bonus)
 		var team: Array = setup.get("team", [])
-		var delta: float = clients.satisfaction_delta(client, score, ratio, setup["tone"], year,
+		var parts: Dictionary = clients.satisfaction_parts(client, score, ratio, setup["tone"], year,
 			staff_life.account_bonus(state, team), int(setup.get("late_weeks", 0)),
 			float(setup.get("production_margin", 0.0)) < 0.0)
-		delta += float(setup.get("option_satisfaction", 0.0)) + float(camp.get("scandal", {}).get("satisfaction", 0.0))
+		parts["risks"] = float(setup.get("option_satisfaction", 0.0))
+		parts["scandal"] = float(camp.get("scandal", {}).get("satisfaction", 0.0))
+		parts["expectation"] = clients.expectation(client, year)
+		var delta: float = 0.0
+		for key: String in parts:
+			if key != "expectation":
+				delta += float(parts[key])
+		camp["satisfaction_parts"] = parts
 		camp["satisfaction_delta"] = delta
 		clients.apply_result(client, camp["id"], score, setup["objective"], year, delta)
 	_apply_reputation(score, setup["size"])

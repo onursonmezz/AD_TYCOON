@@ -21,7 +21,15 @@ static func metrics(report: Dictionary) -> Dictionary:
 	return {"sh": comb["sh"], "sk": comb["sk"], "kn": comb["kn"], "tone": comb["tone"], "m": comb["m"],
 		"f": report["focus"]["f"], "b": bal["b"], "sk_vs_ideal": float(bal["ratio"]) / maxf(0.0001, float(bal["ideal"])),
 		"n": report["novelty"]["n"], "fragmentation": report["synergy"]["fragmentation"],
-		"synergy_pairs": (report["synergy"]["pairs"] as Array).size(), "errors": report["errors"]}
+		"synergy_pairs": (report["synergy"]["pairs"] as Array).size(), "errors": report["errors"],
+		"volume": volume_ratio(report)}
+
+
+## İş miktarı: ekibin ürettiği ham emek (S+K+T, çarpanlardan önce) / dönem beklentisi (GDD 7.9 hedef puan).
+## Kalite çarpanları ne kadar iyi olursa olsun, bu oran düşükse puan düşük kalır.
+static func volume_ratio(report: Dictionary) -> float:
+	var points: float = float(report["s"]) + float(report["k"]) + float(report["t"])
+	return points / maxf(1.0, float(report["target"]))
 
 
 static func _compare(a: float, op: String, b: float) -> bool:

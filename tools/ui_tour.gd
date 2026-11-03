@@ -54,6 +54,12 @@ func _run() -> void:
 		GameState.step_day()
 	await get_tree().create_timer(2.0).timeout
 	await _shot("06_report")
+	var scrolls: Array[Node] = screen.find_children("*", "ScrollContainer", true, false)
+	for sc: Node in scrolls:
+		if (sc as ScrollContainer).is_visible_in_tree() and sc.get_parent() is PanelContainer \
+				and sc.get_parent().get_parent() is CenterContainer:
+			(sc as ScrollContainer).scroll_vertical = 100000
+	await _shot("06b_report_bottom")
 	for child: Node in screen.get_children():
 		if child.get_child_count() > 0 and child.get_child(0) is ReportDialog:
 			child.get_child(0).queue_free()

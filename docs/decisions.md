@@ -296,6 +296,14 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - Sessiz kal: memnuniyet −8, itibar −2.
   - Açıklama yap: ekipteki en iyi iletişim statıyla zar atılır; başarıda −2, başarısızlıkta −10.
 
+## K-046 · 2026-11-03 · Kabul · Orgo playtest'i
+**Konu:** Rapor "neden bu puan?" sorusunu tam cevaplamıyordu (GDD Sütun 1).
+**Durum:** Oyuncu bütün uyumları doğru yaptı, rapor sadece yeşil satırlar gösterdi ama puan 5.4 geldi. Sebep iş miktarıydı: ekibin ürettiği emek (66 puan) dönem beklentisinin (130) %51'iydi. Baskı gecikmesi puanı değil memnuniyeti etkilemişti, rapor bunu da ayırmıyordu.
+**Karar:**
+- "Neden bu puan?" bölümüne iş miktarı satırı eklendi: emek / dönem beklentisi ≤ 0.6 ise olumsuz, ≥ 0.85 ise olumlu satır (`report_lines.json`, metrik `volume`).
+- Memnuniyet değişimi 6.4 formülünün kalemleriyle gösteriliyor: kalite (puan ve beklenti), KPI, zamanlama, bütçe, revizyon, account, cesur eşleşme, kanal riskleri, skandal.
+- Formüller değişmedi; yalnızca açıklama eklendi.
+
 ---
 
 ## M4-B denge sonucu (200 koşu × 10 yıl)
