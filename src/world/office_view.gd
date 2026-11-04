@@ -32,6 +32,10 @@ func _init() -> void:
 	add_child(_viewport)
 	world = OfficeWorld.new()
 	_viewport.add_child(world)
+	# Kenar kararması (G1): 3D görüntünün üstünde, tıklamaları geçirir.
+	var vignette: ColorRect = WorldLook.make_vignette()
+	add_child(vignette)
+	vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
 func _gui_input(event: InputEvent) -> void:

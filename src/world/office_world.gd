@@ -1,19 +1,12 @@
 class_name OfficeWorld
 extends Node3D
-## 3D ofis (M6; M8 modeller): bina, odalar, çalışan kapsülleri ve baloncuklar. Eşyalar, sokak ve kampanya
-## görselleri OfficeDressing'de; model yoksa gri kutu.
+## 3D ofis (M6; M8 modeller; G1 görünüş): bina, odalar, çalışanlar ve baloncuklar. Eşyalar, sokak ve kampanya
+## görselleri OfficeDressing'de; ışık, ortam, duvar ve zemin görünüşü WorldLook'ta (data/look.json).
 ## Simülasyona yalnızca okuma ile bağlanır (GameState.sim.state + EventBus); hiçbir şeyi değiştirmez (GDD 24).
 
-const OUTER_WALL_HEIGHT: float = 2.6
-const CUT_WALL_HEIGHT: float = 0.35
-const PARTITION_HEIGHT: float = 1.3
-const WALL_THICKNESS: float = 0.15
+## Duvar kalınlığı: posterler (OfficeDressing) duvarın iç yüzüne bunu kullanarak oturur.
+const WALL_THICKNESS: float = 0.18
 const BUBBLE_CHANCE: float = 0.45
-const FLOOR_COLORS: Dictionary = {
-	"work": Color(0.86, 0.78, 0.64), "meeting": Color(0.62, 0.72, 0.62), "kitchen": Color(0.86, 0.66, 0.58),
-	"lounge": Color(0.9, 0.8, 0.55), "empty": Color(0.8, 0.79, 0.76), "brainstorm": Color(0.75, 0.82, 0.88),
-	"award_lobby": Color(0.92, 0.85, 0.62), "rd_lab": Color(0.7, 0.78, 0.86), "studio": Color(0.6, 0.6, 0.66),
-}
 const BUBBLES: Array[Array] = [["S", Color(0.24, 0.55, 0.32)], ["K", Color(0.9, 0.5, 0.2)], ["T", Color(0.25, 0.45, 0.85)]]
 
 var rig: CameraRig
@@ -34,21 +27,9 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
 func _ready() -> void:
-	var env: WorldEnvironment = WorldEnvironment.new()
-	var e: Environment = Environment.new()
-	e.background_mode = Environment.BG_COLOR
-	e.background_color = UiUtil.CREAM
-	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	e.ambient_light_color = Color(1.0, 0.95, 0.88)
-	e.ambient_light_energy = 0.55
-	env.environment = e
-	add_child(env)
-	var sun: DirectionalLight3D = DirectionalLight3D.new()
-	sun.light_color = Color(1.0, 0.9, 0.75)
-	sun.light_energy = 1.1
-	sun.shadow_enabled = true
-	sun.rotation_degrees = Vector3(-55.0, 35.0, 0.0)
-	add_child(sun)
+	add_child(WorldLook.make_environment())
+	add_child(WorldLook.make_sun())
+	add_child(WorldLook.make_fill())
 	rig = CameraRig.new()
 	add_child(rig)
 	rig.yaw_changed.connect(func(_y: float) -> void: _update_cut())
@@ -77,21 +58,17 @@ func _build(level: int) -> void:
 	_building = Node3D.new()
 	add_child(_building)
 	layout = GameState.sim.build.layout(GameState.sim.state)
-	_box(Vector3(layout.size.x * 0.5, -0.06, layout.size.y * 0.5), Vector3(layout.size.x + 16.0, 0.1, layout.size.y + 18.0),
-		Color(0.7, 0.78, 0.6))
+	var look: Dictionary = WorldLook.cfg()
+	var margin: Array = look["ground"]["margin"]
+	var ground: MeshInstance3D = _box(Vector3(layout.size.x * 0.5, -0.06, layout.size.y * 0.5),
+		Vector3(layout.size.x + float(margin[0]), 0.1, layout.size.y + float(margin[1])), Color.WHITE)
+	ground.material_override = WorldLook.ground_material()
 	for room: Dictionary in layout.rooms:
 		var r: Rect2 = room["rect"]
-		_box(Vector3(r.get_center().x, 0.0, r.get_center().y), Vector3(r.size.x, 0.04, r.size.y), FLOOR_COLORS[room["type"]])
-	for w: Dictionary in layout.walls:
-		var a: Vector2 = w["a"]
-		var b: Vector2 = w["b"]
-		var mid: Vector2 = (a + b) * 0.5
-		var horizontal: bool = is_equal_approx(a.y, b.y)
-		var length: float = a.distance_to(b)
-		var height: float = OUTER_WALL_HEIGHT if bool(w["outer"]) else PARTITION_HEIGHT
-		var size: Vector3 = Vector3(length, height, WALL_THICKNESS) if horizontal else Vector3(WALL_THICKNESS, height, length)
-		var mesh: MeshInstance3D = _box(Vector3(mid.x, height * 0.5, mid.y), size, Color(0.96, 0.94, 0.89))
-		_walls.append({"mesh": mesh, "side": w["side"], "outer": w["outer"], "height": height, "mid": mid, "length": length})
+		var floor: MeshInstance3D = _box(Vector3(r.get_center().x, 0.0, r.get_center().y), Vector3(r.size.x, 0.04, r.size.y), Color.WHITE)
+		floor.material_override = WorldLook.floor_material(room["type"])
+	for seg: Dictionary in WorldLook.wall_segments(layout):
+		_walls.append(_wall(seg))
 	_dressing = OfficeDressing.new()
 	_dressing.build(_building, layout, GameState.sim.state, _walls)
 	if moved:
@@ -99,22 +76,60 @@ func _build(level: int) -> void:
 	_update_cut()
 
 
+## Bir duvar parçası: gövde (odanın rengi) + üstte yuvarlak uçlu ahşap pervaz; kesilince ikisi birlikte alçalır.
+func _wall(seg: Dictionary) -> Dictionary:
+	var w: Dictionary = WorldLook.cfg()["walls"]
+	var a: Vector2 = seg["a"]
+	var b: Vector2 = seg["b"]
+	var mid: Vector2 = (a + b) * 0.5
+	var length: float = a.distance_to(b)
+	var height: float = float(seg["height"])
+	var holder: Node3D = Node3D.new()
+	holder.position = Vector3(mid.x, 0.0, mid.y)
+	holder.rotation.y = -atan2(b.y - a.y, b.x - a.x)
+	_building.add_child(holder)
+	var body: MeshInstance3D = OfficeDressing.box(holder, Vector3(0, height * 0.5, 0), Vector3(length + 0.02, height, WALL_THICKNESS),
+		WorldLook.wall_color(layout, seg))
+	var trim: Node3D = Node3D.new()
+	holder.add_child(trim)
+	var tw: float = float(w["trim_width"])
+	var th: float = float(w["trim_height"])
+	var trim_color: Color = WorldLook.col(w["trim_color"])
+	OfficeDressing.box(trim, Vector3(0, th * 0.5, 0), Vector3(length, th, tw), trim_color)
+	for end: float in [-0.5, 0.5]:
+		var cap: MeshInstance3D = MeshInstance3D.new()
+		var cyl: CylinderMesh = CylinderMesh.new()
+		cyl.top_radius = tw * 0.5
+		cyl.bottom_radius = tw * 0.5
+		cyl.height = th
+		cyl.radial_segments = 16
+		cap.mesh = cyl
+		cap.material_override = (trim.get_child(0) as MeshInstance3D).material_override
+		cap.position = Vector3(length * end, th * 0.5, 0)
+		trim.add_child(cap)
+	trim.position.y = height
+	return {"mesh": body, "trim": trim, "side": seg["side"], "outer": seg["outer"], "height": height, "mid": mid,
+		"length": length}
+
+
 func _box(pos: Vector3, size: Vector3, color: Color) -> MeshInstance3D:
 	return OfficeDressing.box(_building, pos, size, color)
 
 
-## Dollhouse görünümü (21.1): kameraya bakan dış duvarlar alçalır.
+## Dollhouse görünümü (21.1): kameraya bakan dış duvarlar diz hizasına iner, pervaz da onlarla iner.
 func _update_cut() -> void:
 	if rig == null:
 		return
+	var cut_h: float = float(WorldLook.cfg()["walls"]["cut_height"])
 	var view: Vector2 = rig.view_dir()
 	var normals: Dictionary = {"n": Vector2(0, -1), "s": Vector2(0, 1), "w": Vector2(-1, 0), "e": Vector2(1, 0)}
 	for w: Dictionary in _walls:
 		var mesh: MeshInstance3D = w["mesh"]
 		var cut: bool = bool(w["outer"]) and (normals[w["side"]] as Vector2).dot(view) > 0.1
-		var h: float = CUT_WALL_HEIGHT if cut else float(w["height"])
+		var h: float = cut_h if cut else float(w["height"])
 		(mesh.mesh as BoxMesh).size.y = h
 		mesh.position.y = h * 0.5
+		(w["trim"] as Node3D).position.y = h
 		if w.has("poster") and is_instance_valid(w["poster"]):
 			(w["poster"] as Node3D).visible = not cut
 

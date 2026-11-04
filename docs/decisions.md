@@ -762,6 +762,30 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - 30 yılda puan 21. yıldan sonra düşüyor (Y30 3.38).
 - Öneriler ve deneme sonuçları: `docs/balance-report.md` → "Öneriler".
 
+
+## K-077 · 2026-11-05 · Kabul · Orgo kararı + uygulama (görsel yenileme planı; G1 ışık ve atmosfer)
+**Konu:** Leafy Corner referanslı görsel yenileme (`docs/art-direction.md`).
+**Karar:**
+- **Sıra:** G1 ışık ve atmosfer → G2 UI kiti → G3 Blender ile basit objeler. M10 denge önerileri (Ö1–Ö5) bu sırada bekliyor.
+- **Görünüş ayarları veri dosyasında:** `data/look.json` (ortam, güneş, dolgu ışığı, kamera, vinyet, duvarlar, zeminler, oda duvar renkleri, çimen). Kod `src/world/world_look.gd`.
+- **Işık:**
+  - ACES ton eşleme (pozlama 0.92), SSAO (yoğunluk 3.2), SSIL, glow (soft light).
+  - Sıcak güneş (enerji 1.7, −44°) ve gölgesiz soğuk dolgu ışığı.
+  - Gölge atlası 8192, yumuşak filtre en yüksek kalite. Basamaklı gölge kenarları bununla gitti.
+- **Kamera:** −50° bakış, 30° görüş açısı. Uzak alan derinliği kamera mesafesine göre güncellenir (tilt-shift). 3D görüntünün üstünde hafif vinyet.
+- **Duvarlar:**
+  - Kesik duvar 0.65 m (önce 0.35 m).
+  - Her duvar parçasının üstünde yuvarlak uçlu ahşap pervaz var; kesilince duvarla birlikte iner.
+  - Bina köşeleri 0.5 m yarıçaplı, 6 parçalı çeyrek yaylarla döner.
+  - Dış duvarın iç rengi yanındaki odanın türünden gelir (çalışma alanı adaçayı, lounge terrakota, toplantı krem…).
+- **Zeminler:** Kodla üretilen desen dokuları, dünya koordinatına göre: tahta (parke), karo, halı, beton. Çimen dikişsiz gürültü dokusu (FastNoiseLite).
+- **Araç:** `tools/screenshot.tscn`. Sabit tohumlu örnek ajans (2005, ofis 2, 7 çalışan); 3 dünya açısı ve 2 arayüz görüntüsü `docs/screenshots/` altına. Depoda yalnızca "önce" (00) ve son (01_g1) görüntüleri tutulur.
+- **Referansla kalan farklar (sonraki adımlar):**
+  - Eşyalar hâlâ renkli kutu (G3 ve modeller).
+  - Çevrede bina cephesi, çit, çiçek yok.
+  - Duvar kâğıdı deseni yok.
+  - Ana ekranda 3D, iki yan panelin arasına sıkışık; referanstaki gibi tam ekran ofis ve üstünde yüzen arayüz G2'de.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

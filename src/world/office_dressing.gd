@@ -205,7 +205,7 @@ func _poster_walls(state: SimState, awarded: Dictionary, kv: Dictionary) -> void
 		var spec: Dictionary = KeyVisual.spec(DataDB.data, camps[i], awarded)
 		var holder: Node3D = Node3D.new()
 		var mid: Vector2 = w["mid"]
-		var pos: Vector2 = mid + inward * (OfficeWorld.WALL_THICKNESS * 0.5 + 0.02)
+		var pos: Vector2 = mid + inward * (OfficeWorld.WALL_THICKNESS * 0.5 + 0.03)
 		holder.position = Vector3(pos.x, float(cfg["center_height"]), pos.y)
 		holder.rotation.y = atan2(inward.x, inward.y)
 		var frame_color: Color = color_of(cfg["award_frame"] if not str(spec["award"]).is_empty() else cfg["frame"])

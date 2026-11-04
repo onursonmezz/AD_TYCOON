@@ -1,5 +1,23 @@
 # Değişiklik günlüğü
 
+## G1: Işık ve atmosfer (2026-11-05)
+- **Ofis artık sıcak bir öğleden sonra ışığında:** yumuşak ama belirgin gölgeler, köşelerde ve eşya diplerinde ortam gölgelemesi, sıcak renkler, hafif parlama.
+- **Kamera** biraz daha yukarıdan bakıyor (−50°). Uzak kenarlar hafif bulanık (tilt-shift); ekran kenarlarında hafif kararma var.
+- **Duvarlar:**
+  - Kameraya bakan duvarlar diz hizasına iniyor.
+  - Bütün duvarların üstünde yuvarlak uçlu ahşap pervaz var.
+  - Bina köşeleri kavisli.
+  - Duvarların iç rengi odaya göre değişiyor (çalışma alanı adaçayı yeşili, lounge terrakota…).
+- **Zeminler desenli:** çalışma alanında parke, mutfakta karo, toplantıda halı. Çimen dokulu.
+- **Ayarlar veri dosyasında:** `data/look.json`. Işık, renk ve duvar ölçüleriyle kod değiştirmeden oynayabilirsin.
+- **Görsel karşılaştırma aracı:** `tools/screenshot.tscn`. Örnek bir ajansı sabit açılardan çekip `docs/screenshots/` altına kaydeder.
+- Nasıl test ederim:
+  1. Oyunu aç ve bir oyun başlat: ofis sıcak ışıkta, gölgeli ve desenli zeminli görünür.
+  2. Q/E ile döndür: kameraya bakan duvarlar diz hizasına iner, pervaz da onlarla iner.
+  3. `docs/screenshots/00_before_world_default.png` ile `01_g1_world_default.png`'yi yan yana aç.
+  4. İstersen `data/look.json`'da `"sun"` → `"energy"` değerini değiştir, oyunu yeniden aç ve farkı gör.
+
+
 ## M10-A: Kredi, dört bot ve denge raporu (2026-11-04)
 - **Banka kredisi** (Finans ekranı):
   - Ofisine ve itibarına göre bir üst sınıra kadar kredi çekebilirsin. Vade 6, 12 ya da 24 ay; yıllık %24 faiz, eşit aylık taksit.

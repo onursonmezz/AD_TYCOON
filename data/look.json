@@ -1,0 +1,43 @@
+{
+	"environment": {
+		"background": [0.25, 0.36, 0.24],
+		"ambient_color": [0.6, 0.72, 0.66], "ambient_energy": 0.38,
+		"tonemap": "aces", "exposure": 0.92, "white": 5.0,
+		"ssao": { "enabled": true, "radius": 1.4, "intensity": 3.2, "power": 2.0, "detail": 0.8 },
+		"ssil": { "enabled": true, "radius": 3.0, "intensity": 0.8 },
+		"glow": { "enabled": true, "intensity": 0.45, "strength": 1.0, "bloom": 0.02, "hdr_threshold": 1.0 },
+		"adjustments": { "brightness": 0.97, "contrast": 1.12, "saturation": 1.05 }
+	},
+	"sun": {
+		"color": [1.0, 0.86, 0.66], "energy": 1.7, "pitch": -44.0, "yaw": 32.0,
+		"shadow_blur": 2.5, "shadow_max_distance": 45.0, "shadow_bias": 0.03
+	},
+	"fill": { "color": [0.75, 0.85, 1.0], "energy": 0.25, "pitch": -35.0, "yaw": -140.0 },
+	"camera": { "pitch": -50.0, "fov": 30.0,
+		"dof_far": { "enabled": true, "distance_factor": 1.05, "transition_factor": 0.6, "amount": 0.07 },
+		"dof_near": { "enabled": false, "distance": 2.0, "transition": 1.0 } },
+	"vignette": { "strength": 0.28, "radius": 0.85 },
+	"walls": {
+		"outer_height": 2.6, "partition_height": 1.3, "cut_height": 0.65, "thickness": 0.18,
+		"trim_width": 0.32, "trim_height": 0.1, "corner_radius": 0.5,
+		"color": [0.94, 0.9, 0.82], "trim_color": [0.62, 0.45, 0.28], "outer_color": [0.83, 0.71, 0.55],
+		"baseboard_height": 0.12, "baseboard_color": [0.55, 0.42, 0.3]
+	},
+	"floors": {
+		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks" },
+		"meeting": { "color": [0.47, 0.6, 0.5], "pattern": "carpet" },
+		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles" },
+		"lounge": { "color": [0.55, 0.38, 0.24], "pattern": "planks" },
+		"empty": { "color": [0.62, 0.6, 0.58], "pattern": "concrete" },
+		"brainstorm": { "color": [0.56, 0.66, 0.72], "pattern": "carpet" },
+		"award_lobby": { "color": [0.83, 0.72, 0.48], "pattern": "planks" },
+		"rd_lab": { "color": [0.74, 0.78, 0.8], "pattern": "tiles" },
+		"studio": { "color": [0.3, 0.31, 0.34], "pattern": "concrete" }
+	},
+	"walls_by_room": {
+		"work": [0.31, 0.48, 0.36], "meeting": [0.94, 0.9, 0.82], "kitchen": [0.93, 0.88, 0.78], "lounge": [0.79, 0.45, 0.35],
+		"empty": [0.86, 0.84, 0.8], "brainstorm": [0.36, 0.5, 0.62], "award_lobby": [0.85, 0.7, 0.42], "rd_lab": [0.9, 0.92, 0.9],
+		"studio": [0.25, 0.26, 0.3]
+	},
+	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "margin": [16.0, 18.0] }
+}

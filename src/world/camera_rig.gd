@@ -31,7 +31,7 @@ func _init() -> void:
 	_yaw_node = Node3D.new()
 	add_child(_yaw_node)
 	camera = Camera3D.new()
-	camera.fov = FOV
+	camera.fov = float(WorldLook.cfg()["camera"]["fov"]) if DataDB.is_ok() else FOV
 	camera.current = true
 	_yaw_node.add_child(camera)
 	_yaw_node.rotation_degrees.y = 45.0
@@ -85,6 +85,14 @@ func _process(delta: float) -> void:
 
 
 func _place_camera() -> void:
-	var pitch: float = deg_to_rad(-PITCH_DEG)
+	var pitch_deg: float = _pitch()
+	var pitch: float = deg_to_rad(-pitch_deg)
 	camera.position = Vector3(0.0, sin(pitch) * _distance, cos(pitch) * _distance)
-	camera.rotation_degrees.x = PITCH_DEG
+	camera.rotation_degrees.x = pitch_deg
+	if DataDB.is_ok():
+		WorldLook.apply_camera(camera, _distance)
+
+
+## Bakış açısı ve görüş açısı data/look.json'dan (G1); veri yoksa sabitler.
+func _pitch() -> float:
+	return float(WorldLook.cfg()["camera"]["pitch"]) if DataDB.is_ok() else PITCH_DEG
