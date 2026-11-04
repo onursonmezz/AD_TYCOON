@@ -13,7 +13,7 @@ func _init(emp_id: String, on_open_team: Callable) -> void:
 
 
 func _ready() -> void:
-	add_theme_stylebox_override("panel", UiUtil.card().get_theme_stylebox("panel"))
+	add_theme_stylebox_override("panel", UiTheme.panel_box())
 	custom_minimum_size = Vector2(280.0, 0.0)
 	var col: VBoxContainer = UiUtil.vbox(4)
 	add_child(col)

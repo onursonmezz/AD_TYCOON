@@ -786,6 +786,18 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - Duvar kâğıdı deseni yok.
   - Ana ekranda 3D, iki yan panelin arasına sıkışık; referanstaki gibi tam ekran ofis ve üstünde yüzen arayüz G2'de.
 
+## K-078 · 2026-11-05 · Kabul · Orgo kararı + uygulama (G2 UI kiti)
+**Konu:** Arayüzün şekil dili, fontlar, ikonlar ve ana ekran yerleşimi (`docs/art-direction.md` 8–10).
+**Karar:**
+- **Tema kodla üretilir:** `src/ui/theme/ui_theme.gd` (`UiTheme`) renkleri ve stilleri tanımlar. `tools/build_theme.gd` bunu proje teması `src/ui/theme/main_theme.tres` olarak kaydeder. Renk ya da ölçü değişince bu araç yeniden çalıştırılır; `.tres` elle düzenlenmez.
+- **Palet:** adaçayı-krem paneller (#CDE8C7 / #E4F3DF), koyu yeşil çerçeve (#3F6B52), hap düğmeler: kabul yeşil, bekle gri, reddet kırmızı. Para rozeti altın, itibar rozeti yeşil.
+- **Şekil:** büyük yarıçaplı (22), kalın çerçeveli, gölgeli paneller. İç içe kalın çerçeve olmasın diye liste kartları çerçevesiz açık zemin (`CardLight`); çerçeveli panel yalnız dış pencerede (`UiUtil.panel()`).
+- **Fontlar:** başlıklar Fredoka, gövde Nunito (ikisi de OFL, `assets/fonts/`). Değişken fontlar `FontVariation` ile kalınlaştırılır.
+- **İkonlar:** Tabler Icons (MIT), `assets/icons/ui/*.svg`. Çalışırken `Image.load_svg_from_string` ile istenen boyutta çizilir ve önbelleğe alınır; bu yüzden **Windows dışa aktarımında `*.svg` dosyaları "dahil edilecek dosyalar" filtresine eklenmeli** (M10-C).
+- **Ana ekran:** 3D ofis tam ekran. Sol: dikey ikon çubuğu (kırmızı noktalı sayaçlar). Sol alt: kaydet, yükle, ayarlar, ana menü. Sağ üst: para ve itibar rozetleri, altında solan bildirim kartları (en fazla 4, 7 sn). Sağ alt: tarih hapı ve hız grubu. Ekranlar sol tarafta yüzen pencerede açılır, sağ üst köşesinde kırmızı kapatma düğmesi var. İnşa çubuğu alt HUD'un üstünde, tam genişlikte.
+- **Animasyon:** pencereler 0.25 sn'de ölçek 0.86→1 ve saydamlıkla açılır (`UiUtil.pop_in`); para ve itibar eski değerden yenisine sayar, daire bir kez nabız atar (`CountBadge`); para değişimi rozetin solunda beyaz yazı + renkli konturla yukarı süzülür.
+- **Vitrin:** `tools/ui_kit_demo.tscn` bütün bileşenleri tek ekranda gösterir.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

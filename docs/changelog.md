@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## G2: Yeni arayüz (2026-11-05)
+- **Ofis artık tam ekran;** arayüz onun üstünde yüzüyor:
+  - Solda dikey ikon çubuğu. Gelen kutusu ve kampanya ikonlarında kırmızı sayaç noktası var.
+  - Sol altta kaydet, yükle, ayarlar ve ana menü.
+  - Sağ üstte para ve itibar rozetleri, altında birkaç saniye sonra solan bildirim kartları.
+  - Sağ altta tarih ve hız düğmeleri.
+- **Ekranlar** sol tarafta yuvarlak köşeli, çerçeveli bir pencerede açılır; sağ üst köşedeki kırmızı ✕ ile kapanır.
+- **Yeni görünüş:** adaçayı-krem paneller, hap düğmeler (kabul yeşil, bekle gri, reddet kırmızı), Fredoka başlıklar, Nunito gövde metni, Tabler ikonları.
+- **Canlılık:** pencereler hafif zıplayarak açılır, düğmeler üstüne gelince büyür, para ve itibar sayarak değişir, para değişimi rozetin yanından yukarı süzülür.
+- **UI kiti vitrini:** `tools/ui_kit_demo.tscn`. Bütün bileşenleri tek ekranda görürsün.
+- Nasıl test ederim:
+  1. Oyunu aç, yeni oyun başlat: ofis tam ekran, kenarlarda yüzen arayüz.
+  2. Sol çubuktaki ikonlara tıkla: pencere zıplayarak açılır, kırmızı ✕ kapatır. Üstüne gelince ikonun adı çıkar.
+  3. Bir kampanya bitir: para rozeti sayarak artar, yanından "+₺…" süzülür; sağda bildirim kartı belirip solar.
+  4. Sağ alttaki hız düğmeleriyle oyunu durdur ve hızlandır.
+  5. Ofis ekranından inşa moduna gir: inşa çubuğu altta, tarih düğmelerinin üstünde açılır.
+  6. Editörde `tools/ui_kit_demo.tscn`'yi aç ve F6 ile çalıştır: bütün bileşenler ve "Pencere aç" animasyonu.
+  7. `docs/screenshots/01_g1_ui_panel.png` ile `02_g2_ui_panel.png`'yi karşılaştır.
+
 ## G1: Işık ve atmosfer (2026-11-05)
 - **Ofis artık sıcak bir öğleden sonra ışığında:** yumuşak ama belirgin gölgeler, köşelerde ve eşya diplerinde ortam gölgelemesi, sıcak renkler, hafif parlama.
 - **Kamera** biraz daha yukarıdan bakıyor (−50°). Uzak kenarlar hafif bulanık (tilt-shift); ekran kenarlarında hafif kararma var.

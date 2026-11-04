@@ -13,16 +13,20 @@ static func cash_fly(anchor: Control, delta: float, year: int) -> void:
 	var min_amount: float = float(_cfg()["cash_fly_min_1990"]) * Economy.inflation(DataDB.data, year)
 	if absf(delta) < min_amount or not anchor.is_inside_tree():
 		return
-	var l: Label = UiUtil.label(("+" if delta > 0.0 else "−") + UiUtil.money(absf(delta)), 18,
-		UiUtil.SAGE_DARK if delta > 0.0 else UiUtil.TERRACOTTA)
+	var l: Label = UiUtil.label(("+" if delta > 0.0 else "−") + UiUtil.money(absf(delta)), 22, Color.WHITE)
 	l.top_level = true
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	l.add_theme_font_override("font", UiUtil.head_font())
+	# Rozetlerdeki gibi beyaz yazı + renkli kontur: artış yeşil, azalış kırmızı.
+	l.add_theme_color_override("font_outline_color", UiUtil.SAGE_DARK if delta > 0.0 else UiUtil.TERRACOTTA)
+	l.add_theme_constant_override("outline_size", 8)
+	l.z_index = 10
 	anchor.add_child(l)
-	# Nakdin hemen altından başlayıp aşağı süzülür (yanındaki tarihi örtmesin).
-	l.global_position = anchor.global_position + Vector2(0.0, anchor.size.y + 2.0)
+	# Rozetin solunda başlayıp yukarı süzülür (altındaki bildirimleri örtmesin).
+	l.global_position = anchor.global_position + Vector2(-l.get_minimum_size().x - 6.0, anchor.size.y * 0.25)
 	var secs: float = float(_cfg()["cash_fly_seconds"])
 	var t: Tween = l.create_tween().set_parallel(true)
-	t.tween_property(l, "global_position:y", l.global_position.y + 28.0, secs).set_ease(Tween.EASE_OUT)
+	t.tween_property(l, "global_position:y", l.global_position.y - 24.0, secs).set_ease(Tween.EASE_OUT)
 	t.tween_property(l, "modulate:a", 0.0, secs).set_delay(secs * 0.4)
 	t.chain().tween_callback(l.queue_free)
 	if delta > 0.0:

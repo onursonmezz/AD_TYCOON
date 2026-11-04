@@ -1,15 +1,22 @@
 extends Control
-## Oyun ekranı (GDD 20, M2 sade sürüm): üst bar, sol menü, içerik paneli, bildirim akışı, modal pencereler.
+## Oyun ekranı (GDD 20; G2 düzeni, art-direction 8): 3D ofis tam ekran; üstünde yüzen arayüz: sol ikon çubuğu,
+## sol alt oyun düğmeleri, sağ üst para/itibar rozetleri ve bildirimler, sağ alt tarih ve hız; menü ekranları
+## soldan açılan yüzen pencere; modal pencereler en üstte.
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
-const WINDOW_MARGIN: float = 14.0
+const WINDOW_MARGIN: float = 20.0
+## Sol ikon çubuğunun genişliği + boşluk: pencere, çalışan kartı ve inşa çubuğu bunun sağından başlar.
+const LEFT_GUTTER: float = 92.0
+const BUILD_BAR_BOTTOM: float = 130.0  # alt HUD (tarih + hız) yüksekliği ve boşluk
+const MENU_ICONS: Dictionary = {"inbox": "inbox", "clients": "users", "campaign": "speakerphone", "team": "users-group",
+	"office": "building", "tools": "tool", "research": "flask", "finance": "coins", "industry": "trophy", "history": "chart-bar"}
 
-var _cash: Label
+var _cash: CountBadge
+var _rep: CountBadge
 var _date: Label
-var _rep: Label
 var _speed_buttons: Array[Button] = []
 var _pause_button: Button
-var _overtime: CheckButton
+var _overtime: Button
 var _content: VBoxContainer
 var _window: PanelContainer
 var _office: OfficeView
@@ -17,12 +24,13 @@ var _employee_card: EmployeeCard = null
 var _build_bar: BuildToolbar = null
 var _feed: VBoxContainer
 var _menu_buttons: Dictionary = {}
+var _menu_dots: Dictionary = {}
 var _panel: Control = null
 var _panel_id: String = ""
 var _modal_layer: Control
 var _modal_open: bool = false
 var _last_cash: float = NAN
-var _save_button: MenuButton
+var _save_button: Button
 var _tutorial: Tutorial
 
 
@@ -54,122 +62,81 @@ func _ready() -> void:
 
 
 func _build() -> void:
-	var bg: ColorRect = ColorRect.new()
-	bg.color = UiUtil.CREAM
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
-	var margin: MarginContainer = MarginContainer.new()
-	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	for side: String in ["left", "top", "right", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 12)
-	add_child(margin)
-	var root: VBoxContainer = UiUtil.vbox(10)
-	margin.add_child(root)
-	root.add_child(_build_top_bar())
-	var body: HBoxContainer = UiUtil.hbox(12)
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_child(body)
-	body.add_child(_build_menu())
-	body.add_child(_build_center())
-	var feed_card: PanelContainer = UiUtil.card()
-	feed_card.custom_minimum_size.x = 260.0
-	var feed_col: VBoxContainer = UiUtil.vbox(6)
-	feed_col.add_child(UiUtil.label(tr("UI_NOTIFICATIONS"), 18, UiUtil.SAGE_DARK))
-	_feed = UiUtil.vbox(6)
-	feed_col.add_child(_feed)
-	feed_card.add_child(feed_col)
-	body.add_child(feed_card)
+	_office = OfficeView.new()
+	add_child(_office)
+	_office.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_office.employee_clicked.connect(_on_employee_clicked)
+	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 13, UiTheme.ON_DARK)
+	hint.add_theme_color_override("font_outline_color", UiTheme.FRAME_DARK)
+	hint.add_theme_constant_override("outline_size", 4)
+	add_child(hint)
+	hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	hint.position.y -= 14.0
+	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_build_menu()
+	_save_button = MainHud.game_buttons(self)
+	var b: Dictionary = MainHud.badges(self)
+	_cash = b["cash"]
+	_rep = b["rep"]
+	_feed = b["feed"]
+	var t: Dictionary = MainHud.time_controls(self)
+	_date = t["date"]
+	_overtime = t["overtime"]
+	_pause_button = t["pause"]
+	_speed_buttons.assign(t["speeds"])
+	_build_window()
 	_modal_layer = Control.new()
 	_modal_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_modal_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_modal_layer)
 
 
-func _build_top_bar() -> PanelContainer:
-	var bar: PanelContainer = UiUtil.card()
-	var row: HBoxContainer = UiUtil.hbox(12)
-	bar.add_child(row)
-	_cash = UiUtil.label("", 20)
-	_cash.tooltip_text = tr("TIP_CASH")
-	_cash.mouse_filter = Control.MOUSE_FILTER_PASS
-	row.add_child(_cash)
-	_date = UiUtil.label("", 18, UiUtil.WOOD)
-	row.add_child(_date)
-	_rep = UiUtil.label("", 18)
-	_rep.tooltip_text = tr("TIP_REPUTATION")
-	_rep.mouse_filter = Control.MOUSE_FILTER_PASS
-	row.add_child(_rep)
-	row.add_child(UiUtil.spacer())
-	_overtime = CheckButton.new()
-	_overtime.text = tr("UI_OVERTIME")
-	_overtime.tooltip_text = tr("TIP_OVERTIME")
-	UiUtil.style_toggle(_overtime, UiUtil.TERRACOTTA)
-	_overtime.toggled.connect(func(on: bool) -> void: GameState.execute(SetOvertimeCommand.new(on)))
-	row.add_child(_overtime)
-	_pause_button = UiUtil.button("", func() -> void: Clock.toggle_pause())
-	_pause_button.tooltip_text = tr("TIP_PAUSE")
-	row.add_child(_pause_button)
-	var speeds: Array = DataDB.data.bal("time.speeds")
-	for i: int in speeds.size():
-		var b: Button = UiUtil.button("%dx" % int(speeds[i]), func() -> void: Clock.set_speed(i))
-		b.toggle_mode = true
-		b.tooltip_text = tr("TIP_SPEED") % (i + 1)
-		_speed_buttons.append(b)
-		row.add_child(b)
-	# Kaydet, Yükle, Ayarlar, Ana Menü tek düğmede (M9-C: İngilizcede üst çubuk taşıyordu).
-	var menu: MenuButton = MenuButton.new()
-	menu.text = tr("UI_GAME_MENU")
-	menu.flat = false
-	var actions: Array[Callable] = [
-		func() -> void: open_modal(SaveLoadDialog.new(true)),
-		func() -> void: open_modal(SaveLoadDialog.new(false, func() -> void: get_tree().reload_current_scene())),
-		func() -> void: open_modal(SettingsDialog.new(func() -> void: get_tree().reload_current_scene())),
-		func() -> void: _confirm_leave(_to_menu)]
-	for key: String in ["UI_SAVE", "MENU_LOAD", "UI_SETTINGS", "UI_MAIN_MENU"]:
-		menu.get_popup().add_item(tr(key))
-	menu.get_popup().id_pressed.connect(func(id: int) -> void:
-		Audio.play("click")
-		actions[id].call())
-	_save_button = menu
-	row.add_child(menu)
-	return bar
-
-
-## Orta alan (M6): 3D ofis her zaman görünür; menü ekranları üstünde kapatılabilir pencere olarak açılır.
-func _build_center() -> Control:
-	var center: Control = Control.new()
-	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	center.clip_contents = true
-	_office = OfficeView.new()
-	center.add_child(_office)
-	_office.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_office.employee_clicked.connect(_on_employee_clicked)
-	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 12, UiUtil.MUTED)
-	center.add_child(hint)
-	hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	hint.position += Vector2(WINDOW_MARGIN, -WINDOW_MARGIN)
-	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_window = UiUtil.card()
-	center.add_child(_window)
-	_window.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side: String in ["left", "top", "right", "bottom"]:
-		_window.set("offset_" + side, WINDOW_MARGIN if side in ["left", "top"] else -WINDOW_MARGIN)
+## Sol dikey ikon çubuğu (menü ekranları); üzerine gelince adı; gelen kutusu ve kampanyada sayı balonu.
+func _build_menu() -> void:
 	var col: VBoxContainer = UiUtil.vbox(6)
-	_window.add_child(col)
-	var header: HBoxContainer = UiUtil.hbox()
-	header.add_child(UiUtil.spacer())
-	var close: Button = Button.new()
-	close.text = "✕"
-	close.tooltip_text = tr("TIP_CLOSE_WINDOW")
-	close.pressed.connect(close_panel)
-	header.add_child(close)
-	col.add_child(header)
+	add_child(col)
+	col.position = Vector2(WINDOW_MARGIN, WINDOW_MARGIN)
+	for id: String in MENU_ICONS:
+		var b: Button = UiUtil.icon_button(MENU_ICONS[id], tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id), 24)
+		b.custom_minimum_size = Vector2(52, 52)
+		_menu_buttons[id] = b
+		var dot: Label = UiUtil.label("", 14, Color.WHITE)
+		dot.add_theme_font_override("font", UiUtil.head_font())
+		dot.add_theme_stylebox_override("normal", UiTheme.box(UiTheme.DECLINE, 11, 2, Color.WHITE, Vector4(6, 0, 6, 0)))
+		dot.position = Vector2(36, -6)
+		dot.visible = false
+		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(dot)
+		_menu_dots[id] = dot
+		col.add_child(b)
+
+
+## Menü ekranlarının yüzen penceresi: ikon çubuğunun sağında, ekranın yaklaşık yarısı; köşede kapatma düğmesi.
+func _build_window() -> void:
+	_window = PanelContainer.new()
+	add_child(_window)
+	_window.anchor_left = 0.0
+	_window.anchor_right = 0.5
+	_window.anchor_top = 0.0
+	_window.anchor_bottom = 1.0
+	_window.offset_left = LEFT_GUTTER
+	_window.offset_right = 120.0
+	_window.offset_top = WINDOW_MARGIN
+	_window.offset_bottom = -WINDOW_MARGIN - 70.0
 	_content = UiUtil.vbox(0)
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	col.add_child(_content)
+	_window.add_child(_content)
+	var close: Button = UiUtil.close_button(close_panel)
+	add_child(close)
+	var place: Callable = func() -> void:
+		close.position = _window.position + Vector2(_window.size.x - 30.0, -10.0)
+	_window.item_rect_changed.connect(place)
+	_window.resized.connect(place)
+	_window.visibility_changed.connect(place.call_deferred)
+	_window.visibility_changed.connect(func() -> void: close.visible = _window.visible)
 	_window.visible = false
-	return center
+	close.visible = false
 
 
 ## Pencereyi kapatır, ofis görünür.
@@ -178,6 +145,7 @@ func close_panel() -> void:
 	UiUtil.clear(_content)
 	_panel = null
 	_panel_id = ""
+	_refresh_menu_state()
 
 
 ## İnşa modu (M6-B): pencere kapanır, ofisin altında araç çubuğu açılır.
@@ -186,11 +154,12 @@ func enter_build_mode() -> void:
 	if _build_bar != null:
 		return
 	_build_bar = BuildToolbar.new(_office, exit_build_mode)
-	_office.get_parent().add_child(_build_bar)
+	add_child(_build_bar)
+	move_child(_build_bar, _modal_layer.get_index())
 	_build_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_build_bar.offset_left = WINDOW_MARGIN
+	_build_bar.offset_left = LEFT_GUTTER
 	_build_bar.offset_right = -WINDOW_MARGIN
-	_build_bar.offset_bottom = -WINDOW_MARGIN
+	_build_bar.offset_bottom = -BUILD_BAR_BOTTOM  # sağ alttaki tarih ve hız hapının üstünde
 	_build_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 
@@ -205,21 +174,10 @@ func _on_employee_clicked(employee_id: String) -> void:
 	if _employee_card != null:
 		_employee_card.queue_free()
 	_employee_card = EmployeeCard.new(employee_id, func() -> void: show_panel("team"))
-	_office.get_parent().add_child(_employee_card)
-	_employee_card.position = Vector2(WINDOW_MARGIN, WINDOW_MARGIN)
-
-
-func _build_menu() -> PanelContainer:
-	var card: PanelContainer = UiUtil.card()
-	card.custom_minimum_size.x = 190.0
-	var col: VBoxContainer = UiUtil.vbox(8)
-	card.add_child(col)
-	for id: String in ["inbox", "clients", "campaign", "team", "office", "tools", "research", "finance", "industry", "history"]:
-		var b: Button = UiUtil.button(tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id))
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		_menu_buttons[id] = b
-		col.add_child(b)
-	return card
+	add_child(_employee_card)
+	move_child(_employee_card, _modal_layer.get_index())
+	_employee_card.position = Vector2(LEFT_GUTTER, WINDOW_MARGIN)
+	UiUtil.pop_in(_employee_card)
 
 
 ## Menü düğmesi: aynı pencere açıksa kapatır.
@@ -235,6 +193,7 @@ func show_panel(id: String) -> void:
 	if _panel_id == id and _panel != null:
 		return
 	UiUtil.clear(_content)
+	var was_visible: bool = _window.visible
 	_panel_id = id
 	_window.visible = true
 	match id:
@@ -261,48 +220,52 @@ func show_panel(id: String) -> void:
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_child(_panel)
 	_panel.call("refresh")
+	if not was_visible:
+		UiUtil.pop_in(_window)
+	_refresh_menu_state()
+
+
+## Açık pencerenin ikonu yeşil (seçili) görünür.
+func _refresh_menu_state() -> void:
+	for id: String in _menu_buttons:
+		(_menu_buttons[id] as Button).theme_type_variation = "IconButtonActive" if id == _panel_id else "IconButton"
 
 
 func _refresh() -> void:
 	if not GameState.has_game():
 		return
 	var s: SimState = GameState.sim.state
-	_cash.text = UiUtil.money(s.cash)
 	if not is_nan(_last_cash) and not is_equal_approx(s.cash, _last_cash):
 		Juice.cash_fly(_cash, s.cash - _last_cash, s.clock.year())
 	_last_cash = s.cash
-	_cash.add_theme_color_override("font_color", UiUtil.TERRACOTTA if s.cash < 0.0 else UiUtil.TEXT)
+	_cash.set_value(s.cash)
+	_cash.label_node().add_theme_color_override("font_color", UiTheme.DECLINE if s.cash < 0.0 else Color.WHITE)
+	_rep.set_value(s.reputation)
 	_date.text = UiUtil.date_text(s.clock)
-	_rep.text = tr("UI_REPUTATION") % s.reputation
-	(_menu_buttons["inbox"] as Button).text = tr("MENU_INBOX") + (" (%d)" % s.inbox.size() if not s.inbox.is_empty() else "")
-	(_menu_buttons["campaign"] as Button).text = tr("MENU_CAMPAIGN") + (" ●" if GameState.is_waiting() else "")
-	_overtime.set_pressed_no_signal(s.overtime)
+	_set_dot("inbox", str(s.inbox.size()) if not s.inbox.is_empty() else "")
+	_set_dot("campaign", "!" if GameState.is_waiting() else "")
+	_overtime.theme_type_variation = "IconButtonActive" if s.overtime else "IconButton"
 	if _panel != null:
 		_panel.call("refresh")
 	_refresh_speed()
 
 
+func _set_dot(id: String, text: String) -> void:
+	var dot: Label = _menu_dots[id]
+	dot.text = text
+	dot.visible = not text.is_empty()
+
+
 func _refresh_speed() -> void:
-	_pause_button.text = tr("UI_RESUME") if Clock.paused else tr("UI_PAUSE")
+	_pause_button.icon = UiUtil.icon_texture("player-play" if Clock.paused else "player-pause", 24)
+	_pause_button.theme_type_variation = "IconButtonActive" if Clock.paused else "IconButton"
 	for i: int in _speed_buttons.size():
-		_speed_buttons[i].button_pressed = not Clock.paused and Clock.speed_index == i
+		_speed_buttons[i].theme_type_variation = "IconButtonActive" if not Clock.paused and Clock.speed_index == i \
+			else "IconButton"
 
 
 func _on_notification(key: String, args: Array, kind: String) -> void:
-	var color: Color = UiUtil.TEXT
-	if kind == "good":
-		color = UiUtil.SAGE_DARK
-	elif kind == "bad":
-		color = UiUtil.TERRACOTTA
-	var prefix: String = UiUtil.date_text(GameState.sim.state.clock) + "\n" if GameState.has_game() else ""
-	var note: Label = UiUtil.wrapped(prefix + UiUtil.tr_fmt(key, args), 13, color, 230.0)
-	_feed.add_child(note)
-	_feed.move_child(note, 0)
-	Juice.slide_in(note)
-	while _feed.get_child_count() > DataDB.data.bali("ui.notifications_kept"):
-		var last: Node = _feed.get_child(_feed.get_child_count() - 1)
-		_feed.remove_child(last)
-		last.queue_free()
+	MainHud.toast(_feed, key, args, kind)
 
 
 ## Modal pencere açar; kapanınca saat kaldığı yerden devam eder.

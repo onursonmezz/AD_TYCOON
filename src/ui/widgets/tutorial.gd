@@ -34,7 +34,7 @@ func _ready() -> void:
 	_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_frame.visible = false
 	add_child(_frame)
-	_bubble = UiUtil.card()
+	_bubble = UiUtil.panel()
 	_bubble.custom_minimum_size.x = 320.0
 	_bubble.visible = false
 	var col: VBoxContainer = UiUtil.vbox(8)
