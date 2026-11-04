@@ -818,6 +818,22 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Model denetimi düzeltmesi:** `tools/model_check.gd`, gerçek bir model bulunca `ModelLibrary`'nin autoload bağımlılığı yüzünden betik hatası verip yine de "sorunsuz" yazıyordu. Ölçüm fonksiyonları bağımlılıksız `MeshBounds` sınıfına taşındı.
 - **Ön yüz kuralı:** Blender'da −Y, Godot'da +Z. Duvar süslerinin arkası +Y (duvara).
 
+## K-080 · 2026-11-05 · Kabul · Orgo kararı ("Daha çok model") + uygulama
+**Konu:** Karakterler dışındaki bütün model yuvalarını Blender betikleriyle doldurmak.
+**Karar:**
+- **22 yeni model; karakterler dışındaki 29 yuvanın hepsi dolu:**
+  - Sabit eşyalar (`tools/blender/models_props.py`): sandalye, mutfak tezgâhı, toplantı masası, kanepe.
+  - Dönemsel bilgisayarlar (aynı dosya): pc386, g4, imak, mchip.
+  - Satın alınan mobilya (`tools/blender/models_furniture.py`): semaver, filtre kahve, espresso, su sebili, beyaz tahta, ilham panosu, pikap, ödül dolabı, neon tabela, ofis kedisi.
+  - Sokak (aynı dosya): ağaç, lamba, bank, billboard.
+- **Palet:** 12 renk sona eklendi (neon pembe, çelik, bej PC, camgöbeği, kırık beyaz, ekran, ekran ışığı, kedi turuncusu, mantar, su mavisi, kırmızı, lamba yeşili). Eski renklerin yeri değişmedi.
+- **Tezgâh boyu 0.95 → 1.2 m** (`data/models.json`): Model, tezgâh üstündeki musluk ve kettle ile 1.2 m. Boy 0.95 kalsaydı oyun modeli orantılı küçültürdü. Bu boy yalnızca görünüş için; simülasyonu etkilemez.
+- **Billboard:** Panel 3.6 × 2.0 m, alt kenarı 1.4 m (`street_layout`). Panel yüzü, oyunun kampanya görselini koyduğu düzlemin (merkezden 5 cm önde) gerisinde kalır.
+- **Yazı ve logo yok** (style_bible 5): Beyaz tahtadaki karalamalar ve neon tabela yalnızca şekil.
+- **Ödül dolabı öne açık vitrin.** Tek malzeme saydamlık desteklemiyor; cam yok.
+- **Performans:** 60 çalışanlı ofiste kare ortalaması 1.76 ms (567 FPS), hedef 16.7 ms.
+- **Test:** Karakterler dışındaki her yuvada model bulunmalı ve denetimden geçmeli (`test_models`).
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

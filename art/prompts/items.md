@@ -10,7 +10,7 @@ Her satırdaki **[NESNE]** metnini `art/style_bible.md`'deki şablonun başına 
 |---|---|---|---|
 | `desk.glb` | 1.4 × 0.7 | 0.75 | a simple wooden office desk with a drawer, warm wood |
 | `chair.glb` | 0.5 × 0.5 | 0.9 | a cushioned office chair on wheels, sage green fabric |
-| `counter.glb` | 3.0 × 0.6 | 0.95 | a small office kitchen counter with cabinets, cream doors, wooden top |
+| `counter.glb` | 3.0 × 0.6 | 1.2 (tezgâh 0.95 + musluk) | a small office kitchen counter with cabinets, cream doors, wooden top |
 | `meeting_table.glb` | 2.4 × 1.2 | 0.75 | a rectangular wooden meeting table |
 | `sofa.glb` | 3.0 × 0.8 | 0.55 | a long low three-seat sofa, sage green fabric, wooden legs |
 

@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## G3-B: Bütün eşyalar modellendi (2026-11-05)
+- **Oyunda artık gri kutu yok** (karakterler hariç). 22 yeni model:
+  - **Ofis:** tekerlekli sandalye, mutfak tezgâhı (evye, musluk, kettle), toplantı masası, kanepe.
+  - **Bilgisayarlar, dönemine göre:** 90'ların bej tüplü monitörü, 2000'lerin renkli tombul bilgisayarı, 2010'ların ince beyaz ekranı, 2020'lerin dizüstü + ikinci ekranı.
+  - **Satın alınanlar:** semaver, filtre kahve, espresso, su sebili, beyaz tahta, ilham panosu, pikap, ödül dolabı, neon ampul tabelası, minderde uyuyan ofis kedisi.
+  - **Sokak:** ağaç, lamba, bank, billboard.
+- 60 çalışanlı ofiste oyun rahat akıyor (567 FPS).
+- Nasıl test ederim:
+  1. Oyunu aç ve bir oyun başlat: masalarda dönemin bilgisayarı, önlerinde sandalyeler; mutfakta tezgâh; toplantı odasında masa.
+  2. Sokağa bak: ağaçlar, lambalar, bank ve billboard. Kampanya bitince billboard'da görseli belirir.
+  3. İnşa modunda kahve makinelerini, beyaz tahtayı, pikabı, neon tabelayı ve kediyi tek tek yerleştir.
+  4. Yıllar geçtikçe (ya da başka dönemde başlayıp) masadaki bilgisayarın değiştiğini gör.
+  5. Denetle: `godot --headless --import`, sonra `godot --headless --script res://tools/model_check.gd` ("29 model bulundu, 29 sorunsuz").
+  6. `docs/screenshots/03_g3_world_default.png` ile `04_g3b_world_default.png`'yi karşılaştır.
+
 ## G3: Blender ile ilk modeller (2026-11-05)
 - **Yeni 3D modeller** (gri kutuların yerine):
   - çekmeceli çalışma masası;

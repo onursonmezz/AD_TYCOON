@@ -53,6 +53,18 @@ PALETTE = [
     ("brass", "#C9A13A"),
     ("pot_sage", "#9FBFA4"),
     ("pot_cream", "#E8DCC4"),
+    ("neon_pink", "#FF6FAE"),
+    ("steel", "#A9AEB3"),
+    ("beige_pc", "#D8CDB0"),
+    ("teal_glass", "#4FB3B0"),
+    ("white_soft", "#F2F0EA"),
+    ("screen", "#2E3A45"),
+    ("screen_glow", "#9FD3E0"),
+    ("cat_orange", "#E08A3C"),
+    ("cork", "#B98A5A"),
+    ("water_blue", "#7FB6E0"),
+    ("red", "#D2574A"),
+    ("lamp_green", "#2C4A3A"),
 ]
 _INDEX = {name: i for i, (name, _) in enumerate(PALETTE)}
 
@@ -165,11 +177,11 @@ class Builder:
         return list(res["faces"])
 
     def box(self, size, center, color: str, bevel: float = 0.015, segments: int = 2, rot_z: float = 0.0,
-            rot_y: float = 0.0):
+            rot_y: float = 0.0, rot_x: float = 0.0):
         """Yuvarlatılmış kutu. size (x, y, z) m, center kutunun merkezi."""
         res = bmesh.ops.create_cube(self.bm, size=1.0)
         verts = res["verts"]
-        m = (Matrix.Translation(Vector(center)) @ Matrix.Rotation(rot_z, 4, "Z") @ Matrix.Rotation(rot_y, 4, "Y")
+        m = (Matrix.Translation(Vector(center)) @ Matrix.Rotation(rot_z, 4, "Z") @ Matrix.Rotation(rot_y, 4, "Y") @ Matrix.Rotation(rot_x, 4, "X")
              @ Matrix.Diagonal(Vector((*size, 1.0))))
         bmesh.ops.transform(self.bm, matrix=m, verts=verts)
         faces = {f for v in verts for f in v.link_faces}

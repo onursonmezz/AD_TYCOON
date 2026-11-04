@@ -20,10 +20,10 @@ func after_each() -> void:
 
 
 func test_missing_model_falls_back_to_box() -> void:
-	assert_false(ModelLibrary.exists("props/counter.glb"), "depoda henüz model yok")
-	assert_null(ModelLibrary.instance("props/counter.glb", Vector2(3.0, 0.6), 0.95))
+	assert_false(ModelLibrary.exists("props/yok_boyle_bir_model.glb"), "depoda henüz model yok")
+	assert_null(ModelLibrary.instance("props/yok_boyle_bir_model.glb", Vector2(3.0, 0.6), 0.95))
 	var parent: Node3D = autofree(Node3D.new())
-	var t: Dictionary = OfficeDressing.thing(parent, "props/counter.glb", Vector2(2, 3), Vector2(1.4, 0.7), 0.75, Color.RED)
+	var t: Dictionary = OfficeDressing.thing(parent, "props/yok_boyle_bir_model.glb", Vector2(2, 3), Vector2(1.4, 0.7), 0.75, Color.RED)
 	assert_false(bool(t["model"]))
 	assert_true(t["node"] is MeshInstance3D, "gri kutu")
 
@@ -112,11 +112,10 @@ func test_office_dressing_builds_street_billboard_and_posters() -> void:
 
 
 func test_blender_models_pass_the_checker() -> void:
-	# G3: tools/blender ile üretilen modeller depoda; hepsi ölçü, taban ve üçgen sınırına uymalı.
+	# G3: tools/blender ile üretilen modeller depoda (karakterler hariç bütün yuvalar); hepsi ölçü, taban ve üçgen sınırına uymalı.
 	var limits: Dictionary = data.models["limits"]
 	for slot: Dictionary in Checker.slots(data):
-		if not str(slot["rel"]) in ["props/desk.glb", "furniture/bookshelf.glb", "furniture/plant_small.glb",
-				"furniture/plant_big.glb", "decor/plant_medium.glb", "decor/hex_shelf.glb", "decor/wall_panel.glb"]:
+		if bool(slot.get("character", false)):
 			continue
 		assert_true(ModelLibrary.exists(str(slot["rel"])), str(slot["rel"]))
 		var node: Node3D = autofree(ModelLibrary.scene(str(slot["rel"])).instantiate())
