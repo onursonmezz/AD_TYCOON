@@ -16,3 +16,5 @@ signal award_ceremony(result: Dictionary)
 signal pitch_ready()
 signal era_started(era_id: String)
 signal event_started(event: Dictionary)
+## Bir pencere açıldı (M9-C ipuçları): pencerenin sınıf adı (ör. "WizardDialog").
+signal ui_opened(name: String)

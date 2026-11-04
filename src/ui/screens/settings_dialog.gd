@@ -24,7 +24,7 @@ func _ready() -> void:
 	var scale_names: Array = []
 	for s: float in Settings.UI_SCALES:
 		scales.append(s)
-		scale_names.append("%d%%" % int(roundf(s * 100.0)))
+		scale_names.append(UiUtil.percent(roundf(s * 100.0)))
 	col.add_child(_option_row("ui_scale", scales, scale_names))
 	col.add_child(_check_row("autosave"))
 	col.add_child(_check_row("tutorial"))
@@ -61,10 +61,10 @@ func _slider_row(key: String) -> HBoxContainer:
 	s.step = 5.0
 	s.value = float(Settings.get_value(key)) * 100.0
 	s.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var value: Label = UiUtil.label("%d%%" % int(s.value), 14, UiUtil.WOOD)
+	var value: Label = UiUtil.label(UiUtil.percent(s.value), 14, UiUtil.WOOD)
 	value.custom_minimum_size.x = 50.0
 	s.value_changed.connect(func(v: float) -> void:
-		value.text = "%d%%" % int(v)
+		value.text = UiUtil.percent(v)
 		Settings.set_value(key, v / 100.0))
 	row.add_child(s)
 	row.add_child(value)

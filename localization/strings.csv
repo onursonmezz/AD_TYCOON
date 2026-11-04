@@ -1486,3 +1486,18 @@ UI_SET_RESOLUTION,Pencere boyutu,Window size
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
+UI_TIP,İpucu,Tip
+UI_TIP_OK,Anladım,Got it
+UI_TIP_OFF,İpuçlarını kapat,Turn off tips
+TIP_WELCOME,"Ajansına hoş geldin! Zaman buradan akar: Boşluk tuşu duraklatır, 1, 2 ve 3 hızı değiştirir.","Welcome to your agency! Time flows from here: Space pauses, 1, 2 and 3 change the speed."
+TIP_FIRST_BRIEF,İlk brief geldi! Gelen Kutusu'nu aç ve işi kabul et.,Your first brief has arrived! Open the Inbox and accept the job.
+TIP_WIZARD,"Hedef kitleyi, tonu ve kanalı seç. Hangi seçimin işe yaradığı gizli: denedikçe öğrenirsin, öğrendiklerin Bilgi Defteri'ne yazılır.","Choose the audience, tone and channel. Which choices work is hidden: you learn by trying, and what you learn goes into the Knowledge Book."
+TIP_PHASE,"Her fazın başında üç kaydırıcıyla ekibin zamanını böl. Hedefe uygun odaklara ağırlık ver, ama hepsini aynı yapma.","At the start of each phase, split the team's time with three sliders. Favour the focuses that suit the goal, but don't make them all equal."
+TIP_DELIVERED,"Kampanya teslim edildi ve yayında. Sonuç raporu yayın bitince gelir; bu arada yeni bir brief alabilirsin.","The campaign has been delivered and is on air. The report arrives when it ends; meanwhile you can take a new brief."
+TIP_REPORT,"Rapor: puan, KPI'lar ve müşterinin memnuniyeti. ""Puan dökümü"" neyin işe yarayıp neyin yaramadığını gösterir.","The report: score, KPIs and the client's satisfaction. ""Score breakdown"" shows what worked and what didn't."
+TIP_HIRE,İşler büyüdükçe tek başına yetişemezsin. Ekip ekranından ilk çalışanını işe al.,You can't keep up alone as jobs grow. Hire your first employee from the Team screen.
+TIP_SAVE,Oyun her ay kendiliğinden kaydeder. İstediğin an Kaydet düğmesine ya da F5'e basabilirsin.,The game saves itself every month. You can press Save or F5 at any time.
+TIP_RESEARCH,"Ar-Ge'de ton seçimi, hedef kitle analizi ve çoklu kanal gibi yeni yetenekler araştırabilirsin.","In R&D you can research new abilities such as tone choice, audience analysis and multiple channels."
+TIP_OFFICE,Ofis ekranından büyük bir ofise taşınabilir; inşa modunda oda çizip mobilya koyarak ekibi daha verimli yapabilirsin.,"From the Office screen you can move to a bigger office; in build mode, draw rooms and place furniture to make your team more productive."
+TIP_EVENT,"Olaylar karar ister. Yeteneğe bağlı seçeneklerde şans yüzdesi yazar; karar verene kadar oyun bekler.","Events need a decision. Skill-based options show a chance; the game waits until you decide."
+UI_GAME_MENU,Menü ▾,Menu ▾

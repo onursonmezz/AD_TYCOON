@@ -87,7 +87,7 @@ static func effect_lines(effects: Dictionary, args: Dictionary) -> PackedStringA
 		elif v is bool:
 			value = ""
 		elif percent.has(key):
-			value = "%+d%%" % int(roundf(100.0 * float(v)))
+			value = UiUtil.percent(roundf(100.0 * float(v)), 0, true)
 		else:
 			value = "%+d" % int(roundf(float(v)))
 		if parts[0] == "employee" or parts[0] == "employee2":

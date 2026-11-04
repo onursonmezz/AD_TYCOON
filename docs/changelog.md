@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## M9-C: İpuçları, İngilizce ve performans (2026-11-04)
+- **İpucu balonları (tutorial):** İlk kampanyalar boyunca doğru anda kısa ipuçları çıkar ve ilgili düğmeyi sarı çerçeveyle gösterir: zaman kontrolleri, gelen kutusu, sihirbaz, faz kaydırıcıları, rapor, işe alım, kayıt, Ar-Ge, ofis, olaylar.
+  - Oyunu durdurmazlar. "Anladım" ile geçilir, "İpuçlarını kapat" ile hepsi kapanır.
+  - Ayarlar'dan yeniden açılabilir ya da baştan gösterilebilir.
+- **Menü düğmesi:** Üst çubuktaki Kaydet, Ayarlar ve Ana Menü artık tek bir **Menü ▾** düğmesinde; içine **Yükle** de eklendi. İngilizcede çubuk taşıyordu.
+- **İngilizce:**
+  - Bütün metinler iki dilde de dolu (test bunu her seferinde denetliyor).
+  - Yüzdeler dile göre yazılıyor: Türkçede "%55", İngilizcede "55%".
+  - Ekranların hepsi İngilizce açılıp kontrol edildi.
+- **Performans:** 60 çalışanlı en büyük ofiste 4x hızda ortalama 500+ FPS; 120 çalışanla 285 FPS (bu bilgisayarda). Ölçüm aracı: `tools/perf_check.tscn`.
+- Nasıl test ederim:
+  1. Yeni oyun aç: üstte "İpucu: Ajansına hoş geldin!" balonu çıkar ve Devam düğmesi sarı çerçeveyle işaretlenir. **Anladım**'a bas.
+  2. İlk brief gelince Gelen Kutusu işaretlenir. Sihirbazı açınca bir ipucu daha çıkar.
+  3. Bir balonda **İpuçlarını kapat**'a bas: başka balon gelmez. Ayarlar → "İpuçlarını baştan göster" ve "İpuçlarını göster" ile geri gelir.
+  4. Ayarlar'da dili English yap: menüler, raporlar, olaylar İngilizce; rapordaki yüzdeler "55%" biçiminde.
+  5. Üst çubukta **Menü ▾** → Kaydet / Yükle / Ayarlar / Ana Menü.
+  6. Performans ölçümü (pencere açar, 20 sn sürer): `godot --path . res://tools/perf_check.tscn -- --staff=60`.
+
+
 ## M9-B: Ses, müzik ve canlı arayüz (2026-11-04)
 - **Oyunun artık sesi var.** Düğme tıkı, bildirimler, ka-ching, alkış, olay uyarısı ve ofiste klavye uğultusu çalıyor. Hepsi kodla üretilmiş yer tutucular; gerçek ses dosyalarını `assets/audio/` altına koyduğunda onlar çalar (rehber: `assets/audio/README.md`).
 - **Döneme göre sesler:** Bildirim 90'larda çağrı cihazı, 2000'lerde SMS, 2010'larda "ding". Yeni brief 90'larda faks, sonra e-posta sesiyle geliyor.

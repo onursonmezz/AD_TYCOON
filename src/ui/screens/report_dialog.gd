@@ -82,10 +82,10 @@ func _kpi_cards() -> GridContainer:
 		["KPI_REACH", UiUtil.big_number(float(kpi.get("reach", 0.0)))],
 		["KPI_ENGAGEMENTS", UiUtil.big_number(float(kpi.get("engagements", 0.0)))],
 		["KPI_CONVERSIONS", UiUtil.big_number(float(kpi.get("conversions", 0.0)))],
-		["KPI_AWARENESS_LIFT", "+%%%.1f" % (100.0 * float(kpi.get("awareness_lift", 0.0)))],
-		["KPI_ROI", "%%%d" % int(roundf(100.0 * float(kpi.get("roi", 0.0))))],
-		["KPI_TARGET", "%s %s %%%d" % ["✓" if ratio >= 1.0 else "✗", tr("KPI_" + str(setup["kpi_type"]).to_upper()),
-			int(roundf(100.0 * ratio))]],
+		["KPI_AWARENESS_LIFT", UiUtil.percent(100.0 * float(kpi.get("awareness_lift", 0.0)), 1, true)],
+		["KPI_ROI", UiUtil.percent(roundf(100.0 * float(kpi.get("roi", 0.0))))],
+		["KPI_TARGET", "%s %s %s" % ["✓" if ratio >= 1.0 else "✗", tr("KPI_" + str(setup["kpi_type"]).to_upper()),
+			UiUtil.percent(roundf(100.0 * ratio))]],
 	]
 	for c: Array in cards:
 		var card: PanelContainer = UiUtil.card()

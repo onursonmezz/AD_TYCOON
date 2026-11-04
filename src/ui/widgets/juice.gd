@@ -18,7 +18,8 @@ static func cash_fly(anchor: Control, delta: float, year: int) -> void:
 	l.top_level = true
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor.add_child(l)
-	l.global_position = anchor.global_position + Vector2(anchor.size.x + 8.0, 0.0)
+	# Nakdin hemen altından başlayıp aşağı süzülür (yanındaki tarihi örtmesin).
+	l.global_position = anchor.global_position + Vector2(0.0, anchor.size.y + 2.0)
 	var secs: float = float(_cfg()["cash_fly_seconds"])
 	var t: Tween = l.create_tween().set_parallel(true)
 	t.tween_property(l, "global_position:y", l.global_position.y + 28.0, secs).set_ease(Tween.EASE_OUT)

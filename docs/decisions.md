@@ -697,6 +697,37 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Araç:** `tools/export_sounds.gd` yer tutucu sesleri dinlemek için `.wav` olarak dışa aktarır.
 - **Ertelendi:** "Ofis radyosu" objesiyle müzik değiştirme (GDD 22), sesin ofisteki konumdan gelmesi (3D ses).
 
+
+## K-074 · 2026-11-04 · Kabul · Uygulama kararı (M9-C: tutorial, İngilizce, performans)
+**Konu:** İpucu balonları, çeviri bütünlüğü, performans ölçümü.
+**Karar:**
+- **İpuçları** (`data/tutorial.json`, 11 balon):
+  - Hoş geldin, ilk brief, sihirbaz, faz kaydırıcıları, teslim, rapor, işe alım, kayıt, Ar-Ge, ofis, olay.
+  - Doğru anda çıkarlar (oyun başı, yeni brief, faz başı, teslim, bir pencere açılınca ya da durum koşulu tutunca). İlgili düğmeyi hardal çerçeveyle gösterirler.
+  - Oyunu durdurmazlar. Aynı anda tek balon görünür, diğerleri sıraya girer. Görülen balon bir daha çıkmaz.
+  - "İpuçlarını kapat" hepsini kapatır; Ayarlar'dan yeniden açılır ya da baştan gösterilir.
+  - Erken ipuçları ilk 3 kampanyayla sınırlı; Ar-Ge, ofis ve olay ipuçları her zaman geçerli.
+- **Üst çubuk:** Kaydet, Yükle, Ayarlar ve Ana Menü tek bir "Menü ▾" düğmesinde. İngilizce metinlerle çubuk taşıyor, bildirim sütununu ekran dışına itiyordu.
+- **Yüzde biçimi** dile göre: Türkçe "%55", İngilizce "55%" (`UiUtil.percent`). Koda sabitlenmiş Türkçe biçimler bununla değişti.
+- **Çeviri denetimi** (test):
+  - Her satırda iki dil dolu.
+  - Biçim işaretleri (`%s`, `%d`…) iki dilde aynı sayıda.
+  - Koddaki her `tr("ANAHTAR")` CSV'de var.
+  - Aynı kalan satırlar özel ad ya da sektör terimi (Billboard, Copywriter, parodi marka adları).
+- **Ekran turu** `--lang=en` ile İngilizce çalışıyor (taşan metin kontrolü).
+- **Performans** (`tools/perf_check.tscn`, en büyük ofis, 4x hız, bu makine RTX 3060 Ti):
+
+  | Durum | Ortalama | %95 | %99 | En kötü |
+  |---|---|---|---|---|
+  | 60 çalışan, gri kutu | 545 FPS (1.83 ms) | 2.08 ms | 2.78 ms | 5.5 ms |
+  | 60 çalışan, deneme modelleri | 511 FPS | 2.38 ms | 3.03 ms | 79 ms (tek seferlik) |
+  | 120 çalışan, deneme modelleri | 285 FPS | 4.17 ms | 5.10 ms | 9.3 ms |
+
+  - Hedef (60 çalışanla 60 FPS) rahat tutuyor; optimizasyon gerekmedi.
+  - Tek seferlik büyük kareler, malzemelerin ilk çizimdeki derlenmesi ya da ilk otomatik kaydın diske yazılmasıyla ilişkili görünüyor. Otomatik kayıt yalnızca ~2 ms sürüyor.
+  - Çizim çağrısı 850–1500: her eşya ayrı kutu ya da model.
+- **M10'a not:** Zayıf bir makinede (entegre grafik) tekrar ölçülecek. Gerekirse aynı eşyalar MultiMesh ile toplanır, uzaktaki karakterler sadeleşir.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

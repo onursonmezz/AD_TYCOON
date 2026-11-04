@@ -1,20 +1,27 @@
 extends Node
 ## Geliştirici aracı: ekranları sırayla açıp ekran görüntüsü alır (arayüz kontrolü için).
-## Çalıştırma (pencere açılır): godot --path . res://tools/ui_tour.tscn -- --out=C:/klasor
+## Çalıştırma (pencere açılır): godot --path . res://tools/ui_tour.tscn -- --out=C:/klasor [--lang=en]
 
 var _out: String = "user://ui_tour"
+## --lang=en: turu İngilizce çalıştırır (M9-C çeviri kontrolü: taşan ya da kesilen metin).
+var _lang: String = "tr"
 
 
 func _ready() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out="):
 			_out = arg.trim_prefix("--out=")
+		elif arg.begins_with("--lang="):
+			_lang = arg.trim_prefix("--lang=")
 	DirAccess.make_dir_recursive_absolute(_out)
 	_run.call_deferred()
 
 
 func _run() -> void:
-	TranslationServer.set_locale("tr")
+	Settings.persist = false
+	Settings.set_value("tutorial", true)
+	Settings.set_value("tutorial_seen", [])
+	TranslationServer.set_locale(_lang)
 	var menu: Control = load("res://src/ui/screens/main_menu.tscn").instantiate()
 	add_child(menu)
 	await _shot("01_main_menu")
@@ -26,6 +33,10 @@ func _run() -> void:
 	add_child(screen)
 	await get_tree().create_timer(3.0).timeout
 	await _shot("01c_office_home")
+	# M9-C: hoş geldin ipucu; sonra ipuçları kapanır ki diğer ekranları örtmesin.
+	await _shot("01d_tip")
+	Settings.set_value("tutorial", false)
+	(screen.get("_tutorial") as Tutorial).call("_close")
 	var sim: Simulation = GameState.sim
 	while sim.state.inbox.size() < 2:
 		_step()

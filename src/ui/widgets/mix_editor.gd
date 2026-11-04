@@ -124,7 +124,7 @@ func _refresh() -> void:
 		var ch: String = mix[i]["channel"]
 		var budget: float = media_budget() * float(mix[i]["share"])
 		var label: Label = row["share"]
-		label.text = "%%%d · %s" % [int(roundf(float(mix[i]["share"]) * 100.0)), UiUtil.money(budget)]
+		label.text = "%s · %s" % [UiUtil.percent(roundf(float(mix[i]["share"]) * 100.0)), UiUtil.money(budget)]
 		var too_small: bool = budget < float(data.channels[ch]["min_budget"]) * infl
 		label.add_theme_color_override("font_color", UiUtil.TERRACOTTA if too_small else UiUtil.TEXT)
 		label.tooltip_text = tr("UI_MIN_BUDGET") % UiUtil.money(float(data.channels[ch]["min_budget"]) * infl)

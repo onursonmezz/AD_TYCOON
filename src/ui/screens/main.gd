@@ -22,6 +22,8 @@ var _panel_id: String = ""
 var _modal_layer: Control
 var _modal_open: bool = false
 var _last_cash: float = NAN
+var _save_button: MenuButton
+var _tutorial: Tutorial
 
 
 func _ready() -> void:
@@ -38,6 +40,9 @@ func _ready() -> void:
 	EventBus.pitch_ready.connect(func() -> void: open_modal(PitchDialog.new()))
 	EventBus.era_started.connect(func(era: String) -> void: open_modal(EraDialog.new(era)))
 	EventBus.event_started.connect(func(_ev: Dictionary) -> void: _open_event())
+	_tutorial = Tutorial.new(self)
+	add_child(_tutorial)
+	_tutorial.trigger.call_deferred("start")
 	_refresh()
 	_refresh_speed()
 	if GameState.is_bankrupt():
@@ -111,10 +116,22 @@ func _build_top_bar() -> PanelContainer:
 		b.tooltip_text = tr("TIP_SPEED") % (i + 1)
 		_speed_buttons.append(b)
 		row.add_child(b)
-	row.add_child(UiUtil.button(tr("UI_SAVE"), func() -> void: open_modal(SaveLoadDialog.new(true))))
-	row.add_child(UiUtil.button(tr("UI_SETTINGS"), func() -> void:
-		open_modal(SettingsDialog.new(func() -> void: get_tree().reload_current_scene()))))
-	row.add_child(UiUtil.button(tr("UI_MAIN_MENU"), func() -> void: _confirm_leave(_to_menu)))
+	# Kaydet, Yükle, Ayarlar, Ana Menü tek düğmede (M9-C: İngilizcede üst çubuk taşıyordu).
+	var menu: MenuButton = MenuButton.new()
+	menu.text = tr("UI_GAME_MENU")
+	menu.flat = false
+	var actions: Array[Callable] = [
+		func() -> void: open_modal(SaveLoadDialog.new(true)),
+		func() -> void: open_modal(SaveLoadDialog.new(false, func() -> void: get_tree().reload_current_scene())),
+		func() -> void: open_modal(SettingsDialog.new(func() -> void: get_tree().reload_current_scene())),
+		func() -> void: _confirm_leave(_to_menu)]
+	for key: String in ["UI_SAVE", "MENU_LOAD", "UI_SETTINGS", "UI_MAIN_MENU"]:
+		menu.get_popup().add_item(tr(key))
+	menu.get_popup().id_pressed.connect(func(id: int) -> void:
+		Audio.play("click")
+		actions[id].call())
+	_save_button = menu
+	row.add_child(menu)
 	return bar
 
 
@@ -295,6 +312,8 @@ func open_modal(dialog: Control) -> void:
 	_modal_layer.mouse_filter = Control.MOUSE_FILTER_STOP
 	_modal_layer.add_child(dialog)
 	dialog.tree_exited.connect(_on_modal_closed)
+	var script: Script = dialog.get_script()
+	EventBus.ui_opened.emit(script.get_global_name() if script != null else "")
 
 
 func _on_modal_closed() -> void:
@@ -332,19 +351,8 @@ func _to_menu() -> void:
 
 # --- çıkış, kısayollar (M9) --------------------------------------------------------
 
-## Kaydedilmemiş ilerleme varsa sorar: kaydet ve çık / kaydetmeden çık / vazgeç.
 func _confirm_leave(leave: Callable) -> void:
-	if not GameState.dirty or GameState.is_bankrupt():
-		leave.call()
-		return
-	open_modal(ConfirmDialog.new("UI_UNSAVED_TITLE", "UI_UNSAVED_TEXT", [
-		["UI_SAVE_AND_EXIT", func() -> void:
-			if GameState.current_slot.is_empty():
-				open_modal(SaveLoadDialog.new(true))
-			elif GameState.save_game():
-				leave.call()],
-		["UI_EXIT_NO_SAVE", leave],
-		["UI_CANCEL", Callable()]]))
+	MainInput.confirm_leave(self, leave)
 
 
 func _quit_game() -> void:
@@ -366,21 +374,6 @@ func _exit_tree() -> void:
 	get_tree().set_auto_accept_quit(true)
 
 
-## F5 hızlı kayıt (slot yoksa slot seçtirir); Esc en üstteki kapatılabilir pencereyi, yoksa yan pencereyi kapatır.
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("game_quick_save"):
-		if GameState.current_slot.is_empty():
-			open_modal(SaveLoadDialog.new(true))
-		else:
-			GameState.save_game()
+	if MainInput.handle(self, event, _modal_layer, _panel_id):
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("ui_cancel"):
-		var modals: Array[Node] = _modal_layer.get_children()
-		for i: int in range(modals.size() - 1, -1, -1):
-			if modals[i].has_meta("esc_closes") and not modals[i].is_queued_for_deletion():
-				modals[i].queue_free()
-				get_viewport().set_input_as_handled()
-				return
-		if modals.is_empty() and not _panel_id.is_empty():
-			close_panel()
-			get_viewport().set_input_as_handled()

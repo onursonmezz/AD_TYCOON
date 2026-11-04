@@ -45,3 +45,4 @@ gereken bir şey varsa adım adım tarif et.
 - Modeller (M8): yollar `data/furniture.json` `model` ve `data/models.json`; yükleyici `ModelLibrary` (yoksa gri kutu).
   Denetim: `godot --headless --script res://tools/model_check.gd`; önizleme: `godot --path . res://tools/model_preview.tscn -- --out=<klasör> [--samples]`.
 - Ses (M9-B): `Audio` autoload, tarifler `data/sounds.json`, dosya rehberi `assets/audio/README.md`. Dosya yoksa kodla üretilen yer tutucu çalar.
+- Performans ölçümü (M9-C): `godot --path . res://tools/perf_check.tscn -- --staff=60 [--samples]`; ekran turu İngilizce: `--lang=en`.

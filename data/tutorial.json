@@ -1,0 +1,16 @@
+{
+	"max_campaigns": 3,
+	"tips": [
+		{ "id": "welcome", "on": "start", "target": "speed" },
+		{ "id": "first_brief", "on": "brief", "target": "menu:inbox" },
+		{ "id": "wizard", "on": "ui:WizardDialog", "target": "" },
+		{ "id": "phase", "on": "phase", "target": "menu:campaign" },
+		{ "id": "delivered", "on": "delivered", "target": "" },
+		{ "id": "report", "on": "ui:ReportDialog", "target": "" },
+		{ "id": "hire", "on": "state", "min_campaigns": 1, "target": "menu:team" },
+		{ "id": "save", "on": "state", "min_campaigns": 2, "target": "top:save" },
+		{ "id": "research", "on": "state", "min_game_year": 2, "target": "menu:research", "any_time": true },
+		{ "id": "office", "on": "state", "min_campaigns": 3, "target": "menu:office", "any_time": true },
+		{ "id": "event", "on": "ui:EventDialog", "target": "", "any_time": true }
+	]
+}

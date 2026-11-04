@@ -141,7 +141,7 @@ func shares() -> Array[float]:
 func _update_value_labels() -> void:
 	var s: Array[float] = shares()
 	for i: int in _sliders.size():
-		_value_labels[i].text = "%%%d" % int(roundf(s[i] * 100.0))
+		_value_labels[i].text = UiUtil.percent(roundf(s[i] * 100.0))
 
 
 func _on_confirm() -> void:

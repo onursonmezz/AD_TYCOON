@@ -174,3 +174,16 @@ static func modal_frame(root: Control, min_size: Vector2) -> VBoxContainer:
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
 	return content
+
+
+## Yüzde, dile göre: Türkçe "%55", İngilizce "55%" (M9-C). decimals: ondalık; signed: "+" işareti.
+static func percent(value_pct: float, decimals: int = 0, signed: bool = false) -> String:
+	var num: String = ("%+." if signed else "%.") + str(decimals) + "f"
+	var s: String = num % value_pct
+	if TranslationServer.get_locale().begins_with("tr"):
+		var sign: String = ""
+		if s.begins_with("+") or s.begins_with("-"):
+			sign = s.substr(0, 1)
+			s = s.substr(1)
+		return sign + "%" + s
+	return s + "%"
