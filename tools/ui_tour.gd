@@ -315,6 +315,34 @@ func _tour_events(screen: Control, sim: Simulation) -> void:
 	await _shot("34_office_plants")
 	screen.call("show_panel", "team")
 	await _shot("35_team_certify")
+	await _tour_art(screen, sim)
+
+
+## M8-A: deneme modelleri, sokak, billboard ve posterler (gerçek .glb yerine Godot şekilleri).
+func _tour_art(screen: Control, sim: Simulation) -> void:
+	screen.call("close_panel")
+	var view: OfficeView = screen.get("_office")
+	await get_tree().create_timer(1.0).timeout
+	view.world.rig.rotate_quarter(-1)
+	await get_tree().create_timer(1.0).timeout
+	await _shot("36_office_boxes")
+	ModelLibrary.overrides = preload("res://tools/sample_models.gd").make_all("user://tour_sample_models")
+	ModelLibrary.clear_cache()
+	view.world.call("_build", sim.state.office_level)
+	await get_tree().create_timer(1.5).timeout
+	await _shot("37_office_samples")
+	view.world.rig.rotate_quarter(1)
+	view.world.rig.rotate_quarter(1)
+	await get_tree().create_timer(1.0).timeout
+	await _shot("38_office_posters")
+	view.world.rig.rotate_quarter(-2)
+	var size: Vector2 = view.world.layout.size
+	view.world.rig.set("_target_pos", Vector3(size.x + 2.0, 0.0, size.y + 1.0))
+	view.world.rig.zoom(-6)
+	await get_tree().create_timer(1.5).timeout
+	await _shot("39_billboard")
+	ModelLibrary.overrides = {}
+	ModelLibrary.clear_cache()
 
 
 func _shot(file_name: String) -> void:

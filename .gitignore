@@ -19,3 +19,6 @@ desktop.ini
 
 # PDF'in indirilen orijinal kopyası (doküman docs/GDD.pdf olarak tutulur)
 /Ajans_Tycoon_GDD_ve_Yol_Haritasi_1.pdf
+
+# Model önizleme çıktıları (tools/model_preview)
+/art/previews/

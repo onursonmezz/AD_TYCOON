@@ -586,6 +586,36 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - Rastgele bot 6.29, ilk 3 yılda %30 iflas.
   - Plaza katı %63 Y10, ilk ödül %70 Y4.
 
+
+## K-069 · 2026-11-04 · Kabul · Orgo kararı (M8 planı)
+**Konu:** Sanat geçişi (GDD 21).
+**Karar:**
+- **Sistem + yedek:** Claude modelleri takan sistemi kurar; modelleri Orgo zamanla üretir. Model dosyası yoksa eşya gri kutu olarak çizilir, oyun hiçbir zaman bozulmaz. Bir modeli eklemek için doğru adlı `.glb`'yi doğru klasöre koymak yeterli (`art/pipeline.md`).
+- **Modüler karakterler** (21.3): 3 temel gövde + saç + kıyafet + renk shader'ı (M8-B).
+- M8 iki parça: **M8-A** model sistemi, sanat dosyaları, billboard ve posterler; **M8-B** karakterler ve animasyon.
+
+## K-070 · 2026-11-04 · Kabul · Uygulama kararı
+**Konu:** Model kaydı, sığdırma ve kampanya görselleri (M8-A).
+**Karar:**
+- **Yollar:** Satın alınan mobilyanın modeli `data/furniture.json` `model` alanında. Sabit eşyalar (masa, sandalye, tezgâh, toplantı masası, kanepe), bilgisayar kuşakları ve sokak eşyaları `data/models.json`'da. Hepsi `assets/models/` altına göre "klasör/ad.glb".
+- **Sığdırma:** Model, eşyanın tabanına ve boyuna **orantılı** sığdırılır (en dar sınıra kadar), tabanı yere ve merkezi ortaya taşınır. Böylece santimetre ölçeğinde ya da kaymış bir model de doğru durur; ama ölçüye yakın üretmek oranları korur.
+  - Yön kuralı: modelin önü +Z (Blender'da −Y).
+- **Dönemsel bilgisayar:** Masadaki bilgisayar ajansın bilgisayar kuşağını gösterir (PC-386 → Elmacık G4 → iMak → M-çip Pro).
+- **Kuru bitki:** Kahverengi kutu; modelse kahverengi yarı saydam katman.
+- **Sokak:** Girişin önünde kaldırım ve yol; ağaç, lamba, bank; köşede billboard. Kamera artık binanın 6 m dışına kadar kaydırılabiliyor.
+- **Kampanya görselleri** (21.4):
+  - Görsel üç şablondan biri: marka rengi (marka adından), vurgu rengi, başlık, slogan (12 kalıp) ve marka. Aynı kampanya hep aynı görseli verir.
+  - **Billboard:** yayındaki en yeni kampanya, yoksa en son biten; hiç iş yoksa "Bu alan kiralıktır".
+  - **Posterler:** dış duvarların iç yüzünde en fazla 4. Önce ödüllü işler (altın çerçeve, ★), sonra en yüksek puanlılar. Kameraya bakan kesik duvarda gizlenir.
+- **Araçlar:**
+  - `tools/model_check.gd`: her yuvayı raporlar (yok / ✓ / ⚠ boy, taban, ortalama, üçgen; yanlış adlı dosyalar).
+  - `tools/model_preview.tscn`: modeli oyundaki gibi sığdırıp 1 m'lik küpün yanında PNG'ye çizer.
+  - `--samples`: Godot şekilleriyle kurulmuş deneme modelleri.
+- **Ertelendi:**
+  - Duvar ve zemin modelleri (şimdilik düz renk).
+  - Pencere ve kapı parçaları.
+  - Gece ışığı.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

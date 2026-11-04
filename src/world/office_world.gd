@@ -1,6 +1,7 @@
 class_name OfficeWorld
 extends Node3D
-## 3D ofis (M6, gri kutu): bina, odalar, mobilya kutuları, çalışan kapsülleri ve baloncuklar.
+## 3D ofis (M6; M8 modeller): bina, odalar, çalışan kapsülleri ve baloncuklar. Eşyalar, sokak ve kampanya
+## görselleri OfficeDressing'de; model yoksa gri kutu.
 ## Simülasyona yalnızca okuma ile bağlanır (GameState.sim.state + EventBus); hiçbir şeyi değiştirmez (GDD 24).
 
 const OUTER_WALL_HEIGHT: float = 2.6
@@ -12,10 +13,6 @@ const FLOOR_COLORS: Dictionary = {
 	"work": Color(0.86, 0.78, 0.64), "meeting": Color(0.62, 0.72, 0.62), "kitchen": Color(0.86, 0.66, 0.58),
 	"lounge": Color(0.9, 0.8, 0.55), "empty": Color(0.8, 0.79, 0.76), "brainstorm": Color(0.75, 0.82, 0.88),
 	"award_lobby": Color(0.92, 0.85, 0.62), "rd_lab": Color(0.7, 0.78, 0.86), "studio": Color(0.6, 0.6, 0.66),
-}
-const PROP_STYLE: Dictionary = {
-	"desk": [0.75, Color(0.65, 0.49, 0.32)], "counter": [0.95, Color(0.95, 0.93, 0.88)],
-	"table": [0.75, Color(0.55, 0.4, 0.27)], "sofa": [0.55, Color(0.36, 0.5, 0.4)],
 }
 const DEPT_COLORS: Dictionary = {
 	"founder": Color(0.85, 0.64, 0.25), "creative": Color(0.88, 0.5, 0.35), "design": Color(0.93, 0.6, 0.45),
@@ -30,6 +27,9 @@ var layout: OfficeLayout
 var _level: int = 0
 var _build_version: int = -1
 var _building: Node3D
+var _dressing: OfficeDressing
+## Görünüşü değiştiren ama düzeni değiştirmeyen durum (bilgisayar kuşağı, kuru bitkiler): değişince yeniden çizilir.
+var _look_sig: String = ""
 var _walls: Array[Dictionary] = []
 var _chars: Dictionary = {}
 var _desk_of: Dictionary = {}
@@ -83,7 +83,7 @@ func _build(level: int) -> void:
 	_building = Node3D.new()
 	add_child(_building)
 	layout = GameState.sim.build.layout(GameState.sim.state)
-	_box(Vector3(layout.size.x * 0.5, -0.06, layout.size.y * 0.5), Vector3(layout.size.x + 6.0, 0.1, layout.size.y + 6.0),
+	_box(Vector3(layout.size.x * 0.5, -0.06, layout.size.y * 0.5), Vector3(layout.size.x + 16.0, 0.1, layout.size.y + 18.0),
 		Color(0.7, 0.78, 0.6))
 	for room: Dictionary in layout.rooms:
 		var r: Rect2 = room["rect"]
@@ -97,38 +97,16 @@ func _build(level: int) -> void:
 		var height: float = OUTER_WALL_HEIGHT if bool(w["outer"]) else PARTITION_HEIGHT
 		var size: Vector3 = Vector3(length, height, WALL_THICKNESS) if horizontal else Vector3(WALL_THICKNESS, height, length)
 		var mesh: MeshInstance3D = _box(Vector3(mid.x, height * 0.5, mid.y), size, Color(0.96, 0.94, 0.89))
-		_walls.append({"mesh": mesh, "side": w["side"], "outer": w["outer"], "height": height, "mid": mid})
-	for prop: Dictionary in layout.props:
-		var pr: Rect2 = prop["rect"]
-		if prop["kind"] == "furniture":
-			var def: Dictionary = DataDB.data.furniture[prop["id"]]
-			var c: Array = def["color"]
-			_box(Vector3(pr.get_center().x, float(def["height"]) * 0.5, pr.get_center().y),
-				Vector3(pr.size.x * 0.9, float(def["height"]), pr.size.y * 0.9), Color(float(c[0]), float(c[1]), float(c[2])))
-			continue
-		var style: Array = PROP_STYLE[prop["kind"]]
-		_box(Vector3(pr.get_center().x, float(style[0]) * 0.5, pr.get_center().y), Vector3(pr.size.x, float(style[0]), pr.size.y),
-			style[1])
-		if prop["kind"] == "desk":
-			_box(Vector3(pr.get_center().x, float(style[0]) + 0.2, pr.get_center().y - 0.1), Vector3(0.5, 0.35, 0.06),
-				Color(0.25, 0.25, 0.28))
+		_walls.append({"mesh": mesh, "side": w["side"], "outer": w["outer"], "height": height, "mid": mid, "length": length})
+	_dressing = OfficeDressing.new()
+	_dressing.build(_building, layout, GameState.sim.state, _walls)
 	if moved:
 		rig.frame(layout.size)
 	_update_cut()
 
 
 func _box(pos: Vector3, size: Vector3, color: Color) -> MeshInstance3D:
-	var m: MeshInstance3D = MeshInstance3D.new()
-	var mesh: BoxMesh = BoxMesh.new()
-	mesh.size = size
-	m.mesh = mesh
-	var mat: StandardMaterial3D = StandardMaterial3D.new()
-	mat.albedo_color = color
-	mat.roughness = 0.9
-	m.material_override = mat
-	m.position = pos
-	_building.add_child(m)
-	return m
+	return OfficeDressing.box(_building, pos, size, color)
 
 
 ## Dollhouse görünümü (21.1): kameraya bakan dış duvarlar alçalır.
@@ -143,6 +121,8 @@ func _update_cut() -> void:
 		var h: float = CUT_WALL_HEIGHT if cut else float(w["height"])
 		(mesh.mesh as BoxMesh).size.y = h
 		mesh.position.y = h * 0.5
+		if w.has("poster") and is_instance_valid(w["poster"]):
+			(w["poster"] as Node3D).visible = not cut
 
 
 # --- çalışanlar -----------------------------------------------------------------
@@ -151,8 +131,12 @@ func sync() -> void:
 	if not GameState.has_game():
 		return
 	var s: SimState = GameState.sim.state
-	if s.office_level != _level or int(s.build.get("version", 0)) != _build_version:
+	var look: String = "%s|%s" % [s.hardware, GameState.sim.build.plants_dry(s)]
+	if s.office_level != _level or int(s.build.get("version", 0)) != _build_version or look != _look_sig:
+		_look_sig = look
 		_build(s.office_level)
+	elif _dressing != null:
+		_dressing.refresh_visuals(s)
 	for id: String in _chars.keys():
 		if not s.staff.has(id):
 			(_chars[id] as OfficeCharacter).queue_free()

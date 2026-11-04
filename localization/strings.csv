@@ -1435,3 +1435,16 @@ STAT_TECHNICAL_NAME,Teknik,Technical
 STAT_COMMUNICATION_NAME,İletişim,Communication
 STAT_SPEED_NAME,Hız,Speed
 STAT_ATTENTION_NAME,Dikkat,Attention
+KV_EMPTY,Bu alan kiralıktır,This space for rent
+KV_SLOGAN_1,{brand}: Farkı hisset.,{brand}: Feel the difference.
+KV_SLOGAN_2,Her gün biraz daha {brand}.,A little more {brand} every day.
+KV_SLOGAN_3,{brand} ile hayat daha kolay.,Life is easier with {brand}.
+KV_SLOGAN_4,"Bir kere dene, {brand} de.","Try it once, say {brand}."
+KV_SLOGAN_5,Sen hak ediyorsun. {brand}.,You deserve it. {brand}.
+KV_SLOGAN_6,{brand}: Şimdi tam zamanı.,{brand}: Now is the time.
+KV_SLOGAN_7,Sıradan değil. {brand}.,Not ordinary. {brand}.
+KV_SLOGAN_8,Yeni {brand} burada!,The new {brand} is here!
+KV_SLOGAN_9,{brand} ile tanış.,Meet {brand}.
+KV_SLOGAN_10,Küçük şeyler büyük farklar. {brand}.,"Small things, big differences. {brand}."
+KV_SLOGAN_11,"Bir nesil, bir {brand}.","One generation, one {brand}."
+KV_SLOGAN_12,{brand}: Akıllıca seçim.,{brand}: The smart choice.

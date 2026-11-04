@@ -42,3 +42,5 @@ gereken bir şey varsa adım adım tarif et.
 - Simülasyonun giriş noktası `src/sim/simulation.gd` (`Simulation`); veri erişimi `GameData.bal("yol")`.
 - Arayüz kodla kurulur (`src/ui/screens/*.gd`, yardımcılar `UiUtil`). Ekranları görsel kontrol için:
   `godot --path . res://tools/ui_tour.tscn -- --out=<klasör>` (pencere açar, PNG kaydeder).
+- Modeller (M8): yollar `data/furniture.json` `model` ve `data/models.json`; yükleyici `ModelLibrary` (yoksa gri kutu).
+  Denetim: `godot --headless --script res://tools/model_check.gd`; önizleme: `godot --path . res://tools/model_preview.tscn -- --out=<klasör> [--samples]`.

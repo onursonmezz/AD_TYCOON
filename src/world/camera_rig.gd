@@ -9,6 +9,7 @@ const ROTATE_SECONDS: float = 0.35
 const SMOOTH: float = 10.0
 const ZOOM_STEP: float = 1.15
 const MIN_DISTANCE: float = 6.0
+const STREET_MARGIN: float = 6.0
 ## Açılışta bina ekrana sığsın: köşegen × katsayı, küçük ofiste en az bu mesafe.
 const FRAME_FACTOR: float = 1.3
 const MIN_FRAME_DISTANCE: float = 13.0
@@ -39,7 +40,8 @@ func _init() -> void:
 
 ## Bina büyüklüğüne göre sınırlar ve başlangıç yakınlığı.
 func frame(size: Vector2) -> void:
-	_bounds = Rect2(Vector2.ZERO, size)
+	# Sokak ve billboard da görülebilsin (M8): binanın çevresinde pay.
+	_bounds = Rect2(Vector2.ZERO, size).grow(STREET_MARGIN)
 	_target_pos = Vector3(size.x * 0.5, 0.0, size.y * 0.5)
 	position = _target_pos
 	_max_distance = maxf(MIN_DISTANCE * 3.0, size.length() * 2.0)

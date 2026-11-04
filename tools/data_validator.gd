@@ -6,6 +6,7 @@ extends RefCounted
 const DEFAULT_DATA_DIR: String = "res://data"
 const DataChecksM5: GDScript = preload("res://tools/data_checks_m5.gd")
 const DataChecksM7: GDScript = preload("res://tools/data_checks_m7.gd")
+const DataChecksM8: GDScript = preload("res://tools/data_checks_m8.gd")
 
 ## Kimlik listesi olan dosyalar: dosya → bu listeye atıf yapan "tip" adı.
 const ID_LISTS: Dictionary = {
@@ -73,6 +74,8 @@ func validate(data: Dictionary) -> PackedStringArray:
 	for e: String in DataChecksM5.check(data, ids):
 		_err(e)
 	for e: String in DataChecksM7.check(data):
+		_err(e)
+	for e: String in DataChecksM8.check(data):
 		_err(e)
 	var rules: Dictionary = _parse_row_rules(data)
 	for file_name: String in FIT_FILES:

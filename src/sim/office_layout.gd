@@ -57,7 +57,7 @@ static func build(rec: Dictionary, custom: Dictionary = {}, furniture_defs: Dict
 	var i: int = 0
 	for f: Dictionary in custom.get("furniture", []):
 		if furniture_defs.has(f["id"]):
-			l.props.append({"kind": "furniture", "id": f["id"], "index": i,
+			l.props.append({"kind": "furniture", "id": f["id"], "index": i, "rot": int(f.get("rot", 0)),
 				"rect": furniture_rect(furniture_defs[f["id"]], Vector2(float(f["pos"][0]), float(f["pos"][1])), int(f.get("rot", 0)))})
 		i += 1
 	l._build_grid()

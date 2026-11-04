@@ -1,5 +1,28 @@
 # Değişiklik günlüğü
 
+## M8-A: Model sistemi, sokak ve kampanya görselleri (2026-11-04)
+- **Model sistemi:** Ofisteki her eşya artık bir 3D model dosyası arıyor. Dosya varsa onu doğru boyuta sığdırıp kullanıyor, yoksa eskisi gibi gri kutu çiziyor. Model eklemek için kod gerekmiyor: doğru adlı `.glb`'yi `assets/models/` altındaki doğru klasöre koymak yeterli.
+- **Sanat rehberi** (`art/`):
+  - `style_bible.md`: stil, palet, ölçü ve yön kuralları, prompt şablonu.
+  - `pipeline.md`: görsel AI → image-to-3D → Blender temizliği → dışa aktarma → oyunda kontrol, adım adım.
+  - `prompts/items.md`: 26 eşyanın dosya adı, ölçüsü ve prompt'u.
+  - `asset_log.csv`: Steam'in AI beyanı için kayıt.
+- **Masalarda sandalye ve dönemsel bilgisayar.** Bilgisayar, ajansın bilgisayar kuşağına göre değişiyor. **Kuru bitkiler** kahverengiye dönüyor.
+- **Sokak:** Ofisin önünde kaldırım, yol, ağaçlar, lambalar, bank ve bir **billboard**. Kamera sokağı görecek kadar dışarı kaydırılabiliyor.
+- **Kampanya görselleri:**
+  - Billboard'da yayındaki en yeni kampanyanın görseli: marka rengi, başlık, slogan.
+  - Ofis duvarlarında en iyi işlerin posterleri; ödüllüler altın çerçeveli ve ★ işaretli.
+- **Araçlar:** `tools/model_check.gd` (modelleri denetler) ve `tools/model_preview.tscn` (modelleri PNG'ye çizer).
+- Nasıl test ederim:
+  1. Oyunu aç: masalarda sandalye ve bilgisayar kutuları, ofisin önünde kaldırım ve ağaçlar görünür.
+  2. Bir kampanya bitir ve yayına çıkmasını bekle. Kamerayı sağ tuşla sürükleyip ofisin sağ ön köşesinin ötesine kaydır: billboard'da kampanyanın adı ve sloganı yazar.
+  3. Birkaç kampanya daha bitir. Kamerayı Q/E ile döndür: dış duvarların içinde posterler görünür.
+  4. Deneme modellerini gör (terminalde, proje klasöründe):
+     `godot --path . res://tools/model_preview.tscn -- --out=art/previews --samples`
+     Ardından `art/previews` klasöründeki resimlere bak.
+  5. Model denetimi: `godot --headless --script res://tools/model_check.gd`. Şimdilik her satırda "yok (oyunda gri kutu)" yazar. İlk modelini ekleyince ✓ ya da ⚠ görürsün.
+
+
 ## M7-C: Olaylar ve krizler (2026-11-04)
 - **Olay sistemi:** Oynarken ara sıra bir olay penceresi açılır ve sen karar verene kadar oyun durur.
   - 7 kategoride 83 olay: müşteri, çalışan, prodüksiyon, kriz, fırsat, piyasa, ofis hayatı.
