@@ -132,6 +132,8 @@ func _update_cut() -> void:
 		(w["trim"] as Node3D).position.y = h
 		if w.has("poster") and is_instance_valid(w["poster"]):
 			(w["poster"] as Node3D).visible = not cut
+		if w.has("decor") and is_instance_valid(w["decor"]):
+			(w["decor"] as Node3D).visible = not cut
 
 
 # --- çalışanlar -----------------------------------------------------------------

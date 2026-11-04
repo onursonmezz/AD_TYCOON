@@ -23,3 +23,6 @@ desktop.ini
 # Model önizleme çıktıları (tools/model_preview)
 /art/previews/
 /art/sound_previews/
+
+# Blender betiklerinin Python önbelleği
+__pycache__/

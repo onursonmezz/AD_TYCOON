@@ -47,3 +47,4 @@ gereken bir şey varsa adım adım tarif et.
 - Ses (M9-B): `Audio` autoload, tarifler `data/sounds.json`, dosya rehberi `assets/audio/README.md`. Dosya yoksa kodla üretilen yer tutucu çalar.
 - Performans ölçümü (M9-C): `godot --path . res://tools/perf_check.tscn -- --staff=60 [--samples]`; ekran turu İngilizce: `--lang=en`.
 - Görsel karşılaştırma (G1): `godot --path . res://tools/screenshot.tscn -- --tag=<ad>` → `docs/screenshots/`; görünüş ayarları `data/look.json`.
+- Blender modelleri (G3): `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py [-- --only=desk]` → `assets/models/`, palet `assets/textures/palette.png`.

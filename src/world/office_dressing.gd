@@ -59,6 +59,7 @@ func build(parent: Node3D, layout: OfficeLayout, state: SimState, walls: Array[D
 	_layout = layout
 	_walls = walls
 	_props(parent, layout, state)
+	_wall_decor(parent)
 	_street(parent, layout)
 	_visual_root = Node3D.new()
 	_visual_root.name = "KeyVisuals"
@@ -93,6 +94,52 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 			if not equip.is_empty():
 				thing(parent, str(equip["model"]), pr.get_center() + Vector2(0, -0.1), _v2(equip["size"]),
 					float(equip["height"]), color_of(equip["color"]), 0.0, h)
+
+
+## Duvar süsleri (G3): altıgen raf ve çıtalı panel, uzun dış duvarlarda posterin (duvar ortası) yanına,
+## sırayla dönüşümlü asılır. Önünde boylu eşya varsa o duvar atlanır. Duvar kesilince posterler gibi gizlenir.
+func _wall_decor(parent: Node3D) -> void:
+	var cfg: Dictionary = _m()["wall_decor"]
+	var decor: Dictionary = _m()["decor"]
+	var items: Array = cfg["items"]
+	var candidates: Array[Dictionary] = []
+	for w: Dictionary in _walls:
+		if bool(w["outer"]) and float(w["length"]) >= float(cfg["min_wall_length"]):
+			candidates.append(w)
+	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["length"]) > float(b["length"]))
+	var placed: int = 0
+	for w: Dictionary in candidates:
+		if placed >= int(cfg["max"]):
+			break
+		var def: Dictionary = decor[str(items[placed % items.size()])]
+		var fp: Vector2 = _v2(def["size"])
+		var inward: Vector2 = -(OUTWARD[w["side"]] as Vector2)
+		var along: Vector2 = Vector2(inward.y, -inward.x)
+		var spot: Vector2 = (w["mid"] as Vector2) + along * float(w["length"]) * float(cfg["offset_ratio"])
+		var pos: Vector2 = spot + inward * (OfficeWorld.WALL_THICKNESS * 0.5 + fp.y * 0.5 + 0.01)
+		var clear: float = float(cfg["clearance"])
+		var area: Rect2 = Rect2(spot + inward * clear * 0.5, Vector2.ZERO).grow_individual(
+			absf(along.x) * fp.x * 0.5 + absf(inward.x) * clear * 0.5, absf(along.y) * fp.x * 0.5 + absf(inward.y) * clear * 0.5,
+			absf(along.x) * fp.x * 0.5 + absf(inward.x) * clear * 0.5, absf(along.y) * fp.x * 0.5 + absf(inward.y) * clear * 0.5)
+		if _blocked(area, float(cfg["bottom"])):
+			continue
+		var t: Dictionary = thing(parent, str(def["model"]), pos, fp, float(def["height"]), color_of(def["color"]),
+			rad_to_deg(atan2(inward.x, inward.y)), float(cfg["bottom"]))
+		w["decor"] = t["node"]
+		placed += 1
+
+
+## Alanda, verilen yükseklikten uzun bir eşya var mı (duvar süsü onun içine girmesin).
+func _blocked(area: Rect2, above: float) -> bool:
+	var props: Dictionary = _m()["props"]
+	for prop: Dictionary in _layout.props:
+		if not (prop["rect"] as Rect2).intersects(area):
+			continue
+		var h: float = float(DataDB.data.furniture[prop["id"]]["height"]) if prop["kind"] == "furniture" \
+			else float(props[prop["kind"]]["height"])
+		if h > above:
+			return true
+	return false
 
 
 static func _v2(a: Array) -> Vector2:

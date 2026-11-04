@@ -798,6 +798,26 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Animasyon:** pencereler 0.25 sn'de ölçek 0.86→1 ve saydamlıkla açılır (`UiUtil.pop_in`); para ve itibar eski değerden yenisine sayar, daire bir kez nabız atar (`CountBadge`); para değişimi rozetin solunda beyaz yazı + renkli konturla yukarı süzülür.
 - **Vitrin:** `tools/ui_kit_demo.tscn` bütün bileşenleri tek ekranda gösterir.
 
+## K-079 · 2026-11-05 · Kabul · Orgo kararı + uygulama (G3 Blender betikleri)
+**Konu:** Basit eşyaları Blender Python betikleriyle üretmek (`docs/art-direction.md` 7).
+**Karar:**
+- **Araç:** Orgo'nun Steam'deki Blender 5.2.3 kurulumu (`C:/Program Files (x86)/Steam/steamapps/common/Blender`). Betikler `tools/blender/`; yalnızca `bpy` ve `bmesh` kullanır, Blender 4.x'te de çalışır.
+- **Tek malzeme, palet atlası:** `assets/textures/palette.png` (256×256, 16×16 kare). Her parçanın UV'si kendi renk karesinin ortasına eşlenir; doku "en yakın piksel" okunur. Renk sırası sabittir (yeni renk sona).
+- **Şekil:** her kutu ve silindirin keskin kenarları 1–2.5 cm, 1–3 segmentli bevel ile yuvarlanır; yaprak kümeleri düzensiz ikosferler. Yumuşak gölgelendirme, 50°'den keskin kenarlar korunur.
+- **Üretilen modeller:**
+  - `props/desk`: sağda çekmeceli dolap, çekmeceler oturana bakar.
+  - `furniture/bookshelf`: tohumlu rastgele kitaplar, saksı ve vazo.
+  - `furniture/plant_small` ve `plant_big`, ayrıca `decor/plant_medium`.
+  - `decor/hex_shelf`: altıgen petek raf.
+  - `decor/wall_panel`: çıtalı akustik panel.
+- **Duvar süsleri (yeni, `data/models.json` `decor` ve `wall_decor`):**
+  - En uzun dış duvarlarda (≥ 4 m), posterin bulunduğu duvar ortasından uzunluğun %30'u kadar yana, sırayla altıgen raf ve panel asılır (en fazla 4).
+  - Önünde 1 m'den uzun bir eşya varsa o duvar atlanır.
+  - Kameraya bakan kesik duvarda posterler gibi gizlenir.
+- **Orta boy saksı** (`decor/plant_medium`) şimdilik oyunda kullanılmıyor. Satın alınabilir yeni bir mobilya olması fiyat ve konfor dengesi gerektirdiği için Orgo'nun kararını bekliyor.
+- **Model denetimi düzeltmesi:** `tools/model_check.gd`, gerçek bir model bulunca `ModelLibrary`'nin autoload bağımlılığı yüzünden betik hatası verip yine de "sorunsuz" yazıyordu. Ölçüm fonksiyonları bağımlılıksız `MeshBounds` sınıfına taşındı.
+- **Ön yüz kuralı:** Blender'da −Y, Godot'da +Z. Duvar süslerinin arkası +Y (duvara).
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

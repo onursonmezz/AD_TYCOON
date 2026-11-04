@@ -1,5 +1,23 @@
 # Değişiklik günlüğü
 
+## G3: Blender ile ilk modeller (2026-11-05)
+- **Yeni 3D modeller** (gri kutuların yerine):
+  - çekmeceli çalışma masası;
+  - kitaplarla dolu kitaplık;
+  - küçük ve büyük saksı bitkisi (orta boy da hazır, henüz satılmıyor).
+- **Duvar süsleri:** Uzun duvarlarda posterlerin yanında altıgen petek raf ve çıtalı ahşap panel var. Duvar kameraya bakıp alçalınca gizlenirler.
+- **Modeller kodla üretiliyor:** `tools/blender/` betikleri Blender'da çalışır ve `.glb` dosyalarını yazar. Ölçü ya da renk değiştirmek için betikteki sayıyı değiştirip yeniden çalıştırmak yeter.
+- Bütün modeller tek bir renk atlası kullanır (`assets/textures/palette.png`).
+- **Model kontrol aracı düzeltildi:** Gerçek bir model bulunca hata verip yine de "sorunsuz" diyordu.
+- Nasıl test ederim:
+  1. Oyunu aç, bir oyun yükle ya da başlat: masalar çekmeceli ahşap, saksılar terrakota, kitaplık renkli kitaplı.
+  2. Duvarlara bak: posterin yanında bal peteği raf ya da çıtalı panel. Q/E ile döndür; kameraya bakan duvarda gizlenirler.
+  3. İnşa modunda bir kitaplık ya da bitki yerleştir: yeni model görünür.
+  4. Modelleri yeniden üret (proje klasöründe):
+     `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py`
+  5. Denetle: `godot --headless --import`, sonra `godot --headless --script res://tools/model_check.gd` (7 model, 7 sorunsuz).
+  6. `docs/screenshots/01_g1_world_close.png` ile `03_g3_world_close.png`'yi karşılaştır.
+
 ## G2: Yeni arayüz (2026-11-05)
 - **Ofis artık tam ekran;** arayüz onun üstünde yüzüyor:
   - Solda dikey ikon çubuğu. Gelen kutusu ve kampanya ikonlarında kırmızı sayaç noktası var.

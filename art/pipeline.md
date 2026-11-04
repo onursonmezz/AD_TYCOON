@@ -4,6 +4,22 @@ Bu rehber bir eşyayı fikirden oyuna kadar götürür (GDD 21.3). **Kod yazman 
 
 Önce `art/style_bible.md`'yi bir kez oku.
 
+## Kısa yol: Blender betikleri (G3)
+
+Basit eşyalar (masa, kitaplık, saksılar, duvar süsleri) konsept ve AI adımı olmadan, Blender'ın Python betikleriyle doğrudan üretilir:
+
+```
+"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py
+```
+
+- Yalnızca birkaçını üretmek için sona `-- --only=desk,plant_big` ekle.
+- Betikler:
+  - `tools/blender/common.py`: palet, yuvarlatılmış kutu ve silindir, dışa aktarma.
+  - `tools/blender/models.py`: eşyaların ölçüleri ve parçaları.
+  - `tools/blender/build_all.py`: hangi eşya hangi dosyaya yazılır.
+- Bütün modeller tek bir renk atlası kullanır: `assets/textures/palette.png`. Yeni renk `common.py`'deki `PALETTE` listesinin **sonuna** eklenir.
+- Sonra 5. adımdaki gibi Godot'da içe aktar ve `model_check` ile denetle.
+
 ## 0. Hangi dosya nereye?
 
 Tüm modeller `assets/models/` altına gider. Dosya adı tablodaki gibi olmalı (küçük harf, Türkçe karakter yok).

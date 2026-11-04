@@ -10,7 +10,7 @@ static func slots(data: GameData) -> Array[Dictionary]:
 		var f: Dictionary = data.furniture[id]
 		out.append({"name": "furniture." + id, "rel": str(f["model"]),
 			"size": Vector2(float(f["size"][0]), float(f["size"][1])), "height": float(f["height"])})
-	for group: String in ["props", "equipment", "street"]:
+	for group: String in ["props", "equipment", "street", "decor"]:
 		var g: Dictionary = data.models[group]
 		for id: String in g:
 			out.append({"name": "%s.%s" % [group, id], "rel": str(g[id]["model"]),
@@ -33,7 +33,7 @@ static func slots(data: GameData) -> Array[Dictionary]:
 ## Modelin uyarıları (boş = sorun yok). limits: data/models.json "limits".
 static func inspect(root: Node3D, slot: Dictionary, limits: Dictionary) -> PackedStringArray:
 	var warn: PackedStringArray = PackedStringArray()
-	var box: AABB = ModelLibrary.bounds(root)
+	var box: AABB = MeshBounds.bounds(root)
 	if box.size.length() < 0.0001:
 		warn.append("içinde görünür mesh yok")
 		return warn
@@ -57,7 +57,7 @@ static func inspect(root: Node3D, slot: Dictionary, limits: Dictionary) -> Packe
 		warn.append("ortada değil (merkez %.2f, %.2f): Location 0, 0, 0 ve Origin to 3D Cursor" % [cx, cz])
 	var limit: int = int(limits["triangles_character"] if bool(slot.get("character", false)) \
 		else (limits["triangles_big"] if h >= float(limits["big_from_height"]) else limits["triangles_small"]))
-	var tris: int = ModelLibrary.triangle_count(root)
+	var tris: int = MeshBounds.triangle_count(root)
 	if tris > limit:
 		warn.append("%d üçgen, sınır %d: Decimate ile azalt" % [tris, limit])
 	return warn

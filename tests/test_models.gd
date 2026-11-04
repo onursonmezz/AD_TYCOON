@@ -20,10 +20,10 @@ func after_each() -> void:
 
 
 func test_missing_model_falls_back_to_box() -> void:
-	assert_false(ModelLibrary.exists("props/desk.glb"), "depoda henüz model yok")
-	assert_null(ModelLibrary.instance("props/desk.glb", Vector2(1.4, 0.7), 0.75))
+	assert_false(ModelLibrary.exists("props/counter.glb"), "depoda henüz model yok")
+	assert_null(ModelLibrary.instance("props/counter.glb", Vector2(3.0, 0.6), 0.95))
 	var parent: Node3D = autofree(Node3D.new())
-	var t: Dictionary = OfficeDressing.thing(parent, "props/desk.glb", Vector2(2, 3), Vector2(1.4, 0.7), 0.75, Color.RED)
+	var t: Dictionary = OfficeDressing.thing(parent, "props/counter.glb", Vector2(2, 3), Vector2(1.4, 0.7), 0.75, Color.RED)
 	assert_false(bool(t["model"]))
 	assert_true(t["node"] is MeshInstance3D, "gri kutu")
 
@@ -59,7 +59,7 @@ func test_checker_reports_problems() -> void:
 
 func test_every_slot_has_a_valid_path_and_unknown_files_are_listed() -> void:
 	var slots: Array[Dictionary] = Checker.slots(data)
-	assert_eq(slots.size(), data.furniture_ids.size() + 5 + data.hardware_ids.size() + 4 + 3 + 9 + 12, "eşyalar + 3 gövde, 9 saç, 12 kıyafet")
+	assert_eq(slots.size(), data.furniture_ids.size() + 5 + data.hardware_ids.size() + 4 + 3 + 3 + 9 + 12, "eşyalar + 3 duvar süsü + 3 gövde, 9 saç, 12 kıyafet")
 	var bad: Dictionary = data.raw.duplicate(true)
 	bad["furniture.json"][0]["model"] = "Bitki Büyük.glb"
 	assert_eq(ChecksM8.check(data.raw), PackedStringArray())
@@ -109,3 +109,15 @@ func test_office_dressing_builds_street_billboard_and_posters() -> void:
 		func(n: Node) -> bool: return (n as MeshInstance3D).mesh is QuadMesh and n.is_inside_tree() and not n.is_queued_for_deletion())
 	assert_eq(quads.size(), 2, "billboard + 1 poster")
 	GameState.end_game()
+
+
+func test_blender_models_pass_the_checker() -> void:
+	# G3: tools/blender ile üretilen modeller depoda; hepsi ölçü, taban ve üçgen sınırına uymalı.
+	var limits: Dictionary = data.models["limits"]
+	for slot: Dictionary in Checker.slots(data):
+		if not str(slot["rel"]) in ["props/desk.glb", "furniture/bookshelf.glb", "furniture/plant_small.glb",
+				"furniture/plant_big.glb", "decor/plant_medium.glb", "decor/hex_shelf.glb", "decor/wall_panel.glb"]:
+			continue
+		assert_true(ModelLibrary.exists(str(slot["rel"])), str(slot["rel"]))
+		var node: Node3D = autofree(ModelLibrary.scene(str(slot["rel"])).instantiate())
+		assert_eq(Checker.inspect(node, slot, limits), PackedStringArray(), str(slot["rel"]))
