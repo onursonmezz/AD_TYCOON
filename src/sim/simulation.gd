@@ -23,6 +23,8 @@ signal rankings_published(result: Dictionary)
 signal pitch_ready()
 ## Yeni dönem başladı (GDD 5.2): kısa "yeni dönem" ekranı.
 signal era_started(era_id: String)
+## Olay kararı bekliyor (M7-C, GDD 16): oyunda zaman durur.
+signal event_started(event: Dictionary)
 
 var data: GameData
 var state: SimState
@@ -50,6 +52,7 @@ var pitches: PitchSystem
 var build: BuildSystem
 var tools: ToolSystem
 var research: ResearchSystem
+var events: EventSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -85,6 +88,8 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	build = BuildSystem.new(data)
 	tools = ToolSystem.new(data)
 	research = ResearchSystem.new(data)
+	events = EventSystem.new(data)
+	events.build = build
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
@@ -119,7 +124,7 @@ func load_state(saved: Dictionary) -> void:
 func step_day() -> void:
 	if state.bankrupt or state.waiting_for_input:
 		return
-	if pause_on_phase and pitches.is_waiting(state):
+	if pause_on_phase and (pitches.is_waiting(state) or not EventSystem.pending(state).is_empty()):
 		return
 	if not state.active_campaign.is_empty():
 		if pause_on_phase and _needs_phase_input():
@@ -286,6 +291,7 @@ func _finish(camp: Dictionary) -> void:
 	var client: Dictionary = state.clients.get(setup["client_id"], {})
 	var kpi_client: Dictionary = client if not client.is_empty() else {"scale": setup.get("client_scale", 0)}
 	media.before_kpi(camp, score, state)
+	EventSystem.prepare_kpi(state, setup)
 	var result: Dictionary = kpi.compute(setup, kpi_client, score, year, state.rng, state.clock.month())
 	var ratio: float = Kpi.value_of(result, setup["kpi_type"]) / maxf(0.000001, float(setup["kpi_target"]))
 	camp["kpi"] = result
@@ -304,6 +310,7 @@ func _finish(camp: Dictionary) -> void:
 		parts["risks"] = float(setup.get("option_satisfaction", 0.0))
 		parts["scandal"] = float(camp.get("scandal", {}).get("satisfaction", 0.0))
 		parts["office"] = float(state.office_effects.get("satisfaction", 0.0))
+		parts["event"] = float(camp.get("event_satisfaction", 0.0))
 		parts["expectation"] = clients.expectation(client, year)
 		var delta: float = 0.0
 		for key: String in parts:

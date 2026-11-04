@@ -31,6 +31,9 @@ func decide(sim: Simulation) -> void:
 	BotUtil.handle_pitch(sim, true, _rng)
 	BotUtil.manage_tools(sim, true, _rng)
 	BotUtil.manage_research(sim, true, _rng)
+	BotUtil.handle_events(sim, true, _rng)
+	if sim.build.plant_count(sim.state) > 0 and sim.build.weeks_since_watered(sim.state) >= sim.data.bali("plants.thirsty_weeks"):
+		WaterPlantsCommand.new().execute(sim)
 	if not sim.state.is_idle():
 		return
 	var data: GameData = sim.data

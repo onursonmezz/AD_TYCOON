@@ -24,6 +24,7 @@ func decide(sim: Simulation) -> void:
 	BotUtil.handle_pitch(sim, false, rng)
 	BotUtil.manage_tools(sim, false, rng)
 	BotUtil.manage_research(sim, false, rng)
+	BotUtil.handle_events(sim, false, rng)
 	if rng.randf() < HIRE_CHANCE and sim.staff.headcount(sim.state) < sim.staff.capacity(sim.state):
 		var roles: Array[String] = []
 		for id: String in sim.data.position_ids:

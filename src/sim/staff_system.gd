@@ -211,3 +211,36 @@ func monthly_payroll(state: SimState) -> float:
 	for emp: Dictionary in state.staff.values():
 		total += float(emp["salary"])
 	return total * (1.0 + data.balf("economy.payroll_tax"))
+
+
+## Yazılım sertifikası (GDD 11.3 "araç verimi ↑"): ajansın sahip olduğu gerçek bir aracın alanında çalışanın
+## araç çarpanı +%10 (certification.bonus). Başlangıç araçları (defter, daktilo…) için sertifika yok.
+func certify(state: SimState, economy: Economy, emp_id: String, area: String) -> String:
+	var emp: Dictionary = state.staff.get(emp_id, {})
+	if emp.is_empty() or not (data.bal("tools.areas") as Array).has(area):
+		return "ERR_NO_EMPLOYEE"
+	if (emp.get("certs", []) as Array).has(area):
+		return "ERR_CERTIFIED"
+	if not has_real_tool(state, area):
+		return "ERR_NO_TOOL"
+	if not Employee.is_available(emp, state.clock.week_index) or _on_active_team(state, emp_id):
+		return "ERR_BUSY_EMPLOYEE"
+	economy.pay(state, certification_cost(state))
+	var certs: Array = emp.get("certs", [])
+	certs.append(area)
+	emp["certs"] = certs
+	emp["energy"] = maxf(0.0, float(emp["energy"]) - data.balf("certification.energy"))
+	emp["busy_until"] = state.clock.week_index + data.bali("certification.weeks")
+	emp["busy_reason"] = "training"
+	return ""
+
+
+func certification_cost(state: SimState) -> float:
+	return data.balf("certification.cost_1990") * Economy.inflation(data, state.clock.year())
+
+
+func has_real_tool(state: SimState, area: String) -> bool:
+	for id: String in state.tools:
+		if data.tools[id]["area"] == area and not bool(data.tools[id]["starter"]):
+			return true
+	return false

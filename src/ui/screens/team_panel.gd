@@ -105,12 +105,20 @@ func _traits_row(emp: Dictionary) -> HBoxContainer:
 		l.tooltip_text = tr(str(rec.get("desc_key", "")))
 		l.mouse_filter = Control.MOUSE_FILTER_PASS
 		row.add_child(l)
+	var certs: PackedStringArray = PackedStringArray()
+	for area: Variant in emp.get("certs", []):
+		certs.append(tr("AREA_" + str(area).to_upper()))
+	if not certs.is_empty():
+		row.add_child(UiUtil.label(tr("UI_CERTS") % ", ".join(certs), 13, UiUtil.SAGE_DARK))
 	return row
 
 
-func _actions_row(emp: Dictionary, sim: Simulation) -> HBoxContainer:
+func _actions_row(emp: Dictionary, sim: Simulation) -> HFlowContainer:
 	var data: GameData = DataDB.data
-	var row: HBoxContainer = UiUtil.hbox(8)
+	# Satır uzayınca (sertifika, M7-C) düğmeler alt satıra kayar.
+	var row: HFlowContainer = HFlowContainer.new()
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 6)
 	var stat_pick: OptionButton = OptionButton.new()
 	var stats: Array = data.bal("staff_rules.stats")
 	for stat: Variant in stats:
@@ -125,8 +133,19 @@ func _actions_row(emp: Dictionary, sim: Simulation) -> HBoxContainer:
 		row.add_child(sector_pick)
 		row.add_child(UiUtil.button(tr("UI_SPECIALIZE"), func() -> void:
 			_run(TrainEmployeeCommand.new(emp["id"], "", data.sector_ids[sector_pick.selected]))))
+	# Yazılım sertifikası (M7-C): ajansın gerçek aracı olan, çalışanın henüz sertifikası olmayan alanlar.
+	var areas: Array[String] = []
+	for area: Variant in data.bal("tools.areas"):
+		if sim.staff.has_real_tool(sim.state, str(area)) and not (emp.get("certs", []) as Array).has(area):
+			areas.append(str(area))
+	if not areas.is_empty():
+		var area_pick: OptionButton = OptionButton.new()
+		for area: String in areas:
+			area_pick.add_item(tr("AREA_" + area.to_upper()))
+		row.add_child(area_pick)
+		row.add_child(UiUtil.button(tr("UI_CERTIFY") % UiUtil.money(sim.staff.certification_cost(sim.state)), func() -> void:
+			_run(TrainEmployeeCommand.new(emp["id"], "", "", areas[area_pick.selected]))))
 	if not bool(emp["is_founder"]):
-		row.add_child(UiUtil.spacer())
 		row.add_child(UiUtil.button(tr("UI_RAISE"), func() -> void: _run(RaiseSalaryCommand.new(emp["id"]))))
 		row.add_child(UiUtil.button(tr("UI_FIRE") % UiUtil.money(sim.staff.severance(sim.state, emp)), func() -> void:
 			_run(FireEmployeeCommand.new(emp["id"]))))

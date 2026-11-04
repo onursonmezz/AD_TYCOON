@@ -1,0 +1,78 @@
+[
+	{ "id": "social_lynch", "category": "crisis", "trigger": "airing", "chance": 1.2,
+		"conditions": { "year": ">=2008" },
+		"options": [
+			{ "effects": { "client.satisfaction": -3, "reputation": -1, "campaign.kpi": -0.1 } },
+			{ "check": { "stat": "communication", "dc": 65 }, "success": { "reputation": 2, "campaign.kpi": 0.15 },
+				"fail": { "reputation": -5, "client.satisfaction": -10, "campaign.kpi": -0.3 } },
+			{ "requires_research": "crisis_comms", "effects": { "reputation": 1, "client.trust": 4, "campaign.kpi": 0.05 } }
+		] },
+	{ "id": "broadcast_ban", "category": "crisis", "trigger": "airing", "chance": 1.0,
+		"conditions": { "campaign.category": "broadcast" },
+		"options": [
+			{ "effects": { "cash": -3000, "campaign.kpi": -0.1 } },
+			{ "check": { "stat": "strategy", "dc": 65 }, "success": { "reputation": 2 }, "fail": { "campaign.kpi": -0.5, "client.satisfaction": -6 } },
+			{ "requires_research": "crisis_comms", "effects": { "campaign.kpi": 0.2, "reputation": 1, "client.satisfaction": -2 } }
+		] },
+	{ "id": "plagiarism", "category": "crisis", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "reputation": ">=25" },
+		"options": [
+			{ "effects": { "reputation": -2 } },
+			{ "check": { "stat": "strategy", "dc": 55 }, "success": { "reputation": 3, "rival.reputation": -3 }, "fail": { "reputation": -4 } },
+			{ "requires_research": "crisis_comms", "effects": { "cash": -2000, "reputation": 4, "rival.reputation": -4 } }
+		] },
+	{ "id": "data_breach", "category": "crisis", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "year": ">=2010", "research": "digital_department" },
+		"options": [
+			{ "effects": { "reputation": -2, "clients.satisfaction": -2, "cash": -3000 } },
+			{ "check": { "stat": "technical", "dc": 60 }, "success": { "cash": -1000 }, "fail": { "reputation": -8, "clients.satisfaction": -8 } },
+			{ "requires_research": "crisis_comms", "effects": { "cash": -3000, "reputation": 1, "clients.satisfaction": 1 } }
+		] },
+	{ "id": "leak", "category": "crisis", "trigger": "production", "chance": 0.8,
+		"options": [
+			{ "effects": { "campaign.days": 4, "campaign.quality": 0.02 } },
+			{ "effects": { "campaign.days": -3, "campaign.quality": -0.05 } },
+			{ "requires_research": "crisis_comms", "effects": { "campaign.kpi": 0.15, "client.satisfaction": 3 } }
+		] },
+	{ "id": "misread_ad", "category": "crisis", "trigger": "airing", "chance": 1.0,
+		"conditions": { "campaign.score": "<=6" },
+		"options": [
+			{ "effects": { "campaign.kpi": -0.4, "client.satisfaction": -4 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "campaign.kpi": 0.05 }, "fail": { "reputation": -4, "client.satisfaction": -8 } },
+			{ "requires_research": "crisis_comms", "effects": { "reputation": 2, "client.satisfaction": 2 } }
+		] },
+	{ "id": "tell_all", "category": "crisis", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "staff": ">=4" },
+		"options": [
+			{ "effects": { "reputation": -2 } },
+			{ "check": { "stat": "communication", "dc": 55 }, "success": { "reputation": 2, "team.morale": 3 }, "fail": { "reputation": -4 } },
+			{ "requires_research": "crisis_comms", "effects": { "reputation": 1, "team.morale": 5 } }
+		] },
+	{ "id": "client_scandal", "category": "crisis", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "client.scale": ">=1" },
+		"options": [
+			{ "effects": { "reputation": -3, "client.trust": 8 } },
+			{ "effects": { "client.leave": true, "reputation": 2 } },
+			{ "requires_research": "crisis_comms", "effects": { "client.trust": 10, "client.satisfaction": 5, "cash": 2000 } }
+		] },
+	{ "id": "award_rumor", "category": "crisis", "trigger": "weekly", "chance": 0.5,
+		"conditions": { "reputation": ">=40" },
+		"options": [
+			{ "effects": { "reputation": -3 } },
+			{ "effects": { "reputation": 1, "cash": -1000 } },
+			{ "requires_research": "crisis_comms", "effects": { "reputation": 3 } }
+		] },
+	{ "id": "tax_audit", "category": "crisis", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "year": ">=1992" },
+		"options": [
+			{ "effects": { "cash": -1500 } },
+			{ "check": { "stat": "attention", "dc": 60 }, "success": { "team.morale": 2 }, "fail": { "cash": -6000 } }
+		] },
+	{ "id": "boycott", "category": "crisis", "trigger": "airing", "chance": 0.8,
+		"conditions": { "year": ">=2012" },
+		"options": [
+			{ "effects": { "campaign.kpi": -0.15, "reputation": -3 } },
+			{ "effects": { "campaign.kpi": -0.5, "client.satisfaction": -3, "reputation": 1 } },
+			{ "requires_research": "crisis_comms", "effects": { "campaign.kpi": 0.1, "reputation": 2 } }
+		] }
+]

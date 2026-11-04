@@ -1,0 +1,71 @@
+[
+	{ "id": "office_cat", "category": "humor", "trigger": "weekly", "chance": 0.8,
+		"options": [
+			{ "effects": { "cash": -300, "team.morale": 8 } },
+			{ "effects": { "team.morale": -2 } }
+		] },
+	{ "id": "tea_man", "category": "humor", "trigger": "weekly", "chance": 0.8, "once": true,
+		"conditions": { "year": "<=2005", "staff": ">=2" },
+		"options": [
+			{ "effects": { "cash": -200, "team.morale": 3 } },
+			{ "effects": { "cash": -500, "team.morale": 6 } }
+		] },
+	{ "id": "fax_broke", "category": "humor", "trigger": "weekly", "chance": 0.8, "once": true,
+		"conditions": { "year": "<=1998" },
+		"options": [
+			{ "effects": { "cash": -300 } },
+			{ "effects": { "cash": -900, "team.morale": 2 } },
+			{ "check": { "stat": "technical", "dc": 30 }, "success": { "team.morale": 4 }, "fail": { "cash": -900 } }
+		] },
+	{ "id": "intern_draft", "category": "humor", "trigger": "production", "chance": 0.8,
+		"conditions": { "staff": ">=2" },
+		"options": [
+			{ "effects": { "client.satisfaction": -3 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "client.satisfaction": 4 }, "fail": { "client.satisfaction": -7 } }
+		] },
+	{ "id": "coffee_war", "category": "humor", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "year": ">=2005", "staff": ">=4" },
+		"options": [
+			{ "effects": { "team.morale": -2 } },
+			{ "effects": { "cash": -800, "team.morale": 5 } }
+		] },
+	{ "id": "plant_whisperer", "category": "humor", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "plants": ">=1" },
+		"options": [
+			{ "effects": { "plants.water": true, "employee.morale": 5 } },
+			{ "effects": { "employee.morale": -2 } }
+		] },
+	{ "id": "lucky_pen", "category": "humor", "trigger": "weekly", "chance": 0.8,
+		"options": [
+			{ "effects": { "cash": -50, "employee.morale": 1 } },
+			{ "effects": { "team.energy": -5, "employee.morale": 6 } }
+		] },
+	{ "id": "coffee_fortune", "category": "humor", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "staff": ">=2" },
+		"options": [
+			{ "effects": {} },
+			{ "effects": { "team.morale": 4 } }
+		] },
+	{ "id": "dress_code", "category": "humor", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "staff": ">=3" },
+		"options": [
+			{ "effects": { "team.morale": -3, "reputation": 1 } },
+			{ "effects": { "team.morale": 6 } }
+		] },
+	{ "id": "pigeon", "category": "humor", "trigger": "weekly", "chance": 0.6,
+		"options": [
+			{ "effects": { "team.morale": 4 } },
+			{ "check": { "stat": "speed", "dc": 50 }, "success": { "team.morale": 3 }, "fail": { "team.energy": -5 } }
+		] },
+	{ "id": "wrong_pizza", "category": "humor", "trigger": "weekly", "chance": 0.6,
+		"options": [
+			{ "effects": { "cash": -300, "reputation": 1 } },
+			{ "effects": { "cash": -300, "team.morale": 5, "team.energy": 5 } }
+		] },
+	{ "id": "modem_noise", "category": "humor", "trigger": "weekly", "chance": 0.8, "once": true,
+		"conditions": { "year": ">=1996", "years": [1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004] },
+		"options": [
+			{ "effects": { "team.morale": 2 } },
+			{ "effects": { "cash": -400 } }
+		] }
+]

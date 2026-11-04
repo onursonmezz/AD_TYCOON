@@ -36,12 +36,15 @@ func _ready() -> void:
 	EventBus.award_ceremony.connect(func(result: Dictionary) -> void: open_modal(CeremonyDialog.new(result)))
 	EventBus.pitch_ready.connect(func() -> void: open_modal(PitchDialog.new()))
 	EventBus.era_started.connect(func(era: String) -> void: open_modal(EraDialog.new(era)))
+	EventBus.event_started.connect(func(_ev: Dictionary) -> void: _open_event())
 	_refresh()
 	_refresh_speed()
 	if GameState.is_bankrupt():
 		_on_bankrupt()
 	elif GameState.is_pitch_waiting():
 		open_modal(PitchDialog.new())
+	else:
+		_open_event()
 
 
 func _build() -> void:
@@ -292,6 +295,17 @@ func _on_modal_closed() -> void:
 		_modal_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	Clock.release()
 	_refresh()
+	_open_event.call_deferred()
+
+
+## Kuyruktaki olay (M7-C) için pencere; aynı anda tek olay penceresi açık olur, kapanınca sıradaki gelir.
+func _open_event() -> void:
+	if GameState.pending_event().is_empty() or not is_inside_tree():
+		return
+	for child: Node in _modal_layer.get_children():
+		if child is EventDialog and not child.is_queued_for_deletion():
+			return
+	open_modal(EventDialog.new(GameState.pending_event()))
 
 
 func _on_campaign_finished(camp: Dictionary) -> void:

@@ -1,0 +1,67 @@
+[
+	{ "id": "went_viral", "category": "opportunity", "trigger": "airing", "chance": 1.2,
+		"conditions": { "campaign.score": ">=7", "year": ">=2005" },
+		"options": [
+			{ "effects": { "campaign.kpi": 0.2 } },
+			{ "effects": { "cash": -1500, "campaign.kpi": 0.4, "reputation": 2 } }
+		] },
+	{ "id": "documentary", "category": "opportunity", "trigger": "weekly", "chance": 0.5,
+		"conditions": { "reputation": ">=40" },
+		"options": [
+			{ "effects": { "reputation": 4, "team.energy": -10 } },
+			{ "effects": { "team.morale": 2 } }
+		] },
+	{ "id": "famous_director", "category": "opportunity", "trigger": "weekly", "chance": 0.5,
+		"conditions": { "reputation": ">=50" },
+		"options": [
+			{ "effects": { "cash": -5000, "reputation": 3, "award_buzz": 0.01 } },
+			{ "effects": {} }
+		] },
+	{ "id": "last_minute_brief", "category": "opportunity", "trigger": "weekly", "chance": 1.0,
+		"options": [
+			{ "effects": { "prospect_brief": true, "team.energy": -10 } },
+			{ "effects": {} }
+		] },
+	{ "id": "university_talk", "category": "opportunity", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "reputation": ">=20" },
+		"options": [
+			{ "effects": { "reputation": 1, "research_points": 5 } },
+			{ "effects": {} }
+		] },
+	{ "id": "trade_press", "category": "opportunity", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "reputation": ">=30" },
+		"options": [
+			{ "effects": { "team.morale": 5, "reputation": 1 } },
+			{ "check": { "stat": "strategy", "dc": 55 }, "success": { "reputation": 3, "award_buzz": 0.005 }, "fail": { "reputation": -1 } }
+		] },
+	{ "id": "tech_demo", "category": "opportunity", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "year": ">=1996" },
+		"options": [
+			{ "effects": { "cash": -1000, "research_points": 10 } },
+			{ "effects": {} }
+		] },
+	{ "id": "charity", "category": "opportunity", "trigger": "weekly", "chance": 0.8,
+		"options": [
+			{ "effects": {} },
+			{ "effects": { "team.energy": -10, "reputation": 3, "award_buzz": 0.005 } },
+			{ "effects": { "cash": 1500, "reputation": 1 } }
+		] },
+	{ "id": "festival_trip", "category": "opportunity", "trigger": "weekly", "chance": 0.5,
+		"conditions": { "reputation": ">=35" },
+		"options": [
+			{ "effects": {} },
+			{ "effects": { "cash": -4000, "team.morale": 8, "award_buzz": 0.01, "employee.stat.creative": 3 } }
+		] },
+	{ "id": "startup_equity", "category": "opportunity", "trigger": "weekly", "chance": 0.6,
+		"conditions": { "year": ">=1998" },
+		"options": [
+			{ "effects": { "cash": 2000 } },
+			{ "check": { "stat": "strategy", "dc": 60 }, "success": { "cash": 15000 }, "fail": { "team.morale": -4, "team.energy": -8 } }
+		] },
+	{ "id": "old_client_returns", "category": "opportunity", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "reputation": ">=15" },
+		"options": [
+			{ "effects": { "prospect_brief": true, "reputation": 1 } },
+			{ "effects": {} }
+		] }
+]

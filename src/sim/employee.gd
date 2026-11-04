@@ -128,3 +128,9 @@ static func is_creative(data: GameData, emp: Dictionary) -> bool:
 
 static func is_creative_director(data: GameData, emp: Dictionary) -> bool:
 	return is_creative(data, emp) and title_index(data, emp) >= data.bali("staff_rules.cd_title_index")
+
+
+## Yazılım sertifikası (M7-C): odak alanının araç alanında sertifikası olan çalışanın araç çarpanı +bonus.
+static func cert_mult(data: GameData, emp: Dictionary, focus_id: String) -> float:
+	var area: String = str(data.bal("tools.focus_area").get(focus_id, ""))
+	return 1.0 + data.balf("certification.bonus") if (emp.get("certs", []) as Array).has(area) else 1.0

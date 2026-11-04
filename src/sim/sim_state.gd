@@ -85,6 +85,8 @@ var ai_penalty: float = 0.0
 ## Ar-Ge (M7-B): { points, done: [id], active: { id, weeks_left } } ve Bilgi Defteri (tablo → { "satır|sütun": true }).
 var research: Dictionary = ResearchSystem.empty_research()
 var knowledge: Dictionary = {}
+## Olaylar (M7-C): karar bekleyen kuyruk, son görülme haftaları, aktif piyasa koşulları, günlük.
+var events: Dictionary = EventSystem.empty_events()
 
 ## Yıllık gelir/gider (vergi için).
 var year_income: float = 0.0
@@ -98,7 +100,7 @@ const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bank
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id",
 	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income",
-	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build", "tools", "hardware", "research", "knowledge"]
+	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build", "tools", "hardware", "research", "knowledge", "events"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -194,4 +196,5 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.hardware = str(saved.get("hardware", "pc386"))
 	s.research = saved.get("research", ResearchSystem.empty_research())
 	s.knowledge = saved.get("knowledge", {})
+	s.events = saved.get("events", EventSystem.empty_events())
 	return s

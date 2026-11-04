@@ -1,0 +1,74 @@
+[
+	{ "id": "print_error", "category": "production", "trigger": "production", "chance": 1.2,
+		"conditions": { "campaign.category": "print" },
+		"options": [
+			{ "effects": { "cash": -3000 } },
+			{ "check": { "stat": "communication", "dc": 55 }, "success": { "cash": -1000 }, "fail": { "cash": -3000, "client.satisfaction": -3 } },
+			{ "effects": { "client.satisfaction": -8 } }
+		] },
+	{ "id": "rain_on_shoot", "category": "production", "trigger": "production", "chance": 1.2,
+		"conditions": { "campaign.category": "broadcast", "campaign.phase": "==2" },
+		"options": [
+			{ "effects": { "campaign.days": 3 } },
+			{ "effects": { "cash": -2500 } },
+			{ "check": { "stat": "creative", "dc": 65 }, "success": { "campaign.quality": 0.05 }, "fail": { "campaign.quality": -0.05 } }
+		] },
+	{ "id": "actor_trouble", "category": "production", "trigger": "production", "chance": 1.0,
+		"conditions": { "campaign.category": "broadcast" },
+		"options": [
+			{ "effects": { "cash": -2000 } },
+			{ "effects": { "campaign.days": 4 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "team.morale": 3 }, "fail": { "campaign.days": 3, "team.morale": -4 } }
+		] },
+	{ "id": "server_crash", "category": "production", "trigger": "production", "chance": 1.0,
+		"conditions": { "year": ">=1997" },
+		"options": [
+			{ "effects": { "cash": -1500, "campaign.days": 1 } },
+			{ "effects": { "team.energy": -12 } }
+		] },
+	{ "id": "file_lost", "category": "production", "trigger": "production", "chance": 1.0,
+		"options": [
+			{ "effects": { "campaign.days": 4, "team.morale": -5 } },
+			{ "check": { "stat": "technical", "dc": 55 }, "success": { "cash": -500 }, "fail": { "cash": -500, "campaign.days": 5 } }
+		] },
+	{ "id": "color_proof", "category": "production", "trigger": "production", "chance": 1.0,
+		"conditions": { "campaign.phase": "==2" },
+		"options": [
+			{ "effects": { "cash": -1200, "campaign.days": 2 } },
+			{ "effects": { "campaign.quality": -0.03 } }
+		] },
+	{ "id": "shower_idea", "category": "production", "trigger": "production", "chance": 1.0,
+		"conditions": { "campaign.phase": "==1" },
+		"options": [
+			{ "effects": { "employee.morale": -4 } },
+			{ "effects": { "campaign.quality": 0.06, "campaign.days": 3 } }
+		] },
+	{ "id": "supplier_delay", "category": "production", "trigger": "production", "chance": 1.0,
+		"options": [
+			{ "effects": { "campaign.days": 3 } },
+			{ "effects": { "cash": -2000 } }
+		] },
+	{ "id": "typo_found", "category": "production", "trigger": "production", "chance": 1.0,
+		"conditions": { "campaign.phase": "==2" },
+		"options": [
+			{ "effects": { "campaign.days": 1 } },
+			{ "effects": { "campaign.errors": 2 } }
+		] },
+	{ "id": "music_rights", "category": "production", "trigger": "production", "chance": 0.8,
+		"conditions": { "campaign.category": "broadcast" },
+		"options": [
+			{ "effects": { "cash": -3000 } },
+			{ "check": { "stat": "creative", "dc": 60 }, "success": { "campaign.quality": 0.03 }, "fail": { "campaign.days": 3 } }
+		] },
+	{ "id": "late_night", "category": "production", "trigger": "production", "chance": 1.0,
+		"options": [
+			{ "effects": { "team.energy": 5 } },
+			{ "effects": { "cash": -400, "campaign.quality": 0.03, "team.energy": -8 } }
+		] },
+	{ "id": "power_outage", "category": "production", "trigger": "production", "chance": 0.8,
+		"conditions": { "year": "<=2005" },
+		"options": [
+			{ "effects": { "campaign.days": 1, "team.energy": 5 } },
+			{ "effects": { "cash": -800 } }
+		] }
+]

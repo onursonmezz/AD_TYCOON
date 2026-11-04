@@ -1,0 +1,75 @@
+[
+	{ "id": "raise_request", "category": "staff", "trigger": "weekly", "chance": 1.2,
+		"conditions": { "employee.salary_ratio": "<=1.0" },
+		"options": [
+			{ "effects": { "employee.morale": -10 } },
+			{ "effects": { "employee.salary": 0.1, "employee.morale": 10 } },
+			{ "effects": { "cash": -1500, "employee.morale": 6 } }
+		] },
+	{ "id": "burnout_warning", "category": "staff", "trigger": "weekly", "chance": 1.5,
+		"conditions": { "employee.burnout": ">=50" },
+		"options": [
+			{ "effects": { "employee.leave_weeks": 1, "employee.burnout": -25, "employee.morale": 5 } },
+			{ "effects": { "employee.burnout": 10, "employee.morale": -5 } }
+		] },
+	{ "id": "wedding", "category": "staff", "trigger": "weekly", "chance": 0.6,
+		"options": [
+			{ "effects": { "employee.morale": 3 } },
+			{ "effects": { "cash": -800, "employee.morale": 10, "employee.leave_weeks": 1, "team.morale": 2 } }
+		] },
+	{ "id": "new_baby", "category": "staff", "trigger": "weekly", "chance": 0.5,
+		"conditions": { "employee.level": ">=2" },
+		"options": [
+			{ "effects": { "employee.leave_weeks": 1, "employee.morale": -8 } },
+			{ "effects": { "employee.leave_weeks": 4, "employee.morale": 15, "team.morale": 3 } }
+		] },
+	{ "id": "tension", "category": "staff", "trigger": "weekly", "chance": 1.0,
+		"conditions": { "staff": ">=3" },
+		"options": [
+			{ "effects": { "team.morale": -4 } },
+			{ "check": { "stat": "communication", "dc": 55 }, "success": { "team.morale": 4 }, "fail": { "employee.morale": -6, "employee2.morale": -6 } },
+			{ "effects": { "cash": -1000, "team.morale": 5 } }
+		] },
+	{ "id": "side_job", "category": "staff", "trigger": "weekly", "chance": 0.8,
+		"options": [
+			{ "effects": { "employee.morale": -6, "employee.energy": 10 } },
+			{ "effects": { "employee.energy": -10, "employee.stat.creative": 2 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "cash": 2000 }, "fail": { "employee.morale": -10 } }
+		] },
+	{ "id": "tv_show", "category": "staff", "trigger": "weekly", "chance": 0.5,
+		"conditions": { "employee.level": ">=4" },
+		"options": [
+			{ "effects": { "reputation": 3, "employee.morale": 2 } },
+			{ "effects": { "employee.morale": 10, "employee.award_points": 1 } }
+		] },
+	{ "id": "headhunter", "category": "staff", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "employee.level": ">=3" },
+		"options": [
+			{ "effects": { "employee.salary": 0.15, "employee.morale": 8 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "employee.morale": 10 }, "fail": { "employee.quit": true } },
+			{ "effects": { "employee.quit": true } }
+		] },
+	{ "id": "mentor", "category": "staff", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "employee.level": "<=3", "staff": ">=3" },
+		"options": [
+			{ "effects": { "employee.xp": 40, "employee2.energy": -10 } },
+			{ "effects": { "cash": -1500, "employee.xp": 25 } }
+		] },
+	{ "id": "birthday", "category": "staff", "trigger": "weekly", "chance": 1.0,
+		"options": [
+			{ "effects": { "cash": -200, "team.morale": 3 } },
+			{ "effects": { "employee.morale": -3 } }
+		] },
+	{ "id": "remote_request", "category": "staff", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "year": ">=2010" },
+		"options": [
+			{ "effects": { "employee.morale": 8, "employee.energy": 10, "team.morale": -2 } },
+			{ "effects": { "employee.morale": -8 } }
+		] },
+	{ "id": "flu_season", "category": "staff", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "month": "<=3", "staff": ">=2" },
+		"options": [
+			{ "effects": { "cash": -500, "team.energy": 10, "team.morale": 3 } },
+			{ "effects": { "team.energy": -15, "team.burnout": 5 } }
+		] }
+]

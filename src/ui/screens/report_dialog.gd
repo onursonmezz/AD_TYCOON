@@ -159,7 +159,7 @@ func _satisfaction_parts() -> VBoxContainer:
 	if parts.is_empty():
 		return box
 	var score: float = float(_camp["report"]["score"])
-	for key: String in ["quality", "kpi", "timing", "budget", "revisions", "account", "bold_match", "risks", "scandal", "office"]:
+	for key: String in ["quality", "kpi", "timing", "budget", "revisions", "account", "bold_match", "risks", "scandal", "office", "event"]:
 		var value: float = float(parts.get(key, 0.0))
 		if absf(value) < 0.05:
 			continue

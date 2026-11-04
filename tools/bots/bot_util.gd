@@ -185,3 +185,43 @@ static func manage_research(sim: Simulation, smart: bool, rng: RandomNumberGener
 
 
 const RANDOM_RESEARCH_CHANCE: float = 0.1
+
+
+## Olaylar (M7-C): bilgili bot her seçeneğin beklenen değerini kaba ağırlıklarla tartar; rastgele bot rastgele seçer.
+static func handle_events(sim: Simulation, smart: bool, rng: RandomNumberGenerator) -> void:
+	var inst: Dictionary = EventSystem.pending(sim.state)
+	if inst.is_empty():
+		return
+	var opts: Array = inst["options"]
+	var choice: int = int(opts[rng.randi_range(0, opts.size() - 1)])
+	if smart:
+		var best: float = -INF
+		for i: Variant in opts:
+			var opt: Dictionary = sim.events.events[inst["id"]]["options"][int(i)]
+			var v: float = _effects_value(sim, opt.get("effects", {}))
+			if opt.has("check"):
+				var p: float = sim.events.check_chance(sim.state, inst, opt["check"])
+				v = p * _effects_value(sim, opt.get("success", {})) + (1.0 - p) * _effects_value(sim, opt.get("fail", {}))
+			if v > best:
+				best = v
+				choice = int(i)
+	ResolveEventCommand.new(inst["uid"], choice).execute(sim)
+
+
+## Kaba değer: 1990 ₺ 1000 = 1 puan; itibar 3, müşteri memnuniyeti 0.5, moral 0.1…; müşteri ya da çalışan kaybı ağır.
+static func _effects_value(sim: Simulation, effects: Dictionary) -> float:
+	const W: Dictionary = {"reputation": 3.0, "award_buzz": 300.0, "research_points": 0.3, "prospect_brief": 8.0,
+		"client.satisfaction": 0.5, "client.trust": 0.3, "client.budget": 20.0, "client.leave": -25.0, "client.brief": 6.0,
+		"clients.satisfaction": 1.5, "employee.morale": 0.1, "employee2.morale": 0.1, "employee.energy": 0.05,
+		"employee.burnout": -0.1, "employee.salary": -10.0, "employee.xp": 0.02, "employee.quit": -20.0,
+		"employee.leave_weeks": -1.5, "team.morale": 0.4, "team.energy": 0.2, "team.burnout": -0.4,
+		"campaign.days": -0.8, "campaign.errors": -1.5, "campaign.quality": 60.0, "campaign.kpi": 10.0,
+		"campaign.satisfaction": 0.5, "campaign.fee_bonus": 20.0, "rival.reputation": -0.5}
+	var v: float = 0.0
+	for key: String in effects:
+		var x: Variant = effects[key]
+		if key == "cash":
+			v += float(x) / 1000.0
+		elif W.has(key):
+			v += float(W[key]) * (1.0 if x is bool else float(x))
+	return v

@@ -78,8 +78,13 @@ func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng
 	var efficiency: float = float(setup.get("media_efficiency", 1.0))
 	var season: float = cpm_season(year, month)
 	var recall_reach: float = 0.0
+	# Piyasa koşulları ve olaylar (M7-C): kategori başına görülme ve maliyet çarpanı, kampanyaya özel görülme çarpanı.
+	var macro_imp: Dictionary = setup.get("macro_impressions", {})
+	var macro_cost: Dictionary = setup.get("macro_cost", {})
+	var event_mult: float = float(setup.get("event_kpi_mult", 1.0))
 	for entry: Dictionary in setup["mix"]:
 		var ch: String = entry["channel"]
+		var cat: String = data.channels[ch]["category"]
 		var opts: Dictionary = entry.get("options", {})
 		var production_share: float = float(options.production(ch).get("share", 0.0)) if options != null else 0.0
 		var spend: float = media * float(entry["share"]) * (1.0 - production_share) * efficiency
@@ -100,10 +105,12 @@ func compute(setup: Dictionary, client: Dictionary, score: float, year: int, rng
 			var event_spend: float = media * float(entry["share"]) * (1.0 - float(options.production(ch).get("margin", 0.0)))
 			impressions = event_spend / (data.channel_param(ch, "cpm") * infl * float(fx.get("cost_mult", 1.0))) * 1000.0
 		else:
-			var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest_now) * season * float(fx.get("cost_mult", 1.0))
+			var cpm: float = data.channel_param(ch, "cpm") * infl * demand(interest_now) * season * float(fx.get("cost_mult", 1.0)) \
+				* float(macro_cost.get(cat, 1.0))
 			impressions = spend / cpm * 1000.0
-		impressions *= interest_now * float(fx.get("impressions_mult", 1.0)) * float(opts.get("_press", 1.0))
-		er *= float((setup.get("category_er_mult", {}) as Dictionary).get(data.channels[ch]["category"], 1.0))
+		impressions *= interest_now * float(fx.get("impressions_mult", 1.0)) * float(opts.get("_press", 1.0)) \
+			* float(macro_imp.get(cat, 1.0)) * event_mult
+		er *= float((setup.get("category_er_mult", {}) as Dictionary).get(cat, 1.0))
 		var pool: float = maxf(1.0, pop * share_of_pop * data.channel_audience_size(ch, audience) * reach_cap(client))
 		var r: float = pool * (1.0 - exp(-impressions / pool))
 		var aud_fit: float = scoring.fit_mult(data.fit("channel_audience", ch, audience)) if not audience.is_empty() else 1.0

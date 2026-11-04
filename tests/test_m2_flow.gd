@@ -27,6 +27,7 @@ func test_phase_start_waits_for_sliders() -> void:
 	var sim: Simulation = Simulation.new(data, 21)
 	sim.pause_on_phase = true
 	while sim.state.inbox.is_empty():
+		_answer_events(sim)
 		sim.step_week()
 	assert_true(sim.start_campaign(sim.state.inbox[0]["id"], _choices())["ok"])
 	var week: int = sim.state.clock.week_index
@@ -43,6 +44,7 @@ func test_phase_start_waits_for_sliders() -> void:
 		if sim.state.waiting_for_input:
 			phases_seen.append(sim.production.current_phase(sim.state.active_campaign))
 			sim.set_phase_sliders([0.2, 0.3, 0.5])
+		_answer_events(sim)
 		sim.step_day()
 	assert_eq(phases_seen, [0, 1, 2], "her faz başında bir kez sorulur")
 	assert_eq(sim.state.history.size(), 1)
@@ -184,6 +186,7 @@ func test_ui_full_loop_smoke() -> void:
 		await wait_physics_frames(1)
 	var sim: Simulation = GameState.sim
 	while sim.state.inbox.is_empty():
+		_answer_events(sim)
 		GameState.step_day()
 	var brief: Dictionary = sim.state.inbox[0]
 	var wizard: WizardDialog = WizardDialog.new(brief, screen)
@@ -193,6 +196,7 @@ func test_ui_full_loop_smoke() -> void:
 	await wait_physics_frames(2)
 	assert_false(sim.state.is_idle(), "sihirbaz kampanyayı başlattı")
 	while not GameState.is_waiting():
+		_answer_events(sim)
 		GameState.step_day()
 	screen.call("show_panel", "campaign")
 	await wait_physics_frames(1)
@@ -212,9 +216,17 @@ func test_ui_full_loop_smoke() -> void:
 	for i: int in 1000:
 		if GameState.is_waiting():
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+		_answer_events(sim)
 		GameState.step_day()
 		if sim.state.finished.size() > reports_before:
 			break
 	await wait_physics_frames(3)
 	assert_gt(sim.state.finished.size(), reports_before, "rapor üretildi")
 	GameState.end_game()
+
+
+## Oyun modunda olay (M7-C) zamanı durdurur; testte ilk seçenekle cevaplanır.
+func _answer_events(sim: Simulation) -> void:
+	while not EventSystem.pending(sim.state).is_empty():
+		var inst: Dictionary = EventSystem.pending(sim.state)
+		sim.events.resolve(sim, inst["uid"], int(inst["options"][0]))

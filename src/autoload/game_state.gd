@@ -72,6 +72,11 @@ func is_pitch_waiting() -> bool:
 	return sim != null and sim.pitches.is_waiting(sim.state)
 
 
+## Karar bekleyen olay (M7-C); yoksa {}.
+func pending_event() -> Dictionary:
+	return EventSystem.pending(sim.state) if sim != null else {}
+
+
 func is_bankrupt() -> bool:
 	return sim != null and sim.state.bankrupt
 
@@ -96,6 +101,7 @@ func _attach(new_sim: Simulation) -> void:
 	sim.rankings_published.connect(_on_rankings)
 	sim.pitch_ready.connect(func() -> void: EventBus.pitch_ready.emit())
 	sim.era_started.connect(func(era: String) -> void: EventBus.era_started.emit(era))
+	sim.event_started.connect(func(ev: Dictionary) -> void: EventBus.event_started.emit(ev))
 	sim.supplier_offer_received.connect(func(offer: Dictionary) -> void:
 		EventBus.notification.emit("NOTE_SUPPLIER_OFFER", [tr(DataDB.data.suppliers[offer["supplier"]]["name_key"])], "info"))
 

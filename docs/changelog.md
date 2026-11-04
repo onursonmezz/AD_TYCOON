@@ -1,5 +1,28 @@
 # Değişiklik günlüğü
 
+## M7-C: Olaylar ve krizler (2026-11-04)
+- **Olay sistemi:** Oynarken ara sıra bir olay penceresi açılır ve sen karar verene kadar oyun durur.
+  - 7 kategoride 83 olay: müşteri, çalışan, prodüksiyon, kriz, fırsat, piyasa, ofis hayatı.
+  - Bazı seçenekler bir yeteneği sınar (ör. "İletişim kontrolü · şans ~%62"). Sonuçta neyin değiştiği listelenir.
+- **Kriz İletişimi araştırması:** Kriz olaylarında ★ işaretli ek bir seçenek açar ve şansı artırır.
+- **Dönem olayları** tarihinde gelir:
+  - 1994, 2001, 2008 krizleri: yeni işlerin bütçesi %25–30 düşer, 1 yıl sürer.
+  - 2018 kur şoku.
+  - Büyük Kapanma (2020): açık hava ve etkinlik çöker, dijital ve sosyal güçlenir.
+  - Ayrıca özel TV, dot-com, Dünya Kupası, seçimler, veri kanunu, yapay zekâ.
+- **Bitkiler:**
+  - 3 hafta sulanmazsa susar, 5 haftada kurur. Kuru bitki konfor vermez.
+  - Ofis ekranında "Bitkileri sula" düğmesi var. Ofis asistanı işe alırsan o sular.
+- **Yazılım sertifikası** (Ekip ekranı): Ajansın bir alanda gerçek bir aracı varsa çalışanı o alanda sertifikalandırabilirsin. O alandaki üretimi +%10 olur.
+- Kampanya raporunun memnuniyet dökümüne "Olaylar" kalemi eklendi.
+- Nasıl test ederim:
+  1. Yeni oyun aç ve birkaç ay oyna: bir olay penceresi açılır, oyun durur. Bir seçenek seç, sonuç satırlarını gör, Kapat'a bas; zaman devam eder.
+  2. Yetenek kontrollü bir seçenekte şans yüzdesini gör. Kriz İletişimi araştırmasından sonra bir kriz olayında ★ seçeneği gör.
+  3. Ofise bitki koy (inşa modu), 5 hafta bekle: Ofis ekranında "Kurudu!" ve oda kalitesinin düştüğünü gör. "Bitkileri sula" ile geri gelir.
+  4. Araçlar'dan PixelShop'u al. Ekip ekranında bir çalışana Görsel alanında "Sertifika" ver; 2 hafta eğitimde kalır, sonra kartında "Sertifikalar: Görsel" yazar.
+  5. Hızlı başlangıçla 1990'da başla ve Nisan 1994'e kadar oyna: kriz penceresi gelir, sonra gelen brief'lerin bütçeleri belirgin şekilde düşer.
+
+
 ## M7-B: Ar-Ge ve Bilgi Defteri (2026-11-04)
 - **Ar-Ge ekranı** (sol menüde yeni):
   - araştırma puanı (AP), yürüyen araştırma;

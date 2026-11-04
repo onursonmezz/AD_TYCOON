@@ -1,0 +1,73 @@
+[
+	{ "id": "logo_bigger", "category": "client", "trigger": "production", "chance": 1.5,
+		"conditions": { "client.ego": ">=60", "campaign.phase": ">=1" },
+		"options": [
+			{ "effects": { "campaign.quality": -0.03, "client.satisfaction": 4 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "client.trust": 3 }, "fail": { "client.satisfaction": -5 } },
+			{ "effects": { "team.morale": 5, "client.satisfaction": -8 } }
+		] },
+	{ "id": "brief_change", "category": "client", "trigger": "production", "chance": 1.0,
+		"conditions": { "campaign.phase": "<=1" },
+		"options": [
+			{ "effects": { "campaign.days": 5, "team.morale": -4, "client.satisfaction": 3 } },
+			{ "check": { "stat": "communication", "dc": 55 }, "success": { "cash": 3000 }, "fail": { "client.satisfaction": -6 } },
+			{ "effects": { "client.satisfaction": -8 } }
+		] },
+	{ "id": "late_payment", "category": "client", "trigger": "weekly", "chance": 1.0,
+		"conditions": { "client.pay": "<=40" },
+		"options": [
+			{ "effects": { "client.satisfaction": 3, "cash": -1500 } },
+			{ "check": { "stat": "communication", "dc": 50 }, "success": { "cash": 2000 }, "fail": { "client.satisfaction": -6 } }
+		] },
+	{ "id": "new_manager", "category": "client", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "client.loyalty": "<=50" },
+		"options": [
+			{ "effects": { "client.satisfaction": -6 } },
+			{ "check": { "stat": "communication", "dc": 65 }, "success": { "client.trust": 5, "client.satisfaction": 5 }, "fail": { "client.satisfaction": -12 } },
+			{ "effects": { "cash": -2000, "client.satisfaction": 4 } }
+		] },
+	{ "id": "ceo_loved", "category": "client", "trigger": "airing", "chance": 1.2,
+		"conditions": { "campaign.score": ">=7" },
+		"options": [
+			{ "effects": { "client.satisfaction": 5, "campaign.fee_bonus": 0.1 } },
+			{ "check": { "stat": "communication", "dc": 55 }, "success": { "campaign.fee_bonus": 0.25 }, "fail": { "client.satisfaction": -3 } }
+		] },
+	{ "id": "client_merger", "category": "client", "trigger": "weekly", "chance": 0.4,
+		"conditions": { "client.scale": ">=1", "year": ">=1995" },
+		"options": [
+			{ "effects": { "client.satisfaction": -3 } },
+			{ "check": { "stat": "strategy", "dc": 65 }, "success": { "client.budget": 0.3, "client.trust": 5 }, "fail": { "client.leave": true } }
+		] },
+	{ "id": "rude_client", "category": "client", "trigger": "production", "chance": 1.0,
+		"conditions": { "client.ego": ">=70" },
+		"options": [
+			{ "effects": { "team.morale": -6 } },
+			{ "effects": { "team.morale": 6, "client.satisfaction": -6 } },
+			{ "check": { "stat": "communication", "dc": 60 }, "success": { "team.morale": 3, "client.trust": 2 }, "fail": { "team.morale": -3, "client.satisfaction": -3 } }
+		] },
+	{ "id": "budget_increase", "category": "client", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "client.satisfaction": ">=75" },
+		"options": [
+			{ "effects": { "client.brief": true } },
+			{ "check": { "stat": "strategy", "dc": 55 }, "success": { "client.budget": 0.25, "client.trust": 4 }, "fail": { "client.satisfaction": -2 } }
+		] },
+	{ "id": "rival_courting", "category": "client", "trigger": "weekly", "chance": 1.0,
+		"conditions": { "client.satisfaction": "<=55" },
+		"options": [
+			{ "effects": { "client.satisfaction": -4, "rival.reputation": 1 } },
+			{ "effects": { "cash": -3000, "client.satisfaction": 8 } },
+			{ "check": { "stat": "creative", "dc": 60 }, "success": { "client.satisfaction": 10, "client.trust": 3 }, "fail": { "client.satisfaction": -4 } }
+		] },
+	{ "id": "free_ideas", "category": "client", "trigger": "weekly", "chance": 1.0,
+		"options": [
+			{ "effects": { "client.satisfaction": -3 } },
+			{ "effects": { "team.energy": -10, "client.satisfaction": 6, "client.trust": 2 } },
+			{ "check": { "stat": "communication", "dc": 55 }, "success": { "cash": 2500 }, "fail": { "client.satisfaction": -5 } }
+		] },
+	{ "id": "reference", "category": "client", "trigger": "weekly", "chance": 0.8,
+		"conditions": { "client.satisfaction": ">=70", "client.trust": ">=55" },
+		"options": [
+			{ "effects": { "reputation": 2 } },
+			{ "effects": { "prospect_brief": true } }
+		] }
+]

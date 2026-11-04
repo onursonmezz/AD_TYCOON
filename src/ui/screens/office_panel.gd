@@ -18,7 +18,7 @@ func _init(main_screen: Control) -> void:
 func refresh() -> void:
 	var sim: Simulation = GameState.sim
 	var s: SimState = sim.state
-	var sig: String = "%d%d%d%d%d" % [s.office_level, s.staff.size(), int(s.cash / 1000.0), s.clock.game_year(), int(s.reputation)] + str(s.build.get("version", 0))
+	var sig: String = "%d%d%d%d%d" % [s.office_level, s.staff.size(), int(s.cash / 1000.0), s.clock.game_year(), int(s.reputation)] + str(s.build.get("version", 0)) + str(sim.build.weeks_since_watered(s))
 	if sig == _signature:
 		return
 	_signature = sig
@@ -82,6 +82,7 @@ func _quality_block(sim: Simulation, s: SimState) -> void:
 		b.disabled = current or int(defs[tier]["available_from"]) > s.clock.year()
 		tiers.add_child(b)
 	_body.add_child(tiers)
+	_plants_row(sim, s)
 	_body.add_child(UiUtil.button(tr("UI_BUILD_MODE"), func() -> void: _main.call("enter_build_mode")))
 
 
@@ -90,3 +91,19 @@ func _sizes_text(sizes: Array) -> String:
 	for size: Variant in sizes:
 		parts.append(tr("SIZE_" + str(size).to_upper()))
 	return ", ".join(parts)
+
+
+## Bitkiler (12.3): sayı, son sulama; kuruysa uyarı. Ofis asistanı varsa o sular.
+func _plants_row(sim: Simulation, s: SimState) -> void:
+	var count: int = sim.build.plant_count(s)
+	if count == 0:
+		return
+	var row: HBoxContainer = UiUtil.hbox()
+	row.add_child(UiUtil.label(tr("UI_PLANTS_STATE") % [count, sim.build.weeks_since_watered(s)], 14))
+	if sim.build.plants_dry(s):
+		row.add_child(UiUtil.label(tr("UI_PLANTS_DRY"), 14, UiUtil.TERRACOTTA))
+	row.add_child(UiUtil.button(tr("UI_WATER_PLANTS"), func() -> void:
+		GameState.execute(WaterPlantsCommand.new())
+		_signature = ""
+		refresh()))
+	_body.add_child(row)

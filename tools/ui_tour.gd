@@ -28,7 +28,7 @@ func _run() -> void:
 	await _shot("01c_office_home")
 	var sim: Simulation = GameState.sim
 	while sim.state.inbox.size() < 2:
-		GameState.step_day()
+		_step()
 	screen.call("show_panel", "inbox")
 	await _shot("02_inbox")
 	var wizard: WizardDialog = WizardDialog.new(sim.state.inbox[0], screen)
@@ -36,7 +36,7 @@ func _run() -> void:
 	await _shot("03_wizard")
 	wizard.call("_on_start")
 	while not GameState.is_waiting():
-		GameState.step_day()
+		_step()
 	await _shot("04_phase_sliders")
 	var panel: CampaignPanel = screen.get("_panel")
 	var sliders: Array[HSlider] = panel.get("_sliders")
@@ -47,13 +47,13 @@ func _run() -> void:
 	panel.call("_on_confirm")
 	Clock.set_paused(true)
 	for i: int in 10:
-		GameState.step_day()
+		_step()
 	await _shot("05_phase_running")
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
-		GameState.step_day()
+		_step()
 	await get_tree().create_timer(2.0).timeout
 	await _shot("06_report")
 	var scrolls: Array[Node] = screen.find_children("*", "ScrollContainer", true, false)
@@ -92,7 +92,7 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 	while sim.state.clock.game_year() < 3 or not sim.state.is_idle() or sim.state.inbox.is_empty():
 		if GameState.is_waiting():
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
-		GameState.step_day()
+		_step()
 	for child: Node in screen.get("_modal_layer").get_children():
 		child.queue_free()
 	await get_tree().process_frame
@@ -116,7 +116,7 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
-		GameState.step_day()
+		_step()
 	await get_tree().create_timer(2.0).timeout
 	await _shot("13_report_channels")
 	await _tour_options(screen, sim)
@@ -129,7 +129,7 @@ func _tour_options(screen: Control, sim: Simulation) -> void:
 	sim.state.clock.week_index = (2015 - 1990) * 48
 	sim.influencers.refresh(sim.state)
 	while sim.state.inbox.is_empty():
-		GameState.step_day()
+		_step()
 	var brief: Dictionary = sim.state.inbox[0]
 	brief["media_budget"] = 400000.0
 	var wizard: WizardDialog = WizardDialog.new(brief, screen)
@@ -156,7 +156,7 @@ func _tour_industry(screen: Control, sim: Simulation) -> void:
 		child.queue_free()
 	sim.state.cash = 900000.0
 	while sim.state.clock.month() != sim.awards.entry_month("golden_apple"):
-		GameState.step_day()
+		_step()
 		if GameState.is_waiting():
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
 	if not sim.state.history.is_empty():
@@ -195,7 +195,7 @@ func _tour_pitch(screen: Control, sim: Simulation) -> void:
 	dialog.call("_on_start")
 	await get_tree().process_frame
 	while not sim.pitches.is_waiting(sim.state):
-		sim.step_day()
+		_step()
 	var pd: PitchDialog = PitchDialog.new()
 	screen.call("open_modal", pd)
 	await get_tree().process_frame
@@ -294,6 +294,27 @@ func _tour_research(screen: Control, sim: Simulation) -> void:
 	var scrolls: Array[Node] = panel.find_children("*", "ScrollContainer", true, false)
 	(scrolls[0] as ScrollContainer).scroll_vertical = 100000
 	await _shot("31_knowledge_book")
+	await _tour_events(screen, sim)
+
+
+## M7-C: olay penceresi (stat kontrolü, Kriz İletişimi seçeneği), sonucu; sertifika ve bitkiler.
+func _tour_events(screen: Control, sim: Simulation) -> void:
+	screen.call("close_panel")
+	(sim.state.research["done"] as Array).append("crisis_comms")
+	sim.state.reputation = 40.0
+	sim.events._enqueue(sim.state, sim.events.events["plagiarism"], {"rival_id": DataDB.data.rival_ids[0]})
+	var dialog: EventDialog = EventDialog.new(EventSystem.pending(sim.state))
+	screen.call("open_modal", dialog)
+	await _shot("32_event")
+	dialog.call("_choose", 2)
+	await _shot("33_event_result")
+	dialog.queue_free()
+	sim.state.build["watered_week"] = sim.state.clock.week_index - 6
+	sim.build.refresh(sim.state)
+	screen.call("show_panel", "office")
+	await _shot("34_office_plants")
+	screen.call("show_panel", "team")
+	await _shot("35_team_certify")
 
 
 func _shot(file_name: String) -> void:
@@ -301,3 +322,12 @@ func _shot(file_name: String) -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png(_out.path_join(file_name + ".png"))
+
+
+## Bir gün ilerletir; tur sırasında gelen olaylar (M7-C) ilk seçenekle cevaplanır, yoksa oyun durur.
+func _step() -> void:
+	var sim: Simulation = GameState.sim
+	while not EventSystem.pending(sim.state).is_empty():
+		var inst: Dictionary = EventSystem.pending(sim.state)
+		sim.events.resolve(sim, inst["uid"], int(inst["options"][0]))
+	GameState.step_day()

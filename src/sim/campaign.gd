@@ -65,6 +65,10 @@ func create(setup: Dictionary, campaign_id: String, week_index: int) -> Dictiona
 
 
 func current_phase(campaign: Dictionary) -> int:
+	return phase_of(campaign)
+
+
+static func phase_of(campaign: Dictionary) -> int:
 	return mini(2, int(campaign["day"]) * 3 / int(campaign["days_total"]))
 
 
@@ -107,7 +111,7 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 			var share: float = scoring.effective_share(float(sliders[i]))
 			points[ids[i]] = float(points[ids[i]]) + base * Employee.area_stat(data, emp, ids[i]) / ref \
 				* Employee.specialty_mult(data, emp, ids[i]) * share * float(focus_mult.get(ids[i], 1.0)) \
-				* ToolSystem.focus_mult(data, state, ids[i])
+				* ToolSystem.focus_mult(data, state, ids[i]) * Employee.cert_mult(data, emp, ids[i])
 		var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(emp["stats"]["attention"]) / 100.0) \
 			* Employee.trait_effect(data, emp, "error_mult")
 		if rush:

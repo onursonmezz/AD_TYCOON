@@ -18,7 +18,7 @@ func _b(key: String) -> Variant:
 
 
 static func empty_build() -> Dictionary:
-	return {"rooms": [], "furniture": [], "desk_tier": "basic", "version": 0}
+	return {"rooms": [], "furniture": [], "desk_tier": "basic", "version": 0, "watered_week": 0}
 
 
 func layout(state: SimState) -> OfficeLayout:
@@ -225,6 +225,8 @@ func quality_parts(state: SimState) -> Dictionary:
 		if prop["kind"] != "furniture":
 			continue
 		var def: Dictionary = data.furniture[prop["id"]]
+		if def["decor"] == "plant" and plants_dry(state):
+			continue
 		var room: Dictionary = l.room_at((prop["rect"] as Rect2).get_center())
 		var factor: float = 1.0 if not room.is_empty() and room["type"] == "work" else float(_b("outside_comfort_factor"))
 		comfort += float(def["comfort"]) * factor
@@ -251,3 +253,48 @@ func refresh(state: SimState) -> void:
 				else:
 					effects[k] = v
 	state.office_effects = effects
+
+
+# --- bitkiler (12.3: "sulanmazsa kurur") -------------------------------------------
+
+func plant_count(state: SimState) -> int:
+	var n: int = 0
+	for f: Dictionary in state.build["furniture"]:
+		if data.furniture.has(f["id"]) and data.furniture[f["id"]]["decor"] == "plant":
+			n += 1
+	return n
+
+
+func weeks_since_watered(state: SimState) -> int:
+	return state.clock.week_index - int(state.build.get("watered_week", state.clock.week_index))
+
+
+## Kuru bitki ne konfor ne dekor çeşitliliği verir.
+func plants_dry(state: SimState) -> bool:
+	return weeks_since_watered(state) >= data.bali("plants.dry_weeks")
+
+
+func water(state: SimState) -> void:
+	var was_dry: bool = plants_dry(state)
+	state.build["watered_week"] = state.clock.week_index
+	if was_dry:
+		refresh(state)
+
+
+## Hafta sonu: ofis asistanı varsa bitkileri o sular; yoksa susadığında ve kuruduğunda bildirim anahtarı döner.
+func plants_weekly(state: SimState) -> String:
+	if not state.build.has("watered_week"):
+		state.build["watered_week"] = state.clock.week_index
+	if plant_count(state) == 0:
+		return ""
+	for emp: Dictionary in state.staff.values():
+		if emp["role"] == data.bal("plants.auto_water_role"):
+			water(state)
+			return ""
+	var weeks: int = weeks_since_watered(state)
+	if weeks == data.bali("plants.thirsty_weeks"):
+		return "NOTE_PLANTS_THIRSTY"
+	if weeks == data.bali("plants.dry_weeks"):
+		refresh(state)
+		return "NOTE_PLANTS_DRY"
+	return ""

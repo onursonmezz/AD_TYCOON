@@ -1,6 +1,7 @@
 class_name IndustryCalendar
 extends RefCounted
-## Sektör takvimi (M5–M7): ay başında rakipler, müşteri çalma, ödül pencereleri ve törenler; hafta sonunda pitch;
+## Sektör takvimi (M5–M7): ay başında rakipler, müşteri çalma, ödül pencereleri, törenler ve sabit tarihli olaylar;
+## hafta sonunda pitch, rastgele olaylar ve bitkiler;
 ## yıl sonunda sıralamalar, araç sürümleri ve dönem değişimi.
 ## simulation.gd 400 satırı aşmasın diye ayrı; yalnızca Simulation'ın sistemlerini çağırır ve sinyallerini yayar.
 
@@ -23,6 +24,8 @@ static func monthly(sim: Simulation) -> void:
 			var result: Dictionary = sim.awards.ceremony(state, id)
 			if not (result["player"] as Array).is_empty():
 				sim.award_ceremony.emit(result)
+	for inst: Dictionary in sim.events.monthly(state):
+		sim.event_started.emit(inst)
 
 
 ## Hafta sonu: pitch davetleri, sıcak markaların teklifleri, hazırlığın bitişi. Bot/test (duraklamasız) modda
@@ -39,6 +42,14 @@ static func weekly(sim: Simulation) -> void:
 		for r: String in PitchSystem.ROUNDS:
 			cards.append(sim.pitches.cards_of_round(r)[0])
 		sim.pitches.present(sim.state, cards)
+	# Olaylar (M7-C): duraklamasız modda cevapsız olay kendiliğinden kapanır; sonra yeni olay denenir.
+	if not sim.pause_on_phase:
+		sim.events.auto_resolve(sim)
+	for inst: Dictionary in sim.events.weekly(sim.state):
+		sim.event_started.emit(inst)
+	var plant_note: String = sim.build.plants_weekly(sim.state)
+	if not plant_note.is_empty():
+		sim.staff_note.emit(plant_note, [], "info")
 
 
 ## Yıl sonu (gelir sayaçları sıfırlanmadan önce): sıralamalar, araç sürümleri ve abonelikler, dönem değişimi.

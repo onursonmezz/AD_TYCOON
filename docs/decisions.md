@@ -541,6 +541,51 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Denge (60×10):** bilgili bot 7.48 (önce 7.51), rastgele bot 6.30 (önce 6.23), rastgele bot ilk 3 yılda %30 iflas. Rastgele bot araştırma yapmadığı için tonu ve kitleyi yanlış seçemiyor (otomatik = nötr); iki bot arasındaki fark 1.18'e indi (M10 hedefi ≥ 2.5, A-005 notu).
 - **Dosya bölme:** `simulation.gd` 400 satırın altına indi; kampanya kurulumu `CampaignStarter`'a taşındı.
 
+
+## K-067 · 2026-11-04 · Kabul · Uygulama kararı (GDD 16 olay biçimi)
+**Konu:** Olay sistemi (M7-C).
+**Karar:**
+- **Veri:** `data/events/<kategori>.json`; 7 kategori (müşteri, çalışan, prodüksiyon, kriz, fırsat, piyasa, ofis hayatı), toplam 83 olay. Biçim GDD 16'daki gibi: `conditions`, `chance`, `options` (`effects` ya da `check` + `success`/`fail`). Ek alanlar: `category`, `trigger`, `once`, `cooldown_weeks`, seçenekte `requires_research`.
+- **Metinler** veriye yazılmaz, anahtardan türetilir: `EV_<ID>_T` (başlık), `EV_<ID>_X` (metin), `EV_<ID>_O<n>` (seçenek). Metinde `{client}`, `{employee}`, `{employee2}`, `{rival}`, `{campaign}` yer tutucuları kullanılır.
+- **Tetikler ve sıklık:**
+  - `weekly`, `production` (üretimdeki kampanya), `airing` (yayındaki kampanya): her hafta sonu genel bir kapıdan geçilirse (sırayla %10 / %6 / %8) uygun olaylardan biri gelir. `chance` olaylar arasında ağırlıktır.
+  - İki olay arasında en az 3 hafta; aynı olay 3 yıl (144 hafta) tekrar gelmez.
+  - `fixed`: ay başında, tarihi tutan olay kapısız gelir (dönem krizleri).
+- **Karar beklerken oyun durur** (pitch sunumu gibi). Bot ve test modunda cevapsız olay bir hafta sonra ilk seçenekle kapanır; bu yüzden ilk seçenek her zaman "güvenli" seçenektir ve araştırma isteyemez.
+- **Stat kontrolü:** Skandaldaki formülün aynısı: zar(0..100) + ajansın o stattaki en iyisi / 2 ≥ zorluk. Pencerede yaklaşık şans gösterilir (GDD'de yok; oyuncu riski görsün diye).
+- **Kriz İletişimi:** Kriz olaylarında ek bir seçenek açar (★) ve stat kontrollerine +20 ekler.
+- **Bağlam:** Kurucu "çalışan" olaylarına girmez, istifa edemez. Etkiler hedefini anahtar önekinden bulur (`client.`, `employee.`, `campaign.`…). Hedefi olmayan olay (ör. çalışan yokken zam talebi) gelmez.
+- **Kampanyaya etkiler:** Üretimdekine teslim süresi, hata, kalite (tüm puanlar ×(1+x)). Yayındakine görülme çarpanı, memnuniyet (rapordaki memnuniyet dökümünde "Olaylar" kalemi) ve ek ödeme.
+- **Para** 1990 ₺ cinsinden yazılır, enflasyonla ölçeklenir.
+
+## K-068 · 2026-11-04 · Kabul · Uygulama kararı
+**Konu:** Dönem krizleri, bitkiler ve yazılım sertifikası.
+**Karar:**
+- **Krizler:** 1994 Nisan (bütçe ×0.70, 12 ay), 2001 Şubat (×0.70, 12 ay), 2008 Ekim (×0.75, 12 ay), 2018 Ağustos kur şoku (×0.85, 9 ay). Bütçe çarpanı yeni brief'lerin ücretine ve medya bütçesine uygulanır.
+- **Büyük Kapanma (Mart 2020, 9 ay):** bütçe ×0.85. Kategori başına görülme çarpanı: açık hava ×0.4, etkinlik ×0.15, sponsorluk ve gerilla ×0.5, dijital ×1.25, sosyal ×1.3.
+- **Diğer piyasa olayları:**
+  - Özel TV 1992 (yayın ×1.2, 2 yıl);
+  - dot-com 2000 (dijital ×0.8);
+  - Dünya Kupası 2002 (sponsorluk ×1.4);
+  - sosyal ağ çılgınlığı 2008 (sosyal ×1.2);
+  - kişisel veri kanunu 2016 (dijital ve sosyal maliyet ×1.1);
+  - seçimler (açık hava maliyeti ×1.3, 2 ay);
+  - 2000 paniği, para reformu 2005, yapay zekâ 2023.
+  
+  Çarpanlar GDD'de yok; kriz yılları ve "bütçeler düşer" (5, 13) GDD'den.
+- **Bitkiler** (12.3):
+  - Bütün bitkiler birlikte sulanır.
+  - 3 hafta sulanmazsa "susadı", 5 haftada kurur. Kuru bitki ne konfor ne dekor çeşitliliği verir.
+  - Ofis ekranında "Bitkileri sula" düğmesi var.
+  - Ofis asistanı işe alınmışsa bitkileri o sular.
+- **Yazılım sertifikası** (11.3): Çalışan başına, araç alanı başına bir kez. 1990 ₺3.000, 2 hafta, enerji −15.
+  - Sertifikalı çalışanın o alandaki üretimi ×1.10.
+  - Ajansın o alanda başlangıç aracı dışında bir aracı olmalı.
+- **Denge (60×10, bilgili bot olaylara beklenen değerle karar verir):**
+  - Bilgili bot ortalama 7.46 (önce 7.48). 10 yılda %3.3 iflas (önce %0); kriz yılı tek kişilik ajansı zorluyor.
+  - Rastgele bot 6.29, ilk 3 yılda %30 iflas.
+  - Plaza katı %63 Y10, ilk ödül %70 Y4.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

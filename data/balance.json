@@ -195,5 +195,12 @@
 		"ap_per_score": 1.0, "size_mult": { "small": 1.0, "medium": 2.0, "large": 3.0, "mega": 5.0 },
 		"digital_categories": ["digital", "social"], "ai_workshop_mult": 0.5, "market_research_cost_1990": 3000,
 		"social_er_mult": 1.15, "crisis_statement_bonus": 0.2, "focus_good": 1.08, "focus_weak": 0.92
-	}
+	},
+	"events": {
+		"gate": { "weekly": 0.08, "production": 0.10, "airing": 0.06 }, "min_gap_weeks": 3, "cooldown_weeks": 144,
+		"auto_resolve_weeks": 1, "log_kept": 40, "categories": ["client", "staff", "production", "crisis", "opportunity", "macro", "humor"],
+		"percent_effects": ["award_buzz", "client.budget", "employee.salary", "employee2.salary", "campaign.quality", "campaign.kpi", "campaign.fee_bonus"]
+	},
+	"plants": { "thirsty_weeks": 3, "dry_weeks": 5, "auto_water_role": "office_assistant" },
+	"certification": { "cost_1990": 3000, "weeks": 2, "energy": 15, "bonus": 0.10 }
 }

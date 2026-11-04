@@ -83,7 +83,8 @@ func make_brief(state: SimState, client: Dictionary, prospect: Dictionary) -> Di
 	if sizes.is_empty():
 		sizes = [allowed[allowed.size() - 1]]
 	var size: String = state.rng.pick("briefs", sizes)
-	var infl: float = Economy.inflation(data, state.clock.year())
+	# Kriz yıllarında bütçeler düşer (GDD 13, M7-C makro olaylar).
+	var infl: float = Economy.inflation(data, state.clock.year()) * EventSystem.budget_mult(state)
 	var objective: String = ""
 	if not state.rng.chance("briefs", float(b["free_objective_chance"])):
 		objective = state.rng.pick("briefs", data.objective_ids)

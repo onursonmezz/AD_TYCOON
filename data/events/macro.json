@@ -1,0 +1,93 @@
+[
+	{ "id": "private_tv", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==1992", "month": "==3" },
+		"options": [
+			{ "effects": { "macro": { "months": 24, "impressions": { "broadcast": 1.2 } }, "reputation": 1 } },
+			{ "effects": { "macro": { "months": 24, "impressions": { "broadcast": 1.2 } }, "research_points": 5 } }
+		] },
+	{ "id": "crisis_1994", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==1994", "month": "==4" },
+		"options": [
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.7 }, "team.morale": 3 } },
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.7 }, "team.morale": -5, "cash": 2000 } },
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.7 }, "cash": -2000, "reputation": 2 } }
+		] },
+	{ "id": "y2k", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==1999", "month": "==11" },
+		"options": [
+			{ "effects": { "cash": -1000 } },
+			{ "check": { "stat": "technical", "dc": 40 }, "success": { "team.morale": 3 }, "fail": { "cash": -3000 } }
+		] },
+	{ "id": "dotcom", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2000", "month": "==10" },
+		"options": [
+			{ "effects": { "macro": { "months": 12, "impressions": { "digital": 0.8 } } } },
+			{ "effects": { "macro": { "months": 12, "impressions": { "digital": 0.8 } }, "research_points": 5 } }
+		] },
+	{ "id": "crisis_2001", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2001", "month": "==2" },
+		"options": [
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.7 }, "team.morale": 3 } },
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.7 }, "team.morale": -5, "cash": 3000 } },
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.7 }, "cash": -3000, "reputation": 2 } }
+		] },
+	{ "id": "world_cup", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2002", "month": "==6" },
+		"options": [
+			{ "effects": { "macro": { "months": 2, "impressions": { "sponsorship": 1.4, "broadcast": 1.1 } } } },
+			{ "effects": { "macro": { "months": 2, "impressions": { "sponsorship": 1.4, "broadcast": 1.1 } }, "team.morale": 8, "team.energy": -3 } }
+		] },
+	{ "id": "currency_reform", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2005", "month": "==1" },
+		"options": [
+			{ "effects": { "team.morale": 3 } },
+			{ "effects": { "cash": -300, "reputation": 1 } }
+		] },
+	{ "id": "social_boom", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2008", "month": "==3" },
+		"options": [
+			{ "effects": { "macro": { "months": 24, "impressions": { "social": 1.2 } } } },
+			{ "effects": { "macro": { "months": 24, "impressions": { "social": 1.2 } }, "research_points": 5 } }
+		] },
+	{ "id": "crisis_2008", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2008", "month": "==10" },
+		"options": [
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.75 }, "team.morale": 3 } },
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.75 }, "team.morale": -5, "cash": 4000 } },
+			{ "effects": { "macro": { "months": 12, "budget_mult": 0.75 }, "cash": -4000, "reputation": 2 } }
+		] },
+	{ "id": "data_law", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2016", "month": "==4" },
+		"options": [
+			{ "effects": { "macro": { "months": 24, "cost": { "digital": 1.1, "social": 1.1 } }, "cash": -3000, "reputation": 1 } },
+			{ "check": { "stat": "technical", "dc": 55 }, "success": { "macro": { "months": 24, "cost": { "digital": 1.1, "social": 1.1 } } },
+				"fail": { "macro": { "months": 24, "cost": { "digital": 1.1, "social": 1.1 } }, "cash": -5000 } }
+		] },
+	{ "id": "currency_shock", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2018", "month": "==8" },
+		"options": [
+			{ "effects": { "macro": { "months": 9, "budget_mult": 0.85 }, "team.morale": 2 } },
+			{ "effects": { "macro": { "months": 9, "budget_mult": 0.85 }, "team.morale": -4, "cash": 4000 } }
+		] },
+	{ "id": "lockdown", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2020", "month": "==3" },
+		"options": [
+			{ "effects": { "macro": { "months": 9, "budget_mult": 0.85, "impressions": { "ooh": 0.4, "event": 0.15, "sponsorship": 0.5,
+				"guerrilla": 0.5, "digital": 1.25, "social": 1.3 } }, "cash": -2000, "team.morale": 3 } },
+			{ "effects": { "macro": { "months": 9, "budget_mult": 0.85, "impressions": { "ooh": 0.4, "event": 0.15, "sponsorship": 0.5,
+				"guerrilla": 0.5, "digital": 1.25, "social": 1.3 } }, "team.morale": -10, "team.energy": -5 } }
+		] },
+	{ "id": "ai_boom", "category": "macro", "trigger": "fixed", "once": true,
+		"conditions": { "year": "==2023", "month": "==2" },
+		"options": [
+			{ "effects": { "reputation": 1 } },
+			{ "effects": { "research_points": 15 } }
+		] },
+	{ "id": "elections", "category": "macro", "trigger": "fixed", "cooldown_weeks": 40,
+		"conditions": { "years": [1991, 1995, 1999, 2002, 2007, 2011, 2015, 2018, 2023, 2027, 2031, 2035], "month": "==4" },
+		"options": [
+			{ "effects": { "macro": { "months": 2, "cost": { "ooh": 1.3 } }, "reputation": 1 } },
+			{ "check": { "stat": "strategy", "dc": 50 }, "success": { "macro": { "months": 2, "cost": { "ooh": 1.3 } }, "cash": 8000 },
+				"fail": { "macro": { "months": 2, "cost": { "ooh": 1.3 } }, "reputation": -3 } }
+		] }
+]
