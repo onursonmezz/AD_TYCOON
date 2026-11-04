@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 [autoload]
 
 DataDB="*res://src/autoload/data_db.gd"
+Settings="*res://src/autoload/settings.gd"
 EventBus="*res://src/autoload/event_bus.gd"
 SaveSystem="*res://src/autoload/save_system.gd"
 GameState="*res://src/autoload/game_state.gd"
@@ -26,6 +27,10 @@ Clock="*res://src/autoload/clock.gd"
 
 [debug]
 
+file_logging/enable_file_logging=true
+file_logging/enable_file_logging.pc=true
+file_logging/log_path="user://logs/godot.log"
+file_logging/max_log_files=5
 gdscript/warnings/untyped_declaration=1
 
 [display]
@@ -63,6 +68,11 @@ game_speed_2={
 game_speed_3={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":51,"key_label":0,"unicode":51,"location":0,"echo":false,"script":null)
+]
+}
+game_quick_save={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194336,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

@@ -1448,3 +1448,41 @@ KV_SLOGAN_9,{brand} ile tanış.,Meet {brand}.
 KV_SLOGAN_10,Küçük şeyler büyük farklar. {brand}.,"Small things, big differences. {brand}."
 KV_SLOGAN_11,"Bir nesil, bir {brand}.","One generation, one {brand}."
 KV_SLOGAN_12,{brand}: Akıllıca seçim.,{brand}: The smart choice.
+MENU_LOAD,Yükle,Load
+MENU_SETTINGS,Ayarlar,Settings
+UI_SETTINGS,Ayarlar,Settings
+UI_AGENCY_NAME,Ajans adı,Agency name
+UI_DEFAULT_AGENCY,Ajansım,My Agency
+UI_SAVE_TITLE,Oyunu kaydet,Save game
+UI_LOAD_TITLE,Kayıt yükle,Load game
+UI_SLOT,Slot %d,Slot %d
+UI_SLOT_AUTO,Otomatik kayıt,Autosave
+UI_SLOT_CURRENT,şu anki,current
+UI_SLOT_OVERWRITE,Üstüne yaz?,Overwrite?
+UI_LOAD,Yükle,Load
+UI_SLOT_EMPTY,Boş,Empty
+UI_SLOT_DATE,%d · Ay %d,%d · Month %d
+UI_SLOT_STAFF,%d çalışan,%d staff
+UI_SLOT_BANKRUPT,iflas etti,bankrupt
+UI_UNSAVED_TITLE,Kaydedilmemiş ilerleme,Unsaved progress
+UI_UNSAVED_TEXT,Son kayıttan beri oynadığın kısım kaybolacak. Önce kaydetmek ister misin?,Everything since your last save will be lost. Do you want to save first?
+UI_SAVE_AND_EXIT,Kaydet ve çık,Save and exit
+UI_EXIT_NO_SAVE,Kaydetmeden çık,Exit without saving
+UI_SET_AUDIO,Ses,Audio
+UI_SET_GAME,Oyun,Game
+UI_SET_DISPLAY,Ekran,Display
+UI_SET_VOLUME_MASTER,Genel ses,Master volume
+UI_SET_VOLUME_MUSIC,Müzik,Music
+UI_SET_VOLUME_SFX,Efektler,Sound effects
+UI_SET_VOLUME_AMBIENT,Ofis ortamı,Office ambience
+UI_SET_LANGUAGE,Dil,Language
+UI_LANG_TR,Türkçe,Türkçe
+UI_LANG_EN,English,English
+UI_SET_UI_SCALE,Arayüz ve metin boyutu,Interface and text size
+UI_SET_AUTOSAVE,Her ay otomatik kaydet,Autosave every month
+UI_SET_TUTORIAL,İpuçlarını göster,Show tips
+UI_SET_FULLSCREEN,Tam ekran,Fullscreen
+UI_SET_RESOLUTION,Pencere boyutu,Window size
+UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
+UI_SET_LOGS,Günlük klasörünü aç,Open log folder
+UI_SET_RESET,Varsayılanlara dön,Reset to defaults

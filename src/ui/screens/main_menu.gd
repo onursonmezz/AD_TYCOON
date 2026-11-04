@@ -1,15 +1,14 @@
 extends Control
-## Ana menü: Yeni oyun, Devam et (tek kayıt slotu), dil seçimi, çıkış.
+## Ana menü: Yeni oyun, Devam et (en son kayıt), Yükle (3 slot + otomatik), Ayarlar, çıkış (M9).
 
 const GAME_SCENE: String = "res://src/ui/screens/main.tscn"
 
 var _continue_button: Button
-var _lang_button: Button
 var _error_label: Label
 
 
 func _ready() -> void:
-	if not TranslationServer.get_locale().begins_with("en"):
+	if str(Settings.get_value("language")).is_empty() and not TranslationServer.get_locale().begins_with("en"):
 		TranslationServer.set_locale("tr")
 	_build()
 
@@ -37,8 +36,11 @@ func _build() -> void:
 	_continue_button = UiUtil.button(tr("MENU_CONTINUE"), _on_continue)
 	_continue_button.disabled = not SaveSystem.has_save()
 	col.add_child(_continue_button)
-	_lang_button = UiUtil.button(tr("MENU_LANGUAGE"), _on_language)
-	col.add_child(_lang_button)
+	var load_button: Button = UiUtil.button(tr("MENU_LOAD"), func() -> void:
+		add_child(SaveLoadDialog.new(false, func() -> void: get_tree().change_scene_to_file(GAME_SCENE))))
+	load_button.disabled = not SaveSystem.has_save()
+	col.add_child(load_button)
+	col.add_child(UiUtil.button(tr("MENU_SETTINGS"), func() -> void: add_child(SettingsDialog.new(_build))))
 	col.add_child(UiUtil.button(tr("MENU_QUIT"), func() -> void: get_tree().quit()))
 	_error_label = UiUtil.wrapped("", 14, UiUtil.TERRACOTTA, 360.0)
 	col.add_child(_error_label)
@@ -49,8 +51,8 @@ func _build() -> void:
 func _on_new_game() -> void:
 	if not DataDB.is_ok():
 		return
-	add_child(BackgroundDialog.new(func(background: String, start_year: int) -> void:
-		GameState.new_game(-1, background, start_year)
+	add_child(BackgroundDialog.new(func(background: String, start_year: int, agency_name: String) -> void:
+		GameState.new_game(-1, background, start_year, agency_name)
 		get_tree().change_scene_to_file(GAME_SCENE)))
 
 
@@ -61,6 +63,10 @@ func _on_continue() -> void:
 		_error_label.text = tr("ERR_SAVE_CORRUPT")
 
 
-func _on_language() -> void:
-	TranslationServer.set_locale("en" if TranslationServer.get_locale().begins_with("tr") else "tr")
-	_build()
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		for i: int in range(get_child_count() - 1, -1, -1):
+			if get_child(i).has_meta("esc_closes"):
+				get_child(i).queue_free()
+				get_viewport().set_input_as_handled()
+				return

@@ -5,6 +5,8 @@ extends RefCounted
 
 var rng: SimRng
 var clock: SimClock
+## Oyuncunun verdiği ajans adı (M9, kayıt slotlarında görünür); boşsa arayüz varsayılan adı gösterir.
+var agency_name: String = ""
 
 var cash: float = 0.0
 var reputation: float = 0.0
@@ -95,7 +97,7 @@ var year_expense: float = 0.0
 var _next_id: Dictionary = {}
 
 ## Kayda giren alanlar (rng ve clock ayrıca yazılır).
-const SAVED_FIELDS: Array[String] = ["cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
+const SAVED_FIELDS: Array[String] = ["agency_name", "cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
 	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id",
@@ -147,6 +149,7 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	var s: SimState = SimState.new(data, 0)
 	s.rng = SimRng.from_dict(saved.get("rng", {}))
 	s.clock.load_dict(saved.get("clock", {}))
+	s.agency_name = str(saved.get("agency_name", ""))
 	s.cash = float(saved.get("cash", s.cash))
 	s.reputation = float(saved.get("reputation", s.reputation))
 	s.office_level = int(saved.get("office_level", s.office_level))

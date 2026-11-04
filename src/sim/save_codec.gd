@@ -3,11 +3,12 @@ extends RefCounted
 ## Kayıt biçimi (GDD 24.3, 24.5): sürüm numaralı JSON, sürüm göçü (migration) fonksiyonları.
 ## Dosya işlemleri SaveSystem autoload'undadır; bu sınıf saf dönüşüm yapar (test edilebilir).
 
-const SAVE_VERSION: int = 2
+const SAVE_VERSION: int = 3
 
 
 static func encode(sim: Simulation) -> String:
-	var doc: Dictionary = {"save_version": SAVE_VERSION, "state": sim.state.to_dict()}
+	var doc: Dictionary = {"save_version": SAVE_VERSION, "meta": meta_of(sim.state.to_dict(), Time.get_unix_time_from_system()),
+		"state": sim.state.to_dict()}
 	return JSON.stringify(doc, "", true, true)
 
 
@@ -31,6 +32,8 @@ static func decode(data: GameData, text: String, error_out: Array[String] = []) 
 static func migrate(doc: Dictionary) -> Dictionary:
 	if int(doc.get("save_version", 0)) == 1:
 		doc = migrate_v1_to_v2(doc)
+	if int(doc.get("save_version", 0)) == 2:
+		doc = migrate_v2_to_v3(doc)
 	return doc
 
 
@@ -63,4 +66,21 @@ static func migrate_v1_to_v2(doc: Dictionary) -> Dictionary:
 	for camp: Variant in camps:
 		camp["setup"]["team"] = [founder_id]
 	doc["save_version"] = 2
+	return doc
+
+
+## Yükleme ekranında gösterilen özet (M9): ajans adı, oyun tarihi, nakit, çalışan sayısı, kayıt zamanı.
+## Durum sözlüğünden çıkarılır; dosyayı açmadan okunabilsin diye SaveSystem ayrı .meta dosyasına da yazar.
+static func meta_of(state: Dictionary, saved_at: float) -> Dictionary:
+	var clock: Dictionary = state.get("clock", {})
+	return {"agency": str(state.get("agency_name", "")), "week_index": int(clock.get("week_index", 0)),
+		"start_year": int(clock.get("start_year", 1990)), "cash": float(state.get("cash", 0.0)),
+		"staff": (state.get("staff", {}) as Dictionary).size(), "bankrupt": bool(state.get("bankrupt", false)),
+		"saved_at": saved_at}
+
+
+## v2 (M3–M8) → v3 (M9): kayıt özeti (meta) eklenir; ajans adı yoksa boş kalır.
+static func migrate_v2_to_v3(doc: Dictionary) -> Dictionary:
+	doc["meta"] = meta_of(doc["state"], 0.0)
+	doc["save_version"] = 3
 	return doc

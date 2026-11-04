@@ -1,10 +1,12 @@
 class_name BackgroundDialog
 extends Control
-## Yeni oyun: başlangıç yılı (GDD 5.1 hızlı başlangıç) ve oyuncunun geçmişi (GDD 11.5).
+## Yeni oyun: ajans adı (M9), başlangıç yılı (GDD 5.1 hızlı başlangıç) ve oyuncunun geçmişi (GDD 11.5).
+## on_pick(background, start_year, agency_name).
 
 var _on_pick: Callable
 var _start_year: int = 0
 var _year_buttons: Array[Button] = []
+var _name_edit: LineEdit
 
 
 func _init(on_pick: Callable) -> void:
@@ -16,6 +18,14 @@ func _ready() -> void:
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(620.0, 520.0))
 	col.add_child(UiUtil.heading(tr("UI_BACKGROUND_TITLE")))
 	col.add_child(UiUtil.wrapped(tr("UI_BACKGROUND_HINT"), 15, UiUtil.MUTED, 560.0))
+	var name_row: HBoxContainer = UiUtil.hbox()
+	name_row.add_child(UiUtil.label(tr("UI_AGENCY_NAME"), 15))
+	_name_edit = LineEdit.new()
+	_name_edit.placeholder_text = tr("UI_DEFAULT_AGENCY")
+	_name_edit.max_length = 32
+	_name_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_row.add_child(_name_edit)
+	col.add_child(name_row)
 	var years: HBoxContainer = UiUtil.hbox()
 	years.add_child(UiUtil.label(tr("UI_START_YEAR"), 15))
 	for y: Variant in data.bal("tools.start_years"):
@@ -42,7 +52,7 @@ func _ready() -> void:
 			stats.append("%s %d" % [tr("STAT_" + str(stat).to_upper()), int(bg["stats"][stat])])
 		info.add_child(UiUtil.label(" · ".join(stats), 13, UiUtil.WOOD))
 		row.add_child(info)
-		row.add_child(UiUtil.button(tr("UI_PICK"), func() -> void: _on_pick.call(id, _start_year)))
+		row.add_child(UiUtil.button(tr("UI_PICK"), func() -> void: _on_pick.call(id, _start_year, _name_edit.text)))
 		col.add_child(card)
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())

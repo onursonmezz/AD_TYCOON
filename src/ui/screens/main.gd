@@ -110,8 +110,10 @@ func _build_top_bar() -> PanelContainer:
 		b.tooltip_text = tr("TIP_SPEED") % (i + 1)
 		_speed_buttons.append(b)
 		row.add_child(b)
-	row.add_child(UiUtil.button(tr("UI_SAVE"), func() -> void: GameState.save_game()))
-	row.add_child(UiUtil.button(tr("UI_MAIN_MENU"), _to_menu))
+	row.add_child(UiUtil.button(tr("UI_SAVE"), func() -> void: open_modal(SaveLoadDialog.new(true))))
+	row.add_child(UiUtil.button(tr("UI_SETTINGS"), func() -> void:
+		open_modal(SettingsDialog.new(func() -> void: get_tree().reload_current_scene()))))
+	row.add_child(UiUtil.button(tr("UI_MAIN_MENU"), func() -> void: _confirm_leave(_to_menu)))
 	return bar
 
 
@@ -321,3 +323,59 @@ func _to_menu() -> void:
 	Clock.set_paused(true)
 	GameState.end_game()
 	get_tree().change_scene_to_file(MENU_SCENE)
+
+
+# --- çıkış, kısayollar (M9) --------------------------------------------------------
+
+## Kaydedilmemiş ilerleme varsa sorar: kaydet ve çık / kaydetmeden çık / vazgeç.
+func _confirm_leave(leave: Callable) -> void:
+	if not GameState.dirty or GameState.is_bankrupt():
+		leave.call()
+		return
+	open_modal(ConfirmDialog.new("UI_UNSAVED_TITLE", "UI_UNSAVED_TEXT", [
+		["UI_SAVE_AND_EXIT", func() -> void:
+			if GameState.current_slot.is_empty():
+				open_modal(SaveLoadDialog.new(true))
+			elif GameState.save_game():
+				leave.call()],
+		["UI_EXIT_NO_SAVE", leave],
+		["UI_CANCEL", Callable()]]))
+
+
+func _quit_game() -> void:
+	Clock.set_paused(true)
+	GameState.end_game()
+	get_tree().quit()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_confirm_leave(_quit_game)
+
+
+func _enter_tree() -> void:
+	get_tree().set_auto_accept_quit(false)
+
+
+func _exit_tree() -> void:
+	get_tree().set_auto_accept_quit(true)
+
+
+## F5 hızlı kayıt (slot yoksa slot seçtirir); Esc en üstteki kapatılabilir pencereyi, yoksa yan pencereyi kapatır.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("game_quick_save"):
+		if GameState.current_slot.is_empty():
+			open_modal(SaveLoadDialog.new(true))
+		else:
+			GameState.save_game()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_cancel"):
+		var modals: Array[Node] = _modal_layer.get_children()
+		for i: int in range(modals.size() - 1, -1, -1):
+			if modals[i].has_meta("esc_closes") and not modals[i].is_queued_for_deletion():
+				modals[i].queue_free()
+				get_viewport().set_input_as_handled()
+				return
+		if modals.is_empty() and not _panel_id.is_empty():
+			close_panel()
+			get_viewport().set_input_as_handled()

@@ -355,6 +355,28 @@ func _tour_art(screen: Control, sim: Simulation) -> void:
 	await _shot("41_characters_samples")
 	ModelLibrary.overrides = {}
 	ModelLibrary.clear_cache()
+	await _tour_saves(screen)
+
+
+## M9-A: kaydet penceresi, ayarlar, çıkış onayı.
+func _tour_saves(screen: Control) -> void:
+	SaveSystem.dir = "user://tour_saves/"
+	DirAccess.make_dir_recursive_absolute(SaveSystem.dir)
+	GameState.sim.state.agency_name = "Mavi Fil"
+	GameState.save_game("slot_1")
+	var sl: SaveLoadDialog = SaveLoadDialog.new(true)
+	screen.call("open_modal", sl)
+	await _shot("42_save_slots")
+	sl.queue_free()
+	var st: SettingsDialog = SettingsDialog.new()
+	screen.call("open_modal", st)
+	await _shot("43_settings")
+	st.queue_free()
+	GameState.dirty = true
+	screen.call("_confirm_leave", func() -> void: pass)
+	await _shot("44_unsaved")
+	ModelLibrary.overrides = {}
+	ModelLibrary.clear_cache()
 
 
 func _shot(file_name: String) -> void:

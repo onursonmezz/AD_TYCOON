@@ -2,6 +2,14 @@ extends Node
 ## Oyunun tek doğruluk kaynağı (GDD 24.3): Simulation'ı tutar, komutları uygular, sinyalleri EventBus'a aktarır.
 
 var sim: Simulation = null
+## Elle kaydın gideceği slot (M9): yüklenen ya da son kaydedilen; yeni oyunda "" (ilk kayıtta seçilir).
+var current_slot: String = ""
+## Son kayıttan beri geçen oyun günleri yoksa false: çıkarken "kaydetmeden çık?" sorulmaz.
+var dirty: bool = false
+var _last_month: int = -1
+## Otomatik kayıt yalnızca oyun saati (Clock) çalışırken; testler GameState.step_day çağırınca gerçek kaydın
+## üstüne yazılmasın. Kayıt testi bunu kapatır.
+var autosave_needs_clock: bool = true
 
 
 func has_game() -> bool:
@@ -10,36 +18,80 @@ func has_game() -> bool:
 
 ## background: oyuncunun geçmişi (data/backgrounds.json, GDD 11.5).
 ## start_year: hızlı başlangıç yılı (GDD 5.1), 0 = 1990.
-func new_game(seed_value: int = -1, background: String = "", start_year: int = 0) -> void:
+## agency_name: oyuncunun verdiği ad (M9); boşsa arayüz varsayılanı gösterir.
+func new_game(seed_value: int = -1, background: String = "", start_year: int = 0, agency_name: String = "") -> void:
 	if seed_value < 0:
 		seed_value = int(Time.get_unix_time_from_system()) % 1000000
 	_attach(Simulation.new(DataDB.data, seed_value, background, start_year))
+	sim.state.agency_name = agency_name.strip_edges()
+	current_slot = ""
+	dirty = true
 	EventBus.game_started.emit()
 	EventBus.notification.emit("NOTE_WELCOME", [], "info")
 	EventBus.state_changed.emit()
 
 
-func load_game() -> bool:
-	var loaded: Simulation = SaveSystem.load_game(DataDB.data)
+## slot: "" = en son kaydedilen. Otomatik kayıttan yüklenince elle kayıt slotu boş kalır (üstüne yazılmasın).
+func load_game(slot: String = "") -> bool:
+	if slot.is_empty():
+		slot = SaveSystem.latest_slot()
+	var loaded: Simulation = SaveSystem.load_game(DataDB.data, slot)
 	if loaded == null:
 		return false
 	_attach(loaded)
+	current_slot = slot if slot != SaveSystem.AUTO else ""
+	dirty = false
 	EventBus.game_started.emit()
 	EventBus.notification.emit("NOTE_LOADED", [], "info")
 	EventBus.state_changed.emit()
 	return true
 
 
-func save_game() -> bool:
+## slot: "" = şu anki slot; o da yoksa ilk boş slot (hepsi doluysa 1. slot; arayüz önce slot seçtirir).
+func save_game(slot: String = "") -> bool:
 	if sim == null:
 		return false
-	var ok: bool = SaveSystem.save_game(sim)
+	if slot.is_empty():
+		slot = current_slot if not current_slot.is_empty() else first_free_slot()
+	var ok: bool = SaveSystem.save_game(sim, slot)
+	if ok:
+		current_slot = slot
+		dirty = false
 	EventBus.notification.emit("NOTE_SAVED" if ok else "NOTE_SAVE_FAILED", [], "info" if ok else "bad")
 	return ok
 
 
 func end_game() -> void:
 	sim = null
+	current_slot = ""
+	dirty = false
+
+
+## Ajansın görünen adı: verilmemişse varsayılan ("Ajansım").
+func agency_display(agency_name: String = "") -> String:
+	var n: String = agency_name if not agency_name.is_empty() else (sim.state.agency_name if sim != null else "")
+	return n if not n.is_empty() else tr("UI_DEFAULT_AGENCY")
+
+
+func first_free_slot() -> String:
+	for slot: String in SaveSystem.SLOTS:
+		if not SaveSystem.has_save(slot):
+			return slot
+	return SaveSystem.SLOTS[0]
+
+
+## Ay başında otomatik kayıt (ayarlardan kapatılabilir). Elle kayıt slotunu ve "kaydedilmedi" bilgisini değiştirmez.
+func _maybe_autosave() -> void:
+	var month: int = sim.state.clock.week_index / sim.state.clock.weeks_per_month
+	if _last_month < 0:
+		_last_month = month
+	if month == _last_month:
+		return
+	_last_month = month
+	if autosave_needs_clock and not Clock.is_running():
+		return
+	if bool(Settings.get_value("autosave")) and not sim.state.bankrupt:
+		SaveSystem.save_game(sim, SaveSystem.AUTO)
 
 
 ## Saat (Clock) her oyun günü bunu çağırır.
@@ -47,6 +99,8 @@ func step_day() -> void:
 	if sim == null:
 		return
 	sim.step_day()
+	dirty = true
+	_maybe_autosave()
 	EventBus.state_changed.emit()
 
 
@@ -83,6 +137,7 @@ func is_bankrupt() -> bool:
 
 func _attach(new_sim: Simulation) -> void:
 	sim = new_sim
+	_last_month = -1
 	sim.pause_on_phase = true
 	sim.phase_started.connect(func(phase: int) -> void: EventBus.phase_started.emit(phase))
 	sim.campaign_delivered.connect(_on_delivered)

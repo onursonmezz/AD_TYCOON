@@ -1,5 +1,31 @@
 # Değişiklik günlüğü
 
+## M9-A: Kayıt slotları ve ayarlar (2026-11-04)
+- **3 kayıt slotu + otomatik kayıt.**
+  - Ana menüde **Devam Et** en son kaydı açar; **Yükle** slotları ajans adı, oyun tarihi, nakit, çalışan sayısı ve kayıt zamanıyla listeler.
+  - Oyun her ay başında ayrı bir slota kendiliğinden kaydeder.
+- **Ajans adı:** Yeni oyunda ajansına ad verebiliyorsun; boş bırakırsan "Ajansım".
+- **Kaydetmeden çıkma uyarısı:** Ana menüye dönerken ya da pencereyi kapatırken son kayıttan beri oynamışsan "Kaydet ve çık / Kaydetmeden çık / Vazgeç" diye sorar.
+- **Ayarlar** (ana menüde ve oyunun üst çubuğunda):
+  - ses seviyeleri (genel, müzik, efekt, ofis ortamı);
+  - dil;
+  - arayüz ve metin boyutu (%90–%130);
+  - tam ekran ve pencere boyutu;
+  - otomatik kayıt, ipuçları;
+  - günlük klasörünü açma.
+- **Kısayollar:** F5 hızlı kayıt; Esc pencereyi kapatır; Boşluk duraklat; 1/2/3 hız.
+- **Eski kaydın** olduğu gibi 1. slotta açılır.
+- **Hata günlüğü:** `user://logs/` (Ayarlar → "Günlük klasörünü aç"). Bir sorun olursa en yeni dosyayı bana gönderebilirsin.
+- Nasıl test ederim:
+  1. Yeni oyun aç, ajansa bir ad ver. Biraz oyna, üst çubukta **Kaydet** → Slot 2 → **Kaydet**.
+  2. **Ana Menü**'ye dön: kaydettiğin için soru gelmez. **Yükle** ekranında Slot 2'de ajans adını ve tarihi gör.
+  3. Yükle, bir ay oyna, **Ana Menü**'ye bas: "Kaydedilmemiş ilerleme" sorusu gelir. **Vazgeç**.
+  4. Bir ay (1x hızda) oyna, sonra ana menüdeki **Yükle** ekranında "Otomatik kayıt" satırını gör.
+  5. **Ayarlar**'dan dili English yap: ekran İngilizce yeniden kurulur. Arayüz boyutunu %130 yap: her şey büyür.
+  6. Oyunda F5'e bas: "Oyun kaydedildi" bildirimi gelir. Esc açık pencereyi kapatır.
+  7. Pencerenin X'ine bas: kaydetmediysen soru gelir.
+
+
 ## M8-B: Modüler karakterler ve animasyon (2026-11-04)
 - **Her çalışan artık kendine özgü görünüyor:** gövde (kadın, erkek, nötr), saç, kıyafet, ten, saç ve kıyafet rengi. Görünüş kayıttan kayda değişmez. Kurucu hardal renkli.
 - **Dönemsel kıyafet:** 90'larda vatkalı ceket ve kumaş pantolon, 2010'larda oduncu gömleği, 2020'lerde kapüşonlu ve bol tişört. Yeni döneme girince çalışanlar dönemin kıyafetine geçer.

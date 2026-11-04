@@ -642,6 +642,34 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Model yokken:** Kapsül yerine renkli gövde + ten rengi baş + saç kepi (kel değilse). Etkinlikler basit kod hareketleriyle oynar (sallanma, öne eğilme, zıplama…).
 - **Ertelendi:** Yürüme hızının animasyonla eşlenmesi, yüz ifadeleri, aksesuarlar (gözlük, kulaklık).
 
+
+## K-072 · 2026-11-04 · Kabul · Orgo kararı + uygulama (M9 planı; M9-A kayıt ve ayarlar)
+**Konu:** Cila (GDD 20, 22, 24.5).
+**Karar:**
+- **M9 planı:**
+  - Ses sistemi kodla üretilmiş basit yer tutucu seslerle başlar; Orgo'nun dosyaları onların yerine geçer (M9-B).
+  - Tutorial, ilk 3 kampanya boyunca ipucu balonları olarak yapılır; atlanabilir ve ayarlardan yeniden açılabilir (M9-C).
+- **Slotlar:** 3 elle kayıt + 1 otomatik kayıt.
+  - Her slotun yanında küçük bir `.meta` dosyası var; yükleme ekranı ajans adını, tarihi, nakdi, çalışan sayısını ve kayıt zamanını dosyayı açmadan okur.
+  - Kayıt önce geçici dosyaya yazılır, sonra eskisinin yerine konur.
+  - M2'nin tek kaydı (`save_slot_1.sav`) olduğu gibi 1. slot.
+- **Sürüm 3:** Kayda özet (`meta`) eklendi. `migrate_v2_to_v3` eski kayda özeti ekler. Bozuk dosya oyunu çökertmez: yükleme ekranı "okunamadı" gösterir, slotun yükle düğmesi kapanır.
+- **Ajans adı:** Yeni oyunda verilir (boşsa "Ajansım"), kayıtta tutulur.
+- **"Devam et"** en son kaydedilen slotu (otomatik dahil) açar.
+- **Otomatik kayıt:**
+  - Her ay başında yapılır, ayarlardan kapatılabilir.
+  - Elle kayıt slotunu ve "kaydedilmedi" bilgisini değiştirmez. Otomatik kayıttan yüklenen oyun, elle kayıtta slot sordurur.
+  - Yalnızca oyun saati çalışırken yapılır, böylece testler gerçek kaydın üstüne yazmaz.
+- **Çıkış:** Son kayıttan beri oynanmışsa "Kaydet ve çık / Kaydetmeden çık / Vazgeç" sorulur (ana menüye dönerken ve pencere kapatılırken).
+- **Ayarlar** (`user://settings.cfg`):
+  - ses: genel, müzik, efekt ve ortam (ses kanalları M9-B'de);
+  - dil (oyun içinde değişince ekran yeniden kurulur);
+  - arayüz boyutu (%90–130, bütün arayüzü büyütür);
+  - tam ekran ve pencere boyutu;
+  - otomatik kayıt, ipuçları, "ipuçlarını baştan göster", günlük klasörü.
+- **Kısayollar:** F5 hızlı kaydeder (slot yoksa sorar). Esc en üstteki kapatılabilir pencereyi, yoksa yan pencereyi kapatır. Olay ve pitch gibi karar pencereleri Esc ile kapanmaz.
+- **Günlük:** Godot'nun dosya günlüğü açık: `user://logs/godot.log`, son 5 dosya.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)
