@@ -148,6 +148,15 @@ func novelty(setup: Dictionary, history: Array[Dictionary], week_index: int, yea
 				and last["main_channel"] == main_channel(setup["mix"]):
 			n *= float(nv["same_triplet_last"])
 			flags.append("same_triplet_last")
+	# Aynı ana kanal üst üste (son iki kampanya) — M10 önerisi, K-076; 1.0 = etkisiz.
+	var streak: int = data.bali("novelty_rules.channel_streak")
+	if history.size() >= streak and float(nv.get("same_channel_streak", 1.0)) < 1.0:
+		var same: bool = true
+		for i: int in range(history.size() - streak, history.size()):
+			same = same and history[i]["main_channel"] == main_channel(setup["mix"])
+		if same:
+			n *= float(nv["same_channel_streak"])
+			flags.append("same_channel_streak")
 	var client_weeks: int = data.bali("novelty_rules.same_client_weeks")
 	for i: int in range(history.size() - 1, -1, -1):
 		var h: Dictionary = history[i]

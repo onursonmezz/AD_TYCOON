@@ -728,6 +728,40 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - Çizim çağrısı 850–1500: her eşya ayrı kutu ya da model.
 - **M10'a not:** Zayıf bir makinede (entegre grafik) tekrar ölçülecek. Gerekirse aynı eşyalar MultiMesh ile toplanır, uzaktaki karakterler sadeleşir.
 
+
+## K-075 · 2026-11-04 · Kabul · Orgo kararı + uygulama (M10 planı; banka kredisi)
+**Konu:** M10 planı ve banka kredisi (GDD 13.5).
+**Karar:**
+- **M10 planı:**
+  - Basit banka kredisi eklenir.
+  - Demo 1998 sonunda özet ve istek listesi ekranıyla biter (M10-B).
+  - Denge değişiklikleri önce öneri olarak sunulur, Orgo onaylayınca uygulanır.
+- **Kredi** (`loans`):
+  - Üst sınır = ofis tabanı (1990 ₺ 20 bin / 60 bin / 200 bin / 600 bin / 1.5 milyon) × enflasyon × (0.5 + itibar/100).
+  - Yıllık %24 faiz, eşit aylık taksit (anüite). Vade 6, 12 ya da 24 ay.
+  - Aynı anda tek kredi; erken kapatma bedeli %2.
+  - Faiz gider sayılır (vergiden düşer), anapara sayılmaz.
+  - Nakit eksiye düştüğü ilk hafta, kredi yoksa "kredi çekebilirsin" bildirimi gelir.
+  - Teminat (GDD 13.5) yok, sadeleştirme.
+- **Bilgili bot** kırmızıya düşünce sınırın yarısı kadar, 12 aylık kredi çeker. 40 koşuluk karşılaştırmada iflas ve puan farkı yok (%5, 7.45 ve 7.46).
+
+## K-076 · 2026-11-04 · Kabul · Uygulama kararı (GDD 27 denge altyapısı)
+**Konu:** Dört bot, denge raporu ve öneri kolları.
+**Karar:**
+- **Botlar:**
+  - Tekrarcı: bilgili gibi oynar, ilk bulduğu kitle, ton ve kanalı hep tekrarlar.
+  - Açgözlü: nakde bakmadan işe alır ve taşınır, her işi alır, nakit azalınca en büyük krediyi çeker.
+- `balance_sim` `--bots`, `--json` ve `--set=data:…` (ofis, ödül gibi diğer veriler) alıyor. `balance_report` JSON'ları birleştirip `docs/balance-report.md` yazıyor, GDD 27.2 hedefleriyle ✓/✗ karşılaştırıyor.
+- **Etkisiz başlayan iki yeni ayar** (değerleri Orgo onaylarsa M10-B'de):
+  - `novelty.same_channel_streak` (1.0): aynı ana kanal son iki kampanyada kullanıldıysa N çarpanı. GDD 7.8'e ek bir kural.
+  - `awards.min_reputation` (0): ödüle başvurmak için en az itibar.
+- **Değişiklik öncesi sonuç** (1000 koşu × 10 yıl, 200 koşu × 30 yıl):
+  - Hedefi tutanlar: rastgele bot ilk 3 yılda %25.6 iflas, küçük ofis Y3, plaza katı Y16, bilgili bot ortalama 7.48, uyum çarpanı ortalaması 0.956 (%22.7'si 0.85'in altında).
+  - Tutmayanlar: tekrarcı farkı 0.42, rastgele farkı 1.20, ilk ödül Y4, yıl süresi 2.4 dk (K-034 ile bilinçli).
+  - Açgözlü bot ilk 3 yılda %44, 10 yılda %73 iflas.
+  - 30 yılda puan 21. yıldan sonra düşüyor (Y30 3.38).
+- Öneriler ve deneme sonuçları: `docs/balance-report.md` → "Öneriler".
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

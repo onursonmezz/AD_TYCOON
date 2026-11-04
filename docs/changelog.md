@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## M10-A: Kredi, dört bot ve denge raporu (2026-11-04)
+- **Banka kredisi** (Finans ekranı):
+  - Ofisine ve itibarına göre bir üst sınıra kadar kredi çekebilirsin. Vade 6, 12 ya da 24 ay; yıllık %24 faiz, eşit aylık taksit.
+  - Erken kapatabilirsin (%2 bedel).
+  - Nakit eksiye düşünce oyun "kredi çekebilirsin" diye uyarır.
+- **Denge simülasyonu dört botla** (GDD 27.1): rastgele, bilgili, tekrarcı (hep aynı kombinasyon) ve açgözlü (nakde bakmadan büyür, kredi çeker).
+- **Denge raporu:** `docs/balance-report.md`. 1000 koşu × 10 yıl ve 200 koşu × 30 yıl, GDD 27.2 hedefleriyle ✓/✗ karşılaştırma, yıllara göre nakit, puan, ekip ve itibar tabloları.
+- **Öneriler onayını bekliyor** (raporun sonunda, Ö1–Ö5). Oyunun dengesi bu adımda **değişmedi**.
+- Nasıl test ederim:
+  1. Oyunda **Finans** ekranını aç: "Banka kredisi" bölümünde üst sınırı, faizi ve aylık taksit önizlemesini gör.
+  2. Tutar ve vade seçip **Kredi çek**: nakit artar, bölüm "Kalan borç · aylık taksit · kalan ay" gösterir. Her ay sonunda taksit düşer.
+  3. **Erken kapat** ile krediyi bitir.
+  4. `docs/balance-report.md`'yi oku: hedefler tablosu ve en alttaki öneriler.
+
+
 ## M9-C: İpuçları, İngilizce ve performans (2026-11-04)
 - **İpucu balonları (tutorial):** İlk kampanyalar boyunca doğru anda kısa ipuçları çıkar ve ilgili düğmeyi sarı çerçeveyle gösterir: zaman kontrolleri, gelen kutusu, sihirbaz, faz kaydırıcıları, rapor, işe alım, kayıt, Ar-Ge, ofis, olaylar.
   - Oyunu durdurmazlar. "Anladım" ile geçilir, "İpuçlarını kapat" ile hepsi kapanır.

@@ -394,6 +394,9 @@ func _tour_saves(screen: Control) -> void:
 	Juice.cash_fly(screen.get("_cash"), 250000.0, GameState.sim.state.clock.year())
 	await get_tree().create_timer(0.6).timeout
 	await _shot("45_juice")
+	# M10: Finans ekranında kredi.
+	screen.call("show_panel", "finance")
+	await _shot("46_finance_loan")
 	ModelLibrary.overrides = {}
 	ModelLibrary.clear_cache()
 

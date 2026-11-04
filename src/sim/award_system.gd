@@ -89,6 +89,9 @@ func eligible_campaigns(state: SimState, award_id: String) -> Array[Dictionary]:
 func enter(state: SimState, economy: Economy, award_id: String, campaign_id: String) -> String:
 	if not data.awards.has(award_id) or not is_open(state, award_id):
 		return "ERR_AWARD_CLOSED"
+	# Sektör tanınmayan ajansı ciddiye almaz (M10 önerisi, K-076): en az bu itibar; 0 = sınır yok.
+	if state.reputation < float(data.bal("awards").get("min_reputation", 0.0)):
+		return "ERR_AWARD_REPUTATION"
 	for h: Dictionary in eligible_campaigns(state, award_id):
 		if h["campaign"] == campaign_id:
 			economy.pay(state, entry_fee(state, award_id))

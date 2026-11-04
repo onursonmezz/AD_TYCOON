@@ -53,6 +53,7 @@ var build: BuildSystem
 var tools: ToolSystem
 var research: ResearchSystem
 var events: EventSystem
+var loans: LoanSystem
 
 ## true: her fazın başında oyuncunun slider girmesi beklenir (oyun). false: kurulumdaki slider'larla devam (bot/test).
 var pause_on_phase: bool = false
@@ -90,6 +91,7 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	research = ResearchSystem.new(data)
 	events = EventSystem.new(data)
 	events.build = build
+	loans = LoanSystem.new(data)
 	kpi.prints = prints
 	kpi.options = options
 	var founder: Dictionary = staff.create_founder(state, background)
@@ -152,6 +154,8 @@ func step_day() -> void:
 		if not supplier_offer.is_empty():
 			supplier_offer_received.emit(supplier_offer)
 		economy.weekly(state)
+		if state.red_weeks == data.bali("loans.warn_red_week") and not loans.has_loan(state):
+			staff_note.emit("NOTE_RED_LOAN", [loans.max_amount(state)], "bad")
 		if state.inbox.size() > inbox_before:
 			briefs_received.emit(state.inbox.size() - inbox_before)
 		week_passed.emit()
@@ -159,6 +163,7 @@ func step_day() -> void:
 			went_bankrupt.emit()
 	if ended["month"]:
 		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state) + tools.monthly_cost(state))
+		loans.monthly(state)
 		for offer: Dictionary in staff_life.monthly_offers(state):
 			offer["rival"] = rivals.pick_by_power(state)
 			offer_received.emit(offer)

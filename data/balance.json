@@ -8,7 +8,7 @@
 	"importance_values": { "3": 1.0, "2": 0.7, "1": 0.45, "0": 0.3, "-1": 0.15, "-2": 0.05, "-3": 0.0 },
 	"balance_sk": { "penalty_per_log": 0.25, "max_penalty": 0.30 },
 	"novelty": { "same_pair_recent3": 0.88, "same_triplet_last": 0.75, "same_client_12w": 0.85,
-		"pioneer_bonus": 1.10, "ai_fatigue_from_2026": 0.95 },
+		"pioneer_bonus": 1.10, "ai_fatigue_from_2026": 0.95, "same_channel_streak": 1.0 },
 	"score": { "era_base": 120, "era_growth": 1.075, "beat_best_factor": 1.05,
 		"exponent": 0.8, "offset": -1.5, "noise": 0.4, "best_update_lerp": 0.6, "best_yearly_decay": 0.1 },
 	"size_multiplier": { "small": 1.0, "medium": 2.6, "large": 6.0, "mega": 14.0 },
@@ -70,7 +70,7 @@
 	"energy": { "low_threshold": 20, "low_mult": 0.5 },
 	"scoring": { "error_penalty_per_error": 0.03, "error_penalty_max": 0.4, "tone_exponent": 0.5, "min_score": 1.0, "max_score": 10.0,
 		"perfect_min_score": 9.5, "perfect_min_r": 1.25, "perfect_chance": 0.5 },
-	"novelty_rules": { "recent_pair_window": 3, "same_client_weeks": 12, "pioneer_years": 2 },
+	"novelty_rules": { "recent_pair_window": 3, "same_client_weeks": 12, "pioneer_years": 2, "channel_streak": 2 },
 	"synergy": {
 		"pairs": [
 			{ "id": "tv_search", "bonus": 0.06, "a": { "channels": ["national_tv", "local_tv"] }, "b": { "channels": ["search_ads"] } },
@@ -114,6 +114,9 @@
 		"payment_terms": [ { "min_pay": 70, "weeks": 4 }, { "min_pay": 40, "weeks": 8 }, { "min_pay": 0, "weeks": 12 } ],
 		"late_chance_mult": 0.1, "late_extra_weeks": [4, 8],
 		"media_advance_by_scale": [0.0, 0.5, 1.0, 1.0] },
+	"loans": { "max_1990_by_office": [20000, 60000, 200000, 600000, 1500000], "reputation_base": 0.5, "reputation_div": 100,
+		"annual_interest": 0.24, "terms_months": [6, 12, 24], "amount_steps": [0.25, 0.5, 1.0], "early_repay_fee": 0.02,
+		"warn_red_week": 1 },
 	"clients": { "start_count": 2, "scale_weights_by_office": [[0.6, 0.35, 0.05, 0.0], [0.3, 0.5, 0.17, 0.03], [0.15, 0.4, 0.35, 0.1], [0.05, 0.3, 0.45, 0.2], [0.0, 0.2, 0.5, 0.3]],
 		"brief_weekly_chance": [0.05, 0.06, 0.07, 0.08],
 		"annual_budget_1990": [80000, 300000, 2000000, 8000000],
@@ -146,7 +149,7 @@
 		"entries_per_rival": [0, 3], "entry_score_base": 4.6, "entry_creative_weight": 2.2, "entry_rep_weight": 0.025, "entry_sd": 1.0
 	},
 	"awards": {
-		"score_weight": 0.5, "novelty_weight": 2.0, "viral_bonus": 1.0, "category_match": 0.55, "jury_noise": 1.0,
+		"score_weight": 0.5, "novelty_weight": 2.0, "viral_bonus": 1.0, "category_match": 0.55, "jury_noise": 1.0, "min_reputation": 0,
 		"eligible_weeks": 48, "entry_window_weeks": 4,
 		"levels": ["shortlist", "bronze", "silver", "gold", "grand_prix"],
 		"reputation": { "shortlist": 1, "bronze": 2, "silver": 3, "gold": 5, "grand_prix": 10 },

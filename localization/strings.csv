@@ -1501,3 +1501,16 @@ TIP_RESEARCH,"Ar-Ge'de ton seçimi, hedef kitle analizi ve çoklu kanal gibi yen
 TIP_OFFICE,Ofis ekranından büyük bir ofise taşınabilir; inşa modunda oda çizip mobilya koyarak ekibi daha verimli yapabilirsin.,"From the Office screen you can move to a bigger office; in build mode, draw rooms and place furniture to make your team more productive."
 TIP_EVENT,"Olaylar karar ister. Yeteneğe bağlı seçeneklerde şans yüzdesi yazar; karar verene kadar oyun bekler.","Events need a decision. Skill-based options show a chance; the game waits until you decide."
 UI_GAME_MENU,Menü ▾,Menu ▾
+UI_LOAN_TITLE,Banka kredisi,Bank loan
+UI_LOAN_HINT,"En fazla %s çekebilirsin (ofisine ve itibarına göre). Yıllık faiz %s, eşit aylık taksit.","You can borrow up to %s (based on your office and reputation). Annual interest %s, equal monthly payments."
+UI_LOAN_TERM,%d ay,%d months
+UI_LOAN_PREVIEW,Aylık taksit: %s,Monthly payment: %s
+UI_LOAN_TAKE,Kredi çek,Take loan
+UI_LOAN_ACTIVE,"Kalan borç %s · aylık taksit %s · %d ay kaldı","Remaining %s · monthly payment %s · %d months left"
+UI_LOAN_REPAY,Erken kapat (%s),Repay early (%s)
+NOTE_RED_LOAN,"Nakit eksiye düştü! 4 hafta içinde düzelmezse iflas. Finans ekranından ₺%d'e kadar kredi çekebilirsin.","Cash is negative! If it isn't fixed within 4 weeks, you go bankrupt. You can borrow up to ₺%d from the Finance screen."
+ERR_LOAN_EXISTS,Zaten bir kredin var.,You already have a loan.
+ERR_LOAN_TERM,Geçersiz vade.,Invalid term.
+ERR_LOAN_AMOUNT,Bu tutar kredi sınırını aşıyor.,This amount exceeds your credit limit.
+ERR_LOAN_NONE,Kapatılacak kredi yok.,There is no loan to repay.
+ERR_AWARD_REPUTATION,Bu ödüle başvurmak için itibarın yetmiyor.,Your reputation is too low to enter this award.

@@ -1,10 +1,15 @@
 extends SceneTree
 ## Denge simülasyonu (GDD 27): botlar 1990'dan N yıl oynar, sonuçları tablo olarak yazar.
 ## Çalıştırma: godot --headless --script res://tools/balance_sim.gd -- --runs=200 [--years=10] [--seed=1]
-## Deneme için balance.json'u dosyayı değiştirmeden ezmek: --set=cashflow.late_chance_mult=0.25 (birden çok verilebilir)
+##   [--bots=random,smart,repeater,greedy] [--json=user://sonuc.json] (M10: sonuçlar tools/balance_report.gd için)
+## Deneme için balance.json'u dosyayı değiştirmeden ezmek: --set=cashflow.late_chance_mult=0.25 (birden çok verilebilir);
+## diğer veri: --set=data:offices.office_5.requirements.cash=30000000
 
 const RandomBotScript: GDScript = preload("res://tools/bots/random_bot.gd")
 const SmartBotScript: GDScript = preload("res://tools/bots/smart_bot.gd")
+const RepeaterBotScript: GDScript = preload("res://tools/bots/repeater_bot.gd")
+const GreedyBotScript: GDScript = preload("res://tools/bots/greedy_bot.gd")
+const ALL_BOTS: String = "random,smart,repeater,greedy"
 
 
 func _init() -> void:
@@ -24,9 +29,21 @@ func _init() -> void:
 			_override(data, arg.trim_prefix("--set="))
 	var started: int = Time.get_ticks_msec()
 	var results: Dictionary = {}
-	for bot_kind: String in ["random", "smart"]:
+	var bots: String = "random,smart"
+	var json_path: String = ""
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--bots="):
+			bots = arg.trim_prefix("--bots=").replace("all", ALL_BOTS)
+		elif arg.begins_with("--json="):
+			json_path = arg.trim_prefix("--json=")
+	for bot_kind: String in bots.split(","):
 		results[bot_kind] = _run_many(data, bot_kind, int(args["runs"]), int(args["years"]), int(args["seed"]))
 	_print_report(results, int(args["runs"]), int(args["years"]))
+	if not json_path.is_empty():
+		var out: FileAccess = FileAccess.open(json_path, FileAccess.WRITE)
+		out.store_string(JSON.stringify({"runs": int(args["runs"]), "years": int(args["years"]), "results": results}))
+		out.close()
+		print("JSON: %s" % ProjectSettings.globalize_path(json_path))
 	print("Süre: %.1f sn" % ((Time.get_ticks_msec() - started) / 1000.0))
 	quit(0)
 
@@ -36,7 +53,11 @@ func _override(data: GameData, spec: String) -> void:
 	var eq: int = spec.find("=")
 	var keys: PackedStringArray = spec.substr(0, eq).split(".")
 	var value: Variant = JSON.parse_string(spec.substr(eq + 1))
+	# "data:offices.office_5.requirements.cash=…": balance.json dışındaki veri (GameData sözlükleri) için.
 	var node: Dictionary = data.balance
+	if keys[0].begins_with("data:"):
+		node = data.get(keys[0].trim_prefix("data:"))
+		keys.remove_at(0)
 	for i: int in keys.size() - 1:
 		node = node[keys[i]]
 	node[keys[keys.size() - 1]] = value
@@ -44,8 +65,10 @@ func _override(data: GameData, spec: String) -> void:
 
 
 func _make_bot(kind: String, seed_value: int) -> RefCounted:
-	if kind == "random":
-		return RandomBotScript.new(seed_value)
+	match kind:
+		"random": return RandomBotScript.new(seed_value)
+		"repeater": return RepeaterBotScript.new()
+		"greedy": return GreedyBotScript.new()
 	return SmartBotScript.new()
 
 
@@ -64,6 +87,7 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 	var pitches: int = 0
 	var pitch_wins: int = 0
 	var office_reach: Dictionary = {}
+	var loans_taken: int = 0
 	for y: int in years:
 		scores_by_year.append([])
 		cash_by_year.append([])
@@ -73,8 +97,12 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 		var sim: Simulation = Simulation.new(data, seed_base * 100000 + run)
 		var bot: RefCounted = _make_bot(kind, seed_base * 100000 + run + 7)
 		var level_seen: int = sim.state.office_level
+		var had_loan: bool = false
 		for week: int in years * weeks_per_year:
 			bot.call("decide", sim)
+			if not had_loan and not sim.state.loan.is_empty():
+				loans_taken += 1
+			had_loan = not sim.state.loan.is_empty()
 			sim.step_week()
 			if sim.state.bankrupt:
 				break
@@ -112,7 +140,8 @@ func _run_many(data: GameData, kind: String, runs: int, years: int, seed_base: i
 		"scores_by_year": scores_by_year, "cash_by_year": cash_by_year, "staff_by_year": staff_by_year,
 		"office_reach": office_reach, "runs": runs,
 		"rep_by_year": rep_by_year, "first_award": first_award, "awards_per_run": float(awards_won) / runs,
-		"pitches_per_run": float(pitches) / runs, "pitch_win_rate": float(pitch_wins) / maxf(1.0, pitches)}
+		"pitches_per_run": float(pitches) / runs, "pitch_win_rate": float(pitch_wins) / maxf(1.0, pitches),
+		"loans_per_run": float(loans_taken) / runs}
 
 
 func _print_report(results: Dictionary, runs: int, years: int) -> void:
@@ -156,6 +185,8 @@ func _print_report(results: Dictionary, runs: int, years: int) -> void:
 	for kind: String in results:
 		print("  %-9s %.1f pitch · %%%d kazanma" % [_label(kind), float(results[kind]["pitches_per_run"]),
 			int(100.0 * float(results[kind]["pitch_win_rate"]))])
+	if not results.has("smart") or not results.has("random"):
+		return
 	var diff: float = float(results["smart"]["avg_score"]) - float(results["random"]["avg_score"])
 	var rb: float = 100.0 * float(results["random"]["bankrupt_3y"])
 	print("")
@@ -164,7 +195,7 @@ func _print_report(results: Dictionary, runs: int, years: int) -> void:
 
 
 func _label(kind: String) -> String:
-	return "rastgele" if kind == "random" else "bilgili"
+	return {"random": "rastgele", "smart": "bilgili", "repeater": "tekrarcı", "greedy": "açgözlü"}.get(kind, kind)
 
 
 func _mean(values: Array) -> float:

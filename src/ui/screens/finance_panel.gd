@@ -1,9 +1,12 @@
 class_name FinancePanel
 extends VBoxContainer
-## Finans özeti (GDD 13.6, M2 sade sürüm): nakit, bekleyen tahsilat/ödemeler, bu yılın gelir-gideri.
+## Finans özeti (GDD 13.6, M2 sade sürüm): nakit, bekleyen tahsilat/ödemeler, bu yılın gelir-gideri;
+## banka kredisi (GDD 13.5, M10).
 
 var _grid: GridContainer
 var _suppliers: VBoxContainer
+var _loan: VBoxContainer
+var _sig: String = ""
 
 
 func _init() -> void:
@@ -15,6 +18,9 @@ func _init() -> void:
 	_grid.add_theme_constant_override("v_separation", 8)
 	add_child(_grid)
 	add_child(UiUtil.wrapped(tr("UI_FINANCE_HINT"), 14, UiUtil.MUTED, 420.0))
+	add_child(UiUtil.label(tr("UI_LOAN_TITLE"), 18, UiUtil.SAGE_DARK))
+	_loan = UiUtil.vbox(6)
+	add_child(_loan)
 	add_child(UiUtil.label(tr("UI_SUPPLIERS"), 18, UiUtil.SAGE_DARK))
 	_suppliers = UiUtil.vbox(4)
 	add_child(_suppliers)
@@ -58,7 +64,59 @@ func refresh() -> void:
 		["UI_FIN_RED_WEEKS", "%d / %d" % [s.red_weeks, data.bali("cashflow.red_weeks_to_bankrupt")]],
 	]
 	_refresh_suppliers(s)
+	_refresh_loan(s)
 	UiUtil.clear(_grid)
 	for row: Array in rows:
 		_grid.add_child(UiUtil.label(tr(row[0]), 16, UiUtil.WOOD))
 		_grid.add_child(UiUtil.label(str(row[1]), 16))
+
+
+## Kredi: varsa kalan borç, taksit ve erken kapatma; yoksa tutar ve vade seçip çekme (taksit önizlemesiyle).
+func _refresh_loan(s: SimState) -> void:
+	var loans: LoanSystem = GameState.sim.loans
+	var sig: String = "%s|%d" % [str(s.loan), int(loans.max_amount(s) / 1000.0)]
+	if sig == _sig:
+		return
+	_sig = sig
+	UiUtil.clear(_loan)
+	if loans.has_loan(s):
+		_loan.add_child(UiUtil.label(tr("UI_LOAN_ACTIVE") % [UiUtil.money(float(s.loan["balance"])),
+			UiUtil.money(float(s.loan["monthly"])), int(s.loan["months_left"])], 15))
+		var b: Button = UiUtil.button(tr("UI_LOAN_REPAY") % UiUtil.money(loans.repay_cost(s)), func() -> void: _run(LoanActionCommand.new("repay")))
+		_loan.add_child(b)
+		return
+	var max_amount: float = loans.max_amount(s)
+	_loan.add_child(UiUtil.wrapped(tr("UI_LOAN_HINT") % [UiUtil.money(max_amount),
+		UiUtil.percent(100.0 * DataDB.data.balf("loans.annual_interest"))], 14, UiUtil.MUTED, 420.0))
+	var steps: Array = DataDB.data.bal("loans.amount_steps")
+	var terms: Array = DataDB.data.bal("loans.terms_months")
+	var amount_pick: OptionButton = OptionButton.new()
+	for st: Variant in steps:
+		amount_pick.add_item(UiUtil.money(max_amount * float(st)))
+	amount_pick.select(steps.size() - 1)
+	var term_pick: OptionButton = OptionButton.new()
+	for t: Variant in terms:
+		term_pick.add_item(tr("UI_LOAN_TERM") % int(t))
+	term_pick.select(1)
+	var preview: Label = UiUtil.label("", 14, UiUtil.WOOD)
+	var update: Callable = func(_i: int = 0) -> void:
+		preview.text = tr("UI_LOAN_PREVIEW") % UiUtil.money(GameState.sim.loans.monthly_payment(
+			max_amount * float(steps[amount_pick.selected]), int(terms[term_pick.selected])))
+	amount_pick.item_selected.connect(update)
+	term_pick.item_selected.connect(update)
+	update.call()
+	var row: HBoxContainer = UiUtil.hbox()
+	row.add_child(amount_pick)
+	row.add_child(term_pick)
+	row.add_child(UiUtil.button(tr("UI_LOAN_TAKE"), func() -> void:
+		_run(LoanActionCommand.new("take", max_amount * float(steps[amount_pick.selected]), int(terms[term_pick.selected])))))
+	_loan.add_child(row)
+	_loan.add_child(preview)
+
+
+func _run(cmd: RefCounted) -> void:
+	var err: String = GameState.execute(cmd)
+	if not err.is_empty():
+		EventBus.notification.emit(err, [], "bad")
+	_sig = ""
+	refresh()

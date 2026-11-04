@@ -27,6 +27,9 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func decide(sim: Simulation) -> void:
 	_grow(sim)
+	# Kırmızıya düşünce (son çare) kredi: 12 ay, sınırın yarısı (M10).
+	if sim.state.red_weeks >= 1 and not sim.loans.has_loan(sim.state):
+		LoanActionCommand.new("take", sim.loans.max_amount(sim.state) * 0.5, 12).execute(sim)
 	BotUtil.enter_awards(sim, -0.5, 1.0, _rng)
 	BotUtil.handle_pitch(sim, true, _rng)
 	BotUtil.manage_tools(sim, true, _rng)
