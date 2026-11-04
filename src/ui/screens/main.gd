@@ -21,6 +21,7 @@ var _panel: Control = null
 var _panel_id: String = ""
 var _modal_layer: Control
 var _modal_open: bool = false
+var _last_cash: float = NAN
 
 
 func _ready() -> void:
@@ -250,6 +251,9 @@ func _refresh() -> void:
 		return
 	var s: SimState = GameState.sim.state
 	_cash.text = UiUtil.money(s.cash)
+	if not is_nan(_last_cash) and not is_equal_approx(s.cash, _last_cash):
+		Juice.cash_fly(_cash, s.cash - _last_cash, s.clock.year())
+	_last_cash = s.cash
 	_cash.add_theme_color_override("font_color", UiUtil.TERRACOTTA if s.cash < 0.0 else UiUtil.TEXT)
 	_date.text = UiUtil.date_text(s.clock)
 	_rep.text = tr("UI_REPUTATION") % s.reputation
@@ -277,6 +281,7 @@ func _on_notification(key: String, args: Array, kind: String) -> void:
 	var note: Label = UiUtil.wrapped(prefix + UiUtil.tr_fmt(key, args), 13, color, 230.0)
 	_feed.add_child(note)
 	_feed.move_child(note, 0)
+	Juice.slide_in(note)
 	while _feed.get_child_count() > DataDB.data.bali("ui.notifications_kept"):
 		var last: Node = _feed.get_child(_feed.get_child_count() - 1)
 		_feed.remove_child(last)

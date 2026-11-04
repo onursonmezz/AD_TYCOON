@@ -61,6 +61,8 @@ var research_ids: Array[String] = []
 var models: Dictionary = {}
 ## Modüler karakterler (M8-B): data/characters.json.
 var characters: Dictionary = {}
+## Ses (M9-B): data/sounds.json.
+var sounds: Dictionary = {}
 
 var calendar: Dictionary = {}
 var name_parts: Dictionary = {}
@@ -206,6 +208,7 @@ func _index() -> void:
 	_index_list("research.json", research, research_ids)
 	models = raw.get("models.json", {})
 	characters = raw.get("characters.json", {})
+	sounds = raw.get("sounds.json", {})
 	var print_opts: Dictionary = raw.get("print_options.json", {})
 	for rec: Dictionary in print_opts.get("products", []):
 		print_products[rec["id"]] = rec

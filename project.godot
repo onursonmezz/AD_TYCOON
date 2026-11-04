@@ -24,6 +24,7 @@ EventBus="*res://src/autoload/event_bus.gd"
 SaveSystem="*res://src/autoload/save_system.gd"
 GameState="*res://src/autoload/game_state.gd"
 Clock="*res://src/autoload/clock.gd"
+Audio="*res://src/autoload/audio.gd"
 
 [debug]
 

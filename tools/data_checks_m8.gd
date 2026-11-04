@@ -95,3 +95,38 @@ static func check_characters(data: Dictionary) -> PackedStringArray:
 		if not (ch.get("animations", []) as Array).has(a):
 			errors.append("characters.json: animations '%s' içermeli" % a)
 	return errors
+
+
+## Ses (M9-B): tarif dalgaları, dönemsel sesler ve bildirim eşlemelerinin var olan seslere gitmesi.
+static func check_sounds(data: Dictionary) -> PackedStringArray:
+	var errors: PackedStringArray = PackedStringArray()
+	var s: Variant = data.get("sounds.json")
+	if typeof(s) != TYPE_DICTIONARY:
+		errors.append("sounds.json: yok ya da sözlük değil")
+		return errors
+	var sfx: Dictionary = s.get("sfx", {})
+	var variants: Dictionary = s.get("variants", {})
+	for name: String in sfx:
+		for seg: Variant in sfx[name].get("synth", []):
+			if typeof(seg) != TYPE_DICTIONARY:
+				errors.append("sounds.json: '%s' bölümü sözlük olmalı" % name)
+			elif not seg.has("gap") and (not ["sine", "square", "triangle", "noise", "crackle", "typing"].has(seg.get("wave"))
+					or float(seg.get("dur", 0.0)) <= 0.0):
+				errors.append("sounds.json: '%s' geçersiz dalga ya da süre" % name)
+	for v: String in variants:
+		for y: Variant in variants[v]:
+			if not sfx.has(variants[v][y]):
+				errors.append("sounds.json: variants.%s.%s bilinmeyen ses '%s'" % [v, str(y), str(variants[v][y])])
+	var ns: Dictionary = s.get("notification_sounds", {})
+	var targets: Array = [ns.get("good"), ns.get("info"), ns.get("bad")]
+	targets.append_array((ns.get("keys", {}) as Dictionary).values())
+	for t: Variant in targets:
+		if not sfx.has(t) and not variants.has(t):
+			errors.append("sounds.json: bildirim sesi '%s' tanımsız" % str(t))
+	for name: String in ["click", "money", "report", "cheer", "applause", "event", "ambient_typing"]:
+		if not sfx.has(name):
+			errors.append("sounds.json: '%s' sesi eksik" % name)
+	for key: String in ["music", "ambient", "juice"]:
+		if not s.has(key):
+			errors.append("sounds.json: '%s' eksik" % key)
+	return errors

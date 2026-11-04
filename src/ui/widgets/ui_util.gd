@@ -36,8 +36,19 @@ static func heading(text: String) -> Label:
 static func button(text: String, on_press: Callable) -> Button:
 	var b: Button = Button.new()
 	b.text = text
+	b.pressed.connect(func() -> void: Audio.play("click"))
 	b.pressed.connect(on_press)
+	add_hover(b)
 	return b
+
+
+## Üzerine gelince hafifçe büyüme (M9-B "juice"); yalnızca görüntü, yerleşimi bozmaz.
+static func add_hover(c: Control) -> void:
+	var s: float = float(DataDB.data.sounds["juice"]["hover_scale"]) if DataDB.is_ok() else 1.0
+	c.mouse_entered.connect(func() -> void:
+		c.pivot_offset = c.size * 0.5
+		c.create_tween().tween_property(c, "scale", Vector2.ONE * s, 0.08))
+	c.mouse_exited.connect(func() -> void: c.create_tween().tween_property(c, "scale", Vector2.ONE, 0.08))
 
 
 ## CheckBox/CheckButton tema gereği düğme zeminini miras alır; düz ve okunaklı yapar.

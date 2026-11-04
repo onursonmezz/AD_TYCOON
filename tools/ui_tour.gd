@@ -375,6 +375,14 @@ func _tour_saves(screen: Control) -> void:
 	GameState.dirty = true
 	screen.call("_confirm_leave", func() -> void: pass)
 	await _shot("44_unsaved")
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	await get_tree().process_frame
+	# M9-B: konfeti ve para uçuşu.
+	Juice.confetti(screen)
+	Juice.cash_fly(screen.get("_cash"), 250000.0, GameState.sim.state.clock.year())
+	await get_tree().create_timer(0.6).timeout
+	await _shot("45_juice")
 	ModelLibrary.overrides = {}
 	ModelLibrary.clear_cache()
 

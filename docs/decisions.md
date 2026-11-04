@@ -670,6 +670,33 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Kısayollar:** F5 hızlı kaydeder (slot yoksa sorar). Esc en üstteki kapatılabilir pencereyi, yoksa yan pencereyi kapatır. Olay ve pitch gibi karar pencereleri Esc ile kapanmaz.
 - **Günlük:** Godot'nun dosya günlüğü açık: `user://logs/godot.log`, son 5 dosya.
 
+
+## K-073 · 2026-11-04 · Kabul · Uygulama kararı (GDD 22 ses, 20 juice)
+**Konu:** Ses, müzik ve arayüz geri bildirimi (M9-B).
+**Karar:**
+- **Kanallar:** Master'a bağlı Music, SFX ve Ambient kanalları oyun açılırken kodla kurulur. Ayarlardaki seviyeler bunlara uygulanır.
+- **Efektler** (`data/sounds.json`):
+  - Her efektin adı ve bir yer tutucu tarifi var (dalga, frekans, süre, ses, zarf); oyun bundan 16 bit mono WAV üretir.
+  - `assets/audio/sfx/<ad>.(ogg|wav|mp3)` varsa dosya kullanılır.
+  - Dalgalar: sine, square, triangle, noise; alkış için crackle, klavye için typing.
+- **Dönemsel sesler:**
+  - Bildirim: 1990 çağrı cihazı, 1998 SMS, 2008 "ding", 2020 yumuşak.
+  - Yeni brief: 1990 faks, 2000 e-posta.
+- **Ne zaman çalar:**
+  - Her düğme tık sesi çıkarır.
+  - Bildirimler türüne (iyi, bilgi, kötü) ya da anahtarına göre çalar. Yeni brief, kayıt, araştırma bitti ve seviye atlama için özel sesler var.
+  - Kampanya raporunda 8 ve üzeri puana "cheer", altına "report" çalar.
+  - Ödül töreninde alkış, olay penceresinde "event" çalar.
+- **Müzik:** Dönemin klasöründeki parçalar karışık sırayla çalar. Parça bitince 4 sn ara, sonra yeni parça 2.5 sn'lik geçişle başlar. Dönem değişince müzik yeni döneme geçer. Klasör boşsa kökteki parçalar, o da boşsa sessizlik.
+- **Ofis ortamı:** Klavye uğultusu döngüsü; seviyesi çalışan sayısı / 20 (en fazla 1). Oyun durunca %30'a iner, oyun yokken susar.
+- **Juice:**
+  - Nakit değişimi 1990 ₺1.000'i (enflasyonla) geçerse üst çubukta "+₺…/−₺…" uçar; artışta ka-ching.
+  - Bildirimler belirerek ve kayarak gelir.
+  - Raporda puan zaten sayarak yükseliyordu; 8 ve üzerinde konfeti eklendi.
+  - Düğmeler üzerine gelince %4 büyür.
+- **Araç:** `tools/export_sounds.gd` yer tutucu sesleri dinlemek için `.wav` olarak dışa aktarır.
+- **Ertelendi:** "Ofis radyosu" objesiyle müzik değiştirme (GDD 22), sesin ofisteki konumdan gelmesi (3D ses).
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

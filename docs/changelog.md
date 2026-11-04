@@ -1,5 +1,25 @@
 # Değişiklik günlüğü
 
+## M9-B: Ses, müzik ve canlı arayüz (2026-11-04)
+- **Oyunun artık sesi var.** Düğme tıkı, bildirimler, ka-ching, alkış, olay uyarısı ve ofiste klavye uğultusu çalıyor. Hepsi kodla üretilmiş yer tutucular; gerçek ses dosyalarını `assets/audio/` altına koyduğunda onlar çalar (rehber: `assets/audio/README.md`).
+- **Döneme göre sesler:** Bildirim 90'larda çağrı cihazı, 2000'lerde SMS, 2010'larda "ding". Yeni brief 90'larda faks, sonra e-posta sesiyle geliyor.
+- **Müzik sistemi:** Her dönemin klasöründeki parçaları karışık çalar, parçalar arasında yavaşça geçer, dönem değişince müzik de değişir. Klasörler boş olduğu için şimdilik müzik yok.
+- **Ofis ortamı:** Ekip büyüdükçe klavye uğultusu artar, oyun durunca kısılır.
+- **Canlı arayüz:**
+  - Para girince üst çubukta "+₺…" uçar.
+  - Bildirimler kayarak gelir.
+  - 8 ve üzeri puanlı raporda konfeti yağar.
+  - Düğmeler üzerine gelince hafifçe büyür.
+- **Ayarlar → Ses** kaydırıcıları artık gerçekten çalışıyor (genel, müzik, efekt, ofis ortamı).
+- Nasıl test ederim:
+  1. Oyunu aç, düğmelere bas: tık sesi gelir. Bir brief gelince faks sesi duyulur.
+  2. Birkaç kişi işe al ve oyunu 1x'te çalıştır: hafif klavye uğultusu artar. Duraklatınca kısılır.
+  3. Bir kampanya bitsin, fatura tahsil edilince "ka-ching" duyulur ve nakdin yanında "+₺…" uçar.
+  4. 8 ve üzeri puan alınca raporda konfeti yağar ve fanfar çalar.
+  5. Ayarlar → Efektler'i 0 yap: sesler susar.
+  6. Yer tutucu sesleri tek tek dinlemek için: `godot --headless --script res://tools/export_sounds.gd`, sonra `art/sound_previews` klasöründeki dosyaları aç.
+
+
 ## M9-A: Kayıt slotları ve ayarlar (2026-11-04)
 - **3 kayıt slotu + otomatik kayıt.**
   - Ana menüde **Devam Et** en son kaydı açar; **Yükle** slotları ajans adı, oyun tarihi, nakit, çalışan sayısı ve kayıt zamanıyla listeler.

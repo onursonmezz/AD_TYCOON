@@ -61,6 +61,8 @@ func _ready() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_method(_set_shown_score, 0.0, score, data.balf("ui.score_count_seconds")) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	if score >= float(data.sounds["juice"]["confetti_score"]):
+		tween.tween_callback(func() -> void: Juice.confetti(self))
 
 
 func _set_shown_score(v: float) -> void:

@@ -1,0 +1,39 @@
+{
+	"sample_rate": 22050,
+	"sfx_dir": "res://assets/audio/sfx/",
+	"music_dir": "res://assets/audio/music/",
+	"extensions": ["ogg", "wav", "mp3"],
+	"sfx": {
+		"click": { "synth": [{ "wave": "square", "f0": 1200, "f1": 900, "dur": 0.025, "vol": 0.18 }] },
+		"notify_pager": { "synth": [{ "wave": "square", "f0": 2000, "dur": 0.07, "vol": 0.22 }, { "gap": 0.05 },
+			{ "wave": "square", "f0": 2000, "dur": 0.07, "vol": 0.22 }, { "gap": 0.05 }, { "wave": "square", "f0": 2000, "dur": 0.07, "vol": 0.22 }] },
+		"notify_sms": { "synth": [{ "wave": "square", "f0": 1000, "dur": 0.09, "vol": 0.2 }, { "wave": "square", "f0": 1300, "dur": 0.12, "vol": 0.2 }] },
+		"notify_ding": { "synth": [{ "wave": "sine", "f0": 1320, "dur": 0.4, "vol": 0.35, "release": 0.35 }] },
+		"notify_soft": { "synth": [{ "wave": "sine", "f0": 880, "dur": 0.12, "vol": 0.3 }, { "wave": "sine", "f0": 1175, "dur": 0.25, "vol": 0.3, "release": 0.2 }] },
+		"bad": { "synth": [{ "wave": "square", "f0": 320, "f1": 200, "dur": 0.25, "vol": 0.18, "release": 0.1 }] },
+		"money": { "synth": [{ "wave": "noise", "dur": 0.03, "vol": 0.25 }, { "wave": "square", "f0": 1568, "dur": 0.06, "vol": 0.2 },
+			{ "wave": "square", "f0": 2093, "dur": 0.3, "vol": 0.2, "release": 0.25 }] },
+		"report": { "synth": [{ "wave": "triangle", "f0": 660, "dur": 0.08, "vol": 0.35 }, { "wave": "triangle", "f0": 880, "dur": 0.18, "vol": 0.35, "release": 0.12 }] },
+		"cheer": { "synth": [{ "wave": "triangle", "f0": 523, "dur": 0.1, "vol": 0.35 }, { "wave": "triangle", "f0": 659, "dur": 0.1, "vol": 0.35 },
+			{ "wave": "triangle", "f0": 784, "dur": 0.1, "vol": 0.35 }, { "wave": "triangle", "f0": 1046, "dur": 0.4, "vol": 0.35, "release": 0.3 }] },
+		"applause": { "synth": [{ "wave": "crackle", "dur": 1.6, "vol": 0.35, "attack": 0.2, "release": 0.6, "rate": 40 }] },
+		"event": { "synth": [{ "wave": "sine", "f0": 440, "dur": 0.1, "vol": 0.3 }, { "wave": "sine", "f0": 554, "dur": 0.1, "vol": 0.3 },
+			{ "wave": "sine", "f0": 659, "dur": 0.22, "vol": 0.3, "release": 0.15 }] },
+		"fax": { "synth": [{ "wave": "square", "f0": 1100, "f1": 2100, "dur": 0.35, "vol": 0.12 }, { "wave": "noise", "dur": 0.35, "vol": 0.12, "release": 0.2 }] },
+		"mail": { "synth": [{ "wave": "sine", "f0": 1046, "dur": 0.1, "vol": 0.3 }, { "wave": "sine", "f0": 1568, "dur": 0.25, "vol": 0.3, "release": 0.2 }] },
+		"pop": { "synth": [{ "wave": "noise", "dur": 0.04, "vol": 0.3 }, { "wave": "sine", "f0": 1800, "f1": 900, "dur": 0.06, "vol": 0.25 }] },
+		"save": { "synth": [{ "wave": "triangle", "f0": 880, "dur": 0.06, "vol": 0.25 }, { "wave": "triangle", "f0": 1320, "dur": 0.1, "vol": 0.25 }] },
+		"ambient_typing": { "synth": [{ "wave": "typing", "dur": 3.0, "vol": 0.5, "rate": 9 }], "loop": true }
+	},
+	"variants": {
+		"notify": { "1990": "notify_pager", "1998": "notify_sms", "2008": "notify_ding", "2020": "notify_soft" },
+		"brief": { "1990": "fax", "2000": "mail" }
+	},
+	"notification_sounds": { "good": "notify", "info": "notify", "bad": "bad",
+		"keys": { "NOTE_NEW_BRIEFS": "brief", "NOTE_SAVED": "save", "NOTE_RESEARCH_DONE": "cheer", "NOTE_LEVEL_UP": "cheer",
+			"NOTE_LEVEL_UP_FOUNDER": "cheer" } },
+	"music": { "crossfade_seconds": 2.5, "gap_seconds": 4.0 },
+	"ambient": { "staff_full": 20, "paused_factor": 0.3, "update_seconds": 0.5, "fade_seconds": 1.0 },
+	"juice": { "cash_fly_min_1990": 1000, "cash_fly_seconds": 1.4, "confetti_score": 8.0, "confetti_count": 90,
+		"hover_scale": 1.04, "notify_slide": 40, "notify_seconds": 0.35 }
+}

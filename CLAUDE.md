@@ -44,3 +44,4 @@ gereken bir şey varsa adım adım tarif et.
   `godot --path . res://tools/ui_tour.tscn -- --out=<klasör>` (pencere açar, PNG kaydeder).
 - Modeller (M8): yollar `data/furniture.json` `model` ve `data/models.json`; yükleyici `ModelLibrary` (yoksa gri kutu).
   Denetim: `godot --headless --script res://tools/model_check.gd`; önizleme: `godot --path . res://tools/model_preview.tscn -- --out=<klasör> [--samples]`.
+- Ses (M9-B): `Audio` autoload, tarifler `data/sounds.json`, dosya rehberi `assets/audio/README.md`. Dosya yoksa kodla üretilen yer tutucu çalar.
