@@ -52,3 +52,46 @@ static func _path(errors: PackedStringArray, where: String, p: Variant) -> void:
 	var re: RegEx = RegEx.create_from_string("^[a-z0-9_]+/[a-z0-9_]+\\.(glb|tscn)$")
 	if re.search(s) == null:
 		errors.append("%s model yolu 'klasör/ad.glb' biçiminde olmalı ('%s')" % [where, s])
+
+
+## Karakterler (M8-B): her cinsiyetin gövdesi, her gövdeye her yıl en az bir saç ve kıyafet, adlar ve renkler.
+static func check_characters(data: Dictionary) -> PackedStringArray:
+	var errors: PackedStringArray = PackedStringArray()
+	var ch: Variant = data.get("characters.json")
+	if typeof(ch) != TYPE_DICTIONARY:
+		errors.append("characters.json: yok ya da sözlük değil")
+		return errors
+	var bodies: Array = []
+	var genders: Array = []
+	for b: Dictionary in ch.get("bodies", []):
+		bodies.append(b["id"])
+		genders.append_array(b.get("genders", []))
+		_path(errors, "characters.json: gövde '%s'" % str(b["id"]), b.get("model"))
+	for g: String in ["female", "male", "neutral", ""]:
+		if not genders.has(g):
+			errors.append("characters.json: '%s' cinsiyetine gövde yok" % g)
+	for group: String in ["hair", "outfits"]:
+		for p: Dictionary in ch.get(group, []):
+			var where: String = "characters.json: %s '%s'" % [group, str(p.get("id", "?"))]
+			if not (group == "hair" and str(p.get("model", "")).is_empty()):
+				_path(errors, where, p.get("model"))
+			for b: Variant in p.get("bodies", []):
+				if not bodies.has(b):
+					errors.append("%s bilinmeyen gövde '%s'" % [where, str(b)])
+		for b: Variant in bodies:
+			for year: int in range(1990, 2036):
+				var found: bool = false
+				for p: Dictionary in ch.get(group, []):
+					if (p["bodies"] as Array).has(b) and int(p.get("from", 0)) <= year and year <= int(p.get("to", 9999)):
+						found = true
+						break
+				if not found:
+					errors.append("characters.json: %s gövdesine %d yılında %s yok" % [str(b), year, group])
+					break
+	for key: String in ["skin_tones", "hair_colors", "outfit_colors"]:
+		if (ch.get(key, []) as Array).is_empty():
+			errors.append("characters.json: '%s' boş" % key)
+	for a: String in ["idle", "walk"]:
+		if not (ch.get("animations", []) as Array).has(a):
+			errors.append("characters.json: animations '%s' içermeli" % a)
+	return errors

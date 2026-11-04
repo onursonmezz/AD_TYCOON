@@ -77,6 +77,8 @@ func validate(data: Dictionary) -> PackedStringArray:
 		_err(e)
 	for e: String in DataChecksM8.check(data):
 		_err(e)
+	for e: String in DataChecksM8.check_characters(data):
+		_err(e)
 	var rules: Dictionary = _parse_row_rules(data)
 	for file_name: String in FIT_FILES:
 		_check_fit_file(data, file_name, ids, rules)

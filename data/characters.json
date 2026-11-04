@@ -1,0 +1,43 @@
+{
+	"height": 1.7,
+	"head_bone": "mixamorig_Head",
+	"bodies": [
+		{ "id": "female", "model": "characters/body_female.glb", "genders": ["female"] },
+		{ "id": "male", "model": "characters/body_male.glb", "genders": ["male"] },
+		{ "id": "neutral", "model": "characters/body_neutral.glb", "genders": ["neutral", ""] }
+	],
+	"hair": [
+		{ "id": "short", "model": "characters/hair_short.glb", "bodies": ["female", "male", "neutral"] },
+		{ "id": "bob", "model": "characters/hair_bob.glb", "bodies": ["female", "neutral"] },
+		{ "id": "long", "model": "characters/hair_long.glb", "bodies": ["female", "neutral"] },
+		{ "id": "bun", "model": "characters/hair_bun.glb", "bodies": ["female"] },
+		{ "id": "curly", "model": "characters/hair_curly.glb", "bodies": ["female", "male", "neutral"] },
+		{ "id": "buzz", "model": "characters/hair_buzz.glb", "bodies": ["male", "neutral"] },
+		{ "id": "side_part", "model": "characters/hair_side_part.glb", "bodies": ["male"] },
+		{ "id": "mullet", "model": "characters/hair_mullet.glb", "bodies": ["male", "neutral"], "from": 1990, "to": 1999 },
+		{ "id": "man_bun", "model": "characters/hair_man_bun.glb", "bodies": ["male"], "from": 2010, "to": 9999 },
+		{ "id": "bald", "model": "", "bodies": ["male"] }
+	],
+	"outfits": [
+		{ "id": "shoulder_pad_blazer", "model": "characters/outfit_shoulder_pad_blazer.glb", "bodies": ["female", "male", "neutral"], "from": 1990, "to": 1999 },
+		{ "id": "pleated_suit", "model": "characters/outfit_pleated_suit.glb", "bodies": ["male", "neutral"], "from": 1990, "to": 2004 },
+		{ "id": "sweater_vest", "model": "characters/outfit_sweater_vest.glb", "bodies": ["female", "male", "neutral"], "from": 1990, "to": 2004 },
+		{ "id": "denim_jacket", "model": "characters/outfit_denim_jacket.glb", "bodies": ["female", "male", "neutral"], "from": 1995, "to": 2009 },
+		{ "id": "polo", "model": "characters/outfit_polo.glb", "bodies": ["female", "male", "neutral"], "from": 2000, "to": 2014 },
+		{ "id": "office_shirt", "model": "characters/outfit_office_shirt.glb", "bodies": ["female", "male", "neutral"], "from": 1990, "to": 9999 },
+		{ "id": "cardigan", "model": "characters/outfit_cardigan.glb", "bodies": ["female", "neutral"], "from": 2005, "to": 9999 },
+		{ "id": "hipster_flannel", "model": "characters/outfit_hipster_flannel.glb", "bodies": ["female", "male", "neutral"], "from": 2010, "to": 2019 },
+		{ "id": "hoodie", "model": "characters/outfit_hoodie.glb", "bodies": ["female", "male", "neutral"], "from": 2015, "to": 9999 },
+		{ "id": "oversize_tee", "model": "characters/outfit_oversize_tee.glb", "bodies": ["female", "male", "neutral"], "from": 2020, "to": 9999 },
+		{ "id": "dress", "model": "characters/outfit_dress.glb", "bodies": ["female"], "from": 1990, "to": 9999 },
+		{ "id": "tech_vest", "model": "characters/outfit_tech_vest.glb", "bodies": ["male", "neutral"], "from": 2018, "to": 9999 }
+	],
+	"skin_tones": [[0.98, 0.84, 0.72], [0.93, 0.76, 0.6], [0.84, 0.64, 0.48], [0.7, 0.5, 0.36], [0.55, 0.38, 0.27], [0.4, 0.27, 0.2]],
+	"hair_colors": [[0.15, 0.11, 0.09], [0.3, 0.2, 0.12], [0.5, 0.33, 0.18], [0.75, 0.55, 0.3], [0.6, 0.25, 0.15], [0.6, 0.6, 0.6]],
+	"outfit_colors": [[0.36, 0.5, 0.4], [0.78, 0.4, 0.29], [0.85, 0.64, 0.25], [0.3, 0.45, 0.65], [0.55, 0.45, 0.7],
+		[0.95, 0.93, 0.88], [0.35, 0.65, 0.7], [0.23, 0.21, 0.19], [0.65, 0.49, 0.32], [0.8, 0.45, 0.6]],
+	"founder_outfit_color": [0.85, 0.64, 0.25],
+	"animations": ["idle", "walk", "sit", "type", "phone", "coffee", "present", "cheer", "stress", "sleep"],
+	"activity": { "phone_departments": ["account", "new_business", "pr_event", "media"], "phone_chance": 0.35,
+		"stress_burnout": 60, "sleep_energy": 15, "cheer_seconds": 2.5, "blend_seconds": 0.25 }
+}

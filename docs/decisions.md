@@ -616,6 +616,32 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
   - Pencere ve kapı parçaları.
   - Gece ışığı.
 
+
+## K-071 · 2026-11-04 · Kabul · Uygulama kararı (GDD 21.3 modüler karakter)
+**Konu:** Modüler karakterler ve animasyon (M8-B).
+**Karar:**
+- **Parçalar** (`data/characters.json`):
+  - 3 gövde: kadın, erkek ve nötr. Kurucu ve cinsiyeti boş olanlar nötr gövdeyi alır.
+  - 10 saç (biri "kel", modelsiz). 90'lara özel mullet, 2010+ için topuz.
+  - 12 kıyafet; her birinin giyildiği yıllar var (90'lar vatkalı ceket, 2010'lar oduncu gömleği, 2020+ bol tişört…).
+  - Validator her gövdeye her yıl (1990–2035) en az bir saç ve kıyafet düştüğünü denetler.
+- **Görünüş çalışanın kimliğinden türetilir:** gövde, saç, kıyafet, ten, saç ve kıyafet rengi. Aynı çalışan hep aynı görünür. Dönem değişince kıyafeti de dönemin kıyafetlerinden birine geçer. Kurucu hardal renk giyer.
+- **Renk:** Parçalar açık gri ya da beyaz üretilir. Oyun rengi yarı saydam bir renk katmanıyla verir (her kopyaya ayrı shader yerine, tek bir malzeme katmanı).
+- **Bağlama:**
+  - Deri taşıyan (skinned) parça gövdenin iskeletine taşınır, onunla bükülür.
+  - Sert parça (saç) baş kemiğine (`mixamorig_Head`) bağlanır; kemiğin dinlenme konumu geri alınır ki tam gövdeye göre modellenen parça yerine otursun.
+  - Godot kemik adındaki ":"yi kabul etmez; Mixamo'nun `mixamorig:Head` adı içe aktarılırken `mixamorig_Head` olur.
+- **Animasyon:**
+  - AnimationTree durum makinesi, 10 durum: idle, walk, sit, type, phone, coffee, present, cheer, stress, sleep. Her durumdan her duruma 0.25 sn geçiş. Gövdede olmayan klibin yerine en yakını oynar (type → sit → idle).
+  - **Etkinlik seçimi:**
+    - Yürürken walk.
+    - Masada: kampanya ekibindeyse type; account, new business, PR ve medya departmanlarındaysa günlük %35 phone.
+    - Enerjisi 15'in altındaysa sleep, tükenmişliği 60 ve üstündeyse stress.
+    - Mutfakta coffee, toplantıda present, dinlenme köşesinde sit.
+    - Seviye atlayınca 2.5 sn cheer.
+- **Model yokken:** Kapsül yerine renkli gövde + ten rengi baş + saç kepi (kel değilse). Etkinlikler basit kod hareketleriyle oynar (sallanma, öne eğilme, zıplama…).
+- **Ertelendi:** Yürüme hızının animasyonla eşlenmesi, yüz ifadeleri, aksesuarlar (gözlük, kulaklık).
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

@@ -341,6 +341,18 @@ func _tour_art(screen: Control, sim: Simulation) -> void:
 	view.world.rig.zoom(-6)
 	await get_tree().create_timer(1.5).timeout
 	await _shot("39_billboard")
+	# M8-B: kapsül karakterler (model yok) ve deneme karakterleri (iskeletli, animasyonlu).
+	view.world.rig.set("_target_pos", Vector3(size.x * 0.35, 0.0, size.y * 0.55))
+	view.world.rig.zoom(-2)
+	await get_tree().create_timer(1.5).timeout
+	await _shot("40_characters_capsule")
+	ModelLibrary.overrides.merge(preload("res://tools/sample_models.gd").make_characters("user://tour_sample_models", DataDB.data))
+	ModelLibrary.clear_cache()
+	for c: OfficeCharacter in (view.world.get("_chars") as Dictionary).values():
+		c.set("_look_sig", "")
+	view.world.sync()
+	await get_tree().create_timer(2.0).timeout
+	await _shot("41_characters_samples")
 	ModelLibrary.overrides = {}
 	ModelLibrary.clear_cache()
 

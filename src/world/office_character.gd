@@ -1,6 +1,7 @@
 class_name OfficeCharacter
 extends Node3D
-## Gri kutu çalışan (M6, kapsül): yol boyunca yürür, hedefte oturur/bekler, başından baloncuk çıkarır.
+## Ofisteki çalışan (M6; M8-B modüler karakter): yol boyunca yürür, hedefte oturur/bekler, etkinliğe göre
+## animasyon oynar (CharacterRig), başından baloncuk çıkarır.
 ## Simülasyonu bilmez; OfficeWorld hedef ve baloncuk söyler. Tıklama için Area3D taşır (meta: employee_id).
 
 const WALK_SPEED: float = 1.6
@@ -15,42 +16,20 @@ var speed_mult: float = 1.0
 var _path: PackedVector2Array = PackedVector2Array()
 var _face_dir: Vector2 = Vector2(0, -1)
 var _seated: bool = false
-var _body: Node3D
+var _body: CharacterRig
+var _founder: bool = false
+var _look_sig: String = ""
+## OfficeWorld'un istediği etkinlik (otururken yazma, telefon…); yürürken "walk" oynar.
+var _activity: String = "idle"
+var _cheer_left: float = 0.0
 
 
-func setup(emp_id: String, color: Color, founder: bool) -> void:
+func setup(emp_id: String, look: Dictionary, founder: bool) -> void:
 	employee_id = emp_id
-	_body = Node3D.new()
+	_founder = founder
+	_body = CharacterRig.new()
 	add_child(_body)
-	var mat: StandardMaterial3D = StandardMaterial3D.new()
-	mat.albedo_color = color
-	mat.roughness = 0.8
-	var capsule: MeshInstance3D = MeshInstance3D.new()
-	var mesh: CapsuleMesh = CapsuleMesh.new()
-	mesh.radius = 0.22
-	mesh.height = BODY_HEIGHT
-	capsule.mesh = mesh
-	capsule.material_override = mat
-	capsule.position.y = BODY_HEIGHT * 0.5
-	_body.add_child(capsule)
-	var nose: MeshInstance3D = MeshInstance3D.new()
-	var box: BoxMesh = BoxMesh.new()
-	box.size = Vector3(0.12, 0.08, 0.12)
-	nose.mesh = box
-	nose.position = Vector3(0.0, BODY_HEIGHT * 0.82, -0.22)
-	_body.add_child(nose)
-	if founder:
-		var crown: MeshInstance3D = MeshInstance3D.new()
-		var cyl: CylinderMesh = CylinderMesh.new()
-		cyl.top_radius = 0.16
-		cyl.bottom_radius = 0.16
-		cyl.height = 0.08
-		crown.mesh = cyl
-		var gold: StandardMaterial3D = StandardMaterial3D.new()
-		gold.albedo_color = UiUtil.MUSTARD
-		crown.material_override = gold
-		crown.position.y = BODY_HEIGHT + 0.05
-		_body.add_child(crown)
+	apply_look(look)
 	var area: Area3D = Area3D.new()
 	area.set_meta("employee_id", emp_id)
 	var shape: CollisionShape3D = CollisionShape3D.new()
@@ -61,6 +40,30 @@ func setup(emp_id: String, color: Color, founder: bool) -> void:
 	shape.position.y = BODY_HEIGHT * 0.5
 	area.add_child(shape)
 	add_child(area)
+
+
+## Görünüş (gövde, saç, kıyafet, renk); yalnızca değiştiyse (ör. yeni dönemde kıyafet) yeniden kurulur.
+func apply_look(look: Dictionary) -> void:
+	var sig: String = CharacterLook.signature(look)
+	if sig == _look_sig:
+		return
+	_look_sig = sig
+	_body.build(look, _founder)
+	_body.position.y = -SIT_DROP if _seated and not _body.has_animations() else 0.0
+
+
+## Hedefteyken yapılacak iş: "sit", "type", "phone", "coffee", "present", "stress", "sleep", "idle".
+func set_activity(name: String) -> void:
+	_activity = name
+
+
+## Kısa sevinç (seviye atlama, iyi puan).
+func cheer() -> void:
+	_cheer_left = float(DataDB.data.characters["activity"]["cheer_seconds"])
+
+
+func current_activity() -> String:
+	return _body.activity
 
 
 func ground_pos() -> Vector2:
@@ -104,6 +107,10 @@ func bubble(text: String, color: Color) -> void:
 
 
 func _process(delta: float) -> void:
+	_cheer_left = maxf(0.0, _cheer_left - delta)
+	var want: String = "walk" if not _path.is_empty() else ("cheer" if _cheer_left > 0.0 else _activity)
+	if _body.activity != want:
+		_body.set_activity(want)
 	if _path.is_empty():
 		_turn_towards(_face_dir, delta)
 		return
@@ -116,7 +123,8 @@ func _process(delta: float) -> void:
 		_path.remove_at(0)
 		if _path.is_empty() and bool(get_meta("sit_on_arrival", false)):
 			_seated = true
-			_body.position.y = -SIT_DROP
+			if not _body.has_animations():
+				_body.position.y = -SIT_DROP
 		return
 	var dir: Vector2 = to_target.normalized()
 	position += Vector3(dir.x, 0.0, dir.y) * step

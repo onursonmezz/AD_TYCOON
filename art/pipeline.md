@@ -85,3 +85,70 @@ File → Export → glTF 2.0:
 | Oyunda hâlâ gri kutu | Dosya adı ya da klasör yanlış | Tablodaki adı birebir kullan; model_check "bulunamadı" der |
 | Renkler soluk ya da siyah | Doku dosyası .glb'ye girmemiş | Dışa aktarmada Materials: Export; Format .glb olmalı |
 | Model çok parlak, plastik gibi | Metal/roughness değerleri | Blender'da malzemenin Metallic 0, Roughness 0.8–1.0 |
+
+---
+
+# Karakterler (modüler)
+
+Çalışanlar parçalardan kurulur (GDD 21.3): **3 gövde** (kadın, erkek, nötr) + **saç** + **kıyafet**. Oyun her çalışana kimliğinden bir saç, kıyafet, ten, saç ve kıyafet rengi seçer. Kıyafet döneme göre değişir (90'larda vatkalı ceket, 2010'larda oduncu gömleği…). Model yokken çalışan renkli kapsül olarak görünür ve basit hareketler yapar.
+
+## Dosyalar (`assets/models/characters/`)
+
+| Dosya | Ne |
+|---|---|
+| `body_female.glb`, `body_male.glb`, `body_neutral.glb` | İskeletli gövde + **animasyonlar** (aşağıda) |
+| `hair_<ad>.glb` | Saç: `short`, `bob`, `long`, `bun`, `curly`, `buzz`, `side_part`, `mullet` (90'lar), `man_bun` (2010+) |
+| `outfit_<ad>.glb` | Kıyafet: `shoulder_pad_blazer` (90'lar), `pleated_suit`, `sweater_vest`, `denim_jacket`, `polo`, `office_shirt`, `cardigan`, `hipster_flannel` (2010'lar), `hoodie`, `oversize_tee` (2020+), `dress`, `tech_vest` |
+
+Hangi saç ve kıyafetin hangi gövdeye ve yıllara ait olduğu `data/characters.json`'da yazar. Hepsini birden yapmana gerek yok. İlk deneme için bir gövde (`body_neutral.glb`), bir saç (`hair_short.glb`) ve bir kıyafet (`outfit_office_shirt.glb`) yeter; olmayan parça görünmez, gövde yine çalışır.
+
+## 1. Gövde
+
+1. **Konsept:** prompt şablonuna şunu koy: `a stylized office worker character, slightly big head, simple neutral clothes, T-pose, front view`. "Chibi"ye kaçmasın (kafa gövdenin ~1/5'i).
+2. **3D:** Meshy/Tripo'da "character" ya da "T-pose" seçeneğiyle üret, .glb indir.
+3. **Rig (iskelet):** [Mixamo](https://www.mixamo.com) (ücretsiz Adobe hesabı):
+   1. Blender'da .glb'yi aç, File → Export → **FBX** yap.
+   2. FBX'i Mixamo'ya yükle; çene, bilek, dirsek, diz ve kasık noktalarını işaretle.
+   3. Kemik adları `mixamorig:Head` gibi olur. Godot içe aktarırken ":" işaretini "_" yapar (`mixamorig_Head`); oyun başı bu adla bulur.
+4. **Animasyonlar:** Mixamo'da aynı karaktere şu animasyonları seç ve her birini **"Without Skin"** FBX olarak indir (ilki "With Skin"):
+
+   | Oyundaki ad | Mixamo'da ara |
+   |---|---|
+   | `idle` | Idle |
+   | `walk` | Walking |
+   | `sit` | Sitting Idle |
+   | `type` | Typing |
+   | `phone` | Talking On Phone (Sitting) |
+   | `coffee` | Drinking |
+   | `present` | Talking / Presenting |
+   | `cheer` | Cheering / Victory |
+   | `stress` | Sitting Disbelief / Head Scratch |
+   | `sleep` | Sitting Sleeping / Tired |
+
+   Hepsi şart değil. Olmayan animasyonun yerine en yakını oynar (ör. `type` yoksa `sit`, o da yoksa `idle`). En az `idle` ve `walk` yap.
+5. **Blender'da birleştirme:**
+   1. Skin'li FBX'i içe aktar, sonra animasyonlu FBX'leri içe aktar.
+   2. Animasyon FBX'lerinin iskeletlerini sil ama hareketlerini tut: Dope Sheet → Action Editor'da her hareket bir "Action" olarak kalır.
+   3. Her Action'ı yukarıdaki tablodaki **oyundaki ada** yeniden adlandır (`idle`, `walk`…), yanındaki **F** (kalkan) düğmesine bas ki silinmesin.
+6. **Ölçü ve yön:** Boy 1.7 m, ayaklar Y = 0'da, yüzü Front görünümünde (Numpad 1) sana baksın. Sonra Ctrl+A → All Transforms.
+7. **Dışa aktar:** glTF Binary, ✓ Selected Objects (iskelet + gövde), ✓ +Y Up, Animation: ✓ açık, "Group by NLA Track" kapalı, "Export All Actions" ✓.
+
+## 2. Saç ve kıyafet
+
+Parçalar gövdenin üstünde, **doğru yerinde** modellenir ve gövdeyle aynı ölçüde, aynı başlangıç noktasıyla (0,0,0) dışa aktarılır.
+
+- **Saç (sert parça):** Gövdeyi Blender'a al ve saçı kafanın üstüne yerleştir. Yalnızca saçı seçip dışa aktar. Oyun saçı baş kemiğine (`mixamorig_Head`) bağlar; baş dönünce saç da döner.
+- **Kıyafet (bükülen parça):**
+  1. Kıyafeti gövdenin üstüne giydir.
+  2. Kıyafeti seç, sonra iskeleti Shift ile seç → Ctrl+P → **With Automatic Weights**.
+  3. Kıyafeti iskeletle birlikte dışa aktar. Kıyafet gövdeyle birlikte bükülür.
+  4. Kıyafeti olabildiğince açık gri ya da beyaz boya: oyun rengi kendisi verir (her çalışan farklı renk giyer).
+- Saçı da beyaza yakın boya: rengini oyun verir.
+
+## 3. Kontrol
+
+- `model_check` karakterleri de listeler: gövdenin boyu, tabanı ve ortalaması denetlenir. Parçalar için yalnızca dosya ve üçgen sayısı (≤ 15.000) bakılır.
+- Deneme karakterlerini görmek için ekran turu ya da şu komut (gövde olarak Godot şekilleriyle kurulmuş, iskeletli ve animasyonlu bir deneme kullanır):
+  ```
+  godot --path . res://tools/model_preview.tscn -- --out=art/previews --samples
+  ```

@@ -53,3 +53,18 @@ Masanın üstünde durur. Klavye dahil olabilir; ekranın önü (+Z, Blender'da 
 | `billboard.glb` | 4.0 × 0.4 | 3.6 | an empty billboard frame on two posts, **blank white panel** |
 
 > **Billboard'un paneli boş olmalı.** Oyun, kampanyalarının görselini panelin önüne kendisi yerleştirir: 3.6 m × 2.0 m, alt kenarı yerden 1.4 m yukarıda. Panelini bu ölçüye yakın yap.
+
+## Karakterler (`assets/models/characters/`)
+
+Adım adım: `art/pipeline.md` → "Karakterler". Boy 1.7 m. Saç ve kıyafeti açık gri ya da beyaz boya; renklerini oyun verir.
+
+| Dosya | [NESNE] |
+|---|---|
+| `body_female.glb` | a stylized female office worker, slightly big head, plain light gray t-shirt and trousers, T-pose |
+| `body_male.glb` | a stylized male office worker, slightly big head, plain light gray t-shirt and trousers, T-pose |
+| `body_neutral.glb` | a stylized androgynous office worker, slightly big head, plain light gray clothes, T-pose |
+| `hair_short.glb` … `hair_man_bun.glb` | [saç tipi] hairstyle only, no head, light gray, game asset |
+| `outfit_shoulder_pad_blazer.glb` | a 1990s blazer with big shoulder pads, light gray, clothing only |
+| `outfit_hipster_flannel.glb` | a 2010s flannel shirt with rolled sleeves, light gray, clothing only |
+| `outfit_hoodie.glb` | a casual hoodie, light gray, clothing only |
+| (diğer kıyafetler) | `data/characters.json`'daki ada göre: "[kıyafet], light gray, clothing only" |

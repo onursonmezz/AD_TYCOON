@@ -1,5 +1,22 @@
 # Değişiklik günlüğü
 
+## M8-B: Modüler karakterler ve animasyon (2026-11-04)
+- **Her çalışan artık kendine özgü görünüyor:** gövde (kadın, erkek, nötr), saç, kıyafet, ten, saç ve kıyafet rengi. Görünüş kayıttan kayda değişmez. Kurucu hardal renkli.
+- **Dönemsel kıyafet:** 90'larda vatkalı ceket ve kumaş pantolon, 2010'larda oduncu gömleği, 2020'lerde kapüşonlu ve bol tişört. Yeni döneme girince çalışanlar dönemin kıyafetine geçer.
+- **Etkinliğe göre hareket:**
+  - Yürür, masada yazar (kampanya ekibi), telefonla konuşur (account, new business, PR, medya).
+  - Mutfakta kahve içer, toplantıda sunum yapar.
+  - Çok yorgunken uyuklar, tükenmişken stres yapar, seviye atlayınca sevinir.
+- **Model yokken** çalışanlar artık renkli gövde, ten rengi baş ve saçla görünüyor; bu hareketleri basit sallanma, eğilme ve zıplamalarla yapıyorlar. Model gelince aynı durumlar gerçek animasyonlarla oynar.
+- **Karakter üretim rehberi:** `art/pipeline.md` → "Karakterler". Konsept, Mixamo ile iskelet, 10 animasyonun adı, Blender'da birleştirme, saç ve kıyafeti gövdeye bağlama.
+- Nasıl test ederim:
+  1. Oyunu aç, birkaç kişi işe al: her biri farklı renkte kıyafet ve saçla görünür. Kurucu hardal renkli ve tepesinde küçük bir taç var.
+  2. Bir kampanya başlat: ekip masada öne eğilip "yazar"; account çalışanı bazı günler başını yana eğip "telefonla konuşur".
+  3. Enerjisi düşen çalışan mutfağa gidip kahve içer; çok yorgunsa masasında öne eğilip uyuklar.
+  4. Çalışan seviye atlayınca ★ baloncuğuyla birlikte zıplar.
+  5. Deneme karakterlerini görmek için `model_preview` aracını `--samples` ile çalıştır. `art/previews` içinde `character.body_*` resimleri çıkar.
+
+
 ## M8-A: Model sistemi, sokak ve kampanya görselleri (2026-11-04)
 - **Model sistemi:** Ofisteki her eşya artık bir 3D model dosyası arıyor. Dosya varsa onu doğru boyuta sığdırıp kullanıyor, yoksa eskisi gibi gri kutu çiziyor. Model eklemek için kod gerekmiyor: doğru adlı `.glb`'yi `assets/models/` altındaki doğru klasöre koymak yeterli.
 - **Sanat rehberi** (`art/`):

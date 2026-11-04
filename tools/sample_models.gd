@@ -119,3 +119,117 @@ static func _tree() -> Node3D:
 	crown.height = 1.4
 	_part(r, crown, Vector3(0, 2.3, 0), Color(0.36, 0.55, 0.36))
 	return r
+
+
+## Karakter deneme parçaları (M8-B): iskeletli ve animasyonlu bir gövde, sert bir saç, bir yelek. Bütün gövde,
+## saç ve kıyafet yuvaları bu üçüne yönlendirilir. Kemik adları Mixamo'daki gibi (data/characters.json head_bone).
+static func make_characters(dir: String, data: GameData) -> Dictionary:
+	DirAccess.make_dir_recursive_absolute(dir)
+	var paths: Dictionary = {}
+	for pair: Array in [["body", _body()], ["hair", _hair()], ["outfit", _vest()]]:
+		var packed: PackedScene = PackedScene.new()
+		packed.pack(pair[1])
+		var path: String = dir.path_join("sample_%s.tscn" % pair[0])
+		ResourceSaver.save(packed, path)
+		(pair[1] as Node).free()
+		paths[pair[0]] = path
+	var out: Dictionary = {}
+	for b: Dictionary in data.characters["bodies"]:
+		out[b["model"]] = paths["body"]
+	for h: Dictionary in data.characters["hair"]:
+		if not str(h["model"]).is_empty():
+			out[h["model"]] = paths["hair"]
+	for o: Dictionary in data.characters["outfits"]:
+		out[o["model"]] = paths["outfit"]
+	return out
+
+
+static func _own(root: Node, n: Node) -> void:
+	n.owner = root
+	for c: Node in n.get_children():
+		_own(root, c)
+
+
+static func _body() -> Node3D:
+	var r: Node3D = _root(Vector3.ZERO)
+	var skel: Skeleton3D = Skeleton3D.new()
+	skel.name = "Skeleton3D"
+	r.add_child(skel)
+	var bones: Array = [["mixamorig_Hips", -1, Vector3(0, 0.9, 0)], ["mixamorig_Spine", 0, Vector3(0, 0.3, 0)],
+		["mixamorig_Head", 1, Vector3(0, 0.4, 0)]]
+	for b: Array in bones:
+		var i: int = skel.add_bone(b[0])
+		skel.set_bone_parent(i, b[1])
+		skel.set_bone_rest(i, Transform3D(Basis(), b[2]))
+		skel.set_bone_pose_position(i, b[2])
+	var parts: Array = [["mixamorig_Hips", _capsule_mesh(0.2, 0.9), Vector3(0, -0.4, 0)],
+		["mixamorig_Spine", _capsule_mesh(0.22, 0.6), Vector3(0, 0.15, 0)],
+		["mixamorig_Head", _sphere_mesh(0.17), Vector3(0, 0.1, 0)]]
+	for p: Array in parts:
+		var att: BoneAttachment3D = BoneAttachment3D.new()
+		att.bone_name = p[0]
+		skel.add_child(att)
+		# Ağaç dışında da (sığdırma için) doğru yerde dursun: kemiğin dinlenme konumu.
+		att.transform = skel.get_bone_global_rest(skel.find_bone(p[0]))
+		var m: MeshInstance3D = MeshInstance3D.new()
+		m.mesh = p[1]
+		m.position = p[2]
+		var mat: StandardMaterial3D = StandardMaterial3D.new()
+		mat.albedo_color = Color(0.85, 0.85, 0.85)
+		m.material_override = mat
+		att.add_child(m)
+	var player: AnimationPlayer = AnimationPlayer.new()
+	player.name = "AnimationPlayer"
+	r.add_child(player)
+	var lib: AnimationLibrary = AnimationLibrary.new()
+	# Her klip: Spine öne/yana eğilir, Hips iner/zıplar. Adlar data/characters.json "animations".
+	var clips: Dictionary = {"idle": [0.0, 0.0, 0.0], "walk": [0.15, 0.0, 0.04], "sit": [0.0, -0.4, 0.0],
+		"type": [0.3, -0.4, 0.0], "cheer": [-0.2, 0.0, 0.2], "stress": [0.5, -0.4, 0.0]}
+	for name: String in clips:
+		var v: Array = clips[name]
+		var a: Animation = Animation.new()
+		a.length = 1.0
+		var rot: int = a.add_track(Animation.TYPE_ROTATION_3D)
+		a.track_set_path(rot, NodePath("Skeleton3D:mixamorig_Spine"))
+		a.rotation_track_insert_key(rot, 0.0, Quaternion(Vector3.RIGHT, float(v[0]) * 0.5))
+		a.rotation_track_insert_key(rot, 0.5, Quaternion(Vector3.RIGHT, float(v[0])))
+		a.rotation_track_insert_key(rot, 1.0, Quaternion(Vector3.RIGHT, float(v[0]) * 0.5))
+		var pos: int = a.add_track(Animation.TYPE_POSITION_3D)
+		a.track_set_path(pos, NodePath("Skeleton3D:mixamorig_Hips"))
+		a.position_track_insert_key(pos, 0.0, Vector3(0, 0.9 + float(v[1]), 0))
+		a.position_track_insert_key(pos, 0.5, Vector3(0, 0.9 + float(v[1]) + float(v[2]), 0))
+		a.position_track_insert_key(pos, 1.0, Vector3(0, 0.9 + float(v[1]), 0))
+		lib.add_animation(name, a)
+	player.add_animation_library("", lib)
+	_own(r, skel)
+	player.owner = r
+	return r
+
+
+static func _hair() -> Node3D:
+	var r: Node3D = _root(Vector3.ZERO)
+	var cap: SphereMesh = SphereMesh.new()
+	cap.radius = 0.19
+	cap.height = 0.22
+	_part(r, cap, Vector3(0, 1.79, 0), Color(0.9, 0.9, 0.9))
+	return r
+
+
+static func _vest() -> Node3D:
+	var r: Node3D = _root(Vector3.ZERO)
+	_part(r, _boxm(0.5, 0.45, 0.32), Vector3(0, 1.3, 0), Color(0.9, 0.9, 0.9))
+	return r
+
+
+static func _capsule_mesh(rad: float, h: float) -> CapsuleMesh:
+	var c: CapsuleMesh = CapsuleMesh.new()
+	c.radius = rad
+	c.height = h
+	return c
+
+
+static func _sphere_mesh(rad: float) -> SphereMesh:
+	var s: SphereMesh = SphereMesh.new()
+	s.radius = rad
+	s.height = rad * 2.0
+	return s

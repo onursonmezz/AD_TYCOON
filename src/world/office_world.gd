@@ -14,12 +14,6 @@ const FLOOR_COLORS: Dictionary = {
 	"lounge": Color(0.9, 0.8, 0.55), "empty": Color(0.8, 0.79, 0.76), "brainstorm": Color(0.75, 0.82, 0.88),
 	"award_lobby": Color(0.92, 0.85, 0.62), "rd_lab": Color(0.7, 0.78, 0.86), "studio": Color(0.6, 0.6, 0.66),
 }
-const DEPT_COLORS: Dictionary = {
-	"founder": Color(0.85, 0.64, 0.25), "creative": Color(0.88, 0.5, 0.35), "design": Color(0.93, 0.6, 0.45),
-	"strategy": Color(0.36, 0.5, 0.4), "account": Color(0.3, 0.45, 0.65), "production": Color(0.45, 0.55, 0.8),
-	"media": Color(0.55, 0.45, 0.7), "digital": Color(0.35, 0.65, 0.7), "pr_event": Color(0.8, 0.45, 0.6),
-	"new_business": Color(0.6, 0.6, 0.35), "operations": Color(0.55, 0.55, 0.55), "support": Color(0.7, 0.68, 0.62),
-}
 const BUBBLES: Array[Array] = [["S", Color(0.24, 0.55, 0.32)], ["K", Color(0.9, 0.5, 0.2)], ["T", Color(0.25, 0.45, 0.85)]]
 
 var rig: CameraRig
@@ -154,12 +148,12 @@ func sync() -> void:
 	var speed: float = float(Clock.speeds()[Clock.speed_index]) if Clock.is_running() else 1.0
 	for c: OfficeCharacter in _chars.values():
 		c.speed_mult = speed
+	_update_looks_and_activities(s)
 
 
 func _spawn(emp: Dictionary) -> void:
 	var c: OfficeCharacter = OfficeCharacter.new()
-	var dept: String = str(DataDB.data.positions[emp["role"]]["department"])
-	c.setup(emp["id"], DEPT_COLORS.get(dept, Color(0.6, 0.6, 0.6)), bool(emp.get("is_founder", false)))
+	c.setup(emp["id"], CharacterLook.make(DataDB.data, emp, GameState.sim.state.clock.year()), bool(emp.get("is_founder", false)))
 	add_child(c)
 	c.teleport(layout.entrance)
 	_chars[emp["id"]] = c
@@ -219,6 +213,35 @@ func _go(c: OfficeCharacter, id: String, place: String, slot: int) -> void:
 	c.walk(path, face, sit)
 
 
+## Görünüş (dönem değişince kıyafet) ve etkinlik: masada ekip yazar ya da telefonla konuşur, mutfakta kahve,
+## toplantıda sunum; çok yorgun uyuklar, tükenmiş stres yapar (M8-B).
+func _update_looks_and_activities(s: SimState) -> void:
+	var cfg: Dictionary = DataDB.data.characters["activity"]
+	var team: Array = s.active_campaign["setup"].get("team", []) if not s.active_campaign.is_empty() else []
+	var year: int = s.clock.year()
+	for id: String in _chars:
+		var emp: Dictionary = s.staff[id]
+		var c: OfficeCharacter = _chars[id]
+		c.apply_look(CharacterLook.make(DataDB.data, emp, year))
+		var place: String = str(_place_of.get(id, "desk")).get_slice(":", 0)
+		var act: String = "sit"
+		match place:
+			"kitchen": act = "coffee"
+			"meeting": act = "present"
+			"lounge": act = "sit"
+			_:
+				if float(emp["energy"]) < float(cfg["sleep_energy"]):
+					act = "sleep"
+				elif float(emp["burnout"]) >= float(cfg["stress_burnout"]):
+					act = "stress"
+				elif team.has(id):
+					var dept: String = str(DataDB.data.positions[emp["role"]]["department"])
+					var phone: bool = (cfg["phone_departments"] as Array).has(dept) \
+						and absi((id + str(_last_day)).hash()) % 100 < int(100.0 * float(cfg["phone_chance"]))
+					act = "phone" if phone else "type"
+		c.set_activity(act)
+
+
 # --- baloncuklar ------------------------------------------------------------------
 
 ## Her oyun günü: kampanya ekibinin masada oturanlarından bazıları fazın alanında baloncuk çıkarır; yeni hata = "!".
@@ -251,6 +274,7 @@ func _on_notification(key: String, args: Array, _kind: String) -> void:
 		if (key == "NOTE_LEVEL_UP_FOUNDER" and bool(emp.get("is_founder", false))) \
 				or (not args.is_empty() and str(emp.get("name", "")) == str(args[0])):
 			(_chars[id] as OfficeCharacter).bubble("★", UiUtil.MUSTARD)
+			(_chars[id] as OfficeCharacter).cheer()
 
 
 ## Ekrandaki bir noktadan tıklanan çalışan ("" = yok).

@@ -59,7 +59,7 @@ func test_checker_reports_problems() -> void:
 
 func test_every_slot_has_a_valid_path_and_unknown_files_are_listed() -> void:
 	var slots: Array[Dictionary] = Checker.slots(data)
-	assert_eq(slots.size(), data.furniture_ids.size() + 5 + data.hardware_ids.size() + 4)
+	assert_eq(slots.size(), data.furniture_ids.size() + 5 + data.hardware_ids.size() + 4 + 3 + 9 + 12, "eşyalar + 3 gövde, 9 saç, 12 kıyafet")
 	var bad: Dictionary = data.raw.duplicate(true)
 	bad["furniture.json"][0]["model"] = "Bitki Büyük.glb"
 	assert_eq(ChecksM8.check(data.raw), PackedStringArray())

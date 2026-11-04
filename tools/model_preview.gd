@@ -23,6 +23,7 @@ func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_out))
 	if samples:
 		ModelLibrary.overrides = Samples.make_all("user://sample_models")
+		ModelLibrary.overrides.merge(Samples.make_characters("user://sample_models", DataDB.data))
 	_setup_scene()
 	await _run()
 	get_tree().quit()

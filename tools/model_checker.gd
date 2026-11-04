@@ -15,6 +15,18 @@ static func slots(data: GameData) -> Array[Dictionary]:
 		for id: String in g:
 			out.append({"name": "%s.%s" % [group, id], "rel": str(g[id]["model"]),
 				"size": Vector2(float(g[id]["size"][0]), float(g[id]["size"][1])), "height": float(g[id]["height"])})
+	# Karakterler (M8-B): gövde boy ve taban denetlenir (T-pozda kollar açık, taban oranı bakılmaz);
+	# saç ve kıyafet gövdeye göre konumlu olduğundan yalnızca dosya ve üçgen sayısı.
+	var ch: Dictionary = data.characters
+	var h: float = float(ch["height"])
+	for b: Dictionary in ch["bodies"]:
+		out.append({"name": "character.body_" + str(b["id"]), "rel": str(b["model"]), "size": Vector2(h, 0.5), "height": h,
+			"checks": ["height", "ground", "center"], "character": true})
+	for group: String in ["hair", "outfits"]:
+		for p: Dictionary in ch[group]:
+			if not str(p["model"]).is_empty():
+				out.append({"name": "character.%s_%s" % [group, p["id"]], "rel": str(p["model"]), "size": Vector2(h, 0.5),
+					"height": h, "checks": [], "character": true})
 	return out
 
 
@@ -25,24 +37,26 @@ static func inspect(root: Node3D, slot: Dictionary, limits: Dictionary) -> Packe
 	if box.size.length() < 0.0001:
 		warn.append("içinde görünür mesh yok")
 		return warn
+	var checks: Array = slot.get("checks", ["height", "ratio", "ground", "center"])
 	var tol: float = float(limits["size_tolerance"])
 	var h: float = float(slot["height"])
-	if absf(box.size.y - h) / h > tol:
+	if checks.has("height") and absf(box.size.y - h) / h > tol:
 		warn.append("boy %.2f m, beklenen %.2f m (oyun orantılı küçültür/büyütür ama oranlar değişebilir)" % [box.size.y, h])
 	var fp: Vector2 = slot["size"]
 	var ratio_model: float = box.size.x / maxf(0.001, box.size.z)
 	var ratio_slot: float = fp.x / maxf(0.001, fp.y)
-	if absf(ratio_model - ratio_slot) / ratio_slot > tol * 2.0:
+	if checks.has("ratio") and absf(ratio_model - ratio_slot) / ratio_slot > tol * 2.0:
 		warn.append("taban oranı %.2f × %.2f, beklenen %.2f × %.2f (yan dönmüş olabilir: Numpad 1'de önden bak)"
 			% [box.size.x, box.size.z, fp.x, fp.y])
 	var ctol: float = float(limits["center_tolerance"])
-	if absf(box.position.y) > ctol:
+	if checks.has("ground") and absf(box.position.y) > ctol:
 		warn.append("taban yerde değil (en alt nokta Y = %.2f): 3. adım, taban yerde" % box.position.y)
 	var cx: float = box.position.x + box.size.x * 0.5
 	var cz: float = box.position.z + box.size.z * 0.5
-	if absf(cx) > ctol or absf(cz) > ctol:
+	if checks.has("center") and (absf(cx) > ctol or absf(cz) > ctol):
 		warn.append("ortada değil (merkez %.2f, %.2f): Location 0, 0, 0 ve Origin to 3D Cursor" % [cx, cz])
-	var limit: int = int(limits["triangles_big"] if h >= float(limits["big_from_height"]) else limits["triangles_small"])
+	var limit: int = int(limits["triangles_character"] if bool(slot.get("character", false)) \
+		else (limits["triangles_big"] if h >= float(limits["big_from_height"]) else limits["triangles_small"]))
 	var tris: int = ModelLibrary.triangle_count(root)
 	if tris > limit:
 		warn.append("%d üçgen, sınır %d: Decimate ile azalt" % [tris, limit])
