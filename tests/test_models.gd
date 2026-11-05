@@ -112,11 +112,9 @@ func test_office_dressing_builds_street_billboard_and_posters() -> void:
 
 
 func test_blender_models_pass_the_checker() -> void:
-	# G3: tools/blender ile üretilen modeller depoda (karakterler hariç bütün yuvalar); hepsi ölçü, taban ve üçgen sınırına uymalı.
+	# G3 + C3: tools/blender ile üretilen modeller depoda (bütün yuvalar, karakterler dahil); hepsi ölçü, taban ve üçgen sınırına uymalı.
 	var limits: Dictionary = data.models["limits"]
 	for slot: Dictionary in Checker.slots(data):
-		if bool(slot.get("character", false)):
-			continue
 		assert_true(ModelLibrary.exists(str(slot["rel"])), str(slot["rel"]))
 		var node: Node3D = autofree(ModelLibrary.scene(str(slot["rel"])).instantiate())
 		assert_eq(Checker.inspect(node, slot, limits), PackedStringArray(), str(slot["rel"]))

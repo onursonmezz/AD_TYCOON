@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## C3: Saçlar ve dönemsel kıyafetler (2026-11-05)
+- **Kel kalan yok:** 9 saç tipi var: kısa, tıraş, yandan ayrık, küt, uzun, topuz, kıvırcık, mullet (90'lar), erkek topuzu (2010+). Saç rengi çalışana göre değişir.
+- **Kıyafetler döneme göre değişiyor:**
+  - **90'lar:** vatkalı ceket, takım elbise (kravatlı), süveter yelek.
+  - **2000'ler:** kot ceket, polo yaka.
+  - **2010'lar:** ekose oduncu gömleği, hırka.
+  - **2015 sonrası:** kapüşonlu; 2020'ler bol tişört; 2018 sonrası teknoloji yeleği.
+  - **Her dönem:** kolları kıvrık ofis gömleği, elbise.
+- Kıyafet rengi çalışana göre değişir; kurucu hardal giyer. Kıyafetler oturunca, yazarken ve yürürken gövdeyle birlikte bükülür.
+- 60 çalışanlı ofiste oyun rahat akıyor (338 FPS).
+- Nasıl test ederim:
+  1. 1990'da yeni oyun başlat ve birkaç kişi işe al: vatkalı ceketler, takım elbiseler, süveter yelekler, mullet saçlar görmelisin.
+  2. 2020'de başlayan yeni bir oyun aç: kapüşonlular, bol tişörtler, teknoloji yelekleri, erkek topuzları.
+  3. Uzun bir oyunda yıllar ilerledikçe aynı çalışanın kıyafeti dönemine göre değişmeli.
+  4. Bütün kıyafetleri tek karede gör:
+     `godot --path . res://tools/wardrobe.tscn --resolution 1920x1080 -- --out=C:/Users/osonm/Desktop/gardirop.png`
+     (ya da `docs/screenshots/07_c3_wardrobe.png`; oturarak hâli `07_c3_wardrobe_type.png`).
+  5. Denetle: `godot --headless --script res://tools/model_check.gd` ("53 model bulundu, 53 sorunsuz").
+
 ## C2: Karakter hareketleri (2026-11-05)
 - **Çalışanlar artık işlerini gösteriyor:**
   - Kampanya ekibi masada klavyede yazıyor; hesap ve medya ekibinden bazıları telefonla konuşuyor (telefon kulakta).

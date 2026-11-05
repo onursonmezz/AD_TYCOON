@@ -11,6 +11,7 @@ Gövde (bel-göğüs) yüksekliğe göre iki kemik arasında yumuşak dağıtıl
 Ön yüz -Y, boy 1.7 m (saç hariç).
 """
 
+import inspect
 import math
 
 import bmesh
@@ -82,8 +83,9 @@ class RigBuilder(Builder):
         self.deform = self.bm.verts.layers.deform.verify()
 
     def part(self, fn, bone: str, mat: str = "palette", *a, **kw):
-        """fn = self.box / cylinder / blob…; yeni yüzlere malzeme, yeni köşelere kemik verir."""
-        if mat != "palette" and "color" not in kw:
+        """fn = self.box / cylinder / blob…; yeni yüzlere malzeme, yeni köşelere kemik verir.
+        Oyunun boyadığı malzemelerde renk verilmezse önemsiz bir palet karesi kullanılır."""
+        if mat != "palette" and "color" not in kw and len(a) <= list(inspect.signature(fn).parameters).index("color"):
             kw["color"] = "white_soft"  # UV önemsiz: renk oyundan gelir
         old = set(self.bm.faces)
         fn(*a, **kw)
@@ -186,11 +188,22 @@ def _torso_weights(v) -> dict:
     return {"spine": 1.0 - k, "chest": k}
 
 
+BELT = 0.985  # bu yükseklikten aşağısı pantolon
+
+
+def torso_rings(kind: str, inflate: float = 0.0) -> list:
+    """Gövdenin halkaları [(z, yarı genişlik, yarı derinlik)]; kıyafet kabukları inflate kadar şişirir."""
+    p = BODIES[kind]
+    sh2, wa2, hi2, d2 = p["shoulders"] / 2, p["waist"] / 2, p["hips"] / 2, p["depth"] / 2
+    rings = [(0.80, 0.13, d2 * 0.75), (0.86, hi2 * 0.97, d2 * 0.95), (0.94, hi2, d2),
+             (BELT, (hi2 + wa2) / 2, d2 * 0.97), (1.06, wa2, d2 * 0.94), (1.17, sh2 * 0.94, d2),
+             (1.25, sh2, d2 * 0.95), (1.3, sh2 * 0.82, d2 * 0.78), (1.325, sh2 * 0.45, d2 * 0.5), (1.33, 0.07, 0.06)]
+    return [(z, w + inflate, d + inflate) for z, w, d in rings]
+
+
 def body(kind: str):
     """Tek gövde: ten (baş, boyun, el), tişört (outfit), pantolon ve ayakkabı (palet)."""
-    p = BODIES[kind]
     b = RigBuilder("body_" + kind)
-    sh, wa, hi, dp = p["shoulders"], p["waist"], p["hips"], p["depth"]
     # baş: büyükçe, hafif yumurta; gözler, burun, kulaklar
     b.part(b.blob, "head", "skin", 0.178, (0, 0, 1.525), subdiv=3, squash=(1.0, 0.96, 1.0), wobble=0.0)
     for x in (-1.0, 1.0):
@@ -203,13 +216,8 @@ def body(kind: str):
            segments=1)
     b.part(b.cylinder, "neck", "skin", 0.05, 0.048, 0.12, (0, 0.005, 1.27), segments=12, bevel=0.0)
     # gövde: kasıktan boyna tek parça; bel çizgisinin altı pantolon, üstü tişört
-    sh2, wa2, hi2, d2 = sh / 2, wa / 2, hi / 2, dp / 2
-    b.loft([(0.80, 0.13, d2 * 0.75, "palette", "denim"), (0.86, hi2 * 0.97, d2 * 0.95, "palette", "denim"),
-            (0.94, hi2, d2, "palette", "denim"), (0.985, (hi2 + wa2) / 2, d2 * 0.97, "outfit", "white_soft"),
-            (1.06, wa2, d2 * 0.94, "outfit", "white_soft"), (1.17, sh2 * 0.94, d2, "outfit", "white_soft"),
-            (1.25, sh2, d2 * 0.95, "outfit", "white_soft"), (1.3, sh2 * 0.82, d2 * 0.78, "outfit", "white_soft"),
-            (1.325, sh2 * 0.45, d2 * 0.5, "outfit", "white_soft"), (1.33, 0.07, 0.06, "outfit", "white_soft")],
-           _torso_weights)
+    b.loft([(z, w, d, "palette" if z < BELT else "outfit", "denim" if z < BELT else "white_soft")
+            for z, w, d in torso_rings(kind)], _torso_weights)
     for s, x in (("l", 1.0), ("r", -1.0)):
         ax = x * ARM_X
         # omuz topu ve kol (kısa kollu): üst kol tişört, ön kol ve el ten
@@ -244,25 +252,6 @@ def body(kind: str):
            bevel=0.005, segments=1)
     return b.finish()
 
-
-def hair_short():
-    """Kısa saç: başın üstünü ve arkasını saran kep, önde hafif perçem. Sert parça (baş kemiğine bağlanır)."""
-    b = RigBuilder("hair_short")
-    bm = b.bm
-    old = set(bm.faces)
-    res = bmesh.ops.create_icosphere(bm, subdivisions=3, radius=0.192)
-    verts = res["verts"]
-    for v in verts:
-        v.co = Vector((v.co.x * 1.04, v.co.y * 1.02 + 0.006, v.co.z * 1.0 + 1.54))
-    kill = [v for v in verts if v.co.z < 1.43 or (v.co.y < -0.07 and v.co.z < 1.6)
-            or (abs(v.co.x) > 0.12 and v.co.y < 0.02 and v.co.z < 1.52)]
-    bmesh.ops.delete(bm, geom=kill, context="VERTS")
-    b._assign([f for f in bm.faces if f not in old], "hair", lambda v: {"head": 1.0})
-    b.part(b.blob, "head", "hair", 0.06, (0.04, -0.13, 1.64), subdiv=2, squash=(1.6, 0.8, 0.6), wobble=0.0)
-    obj = b.finish()
-    # sert parça: iskelet yok, ağırlık grupları gereksiz
-    obj.vertex_groups.clear()
-    return obj
 
 
 def character(kind: str) -> None:

@@ -134,3 +134,26 @@ func test_blender_body_has_every_clip() -> void:
 	rig.set_activity("phone")
 	await wait_physics_frames(10)
 	assert_eq(rig.current_clip(), "phone")
+
+
+func test_outfit_and_hair_fit_the_body() -> void:
+	# C3: kıyafet dosyasındaki üç kabuktan yalnızca çalışanın gövdesine ait olan giydirilir; saç başa bağlanır.
+	for body: String in ["female", "male"]:
+		var look: Dictionary = CharacterLook.make(data, _emp("em_0011", body), 2012)
+		look["outfit_model"] = "characters/outfit_hipster_flannel.glb"
+		look["hair_model"] = "characters/hair_curly.glb"
+		look["bald"] = false
+		var rig: CharacterRig = CharacterRig.new()
+		add_child_autofree(rig)
+		rig.build(look, false)
+		var shells: Array[String] = []
+		for n: Node in rig.find_children("*", "MeshInstance3D", true, false):
+			if str(n.name).begins_with("outfit_"):
+				shells.append(str(n.name))
+				assert_not_null((n as MeshInstance3D).skin, "kıyafet gövdeyle bükülür")
+		assert_eq(shells, ["outfit_hipster_flannel_" + body] as Array[String])
+		var hair: int = 0
+		for n: Node in rig.find_children("*", "BoneAttachment3D", true, false):
+			if (n as BoneAttachment3D).bone_name == "head":
+				hair += 1
+		assert_eq(hair, 1, "saç başa bağlı")

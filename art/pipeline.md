@@ -116,6 +116,7 @@ Gövdeler, iskelet ve hareketler `tools/blender/characters.py` ile kodla üretil
 ```
 - Kemik adları sade: `hips`, `spine`, `chest`, `neck`, `head`, `upper_arm_l`, `forearm_l`, `hand_l`, `thigh_l`, `shin_l`, `foot_l` (sağ taraf `_r`). Oyun saçı `head` kemiğine bağlar (`data/characters.json` `head_bone`).
 - **Renk için malzeme adları:** `skin` (ten), `outfit` (kıyafet), `hair` (saç). Bu adlı malzemeleri beyaz bırak; oyun rengini çalışana göre verir. Başka malzemeler (göz, ayakkabı, palet) olduğu gibi kalır.
+- Saç ve kıyafetler `tools/blender/characters_wear.py`'de. Kıyafet dosyasında her gövdenin kendi kabuğu olabilir: nesne adı `<ad>_female` / `_male` / `_neutral` ile biterse yalnızca o gövdeye giydirilir, ek yoksa herkese. Gardırop görüntüsü: `godot --path . res://tools/wardrobe.tscn --resolution 1920x1080 -- --out=<dosya.png>`.
 - Hareketler `tools/blender/characters_anim.py`'de. Oturanlar (`sit`, `type`, `phone`, `present`, `cheer`, `stress`, `sleep`) kalçayı sandalye minderine indirir; `coffee` ve `cheer_stand` ayakta. Telefon ve kupa sağ ele bağlı `prop_phone` ve `prop_cup` kemiklerinde; kendi klipleri dışında ölçekleri ~0. Kontrol için: `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>`.
 - Aşağıdaki elle yol (Meshy/Mixamo) hâlâ çalışır; kemik adını `head_bone`'a yazman yeter.
 

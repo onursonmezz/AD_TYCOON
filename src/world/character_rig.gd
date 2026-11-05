@@ -67,7 +67,7 @@ func _attach(skel: Skeleton3D, rel: String, look: Dictionary, color: Color, bone
 	if packed == null:
 		return
 	var part: Node = packed.instantiate()
-	var meshes: Array[Node] = part.find_children("*", "MeshInstance3D", true, false)
+	var meshes: Array[Node] = _for_body(part.find_children("*", "MeshInstance3D", true, false), str(look["body"]))
 	var holder: Node3D = skel
 	var bone_idx: int = skel.find_bone(bone) if not bone.is_empty() else -1
 	if bone_idx >= 0:
@@ -126,6 +126,21 @@ static func _paint(root: Node, look: Dictionary) -> int:
 			mi.set_surface_override_material(i, _paints[key])
 			count += 1
 	return count
+
+
+## Kıyafet dosyasında her gövdenin kendi kabuğu olabilir (adı `..._female`, `..._male`, `..._neutral`; C3).
+## Adında gövde eki olmayanlar herkese, eki olanlar yalnızca o gövdeye.
+static func _for_body(meshes: Array[Node], body: String) -> Array[Node]:
+	var out: Array[Node] = []
+	var bodies: Array = (DataDB.data.characters["bodies"] as Array).map(func(b: Dictionary) -> String: return str(b["id"]))
+	for m: Node in meshes:
+		var tagged: String = ""
+		for id: String in bodies:
+			if str(m.name).ends_with("_" + id):
+				tagged = id
+		if tagged.is_empty() or tagged == body:
+			out.append(m)
+	return out
 
 
 static func _local_xf(node: Node3D, root: Node) -> Transform3D:

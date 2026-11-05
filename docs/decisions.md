@@ -869,6 +869,22 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Performans:** 60 çalışanla kare ortalaması 2.33 ms (429 FPS). Karakter ~2.770 üçgen.
 - **Test:** Gerçek gövdede `animations` listesindeki her hareketin kendi klibi var (`test_characters`).
 
+## K-083 · 2026-11-05 · Kabul · Orgo kararı ("Evet, C3'e geç") + uygulama
+**Konu:** Saçlar ve dönemsel kıyafetler (C3).
+**Karar:**
+- **9 saç** (`tools/blender/characters_wear.py`): short, buzz, side_part, bob, long, bun, curly, mullet, man_bun. Başa oturan sert parçalar; hepsi `hair` malzemesinde, rengini oyun verir. Topuz lastiği paletten sabit (terrakota).
+- **12 kıyafet, tişörtün üstüne giyilen kabuk:** Kabuk gövdenin aynı halkalarından biraz şişirilerek örülür ve gövdeyle aynı ağırlıklarla bükülür; tişörtü tamamen örter.
+  - Kumaş `outfit` malzemesinde, çalışanın kıyafet rengini alır.
+  - Ayrıntılar paletten sabit: iç gömlek şeridi, yaka, düğme, kravat, cep.
+  - Yeleklerin (sweater_vest, tech_vest) altındaki gömlek de sabit renkte, beyaz ya da açık mavi. Kumaş rengi yalnızca yeleğe gelir; böylece katmanlar ayırt edilir.
+- **Her gövdeye ayrı kabuk, tek dosyada:** Nesne adları `outfit_<ad>_<gövde>`. `CharacterRig._for_body` adında başka bir gövdenin eki olan parçaları atlar. Ek olmayan parçalar herkese giydirilir; bu, elle yapılmış modellerle de uyumlu. Hangi gövdelere kabuk yapılacağı `data/characters.json` `outfits[].bodies` alanından okunur. Tek kabukla dar gövdeli kadın modeli bol görünürdü.
+- **Elbise:** Etek bel hizasından dize iner; alt kısmı uyluk kemiklerine geçer, oturunca bacaklarla birlikte öne katlanır. Kotu örtmek için bacaklara ten renkli (`skin`) kılıf giydirildi.
+- **Takım elbise:** Ceketle aynı renkte pantolon kılıfı kotu örter.
+- **Ekose (hipster_flannel):** Boyanan kumaşa desen çizilemediği için koyu yatay şeritler ve kol bantlarıyla ima edilir.
+- **Araç:** `tools/wardrobe.tscn` her kıyafeti farklı saç ve gövdeyle giydirip tek karede çeker (`--act=type` gibi).
+- **Performans:** 60 çalışanla kare ortalaması 2.96 ms (338 FPS). Çizim çağrısı 470'ten 622'ye çıktı; giyinik karakter başına ~3.000–4.500 üçgen (sınır 15.000).
+- **Test:** Bütün model yuvaları (karakterler dahil, 53) depoda ve denetimden geçiyor. Kıyafet dosyasından yalnızca çalışanın gövdesinin kabuğu giydiriliyor, kabuk gövdeyle bükülüyor ve saç başa bağlı.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)
