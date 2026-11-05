@@ -1,5 +1,23 @@
 # Değişiklik günlüğü
 
+## C2: Karakter hareketleri (2026-11-05)
+- **Çalışanlar artık işlerini gösteriyor:**
+  - Kampanya ekibi masada klavyede yazıyor; hesap ve medya ekibinden bazıları telefonla konuşuyor (telefon kulakta).
+  - Mutfaktakiler ayakta, elde sarı kupa, ara ara yudum alıyor.
+  - Toplantıdakiler elleriyle anlatıp masadakilere dönüyor.
+  - Çok yorgun olan masasında uyukluyor; tükenmiş olan ellerini başına koyup sallanıyor.
+  - Seviye atlayan kollarını havaya kaldırıp seviniyor; ayaktaysa zıplayarak.
+- **Oturuş düzeldi:** Çalışanlar sandalyenin arka kenarında değil, ortasında oturuyor; elleri masaya yetişiyor.
+- 60 çalışanlı ofiste oyun rahat akıyor (429 FPS).
+- Nasıl test ederim:
+  1. Bir kampanya başlat: ekip masasında yazmalı. Hesap/medya çalışanlarından bazıları telefonla konuşmalı.
+  2. Bir çalışanın enerjisi düşünce mutfağa gidip kupayla kahve içmeli. Enerjisi çok düşükse masasında uyuklamalı.
+  3. Toplantı odası olan bir ofiste toplantıdakiler el kol hareketiyle anlatmalı.
+  4. Bir çalışan seviye atlayınca (★ baloncuğu) kollarını kaldırıp sevinmeli.
+  5. Bütün hareketleri tek sayfada gör:
+     `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=C:/Users/osonm/Desktop/pozlar`
+     (ya da `docs/screenshots/06_c2_poses.png` ve `06_c2_poses_side.png`).
+
 ## C1: İlk karakterler (2026-11-05)
 - **Kapsüller gitti:** Çalışanlar artık büyük kafalı, yumuşak hatlı insanlar. Kadın, erkek ve nötr olmak üzere üç gövde var; her biri tişört, kot pantolon ve ayakkabı giyiyor.
 - **Her çalışan farklı görünür:** Ten, tişört rengi ve saç rengi çalışana göre değişir; kurucunun tişörtü hardal rengi.

@@ -116,6 +116,7 @@ Gövdeler, iskelet ve hareketler `tools/blender/characters.py` ile kodla üretil
 ```
 - Kemik adları sade: `hips`, `spine`, `chest`, `neck`, `head`, `upper_arm_l`, `forearm_l`, `hand_l`, `thigh_l`, `shin_l`, `foot_l` (sağ taraf `_r`). Oyun saçı `head` kemiğine bağlar (`data/characters.json` `head_bone`).
 - **Renk için malzeme adları:** `skin` (ten), `outfit` (kıyafet), `hair` (saç). Bu adlı malzemeleri beyaz bırak; oyun rengini çalışana göre verir. Başka malzemeler (göz, ayakkabı, palet) olduğu gibi kalır.
+- Hareketler `tools/blender/characters_anim.py`'de. Oturanlar (`sit`, `type`, `phone`, `present`, `cheer`, `stress`, `sleep`) kalçayı sandalye minderine indirir; `coffee` ve `cheer_stand` ayakta. Telefon ve kupa sağ ele bağlı `prop_phone` ve `prop_cup` kemiklerinde; kendi klipleri dışında ölçekleri ~0. Kontrol için: `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>`.
 - Aşağıdaki elle yol (Meshy/Mixamo) hâlâ çalışır; kemik adını `head_bone`'a yazman yeter.
 
 ## Dosyalar (`assets/models/characters/`)
@@ -150,6 +151,8 @@ Hangi saç ve kıyafetin hangi gövdeye ve yıllara ait olduğu `data/characters
    | `cheer` | Cheering / Victory |
    | `stress` | Sitting Disbelief / Head Scratch |
    | `sleep` | Sitting Sleeping / Tired |
+
+   | `cheer_stand` | Cheering (ayakta; yoksa `cheer` oynar) |
 
    Hepsi şart değil. Olmayan animasyonun yerine en yakını oynar (ör. `type` yoksa `sit`, o da yoksa `idle`). En az `idle` ve `walk` yap.
 5. **Blender'da birleştirme:**

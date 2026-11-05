@@ -108,7 +108,8 @@ func bubble(text: String, color: Color) -> void:
 
 func _process(delta: float) -> void:
 	_cheer_left = maxf(0.0, _cheer_left - delta)
-	var want: String = "walk" if not _path.is_empty() else ("cheer" if _cheer_left > 0.0 else _activity)
+	var cheer: String = "cheer" if _seated else "cheer_stand"
+	var want: String = "walk" if not _path.is_empty() else (cheer if _cheer_left > 0.0 else _activity)
 	if _body.activity != want:
 		_body.set_activity(want)
 	if _path.is_empty():

@@ -849,6 +849,26 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Performans:** 60 çalışanla kare ortalaması 1.94 ms (516 FPS). Karakter başına ~2.500 üçgen (sınır 15.000).
 - **Test:** Gerçek gövde modeli çalışanın ten ve kıyafet rengini alıyor; ardışık kimlikler farklı görünüyor (`test_characters`). Kapsül testi artık var olmayan bir gövde yolu kullanıyor.
 
+## K-082 · 2026-11-05 · Kabul · Orgo kararı ("Uygun, C2'ye geç") + uygulama
+**Konu:** Kalan karakter hareketleri (C2).
+**Karar:**
+- **7 yeni klip** (`tools/blender/characters_anim.py`; mesh betiği `characters.py` 400 satırı geçmesin diye ayrıldı):
+  - `type` (0.5 sn): öne eğik, eller klavyede sırayla iner kalkar.
+  - `phone` (3 sn): sağ el kulakta, sol el konuşurken sallanır.
+  - `coffee` (4 sn, ayakta): kupa göğüs hizasında, ara ara yudum.
+  - `present` (3 sn, oturarak): eller açık anlatır, baş toplantıdakilere döner.
+  - `cheer` / `cheer_stand` (2.5 sn, döngüsüz): kollar havada yumruk sallar.
+  - `stress` (1.5 sn): eller başın iki yanında, baş sallanır.
+  - `sleep` (4 sn): baş göğse düşer, yavaş nefes.
+- **Oturan / ayakta:** Ofiste sunum toplantı masasında oturarak yapılıyor (`OfficeWorld._go`: yalnız mutfakta ayakta). Bu yüzden `present` oturarak, `coffee` ayakta.
+- **Yeni klip `cheer_stand`:** Sevinç her yerde tetiklenebiliyor (seviye atlama). Oturan sevinci ayaktaki karaktere oynatılırsa çömelmiş görünürdü. `OfficeCharacter` oturuyorsa `cheer`, ayaktaysa `cheer_stand` ister. Klip yoksa `CharacterRig.clip_for` `cheer`'e düşer. `data/characters.json` `animations` listesine eklendi.
+- **Eldeki eşyalar:** Telefon ve kupa, sağ ele bağlı `prop_phone` ve `prop_cup` kemiklerine bağlı gövde parçaları. Kendi klibi dışındaki her klipte kemik ölçeği 0.001 olduğu için görünmezler. Ayrı model ya da kod gerekmedi.
+- **Eli hedefe götürmek:** Eller elle açı yazılarak değil, iki kemikli bir uzanma hesabıyla (`_reach`) klavyeye, kulağa, ağza ya da başa götürülür. Gövde eğilse de el hedefte kalır.
+- **Oturuş düzeltmesi:** Kalça 0.11 m öne alındı (`SIT_HIPS` y +0.03 → −0.08). Sandalye oturma noktasından 0.1 m masaya yakın durduğu için karakter minderin arka kenarındaydı; şimdi ortada, elleri masaya yetişiyor.
+- **Araç:** `tools/pose_sheet.tscn` her klibi masa ve sandalyeyle önden ve yandan çeker; iki özet sayfa yazar.
+- **Performans:** 60 çalışanla kare ortalaması 2.33 ms (429 FPS). Karakter ~2.770 üçgen.
+- **Test:** Gerçek gövdede `animations` listesindeki her hareketin kendi klibi var (`test_characters`).
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

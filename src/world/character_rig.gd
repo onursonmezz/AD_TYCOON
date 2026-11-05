@@ -147,7 +147,7 @@ func _animate(body: Node3D, ch: Dictionary) -> void:
 	for name: Variant in ch["animations"]:
 		if player.has_animation(str(name)):
 			_available.append(str(name))
-			if str(name) != "cheer":
+			if not str(name).begins_with("cheer"):  # sevinç bir kez oynar
 				player.get_animation(str(name)).loop_mode = Animation.LOOP_LINEAR
 	if _available.is_empty():
 		return
@@ -177,7 +177,7 @@ func clip_for(name: String) -> String:
 	if _available.has(name):
 		return name
 	var fallback: Dictionary = {"type": "sit", "phone": "sit", "sleep": "sit", "stress": "sit", "coffee": "idle",
-		"present": "idle", "cheer": "idle", "sit": "idle", "walk": "idle"}
+		"present": "idle", "cheer": "idle", "cheer_stand": "cheer", "sit": "idle", "walk": "idle"}
 	var next: String = str(fallback.get(name, ""))
 	if not next.is_empty():
 		return clip_for(next)
@@ -281,7 +281,7 @@ func _process(delta: float) -> void:
 			_pose.rotation.x = sin(_t * 0.8) * 0.05
 		"present":
 			_pose.rotation.y = sin(_t * 1.2) * 0.35
-		"cheer":
+		"cheer", "cheer_stand":
 			_pose.position.y = absf(sin(_t * 8.0)) * 0.25
 		"stress":
 			if head != null:

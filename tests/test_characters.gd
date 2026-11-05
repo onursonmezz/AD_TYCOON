@@ -122,3 +122,15 @@ func test_sequential_ids_get_different_looks() -> void:
 		skins[look["skin"]] = true
 	assert_gt(colors.size(), 4, "ardışık kimlikler farklı kıyafet rengi alır")
 	assert_gt(skins.size(), 2, "ardışık kimlikler farklı ten alır")
+
+
+func test_blender_body_has_every_clip() -> void:
+	# C2: gövde modelinde data/characters.json'daki her hareketin kendi klibi var (yedeğe düşmez).
+	var rig: CharacterRig = CharacterRig.new()
+	add_child_autofree(rig)
+	rig.build(CharacterLook.make(data, _emp("em_0009", "neutral"), 2005), false)
+	for name: Variant in data.characters["animations"]:
+		assert_eq(rig.clip_for(str(name)), str(name), "%s klibi var" % name)
+	rig.set_activity("phone")
+	await wait_physics_frames(10)
+	assert_eq(rig.current_clip(), "phone")

@@ -15,7 +15,7 @@ import math
 
 import bmesh
 import bpy
-from mathutils import Euler, Matrix, Vector
+from mathutils import Vector
 
 from common import Builder
 
@@ -41,6 +41,13 @@ for _s, _x in (("l", 1.0), ("r", -1.0)):
         "shin_" + _s: ((_x * LEG_X, 0, 0.47), (_x * LEG_X, 0, 0.09), "thigh_" + _s),
         "foot_" + _s: ((_x * LEG_X, 0, 0.09), (_x * LEG_X, -0.12, 0.03), "shin_" + _s),
     })
+# Eldeki eşyalar (C2): sağ ele bağlı; yalnızca "phone" ve "coffee" hareketlerinde görünür, diğerlerinde
+# kemik ölçeği ~0 olur.
+BONES.update({
+    "prop_phone": ((-ARM_X, 0, 0.8), (-ARM_X, 0, 0.74), "hand_r"),
+    "prop_cup": ((-ARM_X, 0, 0.79), (-ARM_X, 0, 0.73), "hand_r"),
+})
+PROPS = ["prop_phone", "prop_cup"]
 BONE_NAMES = list(BONES.keys())
 
 # Gövde şekilleri: omuz genişliği, bel, kalça (m) ve göğüs derinliği.
@@ -226,6 +233,15 @@ def body(kind: str):
                segments=2)
         b.part(b.box, "foot_" + s, "palette", (0.115, 0.225, 0.02), (lx, -0.045, 0.01), "cream", bevel=0.008,
                segments=1)
+    # eldeki eşyalar: avucun iç tarafında (sağ el, +X), dinlenmede elle aynı hizada
+    b.part(b.box, "prop_phone", "palette", (0.022, 0.07, 0.13), (-ARM_X + 0.04, -0.01, 0.79), "charcoal",
+           bevel=0.008, segments=2)
+    b.part(b.box, "prop_phone", "palette", (0.004, 0.058, 0.1), (-ARM_X + 0.052, -0.01, 0.795), "screen_glow",
+           bevel=0.001, segments=1)
+    b.part(b.prism, "prop_cup", "palette", 12, 0.036, 0.085, (-ARM_X + 0.075, -0.01, 0.78), "mustard",
+           rot_x=math.pi / 2, bevel=0.006, segments=1)
+    b.part(b.box, "prop_cup", "palette", (0.03, 0.012, 0.045), (-ARM_X + 0.03, -0.01, 0.78), "mustard",
+           bevel=0.005, segments=1)
     return b.finish()
 
 
@@ -249,123 +265,17 @@ def hair_short():
     return obj
 
 
-# --- hareketler -------------------------------------------------------------------
-
-def _rest3(arm, name: str) -> Matrix:
-    return arm.data.bones[name].matrix_local.to_3x3()
-
-
-def _pose(arm, frame: int, rot: dict, hips=(0.0, 0.0, 0.0)) -> None:
-    """rot: kemik → (x, y, z) derece, dinlenme anındaki dünya eksenlerine göre (ebeveynle birlikte döner).
-    Anahtarlanmayan kemik dinlenme hâlinde anahtarlanır ki klipler birbirine sızmasın."""
-    for name in BONE_NAMES:
-        pb = arm.pose.bones[name]
-        m = _rest3(arm, name)
-        e = rot.get(name, (0.0, 0.0, 0.0))
-        r = Euler((math.radians(e[0]), math.radians(e[1]), math.radians(e[2])), "XYZ").to_matrix()
-        pb.rotation_quaternion = (m.inverted() @ r @ m).to_quaternion()
-        pb.keyframe_insert("rotation_quaternion", frame=frame)
-        if name == "hips":
-            pb.location = m.inverted() @ Vector(hips)
-            pb.keyframe_insert("location", frame=frame)
-
-
-def _action(arm, name: str, keys) -> None:
-    """keys: [(kare, rot, hips)]; eylemi NLA'ya iter ki dışa aktarıcı ayrı klip olarak yazsın."""
-    act = bpy.data.actions.new(name)
-    arm.animation_data_create()
-    arm.animation_data.action = act
-    for frame, rot, hips in keys:
-        _pose(arm, frame, rot, hips)
-    for fc in _fcurves(act):
-        for kp in fc.keyframe_points:
-            kp.interpolation = "BEZIER"
-    track = arm.animation_data.nla_tracks.new()
-    track.name = name
-    track.strips.new(name, int(keys[0][0]), act)
-    track.mute = True  # sahnede dinlenme pozu kalsın
-    arm.animation_data.action = None
-
-
-def _fcurves(act):
-    if hasattr(act, "fcurves") and len(getattr(act, "fcurves", [])) > 0:
-        return act.fcurves
-    out = []
-    for layer in getattr(act, "layers", []):
-        for strip in layer.strips:
-            for bag in strip.channelbags:
-                out.extend(bag.fcurves)
-    return out
-
-
-ARMS_DOWN = {"upper_arm_l": (0, -4, 0), "upper_arm_r": (0, 4, 0)}
-
-
-def _with(base: dict, **extra) -> dict:
-    out = dict(base)
-    out.update(extra)
-    return out
-
-
-def anim_idle(arm) -> None:
-    """Bekle: hafif nefes, baş yavaşça döner (2 sn)."""
-    a = _with(ARMS_DOWN, chest=(-1.5, 0, 0), head=(2, 0, -4))
-    b = _with(ARMS_DOWN, chest=(1.5, 0, 0), head=(-1, 0, 4), upper_arm_l=(2, -5, 0), upper_arm_r=(2, 5, 0))
-    _action(arm, "idle", [(1, a, (0, 0, 0)), (25, b, (0, 0, -0.008)), (49, a, (0, 0, 0))])
-
-
-def anim_walk(arm) -> None:
-    """Yürü: 1.6 m/sn'de iki adım ~0.67 sn (16 kare). Kollar bacakların tersine sallanır."""
-    def step(sign: float) -> dict:
-        return {
-            "thigh_l": (-26 * sign, 0, 0), "thigh_r": (26 * sign, 0, 0),
-            "shin_l": (8 if sign > 0 else 30, 0, 0), "shin_r": (30 if sign > 0 else 8, 0, 0),
-            "foot_l": (8 * sign, 0, 0), "foot_r": (-8 * sign, 0, 0),
-            "upper_arm_l": (22 * sign, -4, 0), "upper_arm_r": (-22 * sign, 4, 0),
-            "forearm_l": (-12, 0, 0), "forearm_r": (-12, 0, 0),
-            "chest": (-3, 0, 5 * sign), "head": (2, 0, -3 * sign), "hips": (0, 0, -4 * sign),
-        }
-
-    def mid(sign: float) -> dict:
-        return {
-            "thigh_l": (-4 * sign, 0, 0), "thigh_r": (4 * sign, 0, 0),
-            "shin_l": (6 if sign > 0 else 38, 0, 0), "shin_r": (38 if sign > 0 else 6, 0, 0),
-            "upper_arm_l": (4 * sign, -4, 0), "upper_arm_r": (-4 * sign, 4, 0),
-            "forearm_l": (-14, 0, 0), "forearm_r": (-14, 0, 0), "chest": (-3, 0, 0),
-        }
-
-    _action(arm, "walk", [(1, step(1), (0, 0, -0.025)), (5, mid(1), (0, 0, 0.012)),
-                          (9, step(-1), (0, 0, -0.025)), (13, mid(-1), (0, 0, 0.012)),
-                          (17, step(1), (0, 0, -0.025))])
-
-
-SIT_HIPS = (0.0, 0.03, -0.3)
-
-
-def _sit_base(**extra) -> dict:
-    base = {"thigh_l": (-88, 0, -3), "thigh_r": (-88, 0, 3), "shin_l": (86, 0, 0), "shin_r": (86, 0, 0),
-            "upper_arm_l": (-10, -6, 0), "upper_arm_r": (-10, 6, 0), "forearm_l": (-55, 0, 0),
-            "forearm_r": (-55, 0, 0)}
-    base.update(extra)
-    return base
-
-
-def anim_sit(arm) -> None:
-    """Otur: kalça sandalye minderine iner (~0.56 m), eller kucakta, hafif nefes (2 sn)."""
-    a = _sit_base(chest=(-1, 0, 0), head=(3, 0, 0))
-    b = _sit_base(chest=(1.5, 0, 0), head=(1, 0, 3))
-    _action(arm, "sit", [(1, a, SIT_HIPS), (25, b, SIT_HIPS), (49, a, SIT_HIPS)])
-
-
 def character(kind: str) -> None:
-    """Gövde + iskelet + C1 hareketleri."""
+    """Gövde + iskelet + bütün hareketler (characters_anim)."""
+    import characters_anim as anim  # döngüsel içe aktarmayı önlemek için burada
+
     bpy.context.scene.render.fps = FPS
     arm = armature()
     obj = body(kind)
     bind(obj, arm)
-    for fn in (anim_idle, anim_walk, anim_sit):
-        fn(arm)
+    anim.add_all(arm)
     # dinlenme pozuna dön (dışa aktarılan bağlama pozu)
     for pb in arm.pose.bones:
         pb.rotation_quaternion = (1, 0, 0, 0)
         pb.location = (0, 0, 0)
+        pb.scale = (1, 1, 1)

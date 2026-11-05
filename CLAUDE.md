@@ -49,3 +49,4 @@ gereken bir şey varsa adım adım tarif et.
 - Görsel karşılaştırma (G1): `godot --path . res://tools/screenshot.tscn -- --tag=<ad>` → `docs/screenshots/`; görünüş ayarları `data/look.json`.
 - Blender modelleri (G3): `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py [-- --only=desk]` → `assets/models/`, palet `assets/textures/palette.png`.
   Karakterler (C1): `tools/blender/characters.py` (iskelet, gövdeler, hareketler); renk `skin`/`outfit`/`hair` adlı malzemelerle `CharacterRig._paint`.
+  Hareket sayfası (C2): `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>` (her klip önden/yandan + `sheet.png`).
