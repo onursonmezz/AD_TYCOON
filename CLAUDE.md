@@ -51,3 +51,4 @@ gereken bir şey varsa adım adım tarif et.
   Karakterler (C1): `tools/blender/characters.py` (iskelet, gövdeler, hareketler); renk `skin`/`outfit`/`hair` adlı malzemelerle `CharacterRig._paint`.
   Hareket sayfası (C2): `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>` (her klip önden/yandan + `sheet.png`).
   Gardırop (C3): `godot --path . res://tools/wardrobe.tscn --resolution 1920x1080 -- --out=<dosya.png> [--act=type]` (her kıyafet + saç tek karede).
+- AI modelleri (Tripo): ham dosya `art/incoming/`, ayarlar `tools/blender/ai_imports.json`, içe alma `blender --background --python tools/blender/import_ai.py [-- --only=desk]`. Rehber: `art/ai_rehberi.md`.

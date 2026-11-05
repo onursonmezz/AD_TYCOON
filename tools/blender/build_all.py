@@ -17,6 +17,7 @@ import models_furniture as mf  # noqa: E402
 import models_props as mp  # noqa: E402
 import characters as ch  # noqa: E402
 import characters_wear as ch_wear  # noqa: E402
+import import_ai  # noqa: E402
 
 # ad → (göreli .glb yolu, kurucu)
 TARGETS = {
@@ -58,10 +59,11 @@ TARGETS = {
 
 def main() -> None:
     only = [s for s in common.args().get("only", "").split(",") if s]
+    ai = import_ai.load_list()  # yapay zekâ modelleri (import_ai.py) betikle üretilmez
     common.reset()
     print("Palet:", common.write_palette())
     for name, (rel, build) in TARGETS.items():
-        if only and name not in only:
+        if (only and name not in only) or name in ai:
             continue
         common.reset()
         build()

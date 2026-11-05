@@ -979,3 +979,18 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **A-012:** Kapandı. Rastgele bot ilk 3 yılda %22 iflas ediyor (200×10, hedef %20–40).
 - **A-014 (açık, ilerledi):** M5 sonrası: ödül ve pitch ilk 13 yılda itibarı ~24'e taşıyor, ama 15. yıldan sonra puanlar düştüğü için itibar sıfıra iniyor ve plaza katı açılmıyor (M5 denge sonucu). Denge adımı (K-047..K-050) ilk 13 yılı düzeltti, ama 15. yıldan sonra puan yine düşüyor. Kalan iki engel: (1) plaza katı açılmıyor, itibar 40 gerekiyor ve itibar kaynakları (ödül, pitch, basın) M5'te; (2) kişi başı üretkenlik 30 yıl boyunca sabit, dönem tabanı ise ×10.6 büyüyor. Yetişmenin tek yolu ekibi 2'den ~22 kişiye çıkarmak; plaza katının kirası da bunu zorlaştırıyor. Ayar kolları: dönem büyüme oranı (1.085), dönemsel araç ve yazılım çarpanı (12.3, M7), çalışan gelişimi, plaza katı kirası.
 - **A-013 (M4/M5):** GDD 11.1 Trafik "eşzamanlı kampanya sayısını ↑" diyor; şu an aynı anda tek kampanya üretimde. Eşzamanlı kampanyalar ekibin daha fazla iş, yani daha fazla gelir üretmesini sağlar (A-011'e de yardım eder), ama faz slider ekranının birden çok kampanyayı yönetmesi gerekir.
+
+## K-084 · 2026-11-05 · Kabul · Orgo kararı (Tripo ile ilk deneme: masa) + uygulama
+**Konu:** Yapay zekâ (görsel AI + Tripo) modellerini oyuna alma hattı (`art/ai_rehberi.md`).
+**Karar:**
+- **İçe alma betiği:** `tools/blender/import_ai.py`. Hangi dosyanın nereye, hangi ölçüyle gideceği `tools/blender/ai_imports.json`'da yazar. Ham Tripo dosyaları `art/incoming/` klasöründe durur (git dışı). Betik sırasıyla:
+  - parçaları birleştirir, döndürür;
+  - oyunun kutusuna ölçekler;
+  - tabanı yere oturtur ve ortalar;
+  - üçgen sayısını sınıra indirir;
+  - dokuyu küçültür (JPEG, ≤1024 px);
+  - yüzeyi mat yapar.
+  `build_all.py` bu listedeki adları atlar; Blender betiği AI modelinin üstüne yazmaz.
+- **"stretch" sığdırma:** Boyu işlev taşıyan eşyalar (masa 0.75 m: klavye ve el hizası) eksen eksen ölçeklenir. Tripo masası 1.0 × 0.53 × 0.45 m geldi; oranlı sığdırma masayı 0.59 m'ye indirirdi. Eksenler arası oran 1.35'i geçerse betik uyarır.
+- **Renk dengeleme:** Görsel AI dokuları ofisin sıcak ışığında fazla doygun durdu. Masanın doygunluğu 0.61, palet ahşabı 0.49; parlaklık 0.84'e karşı 0.79 idi. Bütün AI dokularına varsayılan olarak doygunluk ×0.8 ve parlaklık ×0.94 uygulanıyor; eşyaya özel `grade` ile değiştirilebilir. Masa sonrası: doygunluk 0.48, parlaklık 0.79.
+- **İlk model:** masa (`props/desk.glb`). 5.437 → 2.939 üçgen, doku 1024 px. Çekmeceler oturana bakıyor; ek döndürme gerekmedi.
