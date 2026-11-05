@@ -151,7 +151,6 @@ Hangi saç ve kıyafetin hangi gövdeye ve yıllara ait olduğu `data/characters
    | `cheer` | Cheering / Victory |
    | `stress` | Sitting Disbelief / Head Scratch |
    | `sleep` | Sitting Sleeping / Tired |
-
    | `cheer_stand` | Cheering (ayakta; yoksa `cheer` oynar) |
 
    Hepsi şart değil. Olmayan animasyonun yerine en yakını oynar (ör. `type` yoksa `sit`, o da yoksa `idle`). En az `idle` ve `walk` yap.
