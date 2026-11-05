@@ -47,6 +47,7 @@ Tripo görseldeki **tek nesneyi** 3D'ye çevirir. Görsel ne kadar temizse model
 
 | Yap | Yapma |
 |---|---|
+| **Yalnızca eşyanın kendisi:** boş masa, boş koltuk, boş raf | Üstünde ya da yanında bitki, kitap, defter, fincan, lamba, yastık, şal, havlu |
 | Tek nesne, tamamı kadrajda, kenarlardan biraz boşluk | Kesilmiş kenar, kadraja sığmayan parça |
 | Üç çeyrek açı: önden ve hafif yandan, biraz yukarıdan | Tam tepeden, tam yandan ya da alttan bakış |
 | Düz, açık gri arka plan | Oda, zemin, masa üstü, bulanık arka plan |
@@ -54,6 +55,14 @@ Tripo görseldeki **tek nesneyi** 3D'ye çevirir. Görsel ne kadar temizse model
 | Kalın, okunaklı parçalar | Çok ince teller, kablolar, havada asılı parçalar |
 | Mat yüzeyler | Cam, ayna, şeffaf ya da çok parlak metal |
 | Yazısız yüzeyler | Logo, okunaklı yazı, marka |
+
+**Neden boş:** Oyunda bilgisayar masaya, bitkiler ve diğer eşyalar ayrı ayrı yerleşir. Masa dolu gelirse bilgisayar kitapların içine girer; koltukta yastık olursa oturan çalışan yastığın içinde kalır. Kitaplık (kitaplar), ödül dolabı (kupalar), pano (fotoğraflar) gibi içeriği eşyanın kendisi olanlar istisna.
+
+**Var olan görseli temizlemek:** Beğendiğin ama üstünde süs olan bir görseli baştan üretmen gerekmez. Görseli aynı sohbete yükleyip şunu yaz:
+
+```text
+Remove every object that is placed on or around the furniture: plants, books, notebooks, mugs, cups, lamps, pens, pillows, blankets, towels, jars and bottles. Keep the furniture itself exactly the same: same shape, proportions, colors, materials, camera angle, lighting and plain light gray background.
+```
 
 **İpucu:** Cam gereken yerde (ödül dolabı, su sebili şişesi) "frosted" (buzlu) ya da "solid pastel blue" (düz pastel mavi) iste. Tripo şeffaflığı iyi taşımaz.
 
@@ -69,6 +78,7 @@ warm muted palette of sage green, cream, honey wood, terracotta and mustard, mat
 soft even studio lighting, no harsh shadows
 
 KADRAJ:
+the bare item only, nothing placed on top of it or around it, no extra decorations or accessories,
 single object, the whole object fully visible and centered, three-quarter view from slightly above,
 plain light gray background, no floor, no cast shadow, no text, no logo, no watermark
 ```
@@ -79,11 +89,12 @@ Kısaltma: aşağıdaki tablolarda **[NESNE]** yazan kısmı başa koy, sonra ST
 
 ```text
 a chunky wooden office desk with a three-drawer cabinet on the right side, honey-colored wood with
-visible hand-painted grain, rounded thick tabletop edges, brass drawer handles,
-stylized 3D game asset for a cozy top-down management game, soft rounded chunky shapes,
+visible hand-painted grain, rounded thick tabletop edges, brass drawer handles, a completely empty
+flat tabletop with nothing on it, stylized 3D game asset for a cozy top-down management game, soft rounded chunky shapes,
 slightly exaggerated proportions, hand-painted textures with subtle wood grain and fabric detail,
 warm muted palette of sage green, cream, honey wood, terracotta and mustard, matte surfaces,
 soft even studio lighting, no harsh shadows,
+the bare item only, nothing placed on top of it or around it, no extra decorations or accessories,
 single object, the whole object fully visible and centered, three-quarter view from slightly above,
 plain light gray background, no floor, no cast shadow, no text, no logo, no watermark
 ```
@@ -149,11 +160,11 @@ Sütunlar: **Taban** = genişlik × derinlik (m), **Boy** = yükseklik (m). Oyun
 
 | Dosya adı | Taban | Boy | [NESNE] |
 |---|---|---|---|
-| ★ `desk` | 1.4 × 0.7 | 0.75 | a chunky wooden office desk with a three-drawer cabinet on the right side, honey-colored wood with visible hand-painted grain, rounded thick tabletop edges, brass drawer handles |
-| ★ `chair` | 0.5 × 0.5 | 0.9 | a cushioned swivel office chair on five wheels, sage green fabric seat and backrest with soft stitching, dark metal base |
-| `counter` | 3.0 × 0.6 | 1.2 | a small office kitchenette counter, cream cabinet doors with brass handles, honey wooden countertop, a sink with a curved tap, a red kettle and three mugs on top |
-| `meeting_table` | 2.4 × 1.2 | 0.75 | a long rectangular wooden meeting table with rounded corners and two thick trestle legs, a few notebooks and sticky notes on top |
-| `sofa` | 3.0 × 0.8 | 0.55 | a long low three-seat sofa with plump sage green cushions, a mustard throw pillow, short wooden legs |
+| ★ `desk` | 1.4 × 0.7 | 0.75 | a chunky wooden office desk with a three-drawer cabinet on the right side, honey-colored wood with visible hand-painted grain, rounded thick tabletop edges, brass drawer handles, a completely empty flat tabletop with nothing on it |
+| ★ `chair` | 0.5 × 0.5 | 0.9 | a cushioned swivel office chair on five wheels, sage green fabric seat and backrest with soft stitching, dark metal base, no pillow, no blanket |
+| `counter` | 3.0 × 0.6 | 1.2 | a small office kitchenette counter, cream cabinet doors and drawers with brass handles, honey wooden countertop with a built-in sink and a curved brass tap, the rest of the countertop completely empty |
+| `meeting_table` | 2.4 × 1.2 | 0.75 | a long rectangular wooden meeting table with rounded corners and two thick trestle legs, a completely empty tabletop |
+| `sofa` | 3.0 × 0.8 | 0.55 | a long low three-seat sofa with plump sage green seat and back cushions, short wooden legs, no throw pillows, no blanket |
 
 ### 4.2 Bilgisayarlar (masanın üstünde, ekranı oturan kişiye bakar)
 
@@ -162,7 +173,7 @@ Sütunlar: **Taban** = genişlik × derinlik (m), **Boy** = yükseklik (m). Oyun
 | `pc386` | 1990–99 | 0.45 × 0.45 | 0.40 | a chunky beige 1990s CRT computer monitor on a flat desktop case, a thick beige keyboard in front, slightly yellowed plastic |
 | `g4` | 2000–09 | 0.45 × 0.45 | 0.42 | a rounded colorful teal all-in-one computer from the early 2000s with a white front bezel, a matching white keyboard in front |
 | `imak` | 2010–19 | 0.55 × 0.18 | 0.45 | a thin white all-in-one desktop computer on a silver stand, plain screen without logo |
-| `mchip` | 2020+ | 0.60 × 0.30 | 0.32 | an open silver laptop next to a small dark second monitor on a stand, a mustard mug beside them |
+| `mchip` | 2020+ | 0.60 × 0.30 | 0.32 | an open silver laptop next to a small dark second monitor on a stand |
 
 Ekranlar **koyu ya da düz renkli** olsun; üstünde yazı ya da arayüz olmasın.
 
@@ -173,18 +184,18 @@ Ekranlar **koyu ya da düz renkli** olsun; üstünde yazı ya da arayüz olması
 | ★ `plant_small` | 0.5 × 0.5 | 0.7 | a small bushy potted plant with round leaves in a terracotta pot with a painted stripe |
 | `plant_medium` | 0.8 × 0.8 | 1.1 | a medium leafy potted plant with long drooping leaves in a cream ceramic pot |
 | `plant_big` | 1.0 × 1.0 | 1.6 | a tall monstera plant with big split leaves in a large terracotta pot |
-| `bookshelf` | 1.5 × 0.5 | 1.9 | a tall wooden bookshelf full of colorful books, a few small potted plants and boxes on the shelves |
+| `bookshelf` | 1.5 × 0.5 | 1.9 | a tall wooden bookshelf full of colorful books, only books on the shelves |
 | `whiteboard` | 1.5 × 0.5 | 1.6 | a rolling office whiteboard on a metal stand with colorful marker doodles and sticky notes, no readable text |
 | `mood_board` | 1.5 × 0.5 | 1.6 | a standing cork mood board on wooden legs with pinned photos, fabric swatches and color cards |
 | `water_cooler` | 0.5 × 0.5 | 1.3 | an office water cooler with a frosted pastel blue water bottle on top and a cream base |
-| `tea_urn` | 0.5 × 0.5 | 1.0 | a shiny copper Turkish samovar tea urn on a small wooden cabinet with tulip-shaped tea glasses on a tray |
-| `filter_coffee` | 0.5 × 0.5 | 1.0 | a dark filter coffee machine with a glass pot on a small wooden cabinet, a stack of paper cups |
-| `espresso` | 0.5 × 0.5 | 1.0 | a retro cream espresso machine with chrome details on a small wooden cabinet, two small cups |
+| `tea_urn` | 0.5 × 0.5 | 1.0 | a shiny copper Turkish samovar tea urn standing on a small wooden cabinet |
+| `filter_coffee` | 0.5 × 0.5 | 1.0 | a dark filter coffee machine with a glass pot standing on a small wooden cabinet |
+| `espresso` | 0.5 × 0.5 | 1.0 | a retro cream espresso machine with chrome details standing on a small wooden cabinet |
 | `record_player` | 1.0 × 0.5 | 0.9 | a vintage record player on a low wooden cabinet with a row of vinyl records |
-| `award_case` | 1.0 × 0.5 | 1.8 | a tall wooden display cabinet with open shelves holding golden trophies and framed certificates, no glass |
+| `award_case` | 1.0 × 0.5 | 1.8 | a tall wooden display cabinet with open shelves holding golden trophies, no glass |
 | `neon_sign` | 1.0 × 0.5 | 1.2 | a pink neon tube sign shaped like a light bulb mounted on a small wooden stand, no text |
 | `office_cat` | 1.0 × 1.0 | 0.5 | a fluffy orange cat curled up asleep on a round cream cushion |
-| `hex_shelf` | 1.12 × 0.16 | 1.12 | three hexagonal wooden wall shelves arranged like a honeycomb, small plants and a candle inside, seen from the front |
+| `hex_shelf` | 1.12 × 0.16 | 1.12 | three empty hexagonal wooden wall shelves arranged like a honeycomb, nothing inside, seen from the front |
 | `wall_panel` | 1.24 × 0.06 | 1.0 | a decorative wooden slat wall panel, vertical honey-colored slats, seen from the front |
 
 ### 4.4 Sokak
