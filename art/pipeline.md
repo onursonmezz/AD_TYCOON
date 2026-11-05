@@ -1,5 +1,7 @@
 # Model üretim hattı: adım adım
 
+> **Güncel yol (2026-11-05):** Görsel AI + Tripo ile üretip `art/incoming/` klasörüne koyman yeterli; temizlik (3. ve 4. adım) artık betikle yapılıyor. Bkz. `art/ai_rehberi.md`.
+
 Bu rehber bir eşyayı fikirden oyuna kadar götürür (GDD 21.3). **Kod yazman gerekmez:** doğru adlı `.glb` dosyasını doğru klasöre koyduğunda oyun onu kendisi kullanır. Dosya yoksa o eşya gri kutu olarak görünmeye devam eder; yani modelleri istediğin sırayla, tek tek ekleyebilirsin.
 
 Önce `art/style_bible.md`'yi bir kez oku.

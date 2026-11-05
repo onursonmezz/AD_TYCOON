@@ -1,5 +1,7 @@
 # Eşya listesi, ölçüler ve prompt'lar
 
+> **Güncel yol (2026-11-05):** Görsel AI + Tripo ile üretim için `art/ai_rehberi.md`. Oradaki prompt'lar bu dosyanın yerine geçer; ölçüler aynıdır.
+
 Her satırdaki **[NESNE]** metnini `art/style_bible.md`'deki şablonun başına koy. Ölçüler metre cinsindendir: **taban** = genişlik × derinlik, **boy** = yükseklik. Oyun modeli bu kutuya sığdırır; ölçüye yakın üretirsen oranlar korunur.
 
 Önerilen ilk deneme sırası: `desk` → `chair` → `plant_big` → `pc386`.

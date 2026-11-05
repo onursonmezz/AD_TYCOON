@@ -26,3 +26,4 @@ desktop.ini
 
 # Blender betiklerinin Python önbelleği
 __pycache__/
+art/incoming/
