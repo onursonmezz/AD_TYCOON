@@ -15,6 +15,7 @@ import common  # noqa: E402
 import models  # noqa: E402
 import models_furniture as mf  # noqa: E402
 import models_props as mp  # noqa: E402
+import characters as ch  # noqa: E402
 
 # ad → (göreli .glb yolu, kurucu)
 TARGETS = {
@@ -47,6 +48,10 @@ TARGETS = {
     "lamp": ("street/lamp.glb", mf.lamp),
     "bench": ("street/bench.glb", mf.bench),
     "billboard": ("street/billboard.glb", mf.billboard),
+    "body_female": ("characters/body_female.glb", lambda: ch.character("female")),
+    "body_male": ("characters/body_male.glb", lambda: ch.character("male")),
+    "body_neutral": ("characters/body_neutral.glb", lambda: ch.character("neutral")),
+    "hair_short": ("characters/hair_short.glb", ch.hair_short),
 }
 
 
@@ -59,7 +64,7 @@ def main() -> None:
             continue
         common.reset()
         build()
-        common.export(rel)
+        common.export(rel, animations=rel.startswith("characters/body_"))
 
 
 main()

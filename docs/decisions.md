@@ -834,6 +834,21 @@ Kanal etkinliği (gösterim) ilgiyle çarpılır (5.3 "kanalın etkinliği bu e�
 - **Performans:** 60 çalışanlı ofiste kare ortalaması 1.76 ms (567 FPS), hedef 16.7 ms.
 - **Test:** Karakterler dışındaki her yuvada model bulunmalı ve denetimden geçmeli (`test_models`).
 
+## K-081 · 2026-11-05 · Kabul · Orgo kararı ("Onayla, C1'le başla") + uygulama
+**Konu:** Karakterleri Mixamo/AI yerine Blender betikleriyle üretmek; ilk adım (C1) iskelet, 3 gövde ve temel hareketler.
+**Karar:**
+- **Kendi iskeletimiz** (`tools/blender/characters.py`): 17 kemik (`hips`, `spine`, `chest`, `neck`, `head`, kollar `upper_arm_l/forearm_l/hand_l`, bacaklar `thigh_l/shin_l/foot_l`, sağ taraf `_r`). `data/characters.json` `head_bone` `mixamorig_Head` → `head`.
+- **Üç gövde aynı iskeleti ve aynı kol/bacak ölçülerini kullanır;** yalnızca omuz, bel, kalça ve göğüs derinliği değişir. Her saç ve kıyafet üç gövdeye de oturur, tek animasyon seti hepsinde çalışır.
+- **Bağlama:** Gövde (kasıktan boyna) tek parça halkalarla örülür ve kalça → bel → göğüs kemiklerine yüksekliğe göre yumuşak dağılır. Kol ve bacak parçaları tek kemiğe sert bağlıdır; dirsek, diz ve omuzdaki toplar bükülmede boşluğu kapatır.
+- **Renk:** Modelde `skin`, `outfit`, `hair` adlı beyaz malzemeler var; `CharacterRig._paint` bunların rengini çalışana göre değiştirir. Aynı renk ve malzeme bir kez üretilip paylaşılır. Eski yarı saydam katman yalnızca adlı malzemesi olmayan modellerde (ör. deneme modelleri) kalır; katman ışığı düzleştirdiği için gerçek modelde soluk görünürdü.
+- **Gövdede temel giyim:** tişört (kıyafet rengi), kot pantolon ve ayakkabı (palete `denim` eklendi). C3'teki kıyafetler bunun üstüne giyilecek.
+- **Hareketler (C1):** `idle` (2 sn), `walk` (0.67 sn; 1.6 m/sn yürüyüşe göre iki adım), `sit` (kalça 0.56 m'ye iner). Her klip bütün kemikleri anahtarlar ki klipler birbirine sızmasın. Kalan 8 hareket C2'de; o zamana kadar `CharacterRig.clip_for` en yakınını oynatır (`type` → `sit` gibi).
+- **Saç:** C1'de yalnızca `hair_short`; diğer saçların modeli olmadığı için o çalışanlar şimdilik kel görünür (C3).
+- **Kurucunun tacı** yalnızca kapsülde kaldı; modelde kurucuyu hardal kıyafet rengi ayırt eder.
+- **Hata düzeltmesi (M8'den):** `CharacterLook` saç, kıyafet ve renkleri `hash / 7`, `/13`, `/17`, `/19` ile seçiyordu. Ardışık kimlikler (em_0001, em_0002…) ardışık özet verdiği için herkes aynı rengi ve teni alıyordu. Artık her seçim için sayı karıştırılıyor (`_mix`). Kayıtlı oyunlardaki çalışanların görünüşü bir kez değişir; oyuna etkisi yok.
+- **Performans:** 60 çalışanla kare ortalaması 1.94 ms (516 FPS). Karakter başına ~2.500 üçgen (sınır 15.000).
+- **Test:** Gerçek gövde modeli çalışanın ten ve kıyafet rengini alıyor; ardışık kimlikler farklı görünüyor (`test_characters`). Kapsül testi artık var olmayan bir gövde yolu kullanıyor.
+
 ---
 
 ## M5 denge sonucu (M5-A + M5-B)

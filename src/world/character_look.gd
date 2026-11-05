@@ -13,20 +13,28 @@ static func make(data: GameData, emp: Dictionary, year: int) -> Dictionary:
 		if (b["genders"] as Array).has(str(emp.get("gender", ""))):
 			body = b
 			break
-	var hair: Dictionary = _pick(_fitting(ch["hair"], body["id"], year), seed)
-	var outfit: Dictionary = _pick(_fitting(ch["outfits"], body["id"], year), seed / 7)
-	var outfit_color: Array = ch["outfit_colors"][(seed / 19) % (ch["outfit_colors"] as Array).size()]
+	var hair: Dictionary = _pick(_fitting(ch["hair"], body["id"], year), _mix(seed, 1))
+	var outfit: Dictionary = _pick(_fitting(ch["outfits"], body["id"], year), _mix(seed, 2))
+	var outfit_color: Array = ch["outfit_colors"][_mix(seed, 3) % (ch["outfit_colors"] as Array).size()]
 	if bool(emp.get("is_founder", false)):
 		outfit_color = ch["founder_outfit_color"]
 	return {
 		"body": body["id"], "body_model": str(body["model"]),
 		"hair": str(hair.get("id", "")), "hair_model": str(hair.get("model", "")),
 		"outfit": str(outfit.get("id", "")), "outfit_model": str(outfit.get("model", "")),
-		"skin": _color(ch["skin_tones"][(seed / 13) % (ch["skin_tones"] as Array).size()]),
-		"hair_color": _color(ch["hair_colors"][(seed / 17) % (ch["hair_colors"] as Array).size()]),
+		"skin": _color(ch["skin_tones"][_mix(seed, 4) % (ch["skin_tones"] as Array).size()]),
+		"hair_color": _color(ch["hair_colors"][_mix(seed, 5) % (ch["hair_colors"] as Array).size()]),
 		"outfit_color": _color(outfit_color),
 		"bald": str(hair.get("model", "x")).is_empty(),
 	}
+
+
+## Ardışık kimlikler (em_0001, em_0002…) neredeyse ardışık özet verir; her seçim için sayıyı karıştır (C1).
+static func _mix(seed: int, salt: int) -> int:
+	var x: int = (seed + salt * 0x9E3779B9) & 0xFFFFFFFF
+	x = ((x ^ (x >> 16)) * 0x45D9F3B) & 0xFFFFFFFF
+	x = ((x ^ (x >> 16)) * 0x45D9F3B) & 0xFFFFFFFF
+	return x ^ (x >> 16)
 
 
 ## Gövdeye uyan ve o yıl giyilen parçalar.

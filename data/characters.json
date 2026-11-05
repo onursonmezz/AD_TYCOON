@@ -1,6 +1,6 @@
 {
 	"height": 1.7,
-	"head_bone": "mixamorig_Head",
+	"head_bone": "head",
 	"bodies": [
 		{ "id": "female", "model": "characters/body_female.glb", "genders": ["female"] },
 		{ "id": "male", "model": "characters/body_male.glb", "genders": ["male"] },

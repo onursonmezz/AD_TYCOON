@@ -122,7 +122,7 @@ static func _tree() -> Node3D:
 
 
 ## Karakter deneme parçaları (M8-B): iskeletli ve animasyonlu bir gövde, sert bir saç, bir yelek. Bütün gövde,
-## saç ve kıyafet yuvaları bu üçüne yönlendirilir. Kemik adları Mixamo'daki gibi (data/characters.json head_bone).
+## saç ve kıyafet yuvaları bu üçüne yönlendirilir. Kemik adları Blender iskeletindeki gibi (data/characters.json head_bone).
 static func make_characters(dir: String, data: GameData) -> Dictionary:
 	DirAccess.make_dir_recursive_absolute(dir)
 	var paths: Dictionary = {}
@@ -155,16 +155,16 @@ static func _body() -> Node3D:
 	var skel: Skeleton3D = Skeleton3D.new()
 	skel.name = "Skeleton3D"
 	r.add_child(skel)
-	var bones: Array = [["mixamorig_Hips", -1, Vector3(0, 0.9, 0)], ["mixamorig_Spine", 0, Vector3(0, 0.3, 0)],
-		["mixamorig_Head", 1, Vector3(0, 0.4, 0)]]
+	var bones: Array = [["hips", -1, Vector3(0, 0.9, 0)], ["spine", 0, Vector3(0, 0.3, 0)],
+		["head", 1, Vector3(0, 0.4, 0)]]
 	for b: Array in bones:
 		var i: int = skel.add_bone(b[0])
 		skel.set_bone_parent(i, b[1])
 		skel.set_bone_rest(i, Transform3D(Basis(), b[2]))
 		skel.set_bone_pose_position(i, b[2])
-	var parts: Array = [["mixamorig_Hips", _capsule_mesh(0.2, 0.9), Vector3(0, -0.4, 0)],
-		["mixamorig_Spine", _capsule_mesh(0.22, 0.6), Vector3(0, 0.15, 0)],
-		["mixamorig_Head", _sphere_mesh(0.17), Vector3(0, 0.1, 0)]]
+	var parts: Array = [["hips", _capsule_mesh(0.2, 0.9), Vector3(0, -0.4, 0)],
+		["spine", _capsule_mesh(0.22, 0.6), Vector3(0, 0.15, 0)],
+		["head", _sphere_mesh(0.17), Vector3(0, 0.1, 0)]]
 	for p: Array in parts:
 		var att: BoneAttachment3D = BoneAttachment3D.new()
 		att.bone_name = p[0]
@@ -190,12 +190,12 @@ static func _body() -> Node3D:
 		var a: Animation = Animation.new()
 		a.length = 1.0
 		var rot: int = a.add_track(Animation.TYPE_ROTATION_3D)
-		a.track_set_path(rot, NodePath("Skeleton3D:mixamorig_Spine"))
+		a.track_set_path(rot, NodePath("Skeleton3D:spine"))
 		a.rotation_track_insert_key(rot, 0.0, Quaternion(Vector3.RIGHT, float(v[0]) * 0.5))
 		a.rotation_track_insert_key(rot, 0.5, Quaternion(Vector3.RIGHT, float(v[0])))
 		a.rotation_track_insert_key(rot, 1.0, Quaternion(Vector3.RIGHT, float(v[0]) * 0.5))
 		var pos: int = a.add_track(Animation.TYPE_POSITION_3D)
-		a.track_set_path(pos, NodePath("Skeleton3D:mixamorig_Hips"))
+		a.track_set_path(pos, NodePath("Skeleton3D:hips"))
 		a.position_track_insert_key(pos, 0.0, Vector3(0, 0.9 + float(v[1]), 0))
 		a.position_track_insert_key(pos, 0.5, Vector3(0, 0.9 + float(v[1]) + float(v[2]), 0))
 		a.position_track_insert_key(pos, 1.0, Vector3(0, 0.9 + float(v[1]), 0))

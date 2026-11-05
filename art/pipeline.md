@@ -108,6 +108,16 @@ File → Export → glTF 2.0:
 
 Çalışanlar parçalardan kurulur (GDD 21.3): **3 gövde** (kadın, erkek, nötr) + **saç** + **kıyafet**. Oyun her çalışana kimliğinden bir saç, kıyafet, ten, saç ve kıyafet rengi seçer. Kıyafet döneme göre değişir (90'larda vatkalı ceket, 2010'larda oduncu gömleği…). Model yokken çalışan renkli kapsül olarak görünür ve basit hareketler yapar.
 
+## Kısa yol: Blender betiği (C1'den beri kullanılan)
+
+Gövdeler, iskelet ve hareketler `tools/blender/characters.py` ile kodla üretilir; Mixamo ya da AI gerekmez:
+```
+"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py -- --only=body_female,body_male,body_neutral,hair_short
+```
+- Kemik adları sade: `hips`, `spine`, `chest`, `neck`, `head`, `upper_arm_l`, `forearm_l`, `hand_l`, `thigh_l`, `shin_l`, `foot_l` (sağ taraf `_r`). Oyun saçı `head` kemiğine bağlar (`data/characters.json` `head_bone`).
+- **Renk için malzeme adları:** `skin` (ten), `outfit` (kıyafet), `hair` (saç). Bu adlı malzemeleri beyaz bırak; oyun rengini çalışana göre verir. Başka malzemeler (göz, ayakkabı, palet) olduğu gibi kalır.
+- Aşağıdaki elle yol (Meshy/Mixamo) hâlâ çalışır; kemik adını `head_bone`'a yazman yeter.
+
 ## Dosyalar (`assets/models/characters/`)
 
 | Dosya | Ne |
@@ -125,7 +135,7 @@ Hangi saç ve kıyafetin hangi gövdeye ve yıllara ait olduğu `data/characters
 3. **Rig (iskelet):** [Mixamo](https://www.mixamo.com) (ücretsiz Adobe hesabı):
    1. Blender'da .glb'yi aç, File → Export → **FBX** yap.
    2. FBX'i Mixamo'ya yükle; çene, bilek, dirsek, diz ve kasık noktalarını işaretle.
-   3. Kemik adları `mixamorig:Head` gibi olur. Godot içe aktarırken ":" işaretini "_" yapar (`mixamorig_Head`); oyun başı bu adla bulur.
+   3. Kemik adları `mixamorig:Head` gibi olur. Godot içe aktarırken ":" işaretini "_" yapar (`mixamorig_Head`); oyun başı bu adla bulur. Bu yolu kullanırsan `data/characters.json` `head_bone` değerini `mixamorig_Head` yap.
 4. **Animasyonlar:** Mixamo'da aynı karaktere şu animasyonları seç ve her birini **"Without Skin"** FBX olarak indir (ilki "With Skin"):
 
    | Oyundaki ad | Mixamo'da ara |
@@ -153,7 +163,7 @@ Hangi saç ve kıyafetin hangi gövdeye ve yıllara ait olduğu `data/characters
 
 Parçalar gövdenin üstünde, **doğru yerinde** modellenir ve gövdeyle aynı ölçüde, aynı başlangıç noktasıyla (0,0,0) dışa aktarılır.
 
-- **Saç (sert parça):** Gövdeyi Blender'a al ve saçı kafanın üstüne yerleştir. Yalnızca saçı seçip dışa aktar. Oyun saçı baş kemiğine (`mixamorig_Head`) bağlar; baş dönünce saç da döner.
+- **Saç (sert parça):** Gövdeyi Blender'a al ve saçı kafanın üstüne yerleştir. Yalnızca saçı seçip dışa aktar. Oyun saçı baş kemiğine (`data/characters.json` `head_bone`) bağlar; baş dönünce saç da döner.
 - **Kıyafet (bükülen parça):**
   1. Kıyafeti gövdenin üstüne giydir.
   2. Kıyafeti seç, sonra iskeleti Shift ile seç → Ctrl+P → **With Automatic Weights**.

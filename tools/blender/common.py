@@ -65,6 +65,7 @@ PALETTE = [
     ("water_blue", "#7FB6E0"),
     ("red", "#D2574A"),
     ("lamp_green", "#2C4A3A"),
+    ("denim", "#46566E"),
 ]
 _INDEX = {name: i for i, (name, _) in enumerate(PALETTE)}
 
@@ -246,12 +247,14 @@ class Builder:
 
 # --- dışa aktarma -------------------------------------------------------------
 
-def export(rel_path: str) -> str:
-    """Sahneyi assets/models/<rel_path> olarak .glb yazar (+Y yukarı, değiştiriciler uygulanmış)."""
+def export(rel_path: str, animations: bool = False) -> str:
+    """Sahneyi assets/models/<rel_path> olarak .glb yazar (+Y yukarı, değiştiriciler uygulanmış).
+    animations: iskelet ve eylemler (her eylem ayrı klip) de yazılır."""
     path = os.path.join(MODELS_DIR, rel_path)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     bpy.ops.export_scene.gltf(filepath=path, export_format="GLB", export_yup=True, export_apply=True,
-                              export_animations=False, export_cameras=False, export_lights=False)
+                              export_animations=animations, export_cameras=False, export_lights=False,
+                              **({"export_animation_mode": "ACTIONS", "export_skins": True} if animations else {}))
     tris = sum(len(p.vertices) - 2 for o in bpy.context.scene.objects if o.type == "MESH" for p in o.data.polygons)
     dims = [o.dimensions for o in bpy.context.scene.objects if o.type == "MESH"]
     d = dims[0] if dims else Vector()

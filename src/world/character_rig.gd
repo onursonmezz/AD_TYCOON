@@ -15,6 +15,8 @@ var _playback: AnimationNodeStateMachinePlayback
 var _available: Array[String] = []
 var _pose: Node3D
 var _t: float = 0.0
+## Boyanmış malzemeler (malzeme adı | renk | kaynak) → malzeme; çalışanlar arasında paylaşılır.
+static var _paints: Dictionary = {}
 
 
 func has_model() -> bool:
@@ -49,17 +51,18 @@ func build(look: Dictionary, founder: bool) -> void:
 func _dress(body: Node3D, look: Dictionary, head_bone: String) -> void:
 	var skels: Array[Node] = body.find_children("*", "Skeleton3D", true, false)
 	var skel: Skeleton3D = skels[0] as Skeleton3D if not skels.is_empty() else null
-	ModelLibrary.tint(body, Color(look["skin"], 0.35))
+	if _paint(body, look) == 0:
+		ModelLibrary.tint(body, Color(look["skin"], 0.35))
 	if skel == null:
 		return
-	_attach(skel, str(look["outfit_model"]), look["outfit_color"], "")
+	_attach(skel, str(look["outfit_model"]), look, look["outfit_color"], "")
 	if not bool(look["bald"]):
-		_attach(skel, str(look["hair_model"]), look["hair_color"], head_bone)
+		_attach(skel, str(look["hair_model"]), look, look["hair_color"], head_bone)
 
 
 ## Parçayı gövdenin iskeletine bağlar. Deri (skin) taşıyan mesh'ler iskelete taşınır ve onunla bükülür;
 ## taşımayanlar (ör. sert saç) bone verilmişse o kemiğe, yoksa iskelete sabitlenir.
-func _attach(skel: Skeleton3D, rel: String, color: Color, bone: String) -> void:
+func _attach(skel: Skeleton3D, rel: String, look: Dictionary, color: Color, bone: String) -> void:
 	var packed: PackedScene = ModelLibrary.scene(rel) if not rel.is_empty() else null
 	if packed == null:
 		return
@@ -88,12 +91,41 @@ func _attach(skel: Skeleton3D, rel: String, color: Color, bone: String) -> void:
 		else:
 			holder.add_child(mi)
 			mi.transform = xf
-		var mat: StandardMaterial3D = StandardMaterial3D.new()
-		mat.albedo_color = Color(color, 0.45)
-		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		mi.material_overlay = mat
+		if _paint(mi, look) == 0:
+			var mat: StandardMaterial3D = StandardMaterial3D.new()
+			mat.albedo_color = Color(color, 0.45)
+			mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			mi.material_overlay = mat
 	part.free()
+
+
+## Modeldeki "skin", "outfit", "hair" adlı malzemeleri çalışanın renklerine boyar (art/pipeline.md "Karakterler").
+## Aynı renk + malzeme bir kez üretilir; 60 çalışan aynı malzemeleri paylaşır. Boyanan yüzey sayısını döndürür.
+static func _paint(root: Node, look: Dictionary) -> int:
+	var colors: Dictionary = {"skin": look["skin"], "outfit": look["outfit_color"], "hair": look["hair_color"]}
+	var count: int = 0
+	var nodes: Array[Node] = root.find_children("*", "MeshInstance3D", true, false)
+	if root is MeshInstance3D:
+		nodes.append(root)
+	for n: Node in nodes:
+		var mi: MeshInstance3D = n
+		if mi.mesh == null:
+			continue
+		for i: int in mi.mesh.get_surface_count():
+			var base: Material = mi.mesh.surface_get_material(i)
+			if base == null or not colors.has(base.resource_name):
+				continue
+			var c: Color = colors[base.resource_name]
+			var key: String = "%s|%s|%s" % [base.resource_name, c.to_html(false), base.get_instance_id()]
+			if not _paints.has(key):
+				var mat: BaseMaterial3D = (base as BaseMaterial3D).duplicate() if base is BaseMaterial3D \
+					else StandardMaterial3D.new()
+				mat.albedo_color = c
+				_paints[key] = mat
+			mi.set_surface_override_material(i, _paints[key])
+			count += 1
+	return count
 
 
 static func _local_xf(node: Node3D, root: Node) -> Transform3D:

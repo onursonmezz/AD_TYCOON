@@ -1,5 +1,23 @@
 # Değişiklik günlüğü
 
+## C1: İlk karakterler (2026-11-05)
+- **Kapsüller gitti:** Çalışanlar artık büyük kafalı, yumuşak hatlı insanlar. Kadın, erkek ve nötr olmak üzere üç gövde var; her biri tişört, kot pantolon ve ayakkabı giyiyor.
+- **Her çalışan farklı görünür:** Ten, tişört rengi ve saç rengi çalışana göre değişir; kurucunun tişörtü hardal rengi.
+- **Hareketler:** Ofiste yürürken kollar ve bacaklar sallanır. Masada sandalyeye gerçekten oturur, beklerken hafifçe nefes alır.
+- **Düzeltme:** Önceden neredeyse bütün çalışanlar aynı renk giyiyordu (M8'den kalma bir hata).
+- **Henüz yok (C2 ve C3):**
+  - Yazma, telefon, kahve, sunum, sevinme, stres ve uyuklama hareketleri. Şimdilik oturma ya da bekleme oynuyor.
+  - Kısa saç dışındaki saçlar ve dönemsel kıyafetler. O saçları seçilen çalışanlar şimdilik kel görünüyor.
+- 60 çalışanlı ofiste oyun rahat akıyor (516 FPS).
+- Nasıl test ederim:
+  1. Oyunu aç ve yeni bir oyun başlat: kurucu hardal tişörtle ofiste.
+  2. Birkaç çalışan işe al: her biri farklı ten ve tişört rengiyle gelir, masasına yürür ve sandalyeye oturur.
+  3. Yakınlaştır (fare tekerleği) ve yürüyüşe bak: kollar bacakların tersine sallanmalı.
+  4. Karakterleri yeniden üret (proje klasöründe):
+     `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py -- --only=body_female,body_male,body_neutral,hair_short`
+  5. Denetle: `godot --headless --import`, sonra `godot --headless --script res://tools/model_check.gd` ("33 model bulundu, 33 sorunsuz").
+  6. `docs/screenshots/04_g3b_world_close.png` ile `05_c1_world_close.png`'yi karşılaştır.
+
 ## G3-B: Bütün eşyalar modellendi (2026-11-05)
 - **Oyunda artık gri kutu yok** (karakterler hariç). 22 yeni model:
   - **Ofis:** tekerlekli sandalye, mutfak tezgâhı (evye, musluk, kettle), toplantı masası, kanepe.

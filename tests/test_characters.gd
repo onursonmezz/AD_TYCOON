@@ -47,7 +47,9 @@ func test_outfits_follow_the_era() -> void:
 func test_fallback_capsule_moves_by_activity() -> void:
 	var rig: CharacterRig = CharacterRig.new()
 	add_child_autofree(rig)
-	rig.build(CharacterLook.make(data, _emp("em_0003"), 1990), true)
+	var look: Dictionary = CharacterLook.make(data, _emp("em_0003"), 1990)
+	look["body_model"] = "characters/yok_boyle_bir_govde.glb"
+	rig.build(look, true)
 	assert_false(rig.has_model(), "model yokken kapsül")
 	assert_false(rig.has_animations())
 	rig.set_activity("cheer")
@@ -81,3 +83,42 @@ func test_model_rig_dresses_and_animates() -> void:
 	assert_eq(rig.current_clip(), "type")
 	var box: AABB = ModelLibrary.bounds(rig.get_child(0))
 	assert_almost_eq(box.size.y, float(data.characters["height"]), 0.15, "gövde 1.7 m'ye sığdırıldı")
+
+
+func test_blender_body_is_painted_per_employee() -> void:
+	# C1: gerçek gövde modeli; ten ve kıyafet malzemeleri çalışanın renklerini alır, klipler gelir.
+	var looks: Array[Dictionary] = [CharacterLook.make(data, _emp("em_0001"), 1995),
+		CharacterLook.make(data, _emp("em_0002"), 1995)]
+	var outfit: Array[Color] = []
+	for look: Dictionary in looks:
+		var rig: CharacterRig = CharacterRig.new()
+		add_child_autofree(rig)
+		rig.build(look, false)
+		assert_true(rig.has_model(), "Blender gövdesi bulundu")
+		assert_eq(rig.clip_for("walk"), "walk")
+		assert_eq(rig.clip_for("sit"), "sit")
+		var body: MeshInstance3D = null
+		for n: Node in rig.find_children("*", "MeshInstance3D", true, false):
+			if (n as MeshInstance3D).skin != null and (n as MeshInstance3D).mesh.get_surface_count() > 1:
+				body = n
+		assert_not_null(body)
+		for i: int in body.mesh.get_surface_count():
+			var name: String = body.mesh.surface_get_material(i).resource_name
+			var mat: BaseMaterial3D = body.get_surface_override_material(i)
+			if name == "skin":
+				assert_eq(mat.albedo_color, look["skin"])
+			elif name == "outfit":
+				assert_eq(mat.albedo_color, look["outfit_color"])
+				outfit.append(mat.albedo_color)
+	assert_eq(outfit.size(), 2)
+
+
+func test_sequential_ids_get_different_looks() -> void:
+	var colors: Dictionary = {}
+	var skins: Dictionary = {}
+	for i: int in 12:
+		var look: Dictionary = CharacterLook.make(data, _emp("em_%04d" % i), 2000)
+		colors[look["outfit_color"]] = true
+		skins[look["skin"]] = true
+	assert_gt(colors.size(), 4, "ardışık kimlikler farklı kıyafet rengi alır")
+	assert_gt(skins.size(), 2, "ardışık kimlikler farklı ten alır")
