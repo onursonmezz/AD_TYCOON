@@ -1,5 +1,19 @@
 # Değişiklik günlüğü
 
+## T1: Zemin, duvar ve sokak dokuları (2026-11-07)
+- **Ofis artık dokulu:**
+  - Çalışma alanında bal tonlu tahta zemin, toplantıda yeşil halı, mutfakta krem fayans, boş alanda beton.
+  - Duvar kâğıtları: çalışma alanı yapraklı, mutfak noktalı, toplantı çizgili.
+  - Dışarıda çiçekli çimen, parke taşı kaldırım, asfalt yol.
+- Dokular kenarlardan birbirine kusursuz bağlanıyor; iki tanesi bunun için desen aralığında kırpıldı.
+- Balıksırtı koyu zemin kenarlarda kırıldığı için şimdilik eklenmedi; yeni prompt'u rehberde.
+- Nasıl test ederim:
+  1. Oyunu aç ve bir oyun başlat: zeminler ve duvarlar dokulu olmalı.
+  2. Kamerayı yaklaştır: tahtalarda ve taşlarda kare kare tekrar eden çizgi ya da kopukluk olmamalı.
+  3. Q/E ile döndürüp dört yönden bak.
+  4. Yeni bir doku üretirsen `art/incoming/textures/` klasörüne koy ve `godot --headless --script res://tools/prepare_textures.gd` çalıştır (ya da bana söyle).
+  5. `docs/screenshots/11_textures_world_default.png` ile `07_c3_world_default.png`'yi karşılaştır.
+
 ## UI-2: Cozy Refined bütün oyunda (2026-11-07)
 - **Bütün pencereler yeni görünümde:** üstte koyu yeşil başlık bandı, ikon, zarif serif başlık ve kapat düğmesi; krem gövde, ince çerçeve.
 - **Ekranın kenarları:**

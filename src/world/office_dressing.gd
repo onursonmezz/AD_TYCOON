@@ -159,8 +159,8 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 	var road: float = float(cfg["road_width"])
 	var length: float = edge_len + 12.0
 	var yaw: float = rad_to_deg(atan2(n.x, n.y))
-	_strip(parent, mid + n * (sw * 0.5), t, length, sw, 0.03, color_of(cfg["sidewalk_color"]))
-	_strip(parent, mid + n * (sw + road * 0.5), t, length, road, 0.01, color_of(cfg["road_color"]))
+	_strip(parent, mid + n * (sw * 0.5), t, length, sw, 0.03, color_of(cfg["sidewalk_color"]), "sidewalk")
+	_strip(parent, mid + n * (sw + road * 0.5), t, length, road, 0.01, color_of(cfg["road_color"]), "road")
 	var step: float = float(cfg["tree_step"])
 	var k: int = 0
 	var x: float = -length * 0.5 + step * 0.5
@@ -196,9 +196,14 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 		Vector3(bb_pos.x, bottom + float(panel[1]) * 0.5, bb_pos.y) + Vector3(n.x, 0.0, n.y) * 0.05)
 
 
-func _strip(parent: Node3D, center: Vector2, along: Vector2, length: float, width: float, y: float, color: Color) -> void:
+## surface: look.json "street" içindeki doku adı (sidewalk, road); dosyası yoksa düz renk.
+func _strip(parent: Node3D, center: Vector2, along: Vector2, length: float, width: float, y: float, color: Color,
+		surface: String = "") -> void:
 	var size: Vector3 = Vector3(length, 0.04, width) if along.x > 0.5 else Vector3(width, 0.04, length)
-	box(parent, Vector3(center.x, y - 0.02, center.y), size, color)
+	var strip: MeshInstance3D = box(parent, Vector3(center.x, y - 0.02, center.y), size, color)
+	var entry: Dictionary = WorldLook.cfg().get("street", {}).get(surface, {})
+	if WorldLook.has_surface(entry):
+		strip.material_override = WorldLook.surface_material(entry)
 
 
 static func _entrance_side(layout: OfficeLayout) -> String:

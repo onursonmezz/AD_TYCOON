@@ -90,6 +90,9 @@ func _wall(seg: Dictionary) -> Dictionary:
 	_building.add_child(holder)
 	var body: MeshInstance3D = OfficeDressing.box(holder, Vector3(0, height * 0.5, 0), Vector3(length + 0.02, height, WALL_THICKNESS),
 		WorldLook.wall_color(layout, seg))
+	var paper: Dictionary = WorldLook.wallpaper(layout, seg)
+	if not paper.is_empty():
+		body.material_override = WorldLook.surface_material(paper)
 	var trim: Node3D = Node3D.new()
 	holder.add_child(trim)
 	var tw: float = float(w["trim_width"])

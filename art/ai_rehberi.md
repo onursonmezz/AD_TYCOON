@@ -360,7 +360,7 @@ cozy warm muted colors, soft and even lighting, no shadows, no objects, no text,
 | Dosya adı (`art/incoming/textures/`) | Nerede | [DOKU] |
 |---|---|---|
 | `floor_planks.png` | çalışma alanı, dinlenme, ödül lobisi | honey-colored wooden floor planks with visible grain and thin dark gaps between planks |
-| `floor_planks_dark.png` | yönetici odası (ileride) | dark walnut herringbone wooden floor |
+| `floor_planks_dark.png` | yönetici odası (ileride) | dark walnut wooden floor planks in straight horizontal rows with staggered joints, visible grain and thin dark gaps, all planks the same width (balıksırtı desen kenarlarda kırıldığı için düz sıralar) |
 | `floor_carpet.png` | toplantı, beyin fırtınası | soft sage green office carpet with a subtle woven texture |
 | `floor_tiles.png` | mutfak, Ar-Ge | cream square ceramic floor tiles with light gray grout |
 | `floor_concrete.png` | boş alan, stüdyo | smooth warm gray polished concrete with subtle speckles |
@@ -370,6 +370,8 @@ cozy warm muted colors, soft and even lighting, no shadows, no objects, no text,
 | `ground_grass.png` | çimen | lush stylized grass with small clover patches and tiny flowers |
 | `ground_cobble.png` | kaldırım | gray and warm beige cobblestone pavement with rounded stones |
 | `ground_asphalt.png` | yol | dark gray asphalt road surface with subtle cracks |
+
+Gönderdiğin dokuları `godot --headless --script res://tools/prepare_textures.gd` hazırlar: desen tekrar aralığında kırpılır (kenarlar birleşsin), 1024 px yapılır, renkler ofis ışığına göre biraz yumuşatılır. Hangi dokunun nereye gideceği `data/look.json`'da.
 
 ---
 

@@ -1040,3 +1040,25 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **Mekanik değişmedi:** Sinyaller, komutlar ve oyun hesapları aynı. 9 yeni metin (tr, en).
 - **Performans:** 60 çalışanla kare ortalaması 3.48 ms (288 FPS); hedef 16.7 ms.
 - **Test:** `test_economy`: aylık kayıt yıl toplamıyla tutarlı; kayıt kaydedilip yükleniyor; yıl sonunda kırpılıyor.
+
+## K-087 · 2026-11-07 · Kabul · Orgo'nun görsel AI dokuları + uygulama (T1)
+**Konu:** `art/ai_rehberi.md` 6'daki 11 doku; inceleme ve oyuna bağlama.
+**Karar:**
+- **İnceleme:**
+  - 11 dokunun hepsi 1254 × 1254 px, stile ve palete uygun.
+  - Kenar birleşimi ölçüldü (kenarlar arası fark, iç komşu farkıyla) ve 2×2 döşemeyle tam çözünürlükte bakıldı.
+  - `wall_dots`: sağ-sol birleşimde noktalar çiftleniyordu. `floor_planks`: alt-üst birleşimde damar kopuyordu. İkisi de desenin tekrar aralığında kırpılarak düzeldi.
+  - `floor_tiles`: ölçüm yüksekti ama derzler tek çizgi olarak doğru birleşiyor; dokunulmadı.
+  - `floor_planks_dark` (balıksırtı): birleşim yerinde açıkça kırılıyor ve kırpmayla düzelmez. Şimdilik oyuna alınmadı (henüz kullanan oda yok); düz sıralı koyu ceviz prompt'u verildi.
+- **Hazırlama:** `tools/prepare_textures.gd` + `tools/texture_prep.json`, `art/incoming/textures/` → `assets/textures/surfaces/`.
+  - `crop_x` / `crop_y`: başlangıç şeridine en çok benzeyen konumu bulup orada keser.
+  - Sonra 1024 px'e ölçekler ve renk dengeler: varsayılan doygunluk ×0.88, parlaklık ×0.97. Tahta ×0.62 / ×0.86, çünkü masalarla aynı turuncuya karışıyordu.
+- **Bağlama (`data/look.json`):**
+  - Zeminlerde `texture`, `tile` (bir tekrarın metre boyu) ve isteğe bağlı `tint`. Aynı doku farklı odalarda tonla ayrışır: dinlenme koyu tahta, stüdyo koyu beton.
+  - `wallpapers`: dış duvarın iç yüzü; çalışma yapraklı, mutfak noktalı, toplantı çizgili.
+  - `street`: kaldırım parke taşı, yol asfalt. `ground`: çimen.
+  - Dosyası olmayan doku düz renge ya da eski koddan çizilen desene düşer.
+  - `WorldLook.surface_material`: dünya koordinatında üç düzlemli döşeme, anizotropik süzme.
+- **Beyin fırtınası odası (mavi halı) bilerek eski desende kaldı:** Halı dokusu yeşil.
+- **Boyut ve performans:** Dokular toplam 13 MB. 60 çalışanla kare ortalaması 3.03 ms (330 FPS).
+- **Test:** `test_surfaces`: look.json'daki her dokunun dosyası var; malzeme dünya koordinatında döşeniyor.

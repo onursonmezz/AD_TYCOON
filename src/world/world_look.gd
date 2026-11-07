@@ -5,6 +5,7 @@ extends RefCounted
 ## Sayılar data/look.json'da; ince ayar için kod gerekmez.
 
 static var _floor_textures: Dictionary = {}
+const SURFACES: String = "res://assets/textures/surfaces"
 
 
 static func cfg() -> Dictionary:
@@ -129,12 +130,32 @@ void fragment() {
 ## Dünya koordinatına göre desen (triplanar), böylece her oda boyunda aynı ölçek.
 static func ground_material() -> StandardMaterial3D:
 	var g: Dictionary = cfg()["ground"]
-	return pattern_material(g["grass"], str(g.get("pattern", "concrete")), 0.08)
+	return surface_material(g) if has_surface(g) else pattern_material(g["grass"], str(g.get("pattern", "concrete")), 0.08)
 
 
 static func floor_material(room_type: String) -> StandardMaterial3D:
 	var f: Dictionary = cfg()["floors"].get(room_type, {"color": [0.8, 0.8, 0.8], "pattern": "concrete"})
+	if has_surface(f):
+		return surface_material(f)
 	return pattern_material(f["color"], str(f["pattern"]), 0.5 if str(f["pattern"]) == "planks" else 0.6)
+
+
+## Görsel AI dokusu (assets/textures/surfaces/<texture>.png, tools/prepare_textures.gd) tanımlı ve dosyası var mı.
+static func has_surface(entry: Dictionary) -> bool:
+	return entry.has("texture") and ResourceLoader.exists(SURFACES.path_join(str(entry["texture"]) + ".png"))
+
+
+## Dokulu yüzey: dünya koordinatında döşenir (tile = bir tekrarın metre cinsinden boyu); tint varsa dokuyu boyar.
+static func surface_material(entry: Dictionary) -> StandardMaterial3D:
+	var mat: StandardMaterial3D = StandardMaterial3D.new()
+	mat.albedo_texture = load(SURFACES.path_join(str(entry["texture"]) + ".png")) as Texture2D
+	mat.albedo_color = col(entry["tint"]) if entry.has("tint") else Color.WHITE
+	mat.uv1_triplanar = true
+	mat.uv1_world_triplanar = true
+	mat.uv1_scale = Vector3.ONE / maxf(0.1, float(entry.get("tile", 2.0)))
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	mat.roughness = 0.9
+	return mat
 
 
 static func pattern_material(color: Array, pattern: String, scale: float) -> StandardMaterial3D:
@@ -236,6 +257,19 @@ static func wall_segments(layout: OfficeLayout) -> Array[Dictionary]:
 			out.append({"a": p0, "b": p1, "side": horizontal_side if near_h else vertical_side, "outer": true,
 				"height": float(w["outer_height"])})
 	return out
+
+
+## Duvar kâğıdı: dış duvarın yanındaki odanın türüne göre look.json "wallpapers" (yoksa boş sözlük, düz renk kalır).
+static func wallpaper(layout: OfficeLayout, seg: Dictionary) -> Dictionary:
+	if not bool(seg["outer"]):
+		return {}
+	var mid: Vector2 = ((seg["a"] as Vector2) + (seg["b"] as Vector2)) * 0.5
+	var inward: Vector2 = (layout.size * 0.5 - mid).normalized()
+	var room: Dictionary = layout.room_at(mid + inward * 0.6)
+	if room.is_empty():
+		return {}
+	var entry: Dictionary = cfg().get("wallpapers", {}).get(room["type"], {})
+	return entry if has_surface(entry) else {}
 
 
 ## Duvarın iç yüzünün rengi: duvarın yanındaki odanın türüne göre (dış duvar); bölme duvarı krem.

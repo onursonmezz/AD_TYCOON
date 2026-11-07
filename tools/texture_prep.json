@@ -1,0 +1,18 @@
+{
+	"_aciklama": "art/incoming/textures/<ad>.png → assets/textures/surfaces/<ad>.png. crop_x / crop_y: desenin tekrar aralığını bulup o aralıkta kırp (kenarlar kusursuz birleşsin). grade: doygunluk ve parlaklık çarpanı. skip: oyuna alma.",
+	"size": 1024,
+	"default_grade": { "sat": 0.88, "val": 0.97 },
+	"textures": {
+		"floor_planks": { "crop_y": true, "grade": { "sat": 0.62, "val": 0.86 } },
+		"floor_planks_dark": { "skip": true },
+		"floor_carpet": {},
+		"floor_tiles": {},
+		"floor_concrete": {},
+		"wall_leaves": {},
+		"wall_dots": { "crop_x": true },
+		"wall_stripes": {},
+		"ground_grass": {},
+		"ground_cobble": {},
+		"ground_asphalt": {}
+	}
+}

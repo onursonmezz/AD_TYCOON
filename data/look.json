@@ -24,20 +24,26 @@
 		"baseboard_height": 0.12, "baseboard_color": [0.55, 0.42, 0.3]
 	},
 	"floors": {
-		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks" },
-		"meeting": { "color": [0.47, 0.6, 0.5], "pattern": "carpet" },
-		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles" },
-		"lounge": { "color": [0.55, 0.38, 0.24], "pattern": "planks" },
-		"empty": { "color": [0.62, 0.6, 0.58], "pattern": "concrete" },
+		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks", "texture": "floor_planks", "tile": 2.4 },
+		"meeting": { "color": [0.47, 0.6, 0.5], "pattern": "carpet", "texture": "floor_carpet", "tile": 3.0 },
+		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles", "texture": "floor_tiles", "tile": 2.4 },
+		"lounge": { "color": [0.55, 0.38, 0.24], "pattern": "planks", "texture": "floor_planks", "tile": 2.4, "tint": [0.78, 0.66, 0.58] },
+		"empty": { "color": [0.62, 0.6, 0.58], "pattern": "concrete", "texture": "floor_concrete", "tile": 4.0 },
 		"brainstorm": { "color": [0.56, 0.66, 0.72], "pattern": "carpet" },
-		"award_lobby": { "color": [0.83, 0.72, 0.48], "pattern": "planks" },
-		"rd_lab": { "color": [0.74, 0.78, 0.8], "pattern": "tiles" },
-		"studio": { "color": [0.3, 0.31, 0.34], "pattern": "concrete" }
+		"award_lobby": { "color": [0.83, 0.72, 0.48], "pattern": "planks", "texture": "floor_planks", "tile": 2.4, "tint": [1.0, 0.95, 0.85] },
+		"rd_lab": { "color": [0.74, 0.78, 0.8], "pattern": "tiles", "texture": "floor_tiles", "tile": 2.4, "tint": [0.9, 0.95, 1.0] },
+		"studio": { "color": [0.3, 0.31, 0.34], "pattern": "concrete", "texture": "floor_concrete", "tile": 4.0, "tint": [0.5, 0.5, 0.53] }
 	},
+	"_wallpapers": "Dış duvarın iç yüzündeki duvar kâğıdı (odanın türüne göre); tile = bir tekrarın metre boyu. Doku yoksa walls_by_room rengi.",
+	"wallpapers": {
+		"work": { "texture": "wall_leaves", "tile": 2.6 }, "kitchen": { "texture": "wall_dots", "tile": 1.2 },
+		"meeting": { "texture": "wall_stripes", "tile": 1.4 }
+	},
+	"street": { "sidewalk": { "texture": "ground_cobble", "tile": 2.0 }, "road": { "texture": "ground_asphalt", "tile": 4.0 } },
 	"walls_by_room": {
 		"work": [0.31, 0.48, 0.36], "meeting": [0.94, 0.9, 0.82], "kitchen": [0.93, 0.88, 0.78], "lounge": [0.79, 0.45, 0.35],
 		"empty": [0.86, 0.84, 0.8], "brainstorm": [0.36, 0.5, 0.62], "award_lobby": [0.85, 0.7, 0.42], "rd_lab": [0.9, 0.92, 0.9],
 		"studio": [0.25, 0.26, 0.3]
 	},
-	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "margin": [16.0, 18.0] }
+	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "texture": "ground_grass", "tile": 4.0, "margin": [16.0, 18.0] }
 }
