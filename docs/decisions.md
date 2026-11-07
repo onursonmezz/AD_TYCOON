@@ -1062,3 +1062,17 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **Beyin fırtınası odası (mavi halı) bilerek eski desende kaldı:** Halı dokusu yeşil.
 - **Boyut ve performans:** Dokular toplam 13 MB. 60 çalışanla kare ortalaması 3.03 ms (330 FPS).
 - **Test:** `test_surfaces`: look.json'daki her dokunun dosyası var; malzeme dünya koordinatında döşeniyor.
+
+## K-088 · 2026-11-07 · Kabul · Orgo kararı ("Evet, ekle": Tripo eşyaları) + uygulama
+**Konu:** Orgo'nun ürettiği 6 Tripo modelinden 4 eşyanın oyuna alınması.
+**Karar:**
+- **Oyuna giren 4 model** (`tools/blender/import_ai.py`, `ai_imports.json`; üçgen sınırına indirildi, doku 1024 px, renk dengesi):
+  - Koltuk (`props/chair`): stretch; oturak yüksekliği oturma pozuna uysun diye.
+  - Kanepe (`props/sofa`): orantılı.
+  - 90'lar bilgisayarı (`equipment/pc386`): orantılı; ekran ve klavye oturana bakıyor, ek döndürme gerekmedi.
+  - Sokak ağacı (`street/tree`): orantılı.
+- **Veri ölçüleri (yalnızca görünüş; simülasyon değişmedi):**
+  - **Kanepe:** `data/models.json` boyu 0.55 → 0.9, taban 3.0 × 0.8 → 1.9 × 0.8. Model sırtı yüksek, kısa bir üçlü kanepe. Eski ölçüde oyun onu 1.2 m'ye küçültürdü. Dinlenme odasındaki 3 m'lik alanda (`OfficeLayout`) artık ~1.9 m'lik kanepe duruyor.
+  - **Sokak ağacı:** taban 1.2 × 1.2 → 2.3 × 1.8. Tepe gövdeye göre geniş; eski tabanda ağaç 3.2 m yerine 1.7 m kalırdı. Ağaçlar 4 m arayla dizildiği için yer sorunu yok.
+- **2 karakter beklemede** (`art/incoming/char_try_male.glb`, `char_try_female.glb`): Temiz ve A-pozunda, ama iskeletleri yok. Rehber 5.4'teki iskelet testi (Tripo rig, FBX) bekleniyor.
+- **Performans:** 60 çalışanla kare ortalaması 3.35 ms (299 FPS). 53/53 model denetimden geçti.

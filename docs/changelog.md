@@ -1,5 +1,16 @@
 # Değişiklik günlüğü
 
+## A1: Tripo eşyaları: koltuk, kanepe, 90'lar bilgisayarı, sokak ağacı (2026-11-07)
+- Masalarda yeni yeşil, turuncu kolçaklı koltuklar; çalışanlar üzerlerine oturuyor.
+- 90'larda masalarda bej tüplü monitör, kasa ve klavye.
+- Dinlenme odasında düğmeli yeşil kanepe; sokakta yapraklı ağaçlar.
+- İki deneme karakteri iskelet dosyası gelince eklenecek.
+- Nasıl test ederim:
+  1. 1990'da yeni oyun başlat: masada bej bilgisayar, önünde yeni koltuk olmalı.
+  2. Ofisin önündeki sokağa bak: yeni ağaçlar.
+  3. Dinlenme odası olan bir ofiste kanepeye bak.
+  4. `docs/screenshots/12_tripo_props_desk.png` ve `12_tripo_props_sofa.png`.
+
 ## T1: Zemin, duvar ve sokak dokuları (2026-11-07)
 - **Ofis artık dokulu:**
   - Çalışma alanında bal tonlu tahta zemin, toplantıda yeşil halı, mutfakta krem fayans, boş alanda beton.

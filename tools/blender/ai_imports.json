@@ -1,3 +1,7 @@
 {
-	"desk": { "src": "art/incoming/desk.glb", "dst": "props/desk.glb", "size": [1.4, 0.7, 0.75], "fit": "stretch", "rot": 0, "tris": 3000, "tex": 1024 }
+	"desk": { "src": "art/incoming/desk.glb", "dst": "props/desk.glb", "size": [1.4, 0.7, 0.75], "fit": "stretch", "rot": 0, "tris": 3000, "tex": 1024 },
+	"chair": { "src": "art/incoming/chair.glb", "dst": "props/chair.glb", "size": [0.5, 0.5, 0.9], "fit": "stretch", "rot": 0, "tris": 3000, "tex": 1024 },
+	"sofa": { "src": "art/incoming/sofa.glb", "dst": "props/sofa.glb", "size": [1.9, 0.8, 0.9], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"pc386": { "src": "art/incoming/pc386.glb", "dst": "equipment/pc386.glb", "size": [0.45, 0.45, 0.4], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"tree": { "src": "art/incoming/tree.glb", "dst": "street/tree.glb", "size": [2.3, 1.8, 3.2], "fit": "uniform", "rot": 0, "tris": 8000, "tex": 1024 }
 }
