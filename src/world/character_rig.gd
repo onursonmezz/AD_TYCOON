@@ -51,7 +51,8 @@ func build(look: Dictionary, founder: bool) -> void:
 func _dress(body: Node3D, look: Dictionary, head_bone: String) -> void:
 	var skels: Array[Node] = body.find_children("*", "Skeleton3D", true, false)
 	var skel: Skeleton3D = skels[0] as Skeleton3D if not skels.is_empty() else null
-	if _paint(body, look) == 0:
+	# Dokulu (görsel AI) gövde kendi rengini taşır; boyanacak malzemesi yoksa ve dokusuzsa katmanla renklendir.
+	if _paint(body, look) == 0 and not _textured(body):
 		ModelLibrary.tint(body, Color(look["skin"], 0.35))
 	if skel == null:
 		return
@@ -141,6 +142,17 @@ static func _for_body(meshes: Array[Node], body: String) -> Array[Node]:
 		if tagged.is_empty() or tagged == body:
 			out.append(m)
 	return out
+
+
+## Gövdenin herhangi bir malzemesinde renk dokusu var mı (Tripo karakterleri gibi).
+static func _textured(root: Node) -> bool:
+	for n: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var mesh: Mesh = (n as MeshInstance3D).mesh
+		for i: int in (mesh.get_surface_count() if mesh != null else 0):
+			var m: BaseMaterial3D = mesh.surface_get_material(i) as BaseMaterial3D
+			if m != null and m.albedo_texture != null:
+				return true
+	return false
 
 
 static func _local_xf(node: Node3D, root: Node) -> Transform3D:

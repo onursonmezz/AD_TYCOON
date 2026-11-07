@@ -1076,3 +1076,16 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
   - **Sokak ağacı:** taban 1.2 × 1.2 → 2.3 × 1.8. Tepe gövdeye göre geniş; eski tabanda ağaç 3.2 m yerine 1.7 m kalırdı. Ağaçlar 4 m arayla dizildiği için yer sorunu yok.
 - **2 karakter beklemede** (`art/incoming/char_try_male.glb`, `char_try_female.glb`): Temiz ve A-pozunda, ama iskeletleri yok. Rehber 5.4'teki iskelet testi (Tripo rig, FBX) bekleniyor.
 - **Performans:** 60 çalışanla kare ortalaması 3.35 ms (299 FPS). 53/53 model denetimden geçti.
+
+## K-089 · 2026-11-07 · Deneme · Tripo iskeletli karakter testi (rehber 5.4)
+**Konu:** Tripo'nun otomatik iskeleti bizim 11 hareketimizle çalışıyor mu?
+**Sonuç: çalışıyor.**
+- **Tripo'nun çıktısı:** Mixamo adlı iskelet (`mixamorig:*`, 65 kemik, parmaklar dahil), A-pozu. GLB'de iskelet, deri ağırlıkları ve doku birlikte geliyor; FBX gerekmiyor. Dosyada iskelete bağlı olmayan 2 m'lik bir yardımcı küre var; atılıyor.
+- **Aktarma:** `tools/blender/retarget_tripo.py`.
+  - Hareketler kendi iskeletimizde (`characters_anim.py`) oynatılır; her karede 17 eşlenen kemiğin dünya dönüşü Tripo kemiğine verilir.
+  - Dinlenme duruşu farkı (bizde kollar aşağıda, Tripo'da A-pozu) her kemiğe sabit bir hizalamayla kapatılır.
+  - Eşlenmeyen kemikler (Spine1, omuzlar, parmaklar, ayak ucu) ebeveynleriyle birlikte döner. Kalça kayması boy oranıyla ölçeklenir.
+  - 11 hareket ~6 sn'de aktarılıyor.
+- **Saç düzeltmesi:** Tripo'nun ağırlıkları uzun saçı kol kemiklerine de bağlıyor; kollar kalkınca sivri çıkıntı oluşuyordu. Gövde genişliği (omuz eklemi) içindeki noktaların kol ağırlığı göğse aktarılıyor; çıkıntılar büyük ölçüde gitti. Omzun hemen dışındaki birkaç tutamda küçük iz kalıyor.
+- **Oyun tarafı:** `CharacterRig` dokulu gövdeye ten katmanı koymuyor (`_textured`). `tools/pose_sheet.gd --body=` ile herhangi bir gövde denenebiliyor.
+- **Henüz oyuna bağlı değil:** Bütün karakter (saçı ve kıyafeti gövdesinde) modeline geçiş ayrı bir iş. Gerekenler: çalışan → karakter seçimi (cinsiyet, dönem), telefon ve kupa için ele bağlama, kıyafet ve saç parçalarını devre dışı bırakma. Plan Orgo'nun onayına sunulacak. Deneme dosyası: `assets/models/characters/try_female.glb`.

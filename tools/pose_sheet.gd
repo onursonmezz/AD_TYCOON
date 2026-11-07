@@ -1,6 +1,6 @@
 extends Node3D
 ## Karakter hareket sayfası (C2): her klibi masa ve sandalyeyle önden ve yandan çeker, iki özet sayfa yazar.
-## godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>
+## godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör> [--body=characters/x.glb]
 func _ready() -> void:
 	var env: WorldEnvironment = WorldEnvironment.new()
 	var e: Environment = Environment.new()
@@ -18,15 +18,23 @@ func _ready() -> void:
 	add_child(sun)
 	OfficeDressing.box(self, Vector3(0, -0.05, 0), Vector3(12, 0.1, 12), Color(0.8, 0.7, 0.55))
 	var out: String = "user://pose_sheet"
+	var body: String = ""
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("--out="):
 			out = a.substr(6)
+		elif a.begins_with("--body="):
+			body = a.substr(7)
 	DirAccess.make_dir_recursive_absolute(out)
 	var seated: Array[String] = ["sit", "type", "phone", "present", "cheer", "stress", "sleep"]
 	for clip: String in ["idle", "walk", "sit", "type", "phone", "coffee", "present", "cheer", "cheer_stand", "stress", "sleep"]:
 		var stage: Node3D = Node3D.new()
 		add_child(stage)
 		var look: Dictionary = CharacterLook.make(DataDB.data, {"id": "em_0004", "gender": "male"}, 1995)
+		if not body.is_empty():  # --body=characters/x.glb: yalnız gövde (saç ve kıyafet yok)
+			look["body_model"] = body
+			look["outfit_model"] = ""
+			look["hair_model"] = ""
+			look["bald"] = true
 		var rig: CharacterRig = CharacterRig.new()
 		stage.add_child(rig)
 		rig.build(look, false)
