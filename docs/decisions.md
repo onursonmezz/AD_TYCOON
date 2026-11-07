@@ -1108,3 +1108,19 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **Araçlar:** `pose_sheet --body=characters/cast/x.glb`; `screenshot --year=2020`; `perf_check --year=2020`. Model denetimi kadroyu ve el eşyalarını da kontrol ediyor.
 - **Performans:** 60 çalışan, 2020 başlangıcı (kadın ve nötrler kadro karakteri): kare ortalaması 3.47 ms (288 FPS). Üçgen azaltmaya gerek görülmedi.
 - **Test:** Kadro seçimi (cinsiyet, dönem, nötr yedeği, işe alım yılı yoksa kadro yok); kadro gövdesinde hareketler; saç takılmıyor; el eşyaları etkinliğe göre görünüyor (`test_characters`).
+
+## K-091 · 2026-11-07 · Kabul · Orgo kararı ("Evet, devam": K2 + K3) + uygulama
+**Konu:** Kadro karakterlerinin toplu hazırlanması ve rehberin yeni akışa göre güncellenmesi.
+**Karar:**
+- **Ad kuralı:** `art/incoming/cast/char_<dönem>_<f|m|n><sıra>.glb`. Dönem 1990/2000/2010/2020 (2020 = 2020+); harf f kadın, m erkek, n nötr. Cinsiyet ve dönem addan okunur; Orgo'nun ayrıca veri yazmasına gerek yok.
+- **`tools/blender/build_cast.py`:**
+  - Klasördeki dosyaları bulur; listede olanları ve yenileri `retarget_tripo` ile hazırlar.
+  - Yalnızca başarıyla hazırlanan yenileri `data/characters.json` `cast` listesine metin olarak ekler (dosyanın elle düzeni bozulmaz; eklenen metin JSON olarak doğrulanır).
+  - İskeletsiz ya da Mixamo adlı olmayan dosyayı atlar, uyarır ve listeye almaz. Listedeki her karakterin modelinin var olmasını isteyen test bu sayede bozulmaz.
+  - Kurala uymayan adlar için uyarı verir.
+- **Rehber 5 yeniden yazıldı:**
+  - Kadro yaklaşımı ve kaç karakter gerektiği (dönem × cinsiyet, en az 1, önerilen 2).
+  - Adlandırma kuralı; 24 kişilik liste yeni adlarla. 2020'de f01 (ve m01) deneme karakterlerine ayrıldı.
+  - Tripo Rig → GLB teslimi; tek komut.
+  - Prompt şablonuna "no hat"; açık uzun saç yerine toplu saç önerisi (kol kalkınca esneme).
+- **Prompt kartları:** Yeni bağlantıda yayınlandı (eski sayfa eski adlarla kaldı). PDF yenilendi.

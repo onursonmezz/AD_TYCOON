@@ -233,15 +233,16 @@ Bunlar oyunda henüz yok; modeller gelince oyuna ben eklerim (yerleşim kodu ve 
 
 ## 5. Karakterler
 
-### 5.1 Yaklaşım değişiyor: parça yerine bütün karakter
+### 5.1 Yaklaşım: bütün karakter, kadro listesi
 
-Şu anki sistemde her çalışan gövde, saç ve kıyafet parçalarından kuruluyor ve renkleri oyun veriyor. Tripo ise **saçı, kıyafeti ve yüzüyle tek parça, boyanmış** bir karakter üretir. Bu yüzden:
+Tripo **saçı, kıyafeti ve yüzüyle tek parça, boyanmış** bir karakter üretir. Oyunda bunlar bir **kadro** listesinde durur:
 
-- Her karakter kendi saçı, kıyafeti ve teniyle **hazır bir kişi** olur. Çeşitliliği karakter sayısı sağlar.
-- Dönemsel kıyafet korunur: her dönemin kendi karakter seti olur. Bir çalışanın görünüşü yıl değişince o dönemin setinden seçilir; bunu oyunda ben kurarım.
-- Renkleri oyun değiştiremez. Bu yüzden ten rengi, saç ve kıyafet çeşitliliğini **listede baştan** dağıttım.
-- Kurucuyu kıyafet rengi yerine başının üstündeki küçük bir rozetle ayırırım.
-- Eldeki 11 hareket (yürü, otur, yaz, telefon, kahve, sunum, sevin, stres, uyukla…) korunur. Nasıl bağlanacağı ilk denemede (5.4) belli olacak.
+- Her çalışan, **cinsiyetine** ve **işe alındığı döneme** uyan kadro karakterlerinden birini alır ve kariyeri boyunca aynı kişi kalır. 90'larda işe alınan biri 2005'te de vatkalı ceketiyle gezer; dönem havasını yeni işe alınanlar getirir.
+- Uygun karakter yoksa çalışan eski parçalı karakterle görünür. Karakterleri **istediğin hızda, tek tek** ekleyebilirsin; oyun hiçbir aşamada bozulmaz.
+- Renkleri oyun değiştiremez. Çeşitliliği karakter sayısı sağlar; bu yüzden ten, saç ve kıyafet çeşitliliğini listede baştan dağıttım.
+- 11 hareket (yürü, otur, yaz, telefon, kahve, sunum, sevin, stres, uyukla…) her karaktere otomatik aktarılır. Telefonu ve kupayı oyun ele kendisi verir.
+
+**Kaç karakter:** Her dönem için kadın, erkek ve nötrden **en az 1, önerilen 2** (4 dönem × 3 × 2 = 24). Nötr karakteri olmayan dönemde nötr çalışanlar o dönemin herhangi bir karakterini alır.
 
 ### 5.2 Karakter prompt şablonu
 
@@ -252,83 +253,89 @@ full-body stylized 3D character for a cozy management game, [KİŞİ],
 natural adult proportions with a slightly large head, friendly simple face with big expressive eyes,
 eyebrows and a small closed smile, hand-painted textures with soft fabric folds,
 A-pose: standing straight, arms straight and angled 45 degrees down away from the body,
-open hands with fingers together, legs slightly apart, feet flat on the ground, facing the camera,
-front view, the whole body visible from head to shoes, soft even studio lighting,
-plain light gray background, no floor, no cast shadow, nothing in the hands, no bag,
-no text, no logo
+arms clearly separated from the body, open hands with fingers together, legs slightly apart,
+feet flat on the ground, facing the camera, front view, the whole body visible from head to shoes,
+soft even studio lighting, plain light gray background, no floor, no cast shadow, nothing in the hands,
+no bag, no hat, no text, no logo
 ```
 
-**Neden A-pozu:** Kollar gövdeden ayrı olunca Tripo kolları gövdeye yapıştırmaz, iskelet de doğru oturur. Elde eşya olmasın: telefonu ve kupayı oyun kendisi veriyor.
+**Neden A-pozu:** Kollar gövdeden ayrı olunca Tripo kolları gövdeye yapıştırmaz, iskelet de doğru oturur.
 
-**Arka görünüş:** Karakterde arka taraf önemli; kamera dönünce görünüyor. Beğendiğin görselden sonra şunu iste ve Tripo'da multi-view kullan:
+**Saç:** Omuzlara dökülen çok uzun açık saç, kollar kalkınca hafifçe esneyebilir. Bunu düzelten bir ayar var ama en temiz sonuç kısa, toplu ya da sırta dökülen saçta alınır.
+
+**Arka görünüş:** Beğendiğin görselden sonra şunu iste ve Tripo'da multi-view kullan:
 `Same character, exact same outfit, hair and colors, seen from directly behind, same A-pose.`
-Yandan görünüş de alabilirsen daha iyi.
 
-### 5.3 Karakter listesi (24 kişi, dönem başına 6)
+### 5.3 Karakter listesi ve adlar
 
-Dosya adı `char_<dönem>_<sıra>`. **Cinsiyet** sütunu oyunun çalışan cinsiyetine eşlemek için.
+Dosya adı kuralı: **`char_<dönem>_<f|m|n><sıra>.glb`**.
+- **Dönem:** `1990`, `2000`, `2010`, `2020`. 2020, 2020 ve sonrası demek.
+- **Harf:** `f` kadın, `m` erkek, `n` nötr.
+- **Sıra:** iki haneli (`01`, `02`…).
+
+Oyun cinsiyeti ve dönemi bu addan okur; adı doğru vermen yeter.
+
+Zaten kadroda olanlar: `char_2020_f01` (kot ceketli kadın). İskeleti gelince: `char_2020_m01` (bulutlu ceketli erkek).
 
 **1990'lar**
 
-| Dosya adı | Cinsiyet | [KİŞİ] |
-|---|---|---|
-| `char_1990_01` | kadın | a woman in her 30s with medium brown skin and big curly dark hair, a mustard blazer with big shoulder pads over a cream blouse, a straight knee-length brown skirt, low brown heels |
-| `char_1990_02` | erkek | a man in his 30s with light skin and a brown mullet haircut, a light blue shirt with a patterned burgundy tie, pleated beige trousers with suspenders, brown loafers |
-| `char_1990_03` | kadın | a young woman with light skin and big permed auburn hair, an oversized cream knit sweater, high-waisted light blue jeans, white sneakers |
-| `char_1990_04` | erkek | an older man with tan skin, a neat gray side-part, a gray mustache and round glasses, a brown tweed suit with a sage green tie, dark brown shoes |
-| `char_1990_05` | erkek | a young man with dark brown skin and short black hair, an oversized faded denim jacket over a white t-shirt, baggy jeans, chunky white sneakers |
-| `char_1990_06` | nötr | an androgynous young adult with light olive skin and a short black bob haircut, round glasses, a black turtleneck, long plaid trousers in sage and cream, black boots |
+| Dosya adı | [KİŞİ] |
+|---|---|
+| `char_1990_f01` | a woman in her 30s with medium brown skin and big curly dark hair, a mustard blazer with big shoulder pads over a cream blouse, a straight knee-length brown skirt, low brown heels |
+| `char_1990_f02` | a young woman with light skin and big permed auburn hair, an oversized cream knit sweater, high-waisted light blue jeans, white sneakers |
+| `char_1990_m01` | a man in his 30s with light skin and a brown mullet haircut, a light blue shirt with a patterned burgundy tie, pleated beige trousers with suspenders, brown loafers |
+| `char_1990_m02` | an older man with tan skin, a neat gray side-part, a gray mustache and round glasses, a brown tweed suit with a sage green tie, dark brown shoes |
+| `char_1990_m03` | a young man with dark brown skin and short black hair, an oversized faded denim jacket over a white t-shirt, baggy jeans, chunky white sneakers |
+| `char_1990_n01` | an androgynous young adult with light olive skin and a short black bob haircut, round glasses, a black turtleneck, long plaid trousers in sage and cream, black boots |
 
 **2000'ler**
 
-| Dosya adı | Cinsiyet | [KİŞİ] |
-|---|---|---|
-| `char_2000_01` | erkek | a young man with light skin and spiky gelled brown hair, an untucked blue striped shirt, khaki cargo pants, gray sneakers |
-| `char_2000_02` | kadın | a young woman with light skin and long straight blonde hair with side-swept bangs, a fitted pastel pink cardigan over a white top, flared low-rise jeans, white sneakers |
-| `char_2000_03` | erkek | a man with deep brown skin and a short buzz cut, a dark green polo shirt, beige chinos, chunky brown sneakers |
-| `char_2000_04` | kadın | a woman with East Asian features and a high black ponytail, a white blouse under a black blazer, wide gray trousers, black flats |
-| `char_2000_05` | nötr | a young adult with medium skin and shaggy chin-length brown hair, an oversized mustard hoodie with a simple shape print, baggy jeans, skate shoes |
-| `char_2000_06` | kadın | a woman with dark brown skin and long braids tied back, a colorful terracotta and cream knee-length wrap dress, simple brown sandals |
+| Dosya adı | [KİŞİ] |
+|---|---|
+| `char_2000_f01` | a young woman with light skin and long straight blonde hair tied in a low ponytail, side-swept bangs, a fitted pastel pink cardigan over a white top, flared low-rise jeans, white sneakers |
+| `char_2000_f02` | a woman with East Asian features and a high black ponytail, a white blouse under a black blazer, wide gray trousers, black flats |
+| `char_2000_f03` | a woman with dark brown skin and long braids tied back, a colorful terracotta and cream knee-length wrap dress, simple brown sandals |
+| `char_2000_m01` | a young man with light skin and spiky gelled brown hair, an untucked blue striped shirt, khaki cargo pants, gray sneakers |
+| `char_2000_m02` | a man with deep brown skin and a short buzz cut, a dark green polo shirt, beige chinos, chunky brown sneakers |
+| `char_2000_n01` | a young adult with medium skin and shaggy chin-length brown hair, an oversized mustard hoodie with a simple shape print, baggy jeans, skate shoes |
 
 **2010'lar**
 
-| Dosya adı | Cinsiyet | [KİŞİ] |
-|---|---|---|
-| `char_2010_01` | erkek | a man with light skin, a man bun and a full ginger beard, a red and dark green flannel shirt with rolled sleeves, slim dark jeans, brown boots |
-| `char_2010_02` | kadın | a young woman with light skin and an undercut with dyed teal hair, an oversized gray knit sweater, black skinny jeans, white sneakers |
-| `char_2010_03` | erkek | a man with brown skin, a neat side-part and thick black-rimmed glasses, a mustard cardigan over a white button-up shirt with a small bow tie, rolled cream chinos, brown shoes |
-| `char_2010_04` | kadın | a woman with tan skin and long wavy chestnut hair, a light denim shirt tucked into white jeans, tan ankle boots |
-| `char_2010_05` | erkek | a young man with dark brown skin and a rounded afro, a sage green bomber jacket over a white tee, dark joggers, white sneakers |
-| `char_2010_06` | kadın | a woman with medium skin wearing a soft pastel mint hijab, a long cream tunic, wide sage trousers, white sneakers |
+| Dosya adı | [KİŞİ] |
+|---|---|
+| `char_2010_f01` | a young woman with light skin and an undercut with dyed teal hair, an oversized gray knit sweater, black skinny jeans, white sneakers |
+| `char_2010_f02` | a woman with tan skin and wavy chestnut hair in a loose bun, a light denim shirt tucked into white jeans, tan ankle boots |
+| `char_2010_f03` | a woman with medium skin wearing a soft pastel mint hijab, a long cream tunic, wide sage trousers, white sneakers |
+| `char_2010_m01` | a man with light skin, a man bun and a full ginger beard, a red and dark green flannel shirt with rolled sleeves, slim dark jeans, brown boots |
+| `char_2010_m02` | a man with brown skin, a neat side-part and thick black-rimmed glasses, a mustard cardigan over a white button-up shirt with a small bow tie, rolled cream chinos, brown shoes |
+| `char_2010_m03` | a young man with dark brown skin and a rounded afro, a sage green bomber jacket over a white tee, dark joggers, white sneakers |
 
 **2020'ler**
 
-| Dosya adı | Cinsiyet | [KİŞİ] |
-|---|---|---|
-| `char_2020_01` | kadın | a young woman with light skin and short pastel pink hair, an oversized lavender t-shirt, wide-leg beige cargo pants, chunky white sneakers |
-| `char_2020_02` | erkek | a man with olive skin and short curly black hair, a puffy sage green vest over a long-sleeve cream shirt, dark gray joggers, sneakers |
-| `char_2020_03` | nötr | a young adult with deep brown skin and a bleached blonde buzz cut, an oversized terracotta hoodie, wide black trousers, white sneakers |
-| `char_2020_04` | kadın | an older woman with light skin and a silver bob haircut, round tortoiseshell glasses, a loose cream linen shirt, wide olive trousers, white sneakers |
-| `char_2020_05` | erkek | a young man with East Asian features and fluffy black hair, wireless headphones resting around his neck, a mustard knit sweater vest over a white shirt, beige trousers, sneakers |
-| `char_2020_06` | kadın | a young woman with medium brown skin and two space buns, an orange t-shirt under blue denim overall shorts, black and white canvas sneakers |
+| Dosya adı | [KİŞİ] |
+|---|---|
+| `char_2020_f02` | a young woman with light skin and short pastel pink hair, an oversized lavender t-shirt, wide-leg beige cargo pants, chunky white sneakers |
+| `char_2020_f03` | an older woman with light skin and a silver bob haircut, round tortoiseshell glasses, a loose cream linen shirt, wide olive trousers, white sneakers |
+| `char_2020_f04` | a young woman with medium brown skin and two space buns, an orange t-shirt under blue denim overall shorts, black and white canvas sneakers |
+| `char_2020_m02` | a man with olive skin and short curly black hair, a puffy sage green vest over a long-sleeve cream shirt, dark gray joggers, sneakers |
+| `char_2020_m03` | a young man with East Asian features and fluffy black hair, wireless headphones resting around his neck, a mustard knit sweater vest over a white shirt, beige trousers, sneakers |
+| `char_2020_n01` | a young adult with deep brown skin and a bleached blonde buzz cut, an oversized terracotta hoodie, wide black trousers, white sneakers |
 
-Önce yalnızca **`char_1990_01`** üret (ilk deneme). Gerisine 5.4'teki test bitince geçeriz.
+İlk turda her dönemden bir kadın, bir erkek ve bir nötr (`f01`, `m01`, `n01`) üretmen yeter. Böylece her dönemde herkes Tripo karakteriyle görünür; kalanlar çeşitlilik için.
 
-### 5.4 İlk deneme karakteri: iskelet testi
+### 5.4 Tripo'da iskelet ve teslim
 
-Karakterin oyunda hareket edebilmesi için içinde bir iskelet (rig) olmalı. Tripo'nun kendi iskelet özelliği var. Ama bizim hareketlerimizle uyumlu olup olmadığını bilmiyoruz, ilk karakterde test edeceğiz.
+1. Karakterin 3D modelini her zamanki gibi üret (Image to 3D; karakter için üçgen sınırı 15.000).
+2. Sol menüden **Rig** bölümüne gir. Model türü sorarsa **insan / humanoid / biped** seç ve iskeleti oluştur.
+3. Önizlemede hazır bir hareket (yürüme gibi) oynatabiliyorsan bir kez bak: kollar ve bacaklar kırılmadan bükülmeli. Hazır hareket eklemene gerek yok.
+4. **GLB** olarak indir (iskelet ve doku içinde gelir; FBX gerekmez).
+5. Dosyayı adlandırma kuralıyla `art/incoming/cast/` klasörüne koy (ör. `art/incoming/cast/char_1990_m01.glb`) ve bana "gönderdim" yaz.
 
-`char_1990_01` için **üç dosya** gönder:
-
-1. **İskeletsiz GLB:** normal indirme → `char_1990_01.glb`.
-2. **Tripo iskeletli:** Tripo'da **Rig** (ya da "Auto Rig", "Animate") bölümünde insan (humanoid) iskelet seç. Hazır hareket eklemene gerek yok. **FBX** olarak indir (iskelet ve ağırlıklar dahil) → `char_1990_01_rig.fbx`. Aynı ekranda GLB seçeneği de varsa onu da indir → `char_1990_01_rig.glb`.
-3. **Ekran görüntüsü:** Tripo'nun rig ekranının görüntüsü. Hangi seçenekler olduğunu görmek istiyorum.
-
-Ben bunlarla iki yolu denerim:
-- **(a) Tripo iskeleti:** Bizim hareketleri ona aktarırım.
-- **(b) Kendi iskeletim:** İskeletsiz modele kendi iskeletimi otomatik yerleştiririm.
-
-Hangisi temiz çalışırsa onu seçeriz. İkisi de olmazsa yedek yol **Mixamo** (ücretsiz Adobe hesabı); `art/pipeline.md` 1. bölümde anlatıldığı gibi. O durumda sana kısa ve ayrı bir tarif yazarım.
+Ben şu komutu çalıştırırım (ya da sen çalıştırabilirsin):
+```
+"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_cast.py
+```
+Komut yeni dosyaları bulur, 11 hareketi aktarır, saç ağırlıklarını düzeltir ve karakteri kadro listesine ekler. İskeletsiz dosyayı atlar ve uyarır; o zaman Tripo'da Rig yapıp yeniden indir.
 
 ### 5.5 Karakter kontrol listesi (Tripo önizlemesinde)
 
@@ -337,6 +344,7 @@ Hangisi temiz çalışırsa onu seçeriz. İkisi de olmazsa yedek yol **Mixamo**
 - [ ] Yüz düzgün mü? Göz ve ağız kaymamış olmalı.
 - [ ] Arka taraf temiz mi? Saçın arkası, sırt.
 - [ ] Saç başla bütün mü? Havada kopuk tutam olmamalı.
+- [ ] Rig yapıldı mı? İndirmeden önce Rig bölümünde iskelet görünmeli.
 
 ---
 
@@ -377,7 +385,7 @@ Gönderdiğin dokuları `godot --headless --script res://tools/prepare_textures.
 
 ## 7. Teslim kontrol listesi (her model için)
 
-- [ ] Ad tablodaki gibi (`desk.glb`, `char_1990_01.glb`…).
+- [ ] Ad tablodaki gibi (`desk.glb`, `char_1990_m01.glb`…). Karakterler `art/incoming/cast/` klasörüne.
 - [ ] Dosya `art/incoming/` klasöründe; konsept görsel `art/concepts/` klasöründe.
 - [ ] Tripo önizlemesinde her yönden baktım; delik, leke, arka plan parçası yok.
 - [ ] Doku açık, format GLB.
@@ -395,7 +403,7 @@ Ben her teslimde şunu yapıp sana görüntü göndereceğim:
 | Tur | Ne | Neden |
 |---|---|---|
 | 1 | ★ `desk`, `chair`, `plant_small` görselleri, **birlikte stil onayı** | Bütün oyunun görünüşünü bu üçü belirler |
-| 2 | Bu üçünün 3D'si + `char_1990_01` (5.4 testi) | Tripo kalitesini ve iskelet yolunu erken görürüz |
+| 2 | Bu üçünün 3D'si (yapıldı) ve iskelet testi (yapıldı: Tripo Rig çalışıyor) | Tripo kalitesi ve iskelet yolu doğrulandı |
 | 3 | Dokular (bölüm 6) | Sahnenin en geniş alanları; az emekle büyük fark |
 | 4 | Kalan ofis eşyaları (4.1–4.3) | Her ekranda görünenler |
 | 5 | Karakterlerin geri kalanı (5.3) | 5.4'te seçilen yolla |

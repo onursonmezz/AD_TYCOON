@@ -40,7 +40,7 @@
 	"_cast": "Görsel AI (Tripo) karakterleri: saçı ve kıyafeti gövdesinde, tek parça. Çalışan, cinsiyetine ve işe alındığı yıla uyan biriyle görünür; uygun yoksa parçalı karakter. src: ham Tripo dosyası (tools/blender/retarget_tripo.py).",
 	"cast": [
 		{ "id": "char_2020_f01", "model": "characters/cast/char_2020_f01.glb", "gender": "female", "from": 2020, "to": 9999,
-			"src": "art/incoming/char_try_female_rig.glb" }
+			"src": "art/incoming/cast/char_2020_f01.glb" }
 	],
 	"cast_rig": { "hand_bone": "mixamorig_RightHand" },
 	"hand_props": {

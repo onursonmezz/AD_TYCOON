@@ -1,5 +1,15 @@
 # Değişiklik günlüğü
 
+## K2–K3: Kadro karakterleri için toplu araç ve rehber (2026-11-07)
+- Karakterleri `art/incoming/cast/` klasörüne `char_<dönem>_<f|m|n><sıra>.glb` adıyla koyman yeterli. Tek komut hareketleri aktarır, saçı düzeltir ve karakteri oyuna ekler.
+- İskeleti olmayan dosya atlanır ve uyarı verilir.
+- Rehberin karakter bölümü ve 24 kişilik liste yeni adlarla güncellendi; prompt kartları yeni bağlantıda.
+- Nasıl test ederim:
+  1. Tripo'da bir karakteri Rig'le, GLB indir, örneğin `art/incoming/cast/char_1990_m01.glb` olarak kaydet.
+  2. `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_cast.py`
+  3. Çıktıda "Kadroya eklendi: char_1990_m01" görmelisin.
+  4. 1990'da yeni oyun başlatıp erkek çalışan işe al: yeni karakterle gelmeli.
+
 ## K1: Tripo karakterleri çalışanlarda (2026-11-07)
 - 2020 ve sonrasında işe alınan kadın ve nötr çalışanlar artık Tripo karakteri olarak görünüyor: dokulu yüz, saç ve kıyafet. Yürüyor, oturuyor, yazıyor ve diğer 11 hareketi yapıyor.
 - Telefonla konuşurken elinde telefon, kahve içerken kupa var.

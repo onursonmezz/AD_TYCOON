@@ -197,4 +197,5 @@ def main() -> None:
     retarget(os.path.join(ROOT, a["src"]), a["dst"])
 
 
-main()
+if __name__ == "__main__":
+    main()
