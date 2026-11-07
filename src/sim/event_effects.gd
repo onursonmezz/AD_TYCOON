@@ -22,7 +22,7 @@ static func apply(sim: Simulation, inst: Dictionary, effects: Dictionary) -> Dic
 					sim.economy.pay(state, -amount)
 				else:
 					state.cash += amount
-					state.year_income += amount
+					state.book(amount, 0.0)
 				out[key] = amount
 			"reputation":
 				state.reputation = clampf(state.reputation + float(v), data.balf("reputation.min"), data.balf("reputation.max"))
@@ -152,7 +152,7 @@ static func _campaign(sim: Simulation, camp: Dictionary, field: String, v: Varia
 		"fee_bonus":
 			var amount: float = float(camp["setup"]["fee"]) * float(v)
 			sim.state.cash += amount
-			sim.state.year_income += amount
+			sim.state.book(amount, 0.0)
 		_:
 			return false
 	return true

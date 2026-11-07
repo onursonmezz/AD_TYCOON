@@ -95,6 +95,9 @@ var events: Dictionary = EventSystem.empty_events()
 var loan: Dictionary = {}
 var year_income: float = 0.0
 var year_expense: float = 0.0
+## Ay ay gelir-gider özeti (UI-2d finans sekmeleri ve grafik): [{"m": yıl*12+ay-1, "in": gelir, "out": gider}].
+## Yalnızca kayıt; hesaplar year_income/year_expense'e göre. Economy.yearly son cashflow.history_months ayı tutar.
+var finance_months: Array[Dictionary] = []
 
 var _next_id: Dictionary = {}
 
@@ -102,7 +105,7 @@ var _next_id: Dictionary = {}
 const SAVED_FIELDS: Array[String] = ["agency_name", "cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
 	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
-	"receivables", "payables", "best_raw", "year_income", "year_expense", "_next_id",
+	"receivables", "payables", "best_raw", "year_income", "year_expense", "finance_months", "_next_id",
 	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income",
 	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build", "tools", "hardware", "research", "knowledge", "events", "loan"]
 
@@ -137,6 +140,17 @@ func find_brief(brief_id: String) -> Dictionary:
 		if b["id"] == brief_id:
 			return b
 	return {}
+
+
+## Gelir ve gideri yıl toplamına ve bu ayın kaydına yazar (bütün gelir-gider buradan geçer).
+func book(income: float, expense: float) -> void:
+	year_income += income
+	year_expense += expense
+	var key: int = clock.year() * 12 + clock.month() - 1
+	if finance_months.is_empty() or int(finance_months[-1]["m"]) != key:
+		finance_months.append({"m": key, "in": 0.0, "out": 0.0})
+	finance_months[-1]["in"] = float(finance_months[-1]["in"]) + income
+	finance_months[-1]["out"] = float(finance_months[-1]["out"]) + expense
 
 
 func to_dict() -> Dictionary:
@@ -183,6 +197,7 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.best_raw = saved.get("best_raw", {})
 	s.year_income = float(saved.get("year_income", 0.0))
 	s.year_expense = float(saved.get("year_expense", 0.0))
+	s.finance_months.assign(saved.get("finance_months", []))
 	s._next_id = saved.get("_next_id", {})
 	s.rivals = saved.get("rivals", {})
 	s.award_entries.assign(saved.get("award_entries", []))

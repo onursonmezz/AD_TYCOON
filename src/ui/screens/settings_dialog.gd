@@ -1,10 +1,15 @@
 class_name SettingsDialog
 extends Control
-## Ayarlar (M9): ses seviyeleri, dil, ekran, arayüz boyutu, otomatik kayıt, tutorial, günlük klasörü.
+## Ayarlar (M9, UI-2d): ses seviyeleri, dil, ekran, arayüz boyutu, otomatik kayıt, tutorial, günlük klasörü.
 ## Ana menüden ve oyun içinden açılır; değişiklik hemen uygulanır (Settings autoload'u kaydeder). Esc ile kapanır.
 ## Dil değişince açık ekran yeniden kurulsun diye on_language çağrılır.
 
 var _on_language: Callable
+var _tab: String = "audio"
+var _built: bool = false
+
+const TABS: Array = [["audio", "UI_SET_AUDIO", "volume"], ["game", "UI_SET_GAME", "device-gamepad-2"],
+	["display", "UI_SET_DISPLAY", "device-desktop"], ["language", "UI_SET_LANGUAGE", "world"]]
 
 
 func _init(on_language: Callable = Callable()) -> void:
@@ -13,43 +18,74 @@ func _init(on_language: Callable = Callable()) -> void:
 
 
 func _ready() -> void:
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(620.0, 560.0))
-	col.add_child(UiUtil.heading(tr("UI_SETTINGS")))
-	col.add_child(UiUtil.label(tr("UI_SET_AUDIO"), 17, UiUtil.SAGE_DARK))
-	for key: String in ["volume_master", "volume_music", "volume_sfx", "volume_ambient"]:
-		col.add_child(_slider_row(key))
-	col.add_child(UiUtil.label(tr("UI_SET_GAME"), 17, UiUtil.SAGE_DARK))
-	col.add_child(_option_row("language", ["tr", "en"], ["UI_LANG_TR", "UI_LANG_EN"]))
-	var scales: Array = []
-	var scale_names: Array = []
-	for s: float in Settings.UI_SCALES:
-		scales.append(s)
-		scale_names.append(UiUtil.percent(roundf(s * 100.0)))
-	col.add_child(_option_row("ui_scale", scales, scale_names))
-	col.add_child(_check_row("autosave"))
-	col.add_child(_check_row("tutorial"))
-	col.add_child(UiUtil.label(tr("UI_SET_DISPLAY"), 17, UiUtil.SAGE_DARK))
-	col.add_child(_check_row("fullscreen"))
-	var res: Array = Array(Settings.RESOLUTIONS)
-	col.add_child(_option_row("resolution", res, res))
-	var tools: HBoxContainer = UiUtil.hbox()
-	tools.add_child(UiUtil.button(tr("UI_SET_TUTORIAL_RESET"), func() -> void: Settings.set_value("tutorial_seen", [])))
-	tools.add_child(UiUtil.button(tr("UI_SET_LOGS"), func() -> void:
-		OS.shell_open(ProjectSettings.globalize_path("user://logs"))))
-	col.add_child(tools)
-	var buttons: HBoxContainer = UiUtil.hbox()
+	_build()
+
+
+## UI-2d: solda ikonlu sekmeler (Ses, Oynanış, Ekran, Dil), sağda seçili sekmenin ayarları; altta sıfırla / kapat.
+func _build() -> void:
+	UiUtil.clear(self)
+	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(780.0, 400.0), not _built)
+	_built = true
+	col.add_child(UiUtil.heading(tr("UI_SETTINGS"), "settings"))
+	var split: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
+	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col.add_child(split)
+	var nav: VBoxContainer = UiUtil.vbox(4)
+	nav.custom_minimum_size.x = 190.0
+	split.add_child(nav)
+	for tab: Array in TABS:
+		var b: Button = UiUtil.button(tr(tab[1]), func() -> void:
+			_tab = tab[0]
+			_build())
+		b.icon = UiUtil.icon_texture(tab[2], 22)
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.theme_type_variation = "NavButtonActive" if _tab == tab[0] else "NavButton"
+		nav.add_child(b)
+	var panel: PanelContainer = PanelContainer.new()
+	panel.theme_type_variation = "QuietPanel"
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.custom_minimum_size.y = 300.0
+	split.add_child(panel)
+	var body: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_M)
+	panel.add_child(body)
+	match _tab:
+		"audio":
+			for key: String in ["volume_master", "volume_music", "volume_sfx", "volume_ambient"]:
+				body.add_child(_slider_row(key))
+		"game":
+			var scales: Array = []
+			var scale_names: Array = []
+			for s: float in Settings.UI_SCALES:
+				scales.append(s)
+				scale_names.append(UiUtil.percent(roundf(s * 100.0)))
+			body.add_child(_option_row("ui_scale", scales, scale_names))
+			body.add_child(_check_row("autosave"))
+			body.add_child(_check_row("tutorial"))
+			var tools: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+			tools.add_child(UiUtil.button(tr("UI_SET_TUTORIAL_RESET"), func() -> void: Settings.set_value("tutorial_seen", [])))
+			tools.add_child(UiUtil.button(tr("UI_SET_LOGS"), func() -> void:
+				OS.shell_open(ProjectSettings.globalize_path("user://logs"))))
+			body.add_child(tools)
+		"display":
+			body.add_child(_check_row("fullscreen"))
+			var res: Array = Array(Settings.RESOLUTIONS)
+			body.add_child(_option_row("resolution", res, res))
+		"language":
+			body.add_child(_option_row("language", ["tr", "en"], ["UI_LANG_TR", "UI_LANG_EN"]))
+	var buttons: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	buttons.add_child(UiUtil.spacer())
 	buttons.add_child(UiUtil.button(tr("UI_SET_RESET"), func() -> void:
 		Settings.reset()
 		_language_changed()))
-	buttons.add_child(UiUtil.spacer())
-	buttons.add_child(UiUtil.button(tr("UI_CLOSE"), queue_free))
+	buttons.add_child(UiUtil.button_kind(tr("UI_CLOSE"), queue_free, "accept"))
 	col.add_child(buttons)
 
 
 func _label(key: String) -> Label:
 	var l: Label = UiUtil.label(tr("UI_SET_" + key.to_upper()), 15)
-	l.custom_minimum_size.x = 220.0
+	l.custom_minimum_size.x = 200.0
 	return l
+
 
 
 func _slider_row(key: String) -> HBoxContainer:
@@ -94,9 +130,9 @@ func _option_row(key: String, values: Array, names: Array) -> HBoxContainer:
 func _check_row(key: String) -> HBoxContainer:
 	var row: HBoxContainer = UiUtil.hbox()
 	row.add_child(_label(key))
-	var c: CheckBox = CheckBox.new()
+	var c: CheckButton = CheckButton.new()
 	c.button_pressed = bool(Settings.get_value(key))
-	UiUtil.style_toggle(c)
+	row.add_child(UiUtil.spacer())
 	c.toggled.connect(func(on: bool) -> void: Settings.set_value(key, on))
 	row.add_child(c)
 	return row

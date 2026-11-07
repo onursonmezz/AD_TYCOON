@@ -60,7 +60,7 @@ func monthly(state: SimState) -> float:
 	var interest: float = float(loan["balance"]) * float(_l("annual_interest")) / 12.0
 	var pay: float = minf(float(loan["monthly"]), float(loan["balance"]) + interest)
 	state.cash -= pay
-	state.year_expense += interest
+	state.book(0.0, interest)
 	loan["balance"] = maxf(0.0, float(loan["balance"]) + interest - pay)
 	loan["months_left"] = int(loan["months_left"]) - 1
 	if int(loan["months_left"]) <= 0 or float(loan["balance"]) < 1.0:
@@ -79,6 +79,6 @@ func repay(state: SimState) -> String:
 	if state.cash < cost:
 		return "ERR_NO_CASH"
 	state.cash -= cost
-	state.year_expense += cost - float(state.loan["balance"])
+	state.book(0.0, cost - float(state.loan["balance"]))
 	state.loan = {}
 	return ""

@@ -1,13 +1,17 @@
 class_name IndustryPanel
 extends VBoxContainer
 ## Sektör ekranı (GDD 14.3, 15): ödül takvimi ve başvuru, yıl sonu sıralamaları, kazandığımız ödüller, rakip ajanslar.
+## UI-2d: üç sekme (ödül takvimi + kazandıklarımız, sıralamalar, rakipler); ödüller ikonlu satır kartları.
 
 const RANK_ROWS: int = 5
 const AWARD_ROWS: int = 8
+const TABS: Array = [["awards", "UI_AWARD_CALENDAR"], ["rankings", "UI_RANKINGS"], ["rivals", "UI_RIVALS"]]
+const AWARD_ICONS: Array[String] = ["star", "speakerphone", "heart", "trophy"]
 
 var _main: Control
 var _body: VBoxContainer
 var _week: int = -1
+var _tab: String = "awards"
 
 
 func _init(main_screen: Control) -> void:
@@ -33,36 +37,67 @@ func refresh() -> void:
 
 func rebuild() -> void:
 	UiUtil.clear(_body)
-	_body.add_child(UiUtil.label(tr("UI_AWARD_CALENDAR"), 18, UiUtil.SAGE_DARK))
-	_body.add_child(_awards_block())
-	_body.add_child(UiUtil.label(tr("UI_OUR_AWARDS"), 18, UiUtil.SAGE_DARK))
-	_body.add_child(_our_awards())
-	_body.add_child(UiUtil.label(tr("UI_RANKINGS"), 18, UiUtil.SAGE_DARK))
-	_body.add_child(_rankings())
-	_body.add_child(UiUtil.label(tr("UI_RIVALS"), 18, UiUtil.SAGE_DARK))
-	_body.add_child(_rivals())
+	_body.add_child(UiUtil.segmented(TABS, _tab, func(id: String) -> void:
+		_tab = id
+		rebuild()))
+	match _tab:
+		"awards":
+			_body.add_child(_awards_block())
+			var won: PanelContainer = PanelContainer.new()
+			won.theme_type_variation = "Card"
+			var col: VBoxContainer = UiUtil.vbox(6)
+			won.add_child(col)
+			var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+			head.alignment = BoxContainer.ALIGNMENT_CENTER
+			head.add_child(UiUtil.icon("trophy", 24, CozyTheme.GOLD))
+			var title: Label = UiUtil.label(tr("UI_OUR_AWARDS"), 20, CozyTheme.FOREST)
+			title.add_theme_font_override("font", CozyTheme.title_font())
+			head.add_child(title)
+			head.add_child(UiUtil.icon("trophy", 24, CozyTheme.GOLD))
+			col.add_child(head)
+			col.add_child(_our_awards())
+			_body.add_child(won)
+		"rankings":
+			_body.add_child(_rankings())
+		"rivals":
+			_body.add_child(_rivals())
 
 
-func _awards_block() -> GridContainer:
+func _awards_block() -> VBoxContainer:
 	var sim: Simulation = GameState.sim
 	var data: GameData = DataDB.data
-	var grid: GridContainer = GridContainer.new()
-	grid.columns = 4
-	grid.add_theme_constant_override("h_separation", 18)
+	var list: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	var i: int = 0
 	for id: String in sim.awards.available(sim.state):
-		var name_label: Label = UiUtil.label(UiUtil.name_of(data.awards, id), 15)
-		name_label.tooltip_text = tr(data.awards[id]["desc_key"])
-		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-		grid.add_child(name_label)
-		grid.add_child(UiUtil.label(tr("UI_AWARD_WHEN") % [tr("MONTH_%d" % sim.awards.entry_month(id)),
-			tr("MONTH_%d" % int(data.awards[id]["month"]))], 14, UiUtil.WOOD))
-		grid.add_child(UiUtil.label(UiUtil.money(sim.awards.entry_fee(sim.state, id)), 14))
+		var card: PanelContainer = PanelContainer.new()
+		card.theme_type_variation = "Card"
+		card.tooltip_text = tr(data.awards[id]["desc_key"])
+		list.add_child(card)
+		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+		card.add_child(row)
+		var icon_name: String = str(data.awards[id].get("icon", AWARD_ICONS[i % AWARD_ICONS.size()]))
+		row.add_child(UiUtil.icon(icon_name, 30, [CozyTheme.GOLD, CozyTheme.ACCENT, CozyTheme.NEGATIVE, CozyTheme.FOREST_LIGHT][i % 4]))
+		i += 1
+		var info: VBoxContainer = UiUtil.vbox(0)
+		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var name: Label = UiUtil.label(UiUtil.name_of(data.awards, id), 16, CozyTheme.TEXT)
+		name.add_theme_font_override("font", CozyTheme.strong_font(800))
+		info.add_child(name)
+		info.add_child(UiUtil.label(tr("UI_AWARD_WHEN") % [tr("MONTH_%d" % sim.awards.entry_month(id)),
+			tr("MONTH_%d" % int(data.awards[id]["month"]))], 13, CozyTheme.MUTED))
+		row.add_child(info)
+		var fee: Label = UiUtil.label(UiUtil.money(sim.awards.entry_fee(sim.state, id)), 16, CozyTheme.TEXT)
+		fee.add_theme_font_override("font", CozyTheme.strong_font(800))
+		row.add_child(fee)
 		if sim.awards.is_open(sim.state, id):
-			grid.add_child(UiUtil.button(tr("UI_AWARD_ENTER"), func() -> void:
-				_main.call("open_modal", AwardEntryDialog.new(id, rebuild))))
+			var enter: Button = UiUtil.button(tr("UI_AWARD_ENTER"), func() -> void:
+				_main.call("open_modal", AwardEntryDialog.new(id, rebuild)))
+			enter.icon = UiUtil.icon_texture("chevron-right", 18)
+			enter.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			row.add_child(enter)
 		else:
-			grid.add_child(UiUtil.label(tr("UI_AWARD_CLOSED"), 14, UiUtil.MUTED))
-	return grid
+			row.add_child(UiUtil.label(tr("UI_AWARD_CLOSED"), 13, CozyTheme.MUTED))
+	return list
 
 
 func _our_awards() -> VBoxContainer:

@@ -1516,3 +1516,9 @@ ERR_LOAN_NONE,Kapatılacak kredi yok.,There is no loan to repay.
 ERR_AWARD_REPUTATION,Bu ödüle başvurmak için itibarın yetmiyor.,Your reputation is too low to enter this award.
 UI_FIN_SECTION_YEAR,Bu yıl,This year
 UI_FIN_SECTION_FLOW,Nakit akışı,Cash flow
+UI_PICK_BACKGROUND,Bu geçmişi seç,Choose this background
+UI_FIN_TAB_MONTH,Bu ay,This month
+UI_FIN_TAB_QUARTER,Son 3 ay,Last 3 months
+UI_FIN_INCOME,Gelir,Income
+UI_FIN_EXPENSE,Gider,Expenses
+UI_FIN_CHART,Son 6 ay gelir,"Income, last 6 months"

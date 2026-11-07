@@ -231,9 +231,27 @@ static func adopt_heading(title: Label, body: Node, fallback: String = "", fallb
 	title.get_parent().get_parent().visible = not text.is_empty()
 
 
+## Sekme şeridi (UI-2d, referanstaki "Bu Ay / Son 3 Ay / Yıl"): tabs = [[id, metin anahtarı], ...]; seçili turuncu.
+static func segmented(tabs: Array, current: String, on_pick: Callable) -> PanelContainer:
+	var seg: PanelContainer = PanelContainer.new()
+	seg.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.CREAM, CozyTheme.RADIUS_CONTROL, CozyTheme.BORDER, 1,
+		false, Vector2(4, 4)))
+	seg.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var row: HBoxContainer = hbox(2)
+	seg.add_child(row)
+	for tab: Array in tabs:
+		var id: String = str(tab[0])
+		var b: Button = button(TranslationServer.translate(str(tab[1])), func() -> void: on_pick.call(id))
+		b.theme_type_variation = "NavButtonActive" if id == current else "NavButton"
+		b.add_theme_font_size_override("font_size", 14)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(b)
+	return seg
+
+
 ## Modal pencere iskeleti: root'un içine karartılmış arka plan + ortada kaydırılabilir kart kurar.
 ## Dönüş: içeriğin ekleneceği kutu.
-static func modal_frame(root: Control, min_size: Vector2) -> VBoxContainer:
+static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) -> VBoxContainer:
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var dim: ColorRect = ColorRect.new()
 	dim.color = Color(0.08, 0.14, 0.1, 0.45)
@@ -253,7 +271,8 @@ static func modal_frame(root: Control, min_size: Vector2) -> VBoxContainer:
 	var content: VBoxContainer = vbox(10)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
-	pop_in(panel)
+	if animate:
+		pop_in(panel)
 	# Esc ile kapanan pencerelerde başlık bandında kapat düğmesi.
 	if root.has_meta("esc_closes"):
 		(parts[2] as HBoxContainer).add_child(close_button(root.queue_free))

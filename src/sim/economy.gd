@@ -18,7 +18,7 @@ static func inflation(game_data: GameData, year: int) -> float:
 ## Gider öder (vergi matrahından düşülür).
 func pay(state: SimState, amount: float) -> void:
 	state.cash -= amount
-	state.year_expense += amount
+	state.book(0.0, amount)
 
 
 ## Müşteri adına medya ödemesi (vergiye girmez): tedarikçiye vadeli ödenir (GDD 13.3 "peşin veya 30 gün").
@@ -53,7 +53,7 @@ func weekly(state: SimState) -> void:
 	for r: Dictionary in state.receivables:
 		if int(r["due_week"]) <= state.clock.week_index:
 			state.cash += float(r["amount"])
-			state.year_income += float(r["income"])
+			state.book(float(r["income"]), 0.0)
 		else:
 			remaining.append(r)
 	state.receivables = remaining
@@ -84,4 +84,7 @@ func yearly(state: SimState) -> float:
 	state.cash -= tax
 	state.year_income = 0.0
 	state.year_expense = 0.0
+	# Aylık finans kaydı (yalnızca arayüz için): son cashflow.history_months ay.
+	while state.finance_months.size() > data.bali("cashflow.history_months"):
+		state.finance_months.pop_front()
 	return tax

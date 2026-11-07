@@ -110,7 +110,7 @@
 	},
 	"agency": { "performance_bonus_max": 0.5 },
 	"ui": { "finished_campaigns_kept": 30, "notifications_kept": 8, "score_count_seconds": 1.5 },
-	"cashflow": { "monthly_base_cost": 1500, "red_weeks_to_bankrupt": 4, "media_payment_weeks": 6,
+	"cashflow": { "monthly_base_cost": 1500, "red_weeks_to_bankrupt": 4, "media_payment_weeks": 6, "history_months": 24,
 		"payment_terms": [ { "min_pay": 70, "weeks": 4 }, { "min_pay": 40, "weeks": 8 }, { "min_pay": 0, "weeks": 12 } ],
 		"late_chance_mult": 0.1, "late_extra_weeks": [4, 8],
 		"media_advance_by_scale": [0.0, 0.5, 1.0, 1.0] },

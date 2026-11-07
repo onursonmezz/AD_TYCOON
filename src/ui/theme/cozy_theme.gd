@@ -28,6 +28,7 @@ const POSITIVE: Color = Color("#3F7A4E")
 const NEGATIVE: Color = Color("#B4533A")
 const WOOD: Color = Color("#8A6440")  # ikincil etiket (sıcak kahve)
 const GOLD: Color = Color("#D9A441")  # yıldız, taç, ödül vurgusu
+const ACCENT_SOFT: Color = Color("#FCE3C4")  # seçili kartın zemini
 const SHADOW: Color = Color(0.09, 0.15, 0.12, 0.12)
 
 ## Boşluk ritmi (README: 8/12/16/24/32) ve köşe yarıçapları.
@@ -135,6 +136,12 @@ static func _panels(t: Theme) -> void:
 	sep.thickness = 1
 	t.set_stylebox("separator", "HSeparator", sep)
 	t.set_constant("separation", "HSeparator", SPACE_M)
+	var vsep: StyleBoxLine = StyleBoxLine.new()
+	vsep.color = BORDER
+	vsep.thickness = 1
+	vsep.vertical = true
+	t.set_stylebox("separator", "VSeparator", vsep)
+	t.set_constant("separation", "VSeparator", SPACE_M)
 
 
 ## Düğme durumları; renkler [normal, hover, pressed] arka plan, çerçeve, yazı.
@@ -178,6 +185,19 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	t.set_type_variation("IconButtonActive", "Button")
 	_button(t, "IconButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE,
 		Vector2(SPACE_M, SPACE_M))
+	# Sol gezinme (ayarlar sekmeleri gibi): sessiz satır; seçili olan turuncu.
+	t.set_type_variation("NavButton", "Button")
+	_button(t, "NavButton", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, TEXT, TEXT, Vector2(SPACE_M, 10))
+	t.set_type_variation("NavButtonActive", "Button")
+	_button(t, "NavButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, TEXT, Vector2(SPACE_M, 10))
+	# Seçim kartı (portreli geçmiş seçimi gibi): krem kart, seçili olan turuncu çerçeveli.
+	t.set_type_variation("PickCard", "Button")
+	_button(t, "PickCard", [CREAM_LIGHT, CREAM_LIGHT, CREAM_LIGHT], BORDER, TEXT, TEXT, Vector2(SPACE_S, SPACE_S))
+	t.set_type_variation("PickCardActive", "Button")
+	for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+		t.set_stylebox(st, "PickCardActive", box(ACCENT_SOFT, RADIUS_CARD, ACCENT, 2, false, Vector2(SPACE_S, SPACE_S)))
+	for v: String in ["NavButton", "NavButtonActive"]:
+		t.set_constant("h_separation", v, SPACE_M)
 	# Kapatma: başlık bandında, yeşil üstünde krem çarpı; üzerine gelince hafif açık daire.
 	t.set_type_variation("CloseButton", "Button")
 	var cm: Vector2 = Vector2(6, 6)
@@ -227,16 +247,16 @@ static func _inputs(t: Theme) -> void:
 	# Açılır seçim: ikincil düğme gibi, sağda ok.
 	_button(t, "OptionButton", [CREAM_LIGHT, CREAM, CREAM], BORDER, TEXT, TEXT, Vector2(SPACE_M, 10))
 	t.set_font("font", "OptionButton", t.default_font)
-	t.set_icon("arrow", "OptionButton", _arrow_icon())
+	t.set_icon("arrow", "OptionButton", CozyIcons.arrow())
 	t.set_stylebox("panel", "PopupMenu", box(CREAM_LIGHT, RADIUS_CONTROL, BORDER, 1, true, Vector2(4, 4)))
 	t.set_stylebox("hover", "PopupMenu", box(SAGE_SOFT, 6, Color.TRANSPARENT, 0, false, Vector2(SPACE_S, 4)))
 	t.set_color("font_color", "PopupMenu", TEXT)
 	t.set_color("font_hover_color", "PopupMenu", TEXT)
 	t.set_color("font_disabled_color", "PopupMenu", MUTED)
-	t.set_icon("radio_checked", "PopupMenu", _check_icon(true, true))
-	t.set_icon("radio_unchecked", "PopupMenu", _check_icon(false, true))
-	t.set_icon("checked", "PopupMenu", _check_icon(true, false))
-	t.set_icon("unchecked", "PopupMenu", _check_icon(false, false))
+	t.set_icon("radio_checked", "PopupMenu", CozyIcons.check(true, true))
+	t.set_icon("radio_unchecked", "PopupMenu", CozyIcons.check(false, true))
+	t.set_icon("checked", "PopupMenu", CozyIcons.check(true, false))
+	t.set_icon("unchecked", "PopupMenu", CozyIcons.check(false, false))
 
 
 static func _bars(t: Theme) -> void:
@@ -247,8 +267,8 @@ static func _bars(t: Theme) -> void:
 	t.set_stylebox("slider", "HSlider", rail)
 	t.set_stylebox("grabber_area", "HSlider", box(FOREST_LIGHT, 4, Color.TRANSPARENT, 0, false, Vector2(0, 3)))
 	t.set_stylebox("grabber_area_highlight", "HSlider", box(FOREST, 4, Color.TRANSPARENT, 0, false, Vector2(0, 3)))
-	t.set_icon("grabber", "HSlider", _dot_icon(FOREST_LIGHT))
-	t.set_icon("grabber_highlight", "HSlider", _dot_icon(FOREST))
+	t.set_icon("grabber", "HSlider", CozyIcons.dot(FOREST_LIGHT))
+	t.set_icon("grabber_highlight", "HSlider", CozyIcons.dot(FOREST))
 	for sb: String in ["VScrollBar", "HScrollBar"]:
 		t.set_stylebox("scroll", sb, box(Color(BORDER, 0.35), 4, Color.TRANSPARENT, 0, false, Vector2(3, 3)))
 		t.set_stylebox("grabber", sb, box(SAGE, 4, Color.TRANSPARENT, 0, false, Vector2(3, 3)))
@@ -265,10 +285,15 @@ static func _toggles(t: Theme) -> void:
 			t.set_stylebox(st, cb, StyleBoxEmpty.new())
 		t.set_stylebox("hover", cb, box(SAGE_SOFT, 6, Color.TRANSPARENT, 0, false, Vector2(4, 2)))
 		t.set_stylebox("focus", cb, box(Color.TRANSPARENT, 6, FOREST, 2, false, Vector2(4, 2)))
-	t.set_icon("checked", "CheckBox", _check_icon(true, false))
-	t.set_icon("unchecked", "CheckBox", _check_icon(false, false))
-	t.set_icon("radio_checked", "CheckBox", _check_icon(true, true))
-	t.set_icon("radio_unchecked", "CheckBox", _check_icon(false, true))
+	# Aç/kapa anahtarı (CheckButton): yeşil ray, krem topuz.
+	t.set_icon("checked", "CheckButton", CozyIcons.switch(true))
+	t.set_icon("unchecked", "CheckButton", CozyIcons.switch(false))
+	t.set_icon("checked_disabled", "CheckButton", CozyIcons.switch(true))
+	t.set_icon("unchecked_disabled", "CheckButton", CozyIcons.switch(false))
+	t.set_icon("checked", "CheckBox", CozyIcons.check(true, false))
+	t.set_icon("unchecked", "CheckBox", CozyIcons.check(false, false))
+	t.set_icon("radio_checked", "CheckBox", CozyIcons.check(true, true))
+	t.set_icon("radio_unchecked", "CheckBox", CozyIcons.check(false, true))
 
 
 static func _tabs(t: Theme, _head: FontVariation) -> void:
@@ -283,77 +308,3 @@ static func _tabs(t: Theme, _head: FontVariation) -> void:
 		t.set_color("font_hovered_color", type, TEXT)
 		t.set_font("font", type, strong_font())
 	t.set_stylebox("panel", "TabContainer", box(CREAM_LIGHT, RADIUS_CONTROL, BORDER, 1, false, Vector2(SPACE_L, SPACE_M)))
-
-
-# --- kodla çizilen küçük ikonlar (onay kutusu, ok, kaydırıcı tutamağı) --------------------------------
-
-const ICON_PX: int = 18
-
-
-## Kenarı yumuşatılmış daire ya da yuvarlak kare; seçiliyse dolu ve ortasında işaret.
-static func _check_icon(checked: bool, radio: bool) -> ImageTexture:
-	var n: int = ICON_PX
-	var img: Image = Image.create(n, n, false, Image.FORMAT_RGBA8)
-	var c: Vector2 = Vector2(n, n) * 0.5
-	for y: int in n:
-		for x: int in n:
-			var p: Vector2 = Vector2(x + 0.5, y + 0.5) - c
-			var d: float = p.length() - (n * 0.5 - 1.0) if radio else _round_rect_dist(p, n * 0.5 - 1.0, 4.0)
-			var col: Color = Color.TRANSPARENT
-			if checked:
-				col = Color(FOREST, clampf(0.5 - d, 0.0, 1.0))
-			else:
-				var fill: Color = CREAM_LIGHT
-				var edge: float = clampf(1.0 - absf(d + 0.75), 0.0, 1.0)
-				col = Color(fill.lerp(MUTED, edge), clampf(0.5 - d, 0.0, 1.0))
-			img.set_pixel(x, y, col)
-	if checked:
-		if radio:
-			for y: int in n:
-				for x: int in n:
-					var d2: float = (Vector2(x + 0.5, y + 0.5) - c).length() - 3.5
-					if d2 < 0.5:
-						img.set_pixel(x, y, CREAM_LIGHT.lerp(FOREST, clampf(d2 + 0.5, 0.0, 1.0)))
-		else:
-			_stroke(img, [Vector2(4.5, 9.5), Vector2(7.5, 12.5), Vector2(13.5, 5.5)], CREAM_LIGHT, 1.4)
-	return ImageTexture.create_from_image(img)
-
-
-static func _round_rect_dist(p: Vector2, half: float, r: float) -> float:
-	var q: Vector2 = Vector2(absf(p.x), absf(p.y)) - Vector2(half - r, half - r)
-	return Vector2(maxf(q.x, 0.0), maxf(q.y, 0.0)).length() + minf(maxf(q.x, q.y), 0.0) - r
-
-
-## Kırık çizgi (onay işareti, ok); kalınlık piksel.
-static func _stroke(img: Image, pts: Array, col: Color, width: float) -> void:
-	for y: int in img.get_height():
-		for x: int in img.get_width():
-			var p: Vector2 = Vector2(x + 0.5, y + 0.5)
-			var best: float = 99.0
-			for i: int in pts.size() - 1:
-				var a: Vector2 = pts[i]
-				var b: Vector2 = pts[i + 1]
-				var t: float = clampf((p - a).dot(b - a) / (b - a).length_squared(), 0.0, 1.0)
-				best = minf(best, (p - (a + (b - a) * t)).length())
-			var k: float = clampf(width - best + 0.5, 0.0, 1.0)
-			if k > 0.0:
-				img.set_pixel(x, y, img.get_pixel(x, y).lerp(col, k) if img.get_pixel(x, y).a > 0.0 else Color(col, k))
-
-
-static func _arrow_icon() -> ImageTexture:
-	var img: Image = Image.create(14, 14, false, Image.FORMAT_RGBA8)
-	_stroke(img, [Vector2(3.5, 5.5), Vector2(7.0, 9.0), Vector2(10.5, 5.5)], MUTED, 1.1)
-	return ImageTexture.create_from_image(img)
-
-
-static func _dot_icon(col: Color) -> ImageTexture:
-	var n: int = ICON_PX
-	var img: Image = Image.create(n, n, false, Image.FORMAT_RGBA8)
-	var c: Vector2 = Vector2(n, n) * 0.5
-	for y: int in n:
-		for x: int in n:
-			var d: float = (Vector2(x + 0.5, y + 0.5) - c).length()
-			var inner: float = clampf(n * 0.5 - 3.0 - d + 0.5, 0.0, 1.0)
-			var outer: float = clampf(n * 0.5 - 1.0 - d + 0.5, 0.0, 1.0)
-			img.set_pixel(x, y, Color(CREAM_LIGHT.lerp(col, inner), outer))
-	return ImageTexture.create_from_image(img)
