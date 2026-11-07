@@ -73,9 +73,8 @@ func _run() -> void:
 				and sc.get_parent().get_parent() is CenterContainer:
 			(sc as ScrollContainer).scroll_vertical = 100000
 	await _shot("06b_report_bottom")
-	for child: Node in screen.get_children():
-		if child.get_child_count() > 0 and child.get_child(0) is ReportDialog:
-			child.get_child(0).queue_free()
+	# Rapor (ve araya giren olay) penceresi modal katmanının içinde; panelleri çekmeden önce kapat.
+	await _close_modals(screen)
 	for id: String in ["clients", "finance", "history"]:
 		screen.call("show_panel", id)
 		await _shot("07_" + id)
@@ -415,3 +414,11 @@ func _step() -> void:
 		var inst: Dictionary = EventSystem.pending(sim.state)
 		sim.events.resolve(sim, inst["uid"], int(inst["options"][0]))
 	GameState.step_day()
+
+
+func _close_modals(screen: Node) -> void:
+	for i: int in 3:
+		for n: Node in screen.find_children("*", "", true, false):
+			if n is ReportDialog or n is EventDialog:
+				n.queue_free()
+		await get_tree().process_frame

@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## UI-1: Cozy Refined arayüz, ilk iki ekran (2026-11-07)
+- **Yeni ana menü:** Orman yeşili zemin üstünde krem kart, büyük başlık. Turuncu tek ana düğme: kayıt varsa "Devam et", yoksa "Yeni oyun". Çıkış sade bir yazı düğmesi.
+- **Yeni finans ekranı:**
+  - Üstte büyük sayılarla nakit, bekleyen tahsilat ve "hepsi ödenince nakit" kartları.
+  - Altında "Bu yıl", "Nakit akışı", kredi ve matbaa kartları.
+  - Eksi değerler kırmızımsı, kâr yeşil.
+- **Türkçe karakter düzeltmesi:** Düğmelerde "ş" artık düzgün ("Çıkış").
+- Diğer ekranlar şimdilik eski görünümde; birlikte değerlendirdikten sonra geçecek.
+- Nasıl test ederim:
+  1. Oyunu aç: ana menü yeni tasarımda. Kayıt varsa "Devam et" turuncu, yoksa "Yeni oyun".
+  2. Bir oyun aç, soldaki para ikonuyla Finans'ı aç: krem pencere, üç büyük sayı kartı, alt kartlar.
+  3. Kredi bölümünde tutar ve vade seç: aylık taksit önizlemesi değişmeli. "Kredi çek" çalışmalı, kredi alınca "erken kapat" düğmesi gelmeli.
+  4. Başka bir pencereye (Müşteriler gibi) geç: o pencere eski görünümde kalmalı.
+  5. `docs/screenshots/09_ui1_main_menu.png` ve `09_ui1_finance.png`.
+
 ## C3: Saçlar ve dönemsel kıyafetler (2026-11-05)
 - **Kel kalan yok:** 9 saç tipi var: kısa, tıraş, yandan ayrık, küt, uzun, topuz, kıvırcık, mullet (90'lar), erkek topuzu (2010+). Saç rengi çalışana göre değişir.
 - **Kıyafetler döneme göre değişiyor:**

@@ -994,3 +994,21 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **"stretch" sığdırma:** Boyu işlev taşıyan eşyalar (masa 0.75 m: klavye ve el hizası) eksen eksen ölçeklenir. Tripo masası 1.0 × 0.53 × 0.45 m geldi; oranlı sığdırma masayı 0.59 m'ye indirirdi. Eksenler arası oran 1.35'i geçerse betik uyarır.
 - **Renk dengeleme:** Görsel AI dokuları ofisin sıcak ışığında fazla doygun durdu. Masanın doygunluğu 0.61, palet ahşabı 0.49; parlaklık 0.84'e karşı 0.79 idi. Bütün AI dokularına varsayılan olarak doygunluk ×0.8 ve parlaklık ×0.94 uygulanıyor; eşyaya özel `grade` ile değiştirilebilir. Masa sonrası: doygunluk 0.48, parlaklık 0.79.
 - **İlk model:** masa (`props/desk.glb`). 5.437 → 2.939 üçgen, doku 1024 px. Çekmeceler oturana bakıyor; ek döndürme gerekmedi.
+
+## K-085 · 2026-11-07 · Kabul · Orgo kararı ("Cozy Refined" UI kiti) + uygulama
+**Konu:** Orgo'nun hazırladığı "Cozy Refined" tasarım sistemi (krem paneller, orman yeşili, turuncu birincil eylem, ince çerçeve, hafif gölge). İlk adım (UI-1): ortak tema, ana menü ve finans ekranı.
+**Karar:**
+- **Kitin betiği (`CozyRefinedTheme.gd`) olduğu gibi alınmadı.** Godot 4.7'de çalışıyordu ama:
+  - boşlukla girintiliydi, gereksiz `@tool` vardı;
+  - açılır seçim, ipucu, kaydırma çubuğu, onay kutusu ve sekme stilleri yoktu;
+  - ekranların kullandığı eski adlar (`AcceptButton`, `CardLight`, `CloseButton`…) tanımlı değildi. Eksik türler proje temasına düşer, iki görünüm karışırdı.
+  Yerine `src/ui/theme/cozy_theme.gd` (`CozyTheme`) yazıldı. Kitin renk ve ölçü tokenları aynen alındı. Eksik kontrol türleri aynı dille eklendi; eski adlar yeni dile eşlendi. Onay kutusu, açılır ok ve kaydırıcı tutamağı ikonları kodla çiziliyor; Godot'nun varsayılan beyaz ikonları krem zeminde görünmüyordu.
+- **Kademeli geçiş:** Proje teması (`UiTheme` → `main_theme.tres`) şimdilik değişmedi. Yeni tema yalnızca:
+  - ana menüde: kökte `theme`;
+  - finans penceresinde: `main.gd` yalnız finans açıkken pencereye ve kapatma düğmesine `CozyTheme` verir.
+  Diğer ekranlar onaydan sonra; o zaman proje teması `CozyTheme` olur.
+- **Düğme fontu Nunito (kalın):** Fredoka bu boyda "ş" çengelini harften ayrık çiziyor ("Çıkış¸"). Kit de Türkçe destekli gövde fontu istiyor. Başlıklar Fredoka'da kaldı. Eski temada aynı sorun bütün düğmelerde var; geçişte düzelecek.
+- **Ana menü:** orman yeşili zemin üstünde krem modal. Tek turuncu birincil eylem: kayıt varsa "Devam et", yoksa "Yeni oyun". Çıkış çerçevesiz sessiz düğme. İşlevler ve sinyaller aynı.
+- **Finans:** Üstte üç büyük sayı kartı: nakit, bekleyen tahsilat (notunda sıradaki tahsilat), hepsi ödenince nakit. Altında "Bu yıl", "Nakit akışı", kredi ve matbaa kartları. Eksi değerler kırmızımsı, kâr yeşil. "Kredi çek" birincil eylem. Hesaplar, komutlar ve veriler aynı. 2 yeni metin: `UI_FIN_SECTION_YEAR`, `UI_FIN_SECTION_FLOW`.
+- **Referans görsel ZIP'te yoktu;** tasarım README'deki tokenlara ve kurallara göre uygulandı.
+- **Ekran turu düzeltmesi:** Tur, rapor ve olay pencerelerini modal katmanında bulup kapatıyor; önceden finans görüntüsü rapor penceresinin altında kalıyordu.

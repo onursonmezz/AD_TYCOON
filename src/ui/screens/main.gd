@@ -19,6 +19,7 @@ var _pause_button: Button
 var _overtime: Button
 var _content: VBoxContainer
 var _window: PanelContainer
+var _close: Button
 var _office: OfficeView
 var _employee_card: EmployeeCard = null
 var _build_bar: BuildToolbar = null
@@ -128,6 +129,7 @@ func _build_window() -> void:
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_window.add_child(_content)
 	var close: Button = UiUtil.close_button(close_panel)
+	_close = close
 	add_child(close)
 	var place: Callable = func() -> void:
 		close.position = _window.position + Vector2(_window.size.x - 30.0, -10.0)
@@ -217,6 +219,10 @@ func show_panel(id: String) -> void:
 			_panel = IndustryPanel.new(self)
 		"history":
 			_panel = HistoryPanel.new(self)
+	# UI-1: Cozy Refined şimdilik yalnızca finans penceresinde (onaydan sonra bütün ekranlara geçecek).
+	var cozy: Theme = CozyTheme.get_theme() if id == "finance" else null
+	_window.theme = cozy
+	_close.theme = cozy
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_child(_panel)
 	_panel.call("refresh")
