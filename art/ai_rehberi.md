@@ -414,3 +414,21 @@ Ben her teslimde şunu yapıp sana görüntü göndereceğim:
 | Stil diğerlerine benzemiyor | Referans görseller verilmedi | 2.3'teki stil çapalarını her seferinde ekle |
 
 Takıldığın her yerde ekran görüntüsüyle sor. Yanlış dosya göndermenin zararı yok, ben kontrol etmeden hiçbir şey oyuna girmez.
+
+---
+
+## 10. Ana menü illüstrasyonu (2D, Tripo'suz)
+
+Oyun açılışında, menünün arkasında duran tam ekran resim. Doğrudan görsel AI ile üret; menü sağ tarafta durduğu için resmin sağ kısmı sade olmalı.
+
+- **Boyut:** 1920 × 1080 (16:9), PNG ya da JPG.
+- **Kayıt:** `assets/ui/menu_background.png` (`.jpg` de olur). Oyun dosyayı görünce kendisi kullanır; yoksa koyu yeşil zemin.
+
+```text
+A cozy illustrated scene of a small advertising agency office corner at golden hour, seen from a slightly elevated
+three-quarter view: a chunky wooden desk with a retro beige computer, a mug with a small star, pencils in a cup,
+potted plants and trailing leaves, a big window with a warm city skyline at sunset, a megaphone and sticky notes on a
+cork board, warm sage green walls, honey wood, terracotta and mustard accents, hand-painted stylized game art, soft
+warm light, rich details on the left half of the image, the right 45% of the image calm and slightly darker (a plain
+wall and soft window light) to leave room for a menu, no text, no logo, no people, wide 16:9 composition
+```
