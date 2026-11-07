@@ -2,8 +2,8 @@ class_name CozyTheme
 extends RefCounted
 ## "Cozy Refined" UI teması (UI-1, Orgo'nun tasarım rehberi: krem paneller, orman yeşili, turuncu birincil eylem).
 ## Sıcak, ince çerçeveli, hafif gölgeli; gradyan, kabartma ve kalın çerçeve yok.
-## Şimdilik yalnızca ana menü ve finans penceresi bu temayı kullanır (Control.theme = CozyTheme.get_theme());
-## diğer ekranlar proje temasında (UiTheme) kalır. Onaydan sonra proje teması bununla değişecek.
+## UI-2: proje teması (tools/build_theme.gd bunu src/ui/theme/main_theme.tres olarak kaydeder). Başlıklar serif
+## (Fraunces), gövde ve düğmeler Nunito. Pencereler: üstte yeşil başlık bandı (UiUtil.window_frame).
 ##
 ## Tür varyasyonları (theme_type_variation):
 ##   Paneller: QuietPanel (iç panel), Card (kart), StatCard (büyük sayı kartı)
@@ -26,6 +26,8 @@ const TEXT: Color = Color("#283C32")
 const MUTED: Color = Color("#718076")
 const POSITIVE: Color = Color("#3F7A4E")
 const NEGATIVE: Color = Color("#B4533A")
+const WOOD: Color = Color("#8A6440")  # ikincil etiket (sıcak kahve)
+const GOLD: Color = Color("#D9A441")  # yıldız, taç, ödül vurgusu
 const SHADOW: Color = Color(0.09, 0.15, 0.12, 0.12)
 
 ## Boşluk ritmi (README: 8/12/16/24/32) ve köşe yarıçapları.
@@ -38,6 +40,8 @@ const RADIUS_CARD: int = 10
 const RADIUS_CONTROL: int = 8
 
 static var _theme: Theme = null
+
+const FONT_TITLE: String = "res://assets/fonts/Fraunces.ttf"  # serif başlık (OFL), değişken: wght, opsz, SOFT
 
 
 ## Paylaşılan tema (bir kez kurulur).
@@ -68,11 +72,25 @@ static func box(fill: Color, radius: int = RADIUS_CONTROL, border_color: Color =
 	return b
 
 
+## Serif başlık fontu (pencere başlıkları, logo, bölüm başlıkları).
+static func title_font(weight: int = 620) -> FontVariation:
+	var f: FontVariation = FontVariation.new()
+	f.base_font = load(FONT_TITLE) as FontFile
+	var ts: TextServer = TextServerManager.get_primary_interface()
+	f.variation_opentype = {ts.name_to_tag("wght"): weight, ts.name_to_tag("opsz"): 48, ts.name_to_tag("SOFT"): 60}
+	return f
+
+
+## Kalın gövde fontu (düğmeler, kart başlıkları, sayılar). Fredoka "ş" çengelini harften ayrık çiziyor.
+static func strong_font(weight: int = 760) -> FontVariation:
+	return UiTheme.font(UiTheme.FONT_BODY, weight)
+
+
 static func build() -> Theme:
 	var t: Theme = Theme.new()
 	t.default_font = UiTheme.body_font()
 	t.default_font_size = 16
-	var head: FontVariation = UiTheme.head_font()
+	var head: FontVariation = title_font()
 	_panels(t)
 	_buttons(t, head)
 	_labels(t, head)
@@ -88,6 +106,18 @@ static func _panels(t: Theme) -> void:
 	t.set_stylebox("panel", "Panel", modal)
 	t.set_stylebox("panel", "PanelContainer", modal)
 	t.set_stylebox("panel", "PopupPanel", modal)
+	# Pencere: kenar boşluğu yok; üstte yeşil başlık bandı, altta içerik (UiUtil.window_frame).
+	t.set_type_variation("WindowPanel", "PanelContainer")
+	var win: StyleBoxFlat = box(CREAM, RADIUS_MODAL, BORDER, 1, true, Vector2.ZERO)
+	t.set_stylebox("panel", "WindowPanel", win)
+	t.set_type_variation("HeaderBand", "PanelContainer")
+	var band: StyleBoxFlat = box(FOREST, RADIUS_MODAL, Color.TRANSPARENT, 0, false, Vector2(SPACE_XL, SPACE_M))
+	band.corner_radius_bottom_left = 0
+	band.corner_radius_bottom_right = 0
+	band.expand_margin_left = 1.0
+	band.expand_margin_right = 1.0
+	band.expand_margin_top = 1.0
+	t.set_stylebox("panel", "HeaderBand", band)
 	var quiet: StyleBoxFlat = box(CREAM_LIGHT, RADIUS_CONTROL, BORDER, 1, false, Vector2(SPACE_L, SPACE_M))
 	var card: StyleBoxFlat = box(CREAM_LIGHT, RADIUS_CARD, BORDER, 1, false, Vector2(SPACE_L, SPACE_M))
 	for v: Array in [["QuietPanel", quiet], ["Card", card], ["CardLight", card],
@@ -127,8 +157,7 @@ static func _button(t: Theme, type: String, fills: Array, border: Color, text: C
 
 
 static func _buttons(t: Theme, _head: FontVariation) -> void:
-	# Düğmelerde gövde fontu (Nunito) kalın: Fredoka "ş" çengelini bu boyda harften ayrık çiziyor.
-	t.set_font("font", "Button", UiTheme.font(UiTheme.FONT_BODY, 760))
+	t.set_font("font", "Button", strong_font())
 	t.set_font_size("font_size", "Button", 16)
 	_button(t, "Button", [CREAM_LIGHT, CREAM, SAGE], BORDER, TEXT, TEXT)
 	for v: String in ["PrimaryButton", "AcceptButton"]:
@@ -146,16 +175,16 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	t.set_type_variation("IconButtonActive", "Button")
 	_button(t, "IconButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE,
 		Vector2(SPACE_M, SPACE_M))
-	# Kapatma: köşede küçük, sessiz yuvarlak düğme (ikon beyaz çizilir; ikon rengi onu metin rengine boyar).
+	# Kapatma: başlık bandında, yeşil üstünde krem çarpı; üzerine gelince hafif açık daire.
 	t.set_type_variation("CloseButton", "Button")
-	var cm: Vector2 = Vector2(SPACE_S, SPACE_S)
-	t.set_stylebox("normal", "CloseButton", box(CREAM_LIGHT, 999, BORDER, 1, true, cm))
-	t.set_stylebox("hover", "CloseButton", box(CREAM, 999, FOREST_LIGHT, 1, true, cm))
-	t.set_stylebox("pressed", "CloseButton", box(SAGE, 999, FOREST_LIGHT, 1, true, cm))
+	var cm: Vector2 = Vector2(6, 6)
+	t.set_stylebox("normal", "CloseButton", box(Color.TRANSPARENT, 999, Color.TRANSPARENT, 0, false, cm))
+	t.set_stylebox("hover", "CloseButton", box(FOREST_LIGHT, 999, Color.TRANSPARENT, 0, false, cm))
+	t.set_stylebox("pressed", "CloseButton", box(FOREST_LIGHT.lightened(0.1), 999, Color.TRANSPARENT, 0, false, cm))
 	t.set_stylebox("hover_pressed", "CloseButton", t.get_stylebox("pressed", "CloseButton"))
-	t.set_stylebox("focus", "CloseButton", box(Color.TRANSPARENT, 999, FOREST, 2, false, cm))
+	t.set_stylebox("focus", "CloseButton", box(Color.TRANSPARENT, 999, ACCENT, 2, false, cm))
 	for st: String in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
-		t.set_color(st, "CloseButton", TEXT)
+		t.set_color(st, "CloseButton", CREAM_LIGHT)
 
 
 static func _label(t: Theme, type: String, color: Color, size: int, font: Font = null) -> void:
@@ -171,9 +200,10 @@ static func _labels(t: Theme, head: FontVariation) -> void:
 	t.set_font_size("font_size", "Label", 16)
 	_label(t, "TitleLabel", FOREST, 44, head)
 	_label(t, "SectionHeading", FOREST, 24, head)
-	_label(t, "CardHeading", FOREST, 18, head)
+	_label(t, "CardHeading", FOREST, 18, strong_font(800))
+	_label(t, "WindowTitle", CREAM_LIGHT, 26, head)
 	_label(t, "MutedLabel", MUTED, 14)
-	_label(t, "StatValue", TEXT, 26, head)
+	_label(t, "StatValue", TEXT, 26, strong_font(800))
 	_label(t, "StatLabel", MUTED, 13)
 	_label(t, "PositiveLabel", POSITIVE, 16)
 	_label(t, "NegativeLabel", NEGATIVE, 16)
@@ -238,7 +268,7 @@ static func _toggles(t: Theme) -> void:
 	t.set_icon("radio_unchecked", "CheckBox", _check_icon(false, true))
 
 
-static func _tabs(t: Theme, head: FontVariation) -> void:
+static func _tabs(t: Theme, _head: FontVariation) -> void:
 	var m: Vector2 = Vector2(SPACE_L, SPACE_S)
 	for type: String in ["TabBar", "TabContainer"]:
 		t.set_stylebox("tab_selected", type, box(CREAM_LIGHT, RADIUS_CONTROL, BORDER, 1, false, m))
@@ -248,7 +278,7 @@ static func _tabs(t: Theme, head: FontVariation) -> void:
 		t.set_color("font_selected_color", type, FOREST)
 		t.set_color("font_unselected_color", type, MUTED)
 		t.set_color("font_hovered_color", type, TEXT)
-		t.set_font("font", type, head)
+		t.set_font("font", type, strong_font())
 	t.set_stylebox("panel", "TabContainer", box(CREAM_LIGHT, RADIUS_CONTROL, BORDER, 1, false, Vector2(SPACE_L, SPACE_M)))
 
 

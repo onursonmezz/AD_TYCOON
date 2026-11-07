@@ -2,16 +2,16 @@ class_name UiUtil
 extends RefCounted
 ## Arayüz yardımcıları: palet (GDD 21.1), biçimlendirme, sık kullanılan kontroller.
 
-## Eski adlar G2 paletine bağlı (UiTheme, docs/art-direction.md 3.1); ekranlar bu adları kullanmaya devam eder.
-const CREAM: Color = UiTheme.PANEL_LIGHT
-const CARD: Color = UiTheme.PANEL
-const SAGE: Color = UiTheme.ACCEPT_DARK
-const SAGE_DARK: Color = UiTheme.FRAME
-const WOOD: Color = Color("#8A6440")
-const TERRACOTTA: Color = UiTheme.DECLINE
-const MUSTARD: Color = Color("#D9A441")
-const TEXT: Color = UiTheme.INK
-const MUTED: Color = UiTheme.INK_SOFT
+## Eski adlar Cozy Refined paletine bağlı (UI-2, CozyTheme); ekranlar bu adları kullanmaya devam eder.
+const CREAM: Color = CozyTheme.CREAM_LIGHT
+const CARD: Color = CozyTheme.CREAM
+const SAGE: Color = CozyTheme.POSITIVE
+const SAGE_DARK: Color = CozyTheme.FOREST
+const WOOD: Color = CozyTheme.WOOD
+const TERRACOTTA: Color = CozyTheme.NEGATIVE
+const MUSTARD: Color = CozyTheme.GOLD
+const TEXT: Color = CozyTheme.TEXT
+const MUTED: Color = CozyTheme.MUTED
 
 static var _icon_cache: Dictionary = {}
 static var _head_font: Font = null
@@ -33,9 +33,14 @@ static func wrapped(text: String, size: int = 15, color: Color = TEXT, min_width
 	return l
 
 
-static func heading(text: String) -> Label:
-	var l: Label = label(text, 24, SAGE_DARK)
-	l.add_theme_font_override("font", head_font())
+## Pencere başlığı. Pencere çerçevesindeyse (window_frame) metni yeşil başlık bandına taşınır; icon bandda görünür.
+static func heading(text: String, icon_name: String = "") -> Label:
+	var l: Label = Label.new()
+	l.text = text
+	l.theme_type_variation = "SectionHeading"
+	l.set_meta("heading", true)
+	if not icon_name.is_empty():
+		l.set_meta("heading_icon", icon_name)
 	return l
 
 
@@ -173,6 +178,59 @@ static func name_of(table: Dictionary, id: String) -> String:
 	return t(str(table[id]["name_key"]))
 
 
+## Pencere çerçevesi (UI-2): panel kenarsız "WindowPanel" olur; üstte yeşil başlık bandı (ikon + serif başlık + kapat),
+## altta 24 px iç boşluklu içerik. Dönüş: [band başlık etiketi, içerik kutusu, banddaki kapat yuvası (HBox)].
+## İçerikteki ilk heading() etiketi bulunduğunda metni banda taşınır, kendisi gizlenir (adopt_heading).
+static func window_frame(panel: PanelContainer) -> Array:
+	panel.theme_type_variation = "WindowPanel"
+	var col: VBoxContainer = vbox(0)
+	panel.add_child(col)
+	var band: PanelContainer = PanelContainer.new()
+	band.theme_type_variation = "HeaderBand"
+	col.add_child(band)
+	var row: HBoxContainer = hbox(CozyTheme.SPACE_M)
+	band.add_child(row)
+	var ic: TextureRect = TextureRect.new()
+	ic.name = "Icon"
+	ic.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	ic.modulate = CozyTheme.CREAM_LIGHT
+	ic.visible = false
+	row.add_child(ic)
+	var title: Label = Label.new()
+	title.theme_type_variation = "WindowTitle"
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.clip_text = true
+	row.add_child(title)
+	var slot: HBoxContainer = hbox(4)
+	row.add_child(slot)
+	var margin: MarginContainer = MarginContainer.new()
+	for side: String in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, CozyTheme.SPACE_XL if side != "top" else CozyTheme.SPACE_L)
+	margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col.add_child(margin)
+	var body: VBoxContainer = vbox(10)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	margin.add_child(body)
+	return [title, body, slot]
+
+
+## İçerikteki ilk heading() etiketinin metnini (ve ikonunu) banda taşır; yoksa bandı varsayılan başlıkla bırakır.
+static func adopt_heading(title: Label, body: Node, fallback: String = "", fallback_icon: String = "") -> void:
+	var text: String = fallback
+	var icon_name: String = fallback_icon
+	for n: Node in body.find_children("*", "Label", true, false):
+		if n.has_meta("heading"):
+			text = (n as Label).text
+			icon_name = str(n.get_meta("heading_icon", fallback_icon))
+			(n as Label).visible = false
+			break
+	title.text = text
+	var ic: TextureRect = title.get_parent().get_node("Icon")
+	ic.texture = icon_texture(icon_name, 26) if not icon_name.is_empty() else null
+	ic.visible = ic.texture != null
+	title.get_parent().get_parent().visible = not text.is_empty()
+
+
 ## Modal pencere iskeleti: root'un içine karartılmış arka plan + ortada kaydırılabilir kart kurar.
 ## Dönüş: içeriğin ekleneceği kutu.
 static func modal_frame(root: Control, min_size: Vector2) -> VBoxContainer:
@@ -187,22 +245,24 @@ static func modal_frame(root: Control, min_size: Vector2) -> VBoxContainer:
 	var panel: PanelContainer = PanelContainer.new()
 	panel.custom_minimum_size = min_size
 	center.add_child(panel)
+	var parts: Array = window_frame(panel)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.custom_minimum_size = Vector2(min_size.x - 30.0, minf(min_size.y, 640.0))
-	panel.add_child(scroll)
+	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, minf(min_size.y, 600.0))
+	(parts[1] as VBoxContainer).add_child(scroll)
 	var content: VBoxContainer = vbox(10)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
 	pop_in(panel)
-	# Esc ile kapanan pencerelerde köşeye taşan kırmızı kapatma düğmesi (G2).
+	# Esc ile kapanan pencerelerde başlık bandında kapat düğmesi.
 	if root.has_meta("esc_closes"):
-		var close: Button = close_button(root.queue_free)
-		root.add_child(close)
-		var place: Callable = func() -> void:
-			close.global_position = panel.global_position + Vector2(panel.size.x - 30.0, -12.0)
-		panel.resized.connect(place)
-		panel.item_rect_changed.connect(place)
+		(parts[2] as HBoxContainer).add_child(close_button(root.queue_free))
+	# Başlık içerik kurulduktan sonra banda taşınır.
+	var adopt: Callable = func() -> void: adopt_heading(parts[0], content)
+	if root.is_node_ready():
+		adopt.call_deferred()
+	else:
+		root.ready.connect(adopt, CONNECT_ONE_SHOT)
 	return content
 
 
@@ -270,7 +330,7 @@ static func close_button(on_press: Callable) -> Button:
 	var b: Button = button("", on_press)
 	b.icon = icon_texture("x", 22)
 	b.theme_type_variation = "CloseButton"
-	b.custom_minimum_size = Vector2(42, 42)
+	b.custom_minimum_size = Vector2(36, 36)
 	b.tooltip_text = TranslationServer.translate("TIP_CLOSE_WINDOW")
 	return b
 

@@ -15,7 +15,6 @@ func _ready() -> void:
 
 func _build() -> void:
 	UiUtil.clear(self)
-	theme = CozyTheme.get_theme()  # UI-1: Cozy Refined (önce yalnızca ana menü ve finans)
 	var bg: ColorRect = ColorRect.new()
 	bg.color = CozyTheme.FOREST
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)

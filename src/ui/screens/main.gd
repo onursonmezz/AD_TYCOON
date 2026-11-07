@@ -19,7 +19,7 @@ var _pause_button: Button
 var _overtime: Button
 var _content: VBoxContainer
 var _window: PanelContainer
-var _close: Button
+var _window_title: Label
 var _office: OfficeView
 var _employee_card: EmployeeCard = null
 var _build_bar: BuildToolbar = null
@@ -113,7 +113,7 @@ func _build_menu() -> void:
 		col.add_child(b)
 
 
-## Menü ekranlarının yüzen penceresi: ikon çubuğunun sağında, ekranın yaklaşık yarısı; köşede kapatma düğmesi.
+## Menü ekranlarının yüzen penceresi: ikon çubuğunun sağında, ekranın yaklaşık yarısı; başlık bandında kapat.
 func _build_window() -> void:
 	_window = PanelContainer.new()
 	add_child(_window)
@@ -125,20 +125,12 @@ func _build_window() -> void:
 	_window.offset_right = 120.0
 	_window.offset_top = WINDOW_MARGIN
 	_window.offset_bottom = -WINDOW_MARGIN - 70.0
-	_content = UiUtil.vbox(0)
-	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_window.add_child(_content)
-	var close: Button = UiUtil.close_button(close_panel)
-	_close = close
-	add_child(close)
-	var place: Callable = func() -> void:
-		close.position = _window.position + Vector2(_window.size.x - 30.0, -10.0)
-	_window.item_rect_changed.connect(place)
-	_window.resized.connect(place)
-	_window.visibility_changed.connect(place.call_deferred)
-	_window.visibility_changed.connect(func() -> void: close.visible = _window.visible)
+	# UI-2: yeşil başlık bandı (ikon + başlık + kapat), altında içerik.
+	var parts: Array = UiUtil.window_frame(_window)
+	_window_title = parts[0]
+	_content = parts[1]
+	(parts[2] as HBoxContainer).add_child(UiUtil.close_button(close_panel))
 	_window.visible = false
-	close.visible = false
 
 
 ## Pencereyi kapatır, ofis görünür.
@@ -219,13 +211,10 @@ func show_panel(id: String) -> void:
 			_panel = IndustryPanel.new(self)
 		"history":
 			_panel = HistoryPanel.new(self)
-	# UI-1: Cozy Refined şimdilik yalnızca finans penceresinde (onaydan sonra bütün ekranlara geçecek).
-	var cozy: Theme = CozyTheme.get_theme() if id == "finance" else null
-	_window.theme = cozy
-	_close.theme = cozy
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_content.add_child(_panel)
 	_panel.call("refresh")
+	UiUtil.adopt_heading(_window_title, _panel, tr("MENU_" + id.to_upper()), MENU_ICONS.get(id, ""))
 	if not was_visible:
 		UiUtil.pop_in(_window)
 	_refresh_menu_state()

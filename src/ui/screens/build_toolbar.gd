@@ -20,7 +20,6 @@ func _init(view: OfficeView, on_exit: Callable) -> void:
 
 
 func _ready() -> void:
-	add_theme_stylebox_override("panel", UiTheme.panel_box())
 	var col: VBoxContainer = UiUtil.vbox(6)
 	add_child(col)
 	var top: HBoxContainer = UiUtil.hbox()

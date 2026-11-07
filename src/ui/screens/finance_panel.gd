@@ -14,7 +14,7 @@ var _sig: String = ""
 
 func _init() -> void:
 	add_theme_constant_override("separation", CozyTheme.SPACE_M)
-	add_child(_label(tr("MENU_FINANCE"), "SectionHeading"))
+	add_child(UiUtil.heading(tr("MENU_FINANCE")))
 	add_child(_wrapped(tr("UI_FINANCE_HINT"), "MutedLabel"))
 	_stats = UiUtil.hbox(CozyTheme.SPACE_M)
 	add_child(_stats)
