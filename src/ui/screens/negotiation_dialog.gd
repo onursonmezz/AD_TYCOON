@@ -22,7 +22,7 @@ func _ready() -> void:
 	var data: GameData = DataDB.data
 	GameState.execute(NegotiateCommand.new(_supplier, _list_price))
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(520.0, 340.0))
-	col.add_child(UiUtil.heading(tr("UI_NEGOTIATION_TITLE") % tr(data.suppliers[_supplier]["name_key"])))
+	col.add_child(UiUtil.heading(tr("UI_NEGOTIATION_TITLE") % tr(data.suppliers[_supplier]["name_key"]), "receipt"))
 	col.add_child(UiUtil.label(tr("UI_LIST_PRICE") % UiUtil.money(_list_price), 16))
 	var h: Array = GameState.sim.suppliers.hint(GameState.sim.state)
 	if not h.is_empty():

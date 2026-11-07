@@ -1012,3 +1012,31 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **Finans:** Üstte üç büyük sayı kartı: nakit, bekleyen tahsilat (notunda sıradaki tahsilat), hepsi ödenince nakit. Altında "Bu yıl", "Nakit akışı", kredi ve matbaa kartları. Eksi değerler kırmızımsı, kâr yeşil. "Kredi çek" birincil eylem. Hesaplar, komutlar ve veriler aynı. 2 yeni metin: `UI_FIN_SECTION_YEAR`, `UI_FIN_SECTION_FLOW`.
 - **Referans görsel ZIP'te yoktu;** tasarım README'deki tokenlara ve kurallara göre uygulandı.
 - **Ekran turu düzeltmesi:** Tur, rapor ve olay pencerelerini modal katmanında bulup kapatıyor; önceden finans görüntüsü rapor penceresinin altında kalıyordu.
+
+## K-086 · 2026-11-07 · Kabul · Orgo kararı ("tüm ekranları yap" + Fraunces, AI illüstrasyonu, finans sekmeleri, 13 ikon) + uygulama
+**Konu:** Cozy Refined'ın bütün oyuna yayılması (UI-2), Orgo'nun referans görseline göre.
+**Karar:**
+- **Proje teması artık `CozyTheme`** (`tools/build_theme.gd` → `main_theme.tres`). `UiUtil`'deki eski renk adları (`SAGE_DARK`, `WOOD`, `TERRACOTTA`…) yeni palete bağlandı; ekranlar kod değişmeden yeni renklere geçti. `UiTheme` yalnızca font yardımcıları için kaldı.
+- **Pencere başlığı:** `UiUtil.window_frame` + `adopt_heading`. Ana pencerelerde ve bütün diyaloglarda üstte koyu yeşil bant var: ikon, serif başlık (Fraunces, OFL, `assets/fonts/Fraunces.ttf`) ve kapat düğmesi. Ekranın ilk `UiUtil.heading()` etiketi banda taşınır. Başlığı renkli düz yazı olan 6 diyalog (olay, skandal, tören, çağ, iflas, rakip teklifi) da `heading()`'e geçti. Bütün diyalog başlıkları ikonlu.
+- **"Window" adı kullanılamadı:** Godot'da hazır bir sınıfın adı olduğu için tür varyasyonu olamıyor; adı `WindowPanel` oldu.
+- **HUD:**
+  - Sol ikon rayı koyu yeşil, seçili ikon turuncu.
+  - Para, itibar ve tarih krem haplarda (`CountBadge` yeniden yazıldı).
+  - Hız ve oyun düğmeleri koyu yeşil haplarda.
+  - Çalışan kartı sağ alta taşındı; sol üstte açık pencerenin başlığını örtüyordu.
+- **Ana menü:**
+  - Arkada illüstrasyon (`assets/ui/menu_background.png|jpg|webp`); yoksa koyu yeşil zemin ve ortalı menü. Prompt: `art/ai_rehberi.md` 10.
+  - Sağda serif logo, kâğıt etiket, ikonlu düğmeler.
+- **Ayarlar:** Solda ikonlu sekmeler (Ses, Oyun, Ekran, Dil). Aç/kapa ayarlar onay kutusu yerine anahtar (`CheckButton`). Anahtar, onay ve ok ikonları kodla çiziliyor (`CozyIcons`); dosya 400 satırı geçmesin diye `cozy_theme.gd`'den ayrıldı.
+- **"Sen kimsin?":** Yan yana portre kartları, seçilenin açıklaması, stat rozetleri, "Bu geçmişi seç". Portre yoksa kişi ikonu; `assets/ui/portraits/<id>.png` eklenince o kullanılır.
+- **Finans:**
+  - Sekmeler: bu ay / son 3 ay / bu yıl.
+  - Nakit, gelir ve gider şeridi; ikonlu satırlar; son 6 ay gelir grafiği (`FinanceChart`).
+  - Dönem değerleri yeni `SimState.finance_months` kaydından okunuyor. Gelir ve gideri yazan 5 yer (`Economy.pay`, tahsilat, iki olay etkisi, iki kredi gideri) artık `SimState.book()`'tan geçiyor. Yıl toplamları ve hesaplar aynı. Kayıt yıl sonunda `cashflow.history_months` (24) aya kırpılıyor ve kayda giriyor; eski kayıtlarda boş başlar.
+- **Sektör:** Sekmeler (ödül takvimi + kazandıklarımız, sıralamalar, rakipler); ödüller ikonlu satır kartları. Ortak sekme şeridi: `UiUtil.segmented`.
+- **İndirilenler:**
+  - Fraunces (OFL, 360 KB).
+  - 13 Tabler ikonu (MIT): volume, device-desktop, device-gamepad-2, world, user, wallet, arrow-up, arrow-down, building-bank, receipt, chevron-left, chevron-right, heart. Projedeki diğer ikonlar gibi beyaz çizgiye getirildi.
+- **Mekanik değişmedi:** Sinyaller, komutlar ve oyun hesapları aynı. 9 yeni metin (tr, en).
+- **Performans:** 60 çalışanla kare ortalaması 3.48 ms (288 FPS); hedef 16.7 ms.
+- **Test:** `test_economy`: aylık kayıt yıl toplamıyla tutarlı; kayıt kaydedilip yükleniyor; yıl sonunda kırpılıyor.

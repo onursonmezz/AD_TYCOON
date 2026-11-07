@@ -5,6 +5,7 @@ extends Control
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
 const WINDOW_MARGIN: float = 20.0
+const EMPLOYEE_CARD_BOTTOM: float = 132.0  # tarih hapı + hız grubu yüksekliği
 ## Sol ikon çubuğunun genişliği + boşluk: pencere, çalışan kartı ve inşa çubuğu bunun sağından başlar.
 const LEFT_GUTTER: float = 92.0
 const BUILD_BAR_BOTTOM: float = 130.0  # alt HUD (tarih + hız) yüksekliği ve boşluk
@@ -174,7 +175,12 @@ func _on_employee_clicked(employee_id: String) -> void:
 	_employee_card = EmployeeCard.new(employee_id, func() -> void: show_panel("team"))
 	add_child(_employee_card)
 	move_child(_employee_card, _modal_layer.get_index())
-	_employee_card.position = Vector2(LEFT_GUTTER, WINDOW_MARGIN)
+	# UI-2e: sağ altta, tarih ve hız kontrollerinin üstünde (açık pencerelerle çakışmasın).
+	_employee_card.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_employee_card.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_employee_card.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_employee_card.offset_right = -WINDOW_MARGIN
+	_employee_card.offset_bottom = -EMPLOYEE_CARD_BOTTOM
 	UiUtil.pop_in(_employee_card)
 
 

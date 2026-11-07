@@ -16,7 +16,7 @@ func _ready() -> void:
 	var sim: Simulation = GameState.sim
 	var pitch: Dictionary = sim.state.pitch
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(760.0, 560.0))
-	col.add_child(UiUtil.heading(tr("UI_PITCH_TITLE") % pitch["client"]["name"]))
+	col.add_child(UiUtil.heading(tr("UI_PITCH_TITLE") % pitch["client"]["name"], "speakerphone"))
 	var presenter: Dictionary = sim.pitches.presenter(sim.state, pitch)
 	col.add_child(UiUtil.label(tr("UI_PITCH_PREPARED") % [float(pitch["s"]), float(pitch["k"]),
 		GameState.employee_name(presenter), int(presenter.get("stats", {}).get("communication", 0))], 14, UiUtil.WOOD))

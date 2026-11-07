@@ -19,7 +19,7 @@ func _ready() -> void:
 	var keep_salary: float = Employee.market_value(data, emp, sim.state.clock.year()) \
 		* (1.0 + data.balf("staff_rules.offer_raise_over_market"))
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(540.0, 280.0))
-	col.add_child(UiUtil.label(tr("UI_OFFER_TITLE"), 24, UiUtil.TERRACOTTA))
+	col.add_child(UiUtil.heading(tr("UI_OFFER_TITLE"), "users"))
 	var rival: String = str(_offer.get("rival", ""))
 	var text: String = tr("UI_OFFER_TEXT") % [GameState.employee_name(emp), tr(Employee.title_key(data, emp)),
 		UiUtil.money(_offer["offer_salary"]), UiUtil.money(emp["salary"])]

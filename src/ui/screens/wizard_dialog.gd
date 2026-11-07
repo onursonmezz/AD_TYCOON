@@ -26,7 +26,7 @@ func _ready() -> void:
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(860.0, 640.0))
 	var client: Dictionary = _brief["prospect"] if not (_brief["prospect"] as Dictionary).is_empty() \
 		else s.clients.get(_brief["client_id"], {})
-	col.add_child(UiUtil.heading(tr("UI_WIZARD_TITLE") % str(client.get("name", ""))))
+	col.add_child(UiUtil.heading(tr("UI_WIZARD_TITLE") % str(client.get("name", "")), "speakerphone"))
 	col.add_child(UiUtil.label("%s · %s · %s" % [UiUtil.name_of(data.sectors, _brief["sector"]),
 		tr("SIZE_" + str(_brief["size"]).to_upper()), tr("UI_WEEKS") % int(_brief["deadline_weeks"])], 15, UiUtil.WOOD))
 	col.add_child(UiUtil.label(tr("UI_BRIEF_MONEY") % [UiUtil.money(_brief["fee"]), UiUtil.money(_brief["media_budget"]),

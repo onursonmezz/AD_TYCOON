@@ -13,7 +13,7 @@ func _ready() -> void:
 	var data: GameData = DataDB.data
 	var era: Dictionary = data.eras[_era_id]
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(640.0, 420.0))
-	col.add_child(UiUtil.label(tr("UI_ERA_TITLE") % [int(era["from"]), tr(era["name_key"])], 26, UiUtil.MUSTARD))
+	col.add_child(UiUtil.heading(tr("UI_ERA_TITLE") % [int(era["from"]), tr(era["name_key"])], "calendar"))
 	col.add_child(UiUtil.wrapped(tr(era["desc_key"]), 16, UiUtil.TEXT, 580.0))
 	var lo: int = int(era["from"])
 	var hi: int = int(era["to"])

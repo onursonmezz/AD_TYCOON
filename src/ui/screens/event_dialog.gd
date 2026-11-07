@@ -16,9 +16,8 @@ func _ready() -> void:
 	var sim: Simulation = GameState.sim
 	var ev: Dictionary = sim.events.events[_inst["id"]]
 	_col = UiUtil.modal_frame(self, Vector2(620.0, 360.0))
-	var color: Color = UiUtil.TERRACOTTA if _inst["category"] == "crisis" else UiUtil.SAGE_DARK
 	_col.add_child(UiUtil.label(tr("UI_EVENT_CAT_" + str(_inst["category"]).to_upper()), 14, UiUtil.MUTED))
-	_col.add_child(UiUtil.label(_text("T"), 24, color))
+	_col.add_child(UiUtil.heading(_text("T"), "alert-triangle" if _inst["category"] == "crisis" else "bell"))
 	_col.add_child(UiUtil.wrapped(_text("X"), 16, UiUtil.TEXT, 560.0))
 	_buttons = UiUtil.vbox(6)
 	for i: Variant in _inst["options"]:

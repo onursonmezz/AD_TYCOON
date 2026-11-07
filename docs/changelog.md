@@ -1,5 +1,29 @@
 # Değişiklik günlüğü
 
+## UI-2: Cozy Refined bütün oyunda (2026-11-07)
+- **Bütün pencereler yeni görünümde:** üstte koyu yeşil başlık bandı, ikon, zarif serif başlık ve kapat düğmesi; krem gövde, ince çerçeve.
+- **Ekranın kenarları:**
+  - Sol ikon çubuğu koyu yeşil; açık olan ekranın ikonu turuncu.
+  - Para, itibar ve tarih krem kutularda; hız ve kaydet düğmeleri koyu yeşil haplarda.
+- **Ana menü:** Logo, kâğıt etiketli alt başlık, ikonlu düğmeler. Arkaya bir illüstrasyon koyabilirsin; prompt'u `art/ai_rehberi.md` 10. bölümde.
+- **Ayarlar:** Solda ikonlu sekmeler (Ses, Oyun, Ekran, Dil), açma/kapama anahtarları.
+- **Sen kimsin?:** Geçmişler yan yana kartlar; seçince açıklaması ve statları görünür.
+- **Finans:**
+  - "Bu ay / Son 3 ay / Bu yıl" sekmeleri; nakit, gelir ve gider şeridi.
+  - İkonlu satırlar ve son 6 ayın gelir grafiği.
+- **Sektör:** Ödül takvimi, sıralamalar ve rakipler ayrı sekmelerde; ödüller ikonlu kartlar.
+- **Diğer düzeltmeler:**
+  - Düğmelerdeki "ş" sorunu her yerde düzeldi.
+  - Çalışan kartı artık sağ altta açılıyor, pencereleri örtmüyor.
+- Nasıl test ederim:
+  1. Oyunu aç: ana menü yeni düzende.
+  2. Yeni oyun → "Sen kimsin?" kartlarına tıkla; açıklama ve statlar değişmeli.
+  3. Oyunda sol çubuktan her ekranı aç: hepsinde yeşil başlık bandı ve ikon olmalı.
+  4. Finans: sekmeleri değiştir. Birkaç ay oynayınca grafik dolmalı ve gelir/gider sekmeye göre değişmeli.
+  5. Ayarlar: sekmeler arasında geç, ses kaydırıcısını ve anahtarları dene.
+  6. Bir çalışana tıkla: kart sağ altta açılmalı.
+  7. `docs/screenshots/10_ui2_*.png`.
+
 ## UI-1: Cozy Refined arayüz, ilk iki ekran (2026-11-07)
 - **Yeni ana menü:** Orman yeşili zemin üstünde krem kart, büyük başlık. Turuncu tek ana düğme: kayıt varsa "Devam et", yoksa "Yeni oyun". Çıkış sade bir yazı düğmesi.
 - **Yeni finans ekranı:**

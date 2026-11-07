@@ -15,8 +15,8 @@ func _init(result: Dictionary) -> void:
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(620.0, 420.0))
-	col.add_child(UiUtil.label(tr("UI_CEREMONY_TITLE") % [UiUtil.name_of(data.awards, _result["award"]), int(_result["year"])], 24,
-		UiUtil.MUSTARD))
+	col.add_child(UiUtil.heading(tr("UI_CEREMONY_TITLE") % [UiUtil.name_of(data.awards, _result["award"]), int(_result["year"])],
+		"trophy"))
 	_lines = UiUtil.vbox(6)
 	col.add_child(_lines)
 	var buttons: HBoxContainer = UiUtil.hbox()

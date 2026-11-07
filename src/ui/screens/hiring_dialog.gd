@@ -15,7 +15,7 @@ func _ready() -> void:
 	var data: GameData = DataDB.data
 	var s: SimState = GameState.sim.state
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(760.0, 620.0))
-	col.add_child(UiUtil.heading(tr("UI_HIRE_TITLE")))
+	col.add_child(UiUtil.heading(tr("UI_HIRE_TITLE"), "users-group"))
 	col.add_child(UiUtil.label(tr("UI_TEAM_HEADER") % [s.staff.size(), GameState.sim.staff.capacity(s),
 		UiUtil.money(GameState.sim.staff.monthly_payroll(s))], 15, UiUtil.WOOD))
 	_role = OptionButton.new()

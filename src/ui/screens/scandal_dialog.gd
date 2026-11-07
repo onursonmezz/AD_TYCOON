@@ -13,7 +13,7 @@ func _init(scandal: Dictionary) -> void:
 
 func _ready() -> void:
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(560.0, 320.0))
-	col.add_child(UiUtil.label(tr("UI_SCANDAL_TITLE"), 24, UiUtil.TERRACOTTA))
+	col.add_child(UiUtil.heading(tr("UI_SCANDAL_TITLE"), "alert-triangle"))
 	col.add_child(UiUtil.wrapped(tr("UI_SCANDAL_TEXT") % str(_scandal["influencer"]), 16, UiUtil.TEXT, 500.0))
 	for key: String in ["terminate", "silent", "statement"]:
 		col.add_child(UiUtil.wrapped("• " + tr("UI_SCANDAL_" + key.to_upper() + "_DESC"), 14, UiUtil.MUTED, 500.0))

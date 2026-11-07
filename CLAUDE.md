@@ -52,3 +52,4 @@ gereken bir şey varsa adım adım tarif et.
   Hareket sayfası (C2): `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>` (her klip önden/yandan + `sheet.png`).
   Gardırop (C3): `godot --path . res://tools/wardrobe.tscn --resolution 1920x1080 -- --out=<dosya.png> [--act=type]` (her kıyafet + saç tek karede).
 - AI modelleri (Tripo): ham dosya `art/incoming/`, ayarlar `tools/blender/ai_imports.json`, içe alma `blender --background --python tools/blender/import_ai.py [-- --only=desk]`. Rehber: `art/ai_rehberi.md`.
+- UI teması (UI-2): `src/ui/theme/cozy_theme.gd` (`CozyTheme`, proje teması; değişince `godot --headless --script res://tools/build_theme.gd`), ikon çizimleri `cozy_icons.gd`. Pencere başlığı `UiUtil.window_frame` + `heading(metin, ikon)`. Ekran turunu tek bakışta görmek: `godot --headless --script res://tools/contact_sheet.gd -- <klasör>`.

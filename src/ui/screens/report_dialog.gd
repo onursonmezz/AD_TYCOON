@@ -20,7 +20,7 @@ func _ready() -> void:
 	var score: float = float(report["score"])
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(760.0, 640.0))
 	var title: String = str(setup.get("name", "")) if not str(setup.get("name", "")).is_empty() else tr("UI_UNTITLED")
-	col.add_child(UiUtil.heading(tr("UI_REPORT_TITLE") % [title, setup.get("client_name", "")]))
+	col.add_child(UiUtil.heading(tr("UI_REPORT_TITLE") % [title, setup.get("client_name", "")], "chart-bar"))
 	col.add_child(UiUtil.label("%s · %s · %s · %s" % [UiUtil.name_of(data.objectives, setup["objective"]),
 		UiUtil.name_of(data.audiences, setup["audience"]), UiUtil.name_of(data.tones, setup["tone"]),
 		UiUtil.name_of(data.channels, Scoring.main_channel(setup["mix"]))], 14, UiUtil.WOOD))

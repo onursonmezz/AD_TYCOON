@@ -17,7 +17,7 @@ func _init(title_key: String, text_key: String, choices: Array) -> void:
 
 func _ready() -> void:
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(520.0, 200.0))
-	col.add_child(UiUtil.heading(tr(_title_key)))
+	col.add_child(UiUtil.heading(tr(_title_key), "alert-triangle"))
 	col.add_child(UiUtil.wrapped(tr(_text_key), 16, UiUtil.TEXT, 460.0))
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())

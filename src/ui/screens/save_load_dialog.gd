@@ -19,7 +19,7 @@ func _init(saving: bool, on_loaded: Callable = Callable()) -> void:
 
 func _ready() -> void:
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(620.0, 420.0))
-	col.add_child(UiUtil.heading(tr("UI_SAVE_TITLE" if _saving else "UI_LOAD_TITLE")))
+	col.add_child(UiUtil.heading(tr("UI_SAVE_TITLE" if _saving else "UI_LOAD_TITLE"), "device-floppy" if _saving else "folder-open"))
 	_list = UiUtil.vbox(8)
 	col.add_child(_list)
 	_error = UiUtil.label("", 14, UiUtil.TERRACOTTA)

@@ -17,7 +17,7 @@ func _ready() -> void:
 	var data: GameData = DataDB.data
 	var sim: Simulation = GameState.sim
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(640.0, 460.0))
-	col.add_child(UiUtil.heading(UiUtil.name_of(data.awards, _award_id)))
+	col.add_child(UiUtil.heading(UiUtil.name_of(data.awards, _award_id), "trophy"))
 	col.add_child(UiUtil.wrapped(tr(data.awards[_award_id]["desc_key"]), 14, UiUtil.MUTED, 580.0))
 	col.add_child(UiUtil.wrapped(tr("UI_AWARD_ENTRY_HINT") % UiUtil.money(sim.awards.entry_fee(sim.state, _award_id)), 14,
 		UiUtil.TEXT, 580.0))

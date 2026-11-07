@@ -12,7 +12,7 @@ func _init(to_menu: Callable) -> void:
 func _ready() -> void:
 	var s: SimState = GameState.sim.state
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(520.0, 320.0))
-	col.add_child(UiUtil.label(tr("UI_BANKRUPT_TITLE"), 30, UiUtil.TERRACOTTA))
+	col.add_child(UiUtil.heading(tr("UI_BANKRUPT_TITLE"), "alert-triangle"))
 	col.add_child(UiUtil.wrapped(tr("UI_BANKRUPT_TEXT") % [UiUtil.date_text(s.clock), s.history.size()], 16, UiUtil.TEXT, 460.0))
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.button(tr("MENU_NEW_GAME"), func() -> void:

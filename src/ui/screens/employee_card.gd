@@ -18,11 +18,13 @@ func _ready() -> void:
 	add_child(col)
 	var emp: Dictionary = GameState.sim.state.staff.get(_emp_id, {})
 	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(GameState.employee_name(emp), 17, UiUtil.SAGE_DARK))
+	var name: Label = UiUtil.label(GameState.employee_name(emp), 18, CozyTheme.FOREST)
+	name.add_theme_font_override("font", CozyTheme.title_font())
+	top.add_child(name)
 	top.add_child(UiUtil.spacer())
-	var close: Button = Button.new()
-	close.text = "✕"
-	close.pressed.connect(queue_free)
+	var close: Button = UiUtil.button("", queue_free)
+	close.icon = UiUtil.icon_texture("x", 18)
+	close.theme_type_variation = "QuietButton"
 	top.add_child(close)
 	col.add_child(top)
 	col.add_child(UiUtil.label(tr(Employee.title_key(DataDB.data, emp)), 14, UiUtil.WOOD))

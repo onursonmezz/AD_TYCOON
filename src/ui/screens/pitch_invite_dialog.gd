@@ -28,7 +28,7 @@ func _ready() -> void:
 	var data: GameData = DataDB.data
 	var s: SimState = GameState.sim.state
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(700.0, 480.0))
-	col.add_child(UiUtil.heading(tr("UI_PITCH_INVITE_TITLE") % _invite["client"]["name"]))
+	col.add_child(UiUtil.heading(tr("UI_PITCH_INVITE_TITLE") % _invite["client"]["name"], "inbox"))
 	col.add_child(UiUtil.wrapped(summary(_invite), 15, UiUtil.TEXT, 640.0))
 	col.add_child(UiUtil.wrapped(tr("UI_PITCH_HOW"), 14, UiUtil.MUTED, 640.0))
 	col.add_child(UiUtil.label(tr("UI_PITCH_TEAM"), 16))
