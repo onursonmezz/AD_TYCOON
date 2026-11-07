@@ -157,3 +157,41 @@ func test_outfit_and_hair_fit_the_body() -> void:
 			if (n as BoneAttachment3D).bone_name == "head":
 				hair += 1
 		assert_eq(hair, 1, "saç başa bağlı")
+
+
+func test_cast_follows_gender_and_hire_year() -> void:
+	# K-090: kadro karakteri cinsiyete ve işe alındığı yıla göre; uygun yoksa parçalı karakter.
+	var first: Dictionary = data.characters["cast"][0]
+	var gender: String = str(first["gender"])
+	var hit: Dictionary = CharacterLook.make(data, _emp("em_0042", gender), 2030, int(first["from"]))
+	assert_eq(hit["cast_model"], first["model"])
+	var other: String = "male" if gender == "female" else "female"
+	var miss: Dictionary = CharacterLook.make(data, _emp("em_0042", other), 2030, int(first["from"]))
+	assert_true(str(miss["cast_model"]).is_empty() or miss["cast_model"] != first["model"] or other == str(first["gender"]),
+		"başka cinsiyet bu karakteri almaz")
+	var early: Dictionary = CharacterLook.make(data, _emp("em_0042", gender), 2030, int(first["from"]) - 1)
+	assert_ne(early["cast_model"], first["model"], "dönemden önce işe alınan almaz")
+	assert_eq(CharacterLook.make(data, _emp("em_0042", gender), 2030)["cast_model"], "", "işe alım yılı yoksa kadro yok")
+	var neutral: Dictionary = CharacterLook.make(data, _emp("em_0042", "neutral"), 2030, int(first["from"]))
+	assert_false(str(neutral["cast_model"]).is_empty(), "nötr için nötr yoksa dönemden biri")
+
+
+func test_cast_rig_animates_and_shows_hand_props() -> void:
+	var look: Dictionary = CharacterLook.make(data, _emp("em_0042", str(data.characters["cast"][0]["gender"])), 2030,
+		int(data.characters["cast"][0]["from"]))
+	var rig: CharacterRig = CharacterRig.new()
+	add_child_autofree(rig)
+	rig.build(look, false)
+	assert_true(rig.has_model())
+	assert_eq(rig.clip_for("walk"), "walk", "aktarılmış hareketler geldi")
+	for n: Node in rig.find_children("*", "BoneAttachment3D", true, false):
+		assert_ne((n as BoneAttachment3D).bone_name, data.characters["head_bone"], "kadroya saç takılmaz")
+	assert_not_null(rig.hand_prop("phone"))
+	assert_not_null(rig.hand_prop("cup"))
+	rig.set_activity("phone")
+	assert_true(rig.hand_prop("phone").visible)
+	assert_false(rig.hand_prop("cup").visible)
+	rig.set_activity("coffee")
+	assert_true(rig.hand_prop("cup").visible)
+	rig.set_activity("type")
+	assert_false(rig.hand_prop("phone").visible or rig.hand_prop("cup").visible)

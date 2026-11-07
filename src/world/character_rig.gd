@@ -15,6 +15,7 @@ var _playback: AnimationNodeStateMachinePlayback
 var _available: Array[String] = []
 var _pose: Node3D
 var _t: float = 0.0
+var _props: Dictionary = {}  # el eşyası adı → düğüm (kadro karakterleri)
 ## Boyanmış malzemeler (malzeme adı | renk | kaynak) → malzeme; çalışanlar arasında paylaşılır.
 static var _paints: Dictionary = {}
 
@@ -35,11 +36,18 @@ func build(look: Dictionary, founder: bool) -> void:
 	_available.clear()
 	var ch: Dictionary = DataDB.data.characters
 	var h: float = float(ch["height"])
-	var body: Node3D = ModelLibrary.instance(str(look["body_model"]), Vector2(h * 2.0, h * 2.0), h, 180.0)
+	_props.clear()
+	# Kadro karakteri (Tripo, K-090): saçı ve kıyafeti gövdesinde; parça giydirilmez, telefon ve kupa ele bağlanır.
+	var cast: String = str(look.get("cast_model", ""))
+	var is_cast: bool = not cast.is_empty() and ModelLibrary.exists(cast)
+	var body: Node3D = ModelLibrary.instance(cast if is_cast else str(look["body_model"]), Vector2(h * 2.0, h * 2.0), h, 180.0)
 	_model = body != null
 	if _model:
 		add_child(body)
-		_dress(body, look, str(ch["head_bone"]))
+		if is_cast:
+			_hand_props(body, ch)
+		else:
+			_dress(body, look, str(ch["head_bone"]))
 		_animate(body, ch)
 	else:
 		_fallback(look, founder)
@@ -47,6 +55,38 @@ func build(look: Dictionary, founder: bool) -> void:
 
 
 # --- model -----------------------------------------------------------------------
+
+## Kadro karakterinin sağ eline telefon ve kupa (data/characters.json hand_props); yalnızca kendi etkinliğinde görünür.
+## Gövde boyuna ölçeklendiği için eşyalar ters ölçekle gerçek boylarında kalır.
+func _hand_props(body: Node3D, ch: Dictionary) -> void:
+	var skels: Array[Node] = body.find_children("*", "Skeleton3D", true, false)
+	if skels.is_empty():
+		return
+	var skel: Skeleton3D = skels[0]
+	var bone: String = str(ch["cast_rig"]["hand_bone"])
+	if skel.find_bone(bone) < 0:
+		return
+	var att: BoneAttachment3D = BoneAttachment3D.new()
+	att.bone_name = bone
+	skel.add_child(att)
+	var inv: float = 1.0 / maxf(0.001, body.transform.basis.get_scale().x)
+	for name: String in ch["hand_props"]:
+		var p: Dictionary = ch["hand_props"][name]
+		var packed: PackedScene = ModelLibrary.scene(str(p["model"]))
+		if packed == null:
+			continue
+		var node: Node3D = packed.instantiate()
+		node.position = Vector3(float(p["offset"][0]), float(p["offset"][1]), float(p["offset"][2])) * inv
+		node.rotation_degrees = Vector3(float(p["rotation"][0]), float(p["rotation"][1]), float(p["rotation"][2]))
+		node.scale = Vector3.ONE * inv
+		node.visible = false
+		node.set_meta("activities", p["activities"])
+		att.add_child(node)
+		_props[name] = node
+
+
+func hand_prop(name: String) -> Node3D:
+	return _props.get(name)
 
 func _dress(body: Node3D, look: Dictionary, head_bone: String) -> void:
 	var skels: Array[Node] = body.find_children("*", "Skeleton3D", true, false)
@@ -213,6 +253,8 @@ func clip_for(name: String) -> String:
 
 func set_activity(name: String) -> void:
 	activity = name
+	for p: Node3D in _props.values():
+		p.visible = (p.get_meta("activities") as Array).has(name)
 	if _playback != null:
 		var clip: String = clip_for(name)
 		if not clip.is_empty() and _playback.get_current_node() != clip:

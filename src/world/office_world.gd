@@ -173,7 +173,9 @@ func sync() -> void:
 
 func _spawn(emp: Dictionary) -> void:
 	var c: OfficeCharacter = OfficeCharacter.new()
-	c.setup(emp["id"], CharacterLook.make(DataDB.data, emp, GameState.sim.state.clock.year()), bool(emp.get("is_founder", false)))
+	var clock: SimClock = GameState.sim.state.clock
+	c.setup(emp["id"], CharacterLook.make(DataDB.data, emp, clock.year(), CharacterLook.hire_year(clock, emp)),
+		bool(emp.get("is_founder", false)))
 	add_child(c)
 	c.teleport(layout.entrance)
 	_chars[emp["id"]] = c
@@ -242,7 +244,7 @@ func _update_looks_and_activities(s: SimState) -> void:
 	for id: String in _chars:
 		var emp: Dictionary = s.staff[id]
 		var c: OfficeCharacter = _chars[id]
-		c.apply_look(CharacterLook.make(DataDB.data, emp, year))
+		c.apply_look(CharacterLook.make(DataDB.data, emp, year, CharacterLook.hire_year(s.clock, emp)))
 		var place: String = str(_place_of.get(id, "desk")).get_slice(":", 0)
 		var act: String = "sit"
 		match place:

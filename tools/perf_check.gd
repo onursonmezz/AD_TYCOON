@@ -5,6 +5,7 @@ extends Node
 ## --samples: deneme karakter ve eşya modelleriyle (gerçek modelli durumu taklit eder).
 
 var _staff: int = 60
+var _year: int = 2010  # --year=2020: kadro karakterleriyle ölç
 var _seconds: float = 20.0
 var _samples: bool = false
 var _frames: PackedFloat32Array = PackedFloat32Array()
@@ -17,6 +18,8 @@ func _ready() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--staff="):
 			_staff = int(arg.trim_prefix("--staff="))
+		elif arg.begins_with("--year="):
+			_year = int(arg.trim_prefix("--year="))
 		elif arg.begins_with("--seconds="):
 			_seconds = float(arg.trim_prefix("--seconds="))
 		elif arg == "--samples":
@@ -34,7 +37,7 @@ func _run() -> void:
 	Settings.persist = false
 	Settings.set_value("tutorial", false)
 	Settings.set_value("autosave", false)
-	GameState.new_game(77, "", 2010)
+	GameState.new_game(77, "", _year)
 	var sim: Simulation = GameState.sim
 	sim.state.office_level = DataDB.data.max_office_level()
 	sim.state.cash = 1.0e9

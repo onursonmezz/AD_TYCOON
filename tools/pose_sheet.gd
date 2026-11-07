@@ -30,11 +30,9 @@ func _ready() -> void:
 		var stage: Node3D = Node3D.new()
 		add_child(stage)
 		var look: Dictionary = CharacterLook.make(DataDB.data, {"id": "em_0004", "gender": "male"}, 1995)
-		if not body.is_empty():  # --body=characters/x.glb: yalnız gövde (saç ve kıyafet yok)
-			look["body_model"] = body
-			look["outfit_model"] = ""
-			look["hair_model"] = ""
-			look["bald"] = true
+		if not body.is_empty():  # --body=characters/cast/x.glb: kadro karakteri olarak dene
+			look["cast"] = body
+			look["cast_model"] = body
 		var rig: CharacterRig = CharacterRig.new()
 		stage.add_child(rig)
 		rig.build(look, false)

@@ -1,5 +1,16 @@
 # Değişiklik günlüğü
 
+## K1: Tripo karakterleri çalışanlarda (2026-11-07)
+- 2020 ve sonrasında işe alınan kadın ve nötr çalışanlar artık Tripo karakteri olarak görünüyor: dokulu yüz, saç ve kıyafet. Yürüyor, oturuyor, yazıyor ve diğer 11 hareketi yapıyor.
+- Telefonla konuşurken elinde telefon, kahve içerken kupa var.
+- Çalışan işe alındığı dönemin karakterinde kalır; uygun Tripo karakteri olmayanlar eskisi gibi görünür.
+- Kadroda şimdilik bir karakter var; yeni karakterler geldikçe çeşitlenecek.
+- Nasıl test ederim:
+  1. 2020'de yeni oyun başlat ve birkaç kadın çalışan işe al: Tripo karakteriyle gelmeliler.
+  2. Telefonla konuşan ya da mutfakta kahve içen birine bak: elde telefon / kupa.
+  3. 1990'da başlayan bir oyunda çalışanlar eskisi gibi olmalı.
+  4. `docs/screenshots/14_cast_world_close.png` ve `14_cast_coffee.png`.
+
 ## A1: Tripo eşyaları: koltuk, kanepe, 90'lar bilgisayarı, sokak ağacı (2026-11-07)
 - Masalarda yeni yeşil, turuncu kolçaklı koltuklar; çalışanlar üzerlerine oturuyor.
 - 90'larda masalarda bej tüplü monitör, kasa ve klavye.

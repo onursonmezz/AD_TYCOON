@@ -145,3 +145,23 @@ def mchip() -> None:
     b.box((0.24, 0.004, 0.15), (mx, 0.048, 0.32 - 0.085), "screen_glow", bevel=0.001, segments=1)
     b.cylinder(0.035, 0.03, 0.08, (0.05, -0.1, 0), "mustard", segments=10, bevel=0.006)
     b.finish()
+
+
+# --- el eşyaları (kadro karakterleri, K-090) ----------------------------------------
+# Başlangıç noktası tutuş noktası; yönü data/characters.json hand_props offset/rotation ile ele oturtulur.
+
+def hand_phone() -> None:
+    """Elde telefon: koyu gövde, açık ekran (ekran -Y'de)."""
+    b = Builder("hand_phone")
+    b.box((0.065, 0.012, 0.13), (0, 0, 0), "charcoal", bevel=0.006, segments=2)
+    b.box((0.055, 0.002, 0.11), (0, -0.0065, 0.003), "screen_glow", bevel=0.001, segments=1)
+    b.finish()
+
+
+def hand_cup() -> None:
+    """Elde kupa: hardal kupa, yanda kulp (kulp +X'te, el kulptan tutar)."""
+    b = Builder("hand_cup")
+    b.cylinder(0.038, 0.04, 0.09, (0, 0, -0.045), "mustard", segments=14, bevel=0.006)
+    b.cylinder(0.032, 0.032, 0.004, (0, 0, 0.041), "wood_dark", segments=14, bevel=0.0)
+    b.box((0.03, 0.012, 0.05), (0.045, 0, 0), "mustard", bevel=0.006, segments=1)
+    b.finish()

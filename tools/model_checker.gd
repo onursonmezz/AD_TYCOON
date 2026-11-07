@@ -22,6 +22,13 @@ static func slots(data: GameData) -> Array[Dictionary]:
 	for b: Dictionary in ch["bodies"]:
 		out.append({"name": "character.body_" + str(b["id"]), "rel": str(b["model"]), "size": Vector2(h, 0.5), "height": h,
 			"checks": ["height", "ground", "center"], "character": true})
+	# Kadro karakterleri (Tripo, K-090): tek parça gövde; el eşyaları yalnızca dosya ve üçgen.
+	for c: Dictionary in ch.get("cast", []):
+		out.append({"name": "character.cast_" + str(c["id"]), "rel": str(c["model"]), "size": Vector2(h, 0.5), "height": h,
+			"checks": ["height", "ground", "center"], "character": true})
+	for name: String in ch.get("hand_props", {}):
+		out.append({"name": "character.prop_" + name, "rel": str(ch["hand_props"][name]["model"]), "size": Vector2(0.1, 0.1),
+			"height": 0.13, "checks": [], "character": true})
 	for group: String in ["hair", "outfits"]:
 		for p: Dictionary in ch[group]:
 			if not str(p["model"]).is_empty():

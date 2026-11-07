@@ -37,6 +37,16 @@
 	"outfit_colors": [[0.36, 0.5, 0.4], [0.78, 0.4, 0.29], [0.85, 0.64, 0.25], [0.3, 0.45, 0.65], [0.55, 0.45, 0.7],
 		[0.95, 0.93, 0.88], [0.35, 0.65, 0.7], [0.23, 0.21, 0.19], [0.65, 0.49, 0.32], [0.8, 0.45, 0.6]],
 	"founder_outfit_color": [0.85, 0.64, 0.25],
+	"_cast": "Görsel AI (Tripo) karakterleri: saçı ve kıyafeti gövdesinde, tek parça. Çalışan, cinsiyetine ve işe alındığı yıla uyan biriyle görünür; uygun yoksa parçalı karakter. src: ham Tripo dosyası (tools/blender/retarget_tripo.py).",
+	"cast": [
+		{ "id": "char_2020_f01", "model": "characters/cast/char_2020_f01.glb", "gender": "female", "from": 2020, "to": 9999,
+			"src": "art/incoming/char_try_female_rig.glb" }
+	],
+	"cast_rig": { "hand_bone": "mixamorig_RightHand" },
+	"hand_props": {
+		"phone": { "model": "characters/props/hand_phone.glb", "activities": ["phone"], "offset": [0.006, 0.051, -0.001], "rotation": [46.4, -70.0, -29.2] },
+		"cup": { "model": "characters/props/hand_cup.glb", "activities": ["coffee"], "offset": [0.015, 0.068, -0.01], "rotation": [-36.8, -27.1, -105.6] }
+	},
 	"animations": ["idle", "walk", "sit", "type", "phone", "coffee", "present", "cheer", "cheer_stand", "stress", "sleep"],
 	"activity": { "phone_departments": ["account", "new_business", "pr_event", "media"], "phone_chance": 0.35,
 		"stress_burnout": 60, "sleep_energy": 15, "cheer_seconds": 2.5, "blend_seconds": 0.25 }

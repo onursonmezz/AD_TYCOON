@@ -1089,3 +1089,22 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 - **Saç düzeltmesi:** Tripo'nun ağırlıkları uzun saçı kol kemiklerine de bağlıyor; kollar kalkınca sivri çıkıntı oluşuyordu. Gövde genişliği (omuz eklemi) içindeki noktaların kol ağırlığı göğse aktarılıyor; çıkıntılar büyük ölçüde gitti. Omzun hemen dışındaki birkaç tutamda küçük iz kalıyor.
 - **Oyun tarafı:** `CharacterRig` dokulu gövdeye ten katmanı koymuyor (`_textured`). `tools/pose_sheet.gd --body=` ile herhangi bir gövde denenebiliyor.
 - **Henüz oyuna bağlı değil:** Bütün karakter (saçı ve kıyafeti gövdesinde) modeline geçiş ayrı bir iş. Gerekenler: çalışan → karakter seçimi (cinsiyet, dönem), telefon ve kupa için ele bağlama, kıyafet ve saç parçalarını devre dışı bırakma. Plan Orgo'nun onayına sunulacak. Deneme dosyası: `assets/models/characters/try_female.glb`.
+
+## K-090 · 2026-11-07 · Kabul · Orgo kararı (kadro planı: "işe alındığı dönemde kalsın", denemeler 2020'ler) + uygulama (K1)
+**Konu:** Tripo karakterlerini (saçı ve kıyafeti gövdesinde, tek parça) oyundaki çalışanlara bağlamak.
+**Karar:**
+- **Kadro listesi:** `data/characters.json` `cast`: id, model, cinsiyet, dönem (`from`/`to`), ham dosya (`src`).
+- **Seçim (`CharacterLook.make(..., hire_year)`):**
+  - Çalışan, cinsiyetine ve **işe alındığı yıla** uyan kadro karakterlerinden birini alır; seçim kimliğine bağlıdır.
+  - Kariyeri boyunca aynı kişi kalır; dönem havasını yeni işe alınanlar getirir. Orgo'nun kararı: dönem değişince başka bir kişiye dönüşmesin.
+  - Nötr ve cinsiyetsiz (kurucu) çalışan için nötr karakter yoksa o dönemin herhangi biri.
+  - Uygun karakter yoksa bugünkü parçalı karakter; karakterler tek tek eklenebilir.
+  - İşe alım yılı `hired_week`'ten hesaplanır; kayıt biçimi değişmedi.
+- **`CharacterRig`:** Kadro gövdesine saç ve kıyafet parçası takılmaz, ten katmanı konmaz (dokulu).
+  - Telefon ve kupa (`characters/props/hand_*.glb`, Blender betiği) sağ el kemiğine (`cast_rig.hand_bone`) bağlıdır; yalnızca kendi etkinliğinde (telefon, kahve) görünür.
+  - Eldeki konum ve açı pozdan hesaplanıp `hand_props` içine yazıldı: kupa kahve pozunda dik, telefon telefon pozunda kulakta.
+- **`retarget_tripo.py`:** Karakteri gerçek boya (1.7 m) ölçekler; model denetimi ve el eşyaları gerçek ölçüyle çalışır.
+- **Kadroya ilk giren:** `char_2020_f01` (deneme kadın karakter, 2020+). Erkek deneme karakteri iskeleti gelince eklenecek.
+- **Araçlar:** `pose_sheet --body=characters/cast/x.glb`; `screenshot --year=2020`; `perf_check --year=2020`. Model denetimi kadroyu ve el eşyalarını da kontrol ediyor.
+- **Performans:** 60 çalışan, 2020 başlangıcı (kadın ve nötrler kadro karakteri): kare ortalaması 3.47 ms (288 FPS). Üçgen azaltmaya gerek görülmedi.
+- **Test:** Kadro seçimi (cinsiyet, dönem, nötr yedeği, işe alım yılı yoksa kadro yok); kadro gövdesinde hareketler; saç takılmıyor; el eşyaları etkinliğe göre görünüyor (`test_characters`).

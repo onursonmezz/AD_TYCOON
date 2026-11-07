@@ -54,6 +54,8 @@ TARGETS = {
     "body_male": ("characters/body_male.glb", lambda: ch.character("male")),
     "body_neutral": ("characters/body_neutral.glb", lambda: ch.character("neutral")),
     **ch_wear.TARGETS,
+    "hand_phone": ("characters/props/hand_phone.glb", mp.hand_phone),
+    "hand_cup": ("characters/props/hand_cup.glb", mp.hand_cup),
 }
 
 

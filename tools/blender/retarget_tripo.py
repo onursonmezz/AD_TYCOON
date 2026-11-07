@@ -97,6 +97,14 @@ def retarget(src: str, dst: str) -> None:
     if tarm.animation_data:
         tarm.animation_data_clear()
 
+    # Gerçek boya (1.7 m) ölçekle: model denetimi ve el eşyaları gerçek ölçüyle çalışır.
+    k = characters.HEIGHT / max(mesh.dimensions.z, 0.01)
+    tarm.scale = tarm.scale * k
+    for o in bpy.context.scene.objects:
+        o.select_set(o in (tarm, mesh))
+    bpy.context.view_layer.objects.active = tarm
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    bpy.context.view_layer.update()
     _release_hair(mesh, tarm, pre)
     # Bizim iskelet ve hareketler (aynı sahnede, sonra silinir).
     bpy.context.scene.render.fps = characters.FPS

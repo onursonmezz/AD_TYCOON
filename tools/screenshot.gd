@@ -3,7 +3,7 @@ extends Node
 ## sabit açılardan çeker, docs/screenshots/ altına kaydeder. Her görsel değişiklikten sonra çalıştırılıp
 ## referanslarla (C:\Users\osonm\Documents\reference) karşılaştırılır.
 ## Çalıştırma (pencere açılır): godot --path . res://tools/screenshot.tscn -- [--out=docs/screenshots] [--tag=ad]
-##   [--samples] (deneme modelleriyle) [--level=2]
+##   [--samples] (deneme modelleriyle) [--level=2] [--year=2020]
 
 const W: int = 1920
 const H: int = 1080
@@ -12,6 +12,7 @@ var _out: String = "res://docs/screenshots"
 var _tag: String = ""
 var _samples: bool = false
 var _level: int = 2
+var _year: int = 2000  # başlangıç yılı (--year=2020: kadro karakterlerini görmek için)
 
 
 func _ready() -> void:
@@ -24,6 +25,8 @@ func _ready() -> void:
 			_samples = true
 		elif arg.begins_with("--level="):
 			_level = int(arg.trim_prefix("--level="))
+		elif arg.begins_with("--year="):
+			_year = int(arg.trim_prefix("--year="))
 	if not _out.begins_with("res://") and not _out.begins_with("user://") and not _out.is_absolute_path():
 		_out = "res://" + _out
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_out))
@@ -69,7 +72,7 @@ func _run() -> void:
 
 ## Sabit tohumlu örnek ajans: 2005, ofis seviyesi _level, 8 çalışan, mobilyalar, birkaç biten kampanya (posterler).
 func _make_agency() -> void:
-	GameState.new_game(4242, "", 2000)
+	GameState.new_game(4242, "", _year)
 	var sim: Simulation = GameState.sim
 	sim.pause_on_phase = false
 	sim.state.clock.week_index = 5 * sim.state.clock.weeks_per_year()
