@@ -10,12 +10,15 @@ const TOAST_SECONDS: float = 7.0
 
 ## Sol alt: kaydet, yükle, ayarlar, ana menü. Dönüş: kaydet düğmesi (ipucu balonu onu gösterir).
 static func game_buttons(main: Control) -> Button:
-	var row: HBoxContainer = UiUtil.hbox(10)
-	main.add_child(row)
-	row.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	row.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	row.offset_left = MARGIN
-	row.offset_bottom = -MARGIN
+	var pill: PanelContainer = PanelContainer.new()
+	pill.theme_type_variation = "DarkPill"
+	main.add_child(pill)
+	pill.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	pill.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	pill.offset_left = MARGIN
+	pill.offset_bottom = -MARGIN
+	var row: HBoxContainer = UiUtil.hbox(4)
+	pill.add_child(row)
 	var reload: Callable = func() -> void: main.get_tree().reload_current_scene()
 	var save: Button = UiUtil.icon_button("device-floppy", main.tr("UI_SAVE") + " (F5)", func() -> void:
 		main.call("open_modal", SaveLoadDialog.new(true)))
@@ -38,15 +41,15 @@ static func badges(main: Control) -> Dictionary:
 	col.offset_right = -MARGIN
 	col.offset_top = MARGIN
 	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var row: HBoxContainer = UiUtil.hbox(14)
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	row.alignment = BoxContainer.ALIGNMENT_END
 	col.add_child(row)
-	var cash: CountBadge = CountBadge.new("currency-lira", UiTheme.GOLD, UiTheme.GOLD,
-		func(v: float) -> String: return UiUtil.money(v).replace("₺", ""), 230.0)
+	var cash: CountBadge = CountBadge.new("currency-lira", CozyTheme.GOLD,
+		func(v: float) -> String: return UiUtil.money(v), 190.0)
 	cash.tooltip_text = main.tr("TIP_CASH")
 	row.add_child(cash)
-	var rep: CountBadge = CountBadge.new("star", UiTheme.ACCEPT, UiTheme.ACCEPT_DARK,
-		func(v: float) -> String: return "%d" % int(roundf(v)), 140.0)
+	var rep: CountBadge = CountBadge.new("star", CozyTheme.ACCENT,
+		func(v: float) -> String: return "%d" % int(roundf(v)), 96.0)
 	rep.tooltip_text = main.tr("TIP_REPUTATION")
 	row.add_child(rep)
 	var feed: VBoxContainer = UiUtil.vbox(8)
@@ -66,16 +69,19 @@ static func time_controls(main: Control) -> Dictionary:
 	col.offset_right = -MARGIN
 	col.offset_bottom = -MARGIN
 	var date_pill: PanelContainer = PanelContainer.new()
-	date_pill.theme_type_variation = "HeaderStrip"
+	date_pill.theme_type_variation = "HudPill"
 	date_pill.size_flags_horizontal = Control.SIZE_SHRINK_END
-	var date: Label = UiUtil.label("", 22, Color.WHITE)
-	date.add_theme_font_override("font", UiUtil.head_font())
-	date_pill.add_child(date)
+	var date_row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	date_pill.add_child(date_row)
+	date_row.add_child(UiUtil.icon("calendar", 22, CozyTheme.FOREST))
+	var date: Label = UiUtil.label("", 17, CozyTheme.TEXT)
+	date.add_theme_font_override("font", CozyTheme.strong_font(780))
+	date_row.add_child(date)
 	col.add_child(date_pill)
 	var pill: PanelContainer = PanelContainer.new()
 	pill.theme_type_variation = "DarkPill"
 	pill.size_flags_horizontal = Control.SIZE_SHRINK_END
-	var row: HBoxContainer = UiUtil.hbox(6)
+	var row: HBoxContainer = UiUtil.hbox(4)
 	pill.add_child(row)
 	col.add_child(pill)
 	var overtime: Button = UiUtil.icon_button("clock", main.tr("UI_OVERTIME") + ": " + main.tr("TIP_OVERTIME"), func() -> void:
@@ -88,7 +94,7 @@ static func time_controls(main: Control) -> Dictionary:
 	for i: int in values.size():
 		var b: Button = UiUtil.button("%d×" % int(values[i]), func() -> void: Clock.set_speed(i))
 		b.theme_type_variation = "IconButton"
-		b.custom_minimum_size = Vector2(52, 48)
+		b.custom_minimum_size = Vector2(48, 44)
 		b.tooltip_text = main.tr("TIP_SPEED") % (i + 1)
 		speeds.append(b)
 		row.add_child(b)
@@ -103,7 +109,7 @@ static func toast(feed: VBoxContainer, key: String, args: Array, kind: String) -
 	var row: HBoxContainer = UiUtil.hbox(10)
 	card.add_child(row)
 	var icon_name: String = {"good": "check", "bad": "alert-triangle"}.get(kind, "bell")
-	var icon_color: Color = {"good": UiTheme.ACCEPT_DARK, "bad": UiTheme.DECLINE}.get(kind, UiTheme.FRAME)
+	var icon_color: Color = {"good": CozyTheme.POSITIVE, "bad": CozyTheme.NEGATIVE}.get(kind, CozyTheme.FOREST)
 	row.add_child(UiUtil.icon(icon_name, 26, icon_color))
 	var text: Label = UiUtil.wrapped(UiUtil.tr_fmt(key, args), 15, UiUtil.TEXT, 260.0)
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL

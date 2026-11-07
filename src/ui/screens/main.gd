@@ -67,8 +67,8 @@ func _build() -> void:
 	add_child(_office)
 	_office.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_office.employee_clicked.connect(_on_employee_clicked)
-	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 13, UiTheme.ON_DARK)
-	hint.add_theme_color_override("font_outline_color", UiTheme.FRAME_DARK)
+	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 13, CozyTheme.CREAM_LIGHT)
+	hint.add_theme_color_override("font_outline_color", CozyTheme.FOREST)
 	hint.add_theme_constant_override("outline_size", 4)
 	add_child(hint)
 	hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
@@ -93,18 +93,22 @@ func _build() -> void:
 	add_child(_modal_layer)
 
 
-## Sol dikey ikon çubuğu (menü ekranları); üzerine gelince adı; gelen kutusu ve kampanyada sayı balonu.
+## Sol dikey ikon çubuğu (menü ekranları): koyu yeşil zemin, seçili ikon turuncu (UI-2b); üzerine gelince adı;
+## gelen kutusu ve kampanyada sayı balonu.
 func _build_menu() -> void:
-	var col: VBoxContainer = UiUtil.vbox(6)
-	add_child(col)
-	col.position = Vector2(WINDOW_MARGIN, WINDOW_MARGIN)
+	var rail: PanelContainer = PanelContainer.new()
+	rail.theme_type_variation = "RailPanel"
+	add_child(rail)
+	rail.position = Vector2(WINDOW_MARGIN, WINDOW_MARGIN)
+	var col: VBoxContainer = UiUtil.vbox(4)
+	rail.add_child(col)
 	for id: String in MENU_ICONS:
 		var b: Button = UiUtil.icon_button(MENU_ICONS[id], tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id), 24)
 		b.custom_minimum_size = Vector2(52, 52)
 		_menu_buttons[id] = b
-		var dot: Label = UiUtil.label("", 14, Color.WHITE)
-		dot.add_theme_font_override("font", UiUtil.head_font())
-		dot.add_theme_stylebox_override("normal", UiTheme.box(UiTheme.DECLINE, 11, 2, Color.WHITE, Vector4(6, 0, 6, 0)))
+		var dot: Label = UiUtil.label("", 13, CozyTheme.CREAM_LIGHT)
+		dot.add_theme_font_override("font", CozyTheme.strong_font(800))
+		dot.add_theme_stylebox_override("normal", CozyTheme.box(CozyTheme.NEGATIVE, 10, CozyTheme.FOREST, 2, false, Vector2(6, 0)))
 		dot.position = Vector2(36, -6)
 		dot.visible = false
 		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -234,7 +238,7 @@ func _refresh() -> void:
 		Juice.cash_fly(_cash, s.cash - _last_cash, s.clock.year())
 	_last_cash = s.cash
 	_cash.set_value(s.cash)
-	_cash.label_node().add_theme_color_override("font_color", UiTheme.DECLINE if s.cash < 0.0 else Color.WHITE)
+	_cash.label_node().add_theme_color_override("font_color", CozyTheme.NEGATIVE if s.cash < 0.0 else CozyTheme.TEXT)
 	_rep.set_value(s.reputation)
 	_date.text = UiUtil.date_text(s.clock)
 	_set_dot("inbox", str(s.inbox.size()) if not s.inbox.is_empty() else "")

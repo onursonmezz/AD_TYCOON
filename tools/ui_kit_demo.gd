@@ -95,10 +95,10 @@ func _middle() -> PanelContainer:
 ## Rozetler, bildirim, tarih ve hız grubu.
 func _right() -> VBoxContainer:
 	var col: VBoxContainer = UiUtil.vbox(16)
-	var cash: CountBadge = CountBadge.new("currency-lira", UiTheme.GOLD, UiTheme.GOLD, func(v: float) -> String: return UiUtil.money(v).replace("₺", ""), 230)
+	var cash: CountBadge = CountBadge.new("currency-lira", CozyTheme.GOLD, func(v: float) -> String: return UiUtil.money(v).replace("₺", ""), 230)
 	col.add_child(cash)
 	cash.set_value(1645.0)
-	var rep: CountBadge = CountBadge.new("star", UiTheme.ACCEPT, UiTheme.ACCEPT_DARK, func(v: float) -> String: return "%d" % int(v), 140)
+	var rep: CountBadge = CountBadge.new("star", CozyTheme.ACCENT, func(v: float) -> String: return "%d" % int(v), 140)
 	col.add_child(rep)
 	rep.set_value(54.0)
 	col.add_child(UiUtil.button("Para +500 (sayma)", func() -> void: cash.set_value(cash.value() + 500.0)))

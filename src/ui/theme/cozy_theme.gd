@@ -125,7 +125,9 @@ static func _panels(t: Theme) -> void:
 			["HeaderStrip", box(SAGE_SOFT, RADIUS_CONTROL, Color.TRANSPARENT, 0, false, Vector2(SPACE_L, SPACE_S))],
 			["Badge", box(CREAM_LIGHT, 999, BORDER, 1, false, Vector2(SPACE_M, 4))],
 			["Toast", box(CREAM_LIGHT, RADIUS_CARD, BORDER, 1, true, Vector2(SPACE_L, SPACE_M))],
-			["DarkPill", box(FOREST, 999, Color.TRANSPARENT, 0, false, Vector2(SPACE_M, 4))]]:
+			["DarkPill", box(FOREST, 999, Color.TRANSPARENT, 0, true, Vector2(SPACE_S, 6))],
+			["RailPanel", box(FOREST, RADIUS_MODAL, Color.TRANSPARENT, 0, true, Vector2(6, SPACE_S))],
+			["HudPill", box(CREAM_LIGHT, 999, BORDER, 1, true, Vector2(SPACE_S, 4))]]:
 		t.set_type_variation(v[0], "PanelContainer")
 		t.set_stylebox("panel", v[0], v[1])
 	var sep: StyleBoxLine = StyleBoxLine.new()
@@ -169,8 +171,9 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	_button(t, "DeclineButton", [CREAM_LIGHT, CREAM, CREAM], BORDER, NEGATIVE, NEGATIVE)
 	t.set_type_variation("QuietButton", "Button")
 	_button(t, "QuietButton", [Color.TRANSPARENT, SAGE_SOFT, SAGE], Color.TRANSPARENT, MUTED, TEXT)
+	# HUD düğmeleri: koyu yeşil zemin (RailPanel, DarkPill) üstünde şeffaf, krem ikonlu; seçili olan turuncu.
 	t.set_type_variation("IconButton", "Button")
-	_button(t, "IconButton", [FOREST, FOREST_LIGHT, FOREST], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT,
+	_button(t, "IconButton", [Color.TRANSPARENT, FOREST_LIGHT, FOREST_LIGHT], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT,
 		Vector2(SPACE_M, SPACE_M))
 	t.set_type_variation("IconButtonActive", "Button")
 	_button(t, "IconButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE,
