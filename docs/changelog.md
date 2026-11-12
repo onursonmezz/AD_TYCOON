@@ -1,5 +1,25 @@
 # Değişiklik günlüğü
 
+## K4–A2–B1: Mixamo karakterleri, yeni eşyalar, kolay yerleştirme (2026-11-12)
+- **Karakterler:** Kadroya 6 karakter eklendi. Askılı pantolonlu adam 1990'larda, dört kadın 2000'lerde, bulutlu ceketli adam 2020'lerde işe alınanlarda görünür. Kadro aracı artık Mixamo FBX dosyalarını da okuyor; yatık gelen karakteri kendisi dikiyor.
+- **Eşyalar:** Kitaplık, bitki rafı, ofis kedisi, turkuaz bilgisayar (g4), laptop + monitör (mchip), bank ve sokak feneri yeni modellerle değişti.
+  - Yeni satın alınabilir eşyalar: asılı saksı, çiçek kasası, örgü halı.
+  - Halının üstünden yürünür ve üstüne eşya konur.
+  - Mutfakta lavabolu tezgâh var; bina önünde çit çalısı, top çalı ve tahta çit duruyor.
+- **İnşa modu:**
+  - Yerleştirirken kutunun içinde eşyanın kendisi yarı saydam görünür.
+  - Eşya ↺ ↻ düğmeleriyle ya da R / Shift+R ile 4 yöne dönebilir.
+  - "Sil / sat" düğmesi paletin başında sabit durur. Silerken imlecin altındaki eşya kırmızı yanar ve kaç para geri geleceği yazar.
+  - Delete tuşu imlecin altındaki eşyayı satar.
+- Nasıl test ederim:
+  1. 2000'de yeni oyun başlat, birkaç kadın çalışan işe al: yeni dört kadından biriyle gelmeliler. 1990'da erkekler askılı pantolonlu adamla gelmeli.
+  2. İnşa moduna geç, "Bitki rafı"nı seç ve fareyi ofiste gezdir. Yeşil kutunun içinde rafın kendisi görünmeli; uygun olmayan yerde kırmızıya dönmeli.
+  3. ↻ düğmesine ya da R tuşuna bas: eşya 90° dönmeli. Dört basışta başa dönmeli; Shift+R ters yöne çevirir.
+  4. Örgü halıyı yerleştir, sonra üstüne küçük bitki koy: izin vermeli. Çalışanlar halının üstünden yürümeli.
+  5. Sol baştaki kırmızı "Sil / sat"a bas, fareyi bir eşyanın üstüne getir. Eşya kırmızı yanmalı, altta "Tıklarsan … satılır, ₺… geri gelir." yazmalı. Tıkla: eşya gitmeli.
+  6. Herhangi bir araçla bir eşyanın üstündeyken Delete'e bas: eşya satılmalı. Oda yıkılmamalı.
+  7. Asılı saksıyı yerleştir: yerden yüksekte durmalı. Mutfakta lavabolu dolaplar, bina önünde çalılar ve çit görünmeli.
+
 ## K2–K3: Kadro karakterleri için toplu araç ve rehber (2026-11-07)
 - Karakterleri `art/incoming/cast/` klasörüne `char_<dönem>_<f|m|n><sıra>.glb` adıyla koyman yeterli. Tek komut hareketleri aktarır, saçı düzeltir ve karakteri oyuna ekler.
 - İskeleti olmayan dosya atlanır ve uyarı verilir.
