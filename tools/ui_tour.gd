@@ -268,6 +268,25 @@ func _tour_build(screen: Control, sim: Simulation) -> void:
 	view.call("_build_hover", view.size * 0.5)
 	await get_tree().create_timer(1.0).timeout
 	await _shot("27_build_mode")
+	# Döndürülmüş eşya önizlemesi ve silme aracında bir eşyanın kırmızı vurgusu.
+	bar.call("_select", {"kind": "furniture", "id": "bookshelf", "rot": 0})
+	view.rotate_tool(1)
+	view.call("_build_hover", view.size * 0.5)
+	await get_tree().create_timer(0.5).timeout
+	await _shot("27b_build_rotate")
+	bar.call("_select", {"kind": "remove"})
+	var target: Dictionary = {}
+	for prop: Dictionary in sim.build.layout(sim.state).props:
+		if prop["kind"] == "furniture":
+			target = prop
+	if not target.is_empty():
+		var c: Vector2 = (target["rect"] as Rect2).get_center()
+		var vp: SubViewport = view.get("_viewport")
+		var screen_pos: Vector2 = view.world.rig.camera.unproject_position(Vector3(c.x, 0.0, c.y)) * (view.size / Vector2(vp.size))
+		view.set("_last_mouse", screen_pos)
+		view.call("_build_hover", screen_pos)
+	await get_tree().create_timer(0.5).timeout
+	await _shot("27c_build_remove")
 	await _tour_tools(screen, sim)
 
 

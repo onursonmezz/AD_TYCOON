@@ -851,9 +851,12 @@ UI_NONE,yok,none
 UI_DESK_TIER,Masa ve sandalyeler:,Desks and chairs:
 UI_BUILD_MODE,İnşa moduna geç,Enter build mode
 UI_BUILD_TITLE,İnşa modu,Build mode
-UI_BUILD_KEYS,R: döndür · Esc: aracı bırak,R: rotate · Esc: drop tool
+UI_BUILD_KEYS,R / Shift+R: döndür · Del: imlecin altındakini sat · Esc: aracı bırak,R / Shift+R: rotate · Del: sell what is under the cursor · Esc: drop tool
 UI_BUILD_DONE,Bitir,Done
-UI_BUILD_REMOVE,Kaldır / sat,Remove / sell
+UI_BUILD_REMOVE,Sil / sat,Delete / sell
+UI_BUILD_ROTATE_LEFT,Sola döndür (Shift+R),Turn left (Shift+R)
+UI_BUILD_ROTATE_RIGHT,Sağa döndür (R),Turn right (R)
+UI_BUILD_SELL_PREVIEW,"Tıklarsan %s satılır, %s geri gelir.","Click to sell %s, %s comes back."
 UI_BUILD_ROOM,Oda çiz,Draw room
 UI_BUILD_ROOM_HINT,Boş alanda (gri zemin) sürükleyerek çiz; en az 3×3 m.,Drag on empty space (grey floor); at least 3×3 m.
 UI_BUILD_ROOMS_LOCKED,Oda çizmek büyütülmüş ofiste açılır.,Drawing rooms unlocks in the enlarged office.

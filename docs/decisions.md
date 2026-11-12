@@ -1145,3 +1145,14 @@ tezgâhı lavabolu dolap modüllerinin yan yana dizilmesiyle kurulur. Bina önü
 çalı, köşelerin ötesinde tahta çit var. Ölçü değişiklikleri: mchip 0.7×0.6, bank 1.5×0.85 (boy 1.0), fener 0.7×0.65
 (boy 2.8), bitki rafı 1.0×0.5. Halı dik geldiği için `import_ai.py`'ye `rot_x` seçeneği eklendi. glTF nesneleri
 quaternion kullandığı için euler açısından önce `rotation_mode = XYZ` yapılır. Çit çapraz geldi, `rot -41.7` verildi.
+
+## K-095 — İnşa modunda gerçek önizleme, 4 yön, görünür silme
+Orgo yerleştirmede yalnızca kutu gördüğünü, döndürme ve silme olmadığını bildirdi. Döndürme (yalnızca R, 2 yön) ve
+"Kaldır / sat" (kayan listenin sonunda) aslında vardı ama gözden kaçıyordu.
+- `BuildGhost`: kutunun içinde eşyanın kendisi yarı saydam ve renk katmanlı görünür (renkler `look.json build_ghost`).
+- Döndürme 4 yöne çıktı (0–3; eski kayıtlardaki 0/1 aynı anlamda kalır). Araç çubuğunda ↺ ↻ düğmeleri var, R ve
+  Shift+R tuşları da çalışır. Eşya imlecin ortasında durur, döndürünce yerinde döner.
+- "Sil / sat" düğmesi paletin solunda sabit durur. Sil aracında imlecin altındaki eşya kırmızı yanar ve geri gelecek
+  para yazar (`BuildSystem.refund`). Delete tuşu imlecin altındaki eşyayı satar; oda yıkmaz. Halının üstündeki eşya
+  önce seçilir (`OfficeLayout.furniture_at`).
+- İkonlar (çöp, döndürme okları) Tabler çizgi stiline uygun olarak elle çizildi; indirme yapılmadı.

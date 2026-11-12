@@ -290,6 +290,18 @@ func is_walkable(p: Vector2) -> bool:
 	return not _grid.is_point_solid(cell_of(p))
 
 
+## Noktadaki oyuncu eşyası (yoksa {}). Halının üstünde başka eşya varsa önce o seçilir (silme önce üsttekini alır).
+func furniture_at(p: Vector2) -> Dictionary:
+	var under: Dictionary = {}
+	for prop: Dictionary in props:
+		if prop["kind"] != "furniture" or not (prop["rect"] as Rect2).has_point(p):
+			continue
+		if not bool(prop.get("flat", false)):
+			return prop
+		under = prop
+	return under
+
+
 ## Alanın tamamı boş mu (duvar ve kutu yok, bina içinde)?
 func is_free(r: Rect2) -> bool:
 	if not Rect2(Vector2.ZERO, size).encloses(r):

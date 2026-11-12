@@ -1,7 +1,8 @@
 class_name BuildToolbar
 extends PanelContainer
 ## İnşa modu araç çubuğu (M6-B): mobilya paleti, oda çizme (büyütülmüş ofisten), kaldırma; ofisin altında durur.
-## OfficeView'in isteklerini komutlara çevirir, sonucu/hata nedenini gösterir.
+## OfficeView'in isteklerini komutlara çevirir, sonucu/hata nedenini gösterir. Paletin solunda sabit duran "Sil / sat"
+## düğmesi ve iki döndürme düğmesi (eşya seçiliyken) var; Delete tuşu imlecin altındaki eşyayı satar.
 
 var _view: OfficeView
 var _on_exit: Callable
@@ -10,6 +11,8 @@ var _quality: Label
 var _room_type: OptionButton
 var _room_ids: Array[String] = []
 var _tool_buttons: Array[Button] = []
+var _rotate_buttons: Array[Button] = []
+var _previewing: bool = false  # durum satırında satış önizlemesi var (eşyadan çıkınca ipucuna döner)
 
 const PALETTE_HEIGHT: float = 52.0
 
@@ -30,7 +33,28 @@ func _ready() -> void:
 	top.add_child(UiUtil.label(tr("UI_BUILD_KEYS"), 12, UiUtil.MUTED))
 	top.add_child(UiUtil.button(tr("UI_BUILD_DONE"), _exit))
 	col.add_child(top)
+	var row: HBoxContainer = UiUtil.hbox(6)
+	col.add_child(row)
+	var remove: Button = UiUtil.button(tr("UI_BUILD_REMOVE"), func() -> void: _select({"kind": "remove"}))
+	remove.icon = UiUtil.icon_texture("trash", 18)
+	remove.toggle_mode = true
+	remove.set_meta("tool", "remove")
+	remove.theme_type_variation = "DeclineButton"
+	_tool_buttons.append(remove)
+	row.add_child(remove)
+	for d: int in [-1, 1]:
+		var rb: Button = UiUtil.button("", func() -> void: _view.rotate_tool(d))
+		rb.icon = UiUtil.icon_texture("rotate-left" if d < 0 else "rotate-right", 20)
+		rb.tooltip_text = tr("UI_BUILD_ROTATE_LEFT" if d < 0 else "UI_BUILD_ROTATE_RIGHT")
+		for state: String in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
+			rb.add_theme_color_override(state, UiUtil.TEXT)
+		rb.add_theme_color_override("icon_disabled_color", Color(UiUtil.MUTED, 0.45))
+		rb.disabled = true
+		_rotate_buttons.append(rb)
+		row.add_child(rb)
+	row.add_child(VSeparator.new())
 	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.custom_minimum_size.y = PALETTE_HEIGHT
 	var palette: HBoxContainer = UiUtil.hbox(6)
@@ -44,12 +68,7 @@ func _ready() -> void:
 		b.set_meta("tool", id)
 		_tool_buttons.append(b)
 		palette.add_child(b)
-	var remove: Button = UiUtil.button(tr("UI_BUILD_REMOVE"), func() -> void: _select({"kind": "remove"}))
-	remove.toggle_mode = true
-	remove.set_meta("tool", "remove")
-	_tool_buttons.append(remove)
-	palette.add_child(remove)
-	col.add_child(scroll)
+	row.add_child(scroll)
 	if sim.build.can_build_rooms(sim.state):
 		var rooms: HBoxContainer = UiUtil.hbox()
 		_room_type = OptionButton.new()
@@ -76,11 +95,14 @@ func _ready() -> void:
 	_view.remove_requested.connect(_on_remove)
 	_view.hover_changed.connect(func(key: String) -> void:
 		_show(key if not key.is_empty() else "UI_BUILD_OK", key.is_empty()))
+	_view.remove_hover.connect(_on_remove_hover)
 	_refresh_quality()
 
 
 func _select(tool: Dictionary) -> void:
 	_view.set_tool(tool)
+	for rb: Button in _rotate_buttons:
+		rb.disabled = tool.get("kind", "") != "furniture"
 	var key: String = str(tool.get("id", tool.get("kind", "")))
 	for b: Button in _tool_buttons:
 		b.set_pressed_no_signal(str(b.get_meta("tool")) == key)
@@ -88,6 +110,7 @@ func _select(tool: Dictionary) -> void:
 
 
 func _show(key: String, ok: bool) -> void:
+	_previewing = false
 	_status.text = tr(key)
 	_status.add_theme_color_override("font_color", UiUtil.SAGE_DARK if ok else UiUtil.TERRACOTTA)
 
@@ -109,15 +132,23 @@ func _on_room(type: String, rect: Rect2) -> void:
 	_refresh_quality()
 
 
+## Noktadaki oyuncu eşyasını satar (halının üstündeki eşya önce). Satıldıysa true.
+func _sell_at(p: Vector2) -> bool:
+	var sim: Simulation = GameState.sim
+	var prop: Dictionary = sim.build.layout(sim.state).furniture_at(p)
+	if prop.is_empty():
+		return false
+	GameState.execute(SellFurnitureCommand.new(int(prop["index"])))
+	_show("UI_BUILD_SOLD", true)
+	_refresh_quality()
+	return true
+
+
 ## Önce mobilya, yoksa çizilmiş oda kaldırılır.
 func _on_remove(p: Vector2) -> void:
 	var sim: Simulation = GameState.sim
-	for prop: Dictionary in sim.build.layout(sim.state).props:
-		if prop["kind"] == "furniture" and (prop["rect"] as Rect2).has_point(p):
-			GameState.execute(SellFurnitureCommand.new(int(prop["index"])))
-			_show("UI_BUILD_SOLD", true)
-			_refresh_quality()
-			return
+	if _sell_at(p):
+		return
 	var rooms: Array = sim.state.build["rooms"]
 	for i: int in rooms.size():
 		var r: Array = rooms[i]["rect"]
@@ -127,6 +158,33 @@ func _on_remove(p: Vector2) -> void:
 			_refresh_quality()
 			return
 	_show("UI_BUILD_NOTHING", false)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	var key: InputEventKey = event as InputEventKey
+	if key == null or not key.pressed or key.echo or not is_visible_in_tree():
+		return
+	if key.keycode == KEY_DELETE:
+		var p: Vector2 = _view.hover_point()
+		if p == Vector2.INF or not _sell_at(p):
+			_show("UI_BUILD_NOTHING", false)
+		_view.refresh_hover()
+		get_viewport().set_input_as_handled()
+
+
+## Sil aracında imlecin altındaki eşyanın adı ve geri gelecek para.
+func _on_remove_hover(prop: Dictionary) -> void:
+	if str(_view.build_tool.get("kind", "")) != "remove":
+		return
+	if prop.is_empty():
+		if _previewing:
+			_show("UI_BUILD_PICK_REMOVE", true)
+		return
+	var sim: Simulation = GameState.sim
+	_status.text = tr("UI_BUILD_SELL_PREVIEW") % [UiUtil.name_of(DataDB.data.furniture, prop["id"]),
+		UiUtil.money(sim.build.refund(sim.state, int(prop["index"])))]
+	_status.add_theme_color_override("font_color", UiUtil.TERRACOTTA)
+	_previewing = true
 
 
 func _exit() -> void:

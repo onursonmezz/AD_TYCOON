@@ -72,6 +72,19 @@ func test_rug_is_walkable_and_takes_furniture_on_top() -> void:
 	assert_eq(sim.build.place_error(sim.state, "plant_small", p + Vector2(0.5, 0.5), 0), "", "halının üstüne bitki konur")
 
 
+func test_remove_picks_item_on_top_of_rug_and_shows_refund() -> void:
+	var sim: Simulation = _sim(2)
+	var p: Vector2 = _free_spot(sim, "round_rug")
+	assert_eq(PlaceFurnitureCommand.new("round_rug", p, 0).execute(sim), "")
+	assert_eq(PlaceFurnitureCommand.new("plant_small", p + Vector2(0.5, 0.5), 0).execute(sim), "")
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	assert_eq(str(l.furniture_at(p + Vector2(0.7, 0.7))["id"]), "plant_small", "üstteki bitki önce seçilir")
+	assert_eq(str(l.furniture_at(p + Vector2(1.6, 1.6))["id"]), "round_rug", "bitkinin dışında halı")
+	var paid: float = sim.build.furniture_cost(sim.state, "plant_small")
+	assert_almost_eq(sim.build.refund(sim.state, 1), paid * float(data.bal("build.sell_refund")), 0.01)
+	assert_eq(sim.build.refund(sim.state, 9), 0.0)
+
+
 func test_furniture_turns_four_ways() -> void:
 	var def: Dictionary = data.furniture["bookshelf"]
 	for rot: int in 4:

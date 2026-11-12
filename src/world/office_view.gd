@@ -9,6 +9,10 @@ signal place_requested(furniture_id: String, pos: Vector2, rot: int)
 signal room_requested(room_type: String, rect: Rect2)
 signal remove_requested(point: Vector2)
 signal hover_changed(text_key: String)
+## Silme aracında farenin altındaki oyuncu eşyası ({} = yok); araç çubuğu geri gelecek parayı yazar.
+signal remove_hover(prop: Dictionary)
+## Eşya aracının yönü değişti (0..3, 90° adım).
+signal tool_rotated(rot: int)
 
 const PAN_PER_PIXEL: float = 0.03
 const KEY_PAN_SPEED: float = 10.0
@@ -19,6 +23,7 @@ var _dragging: bool = false
 ## {} = inşa yok; { "kind": "furniture", "id", "rot" } | { "kind": "room", "type" } | { "kind": "remove" }
 var build_tool: Dictionary = {}
 var _room_start: Vector2 = Vector2.INF
+var _last_mouse: Vector2 = Vector2.INF
 
 
 func _init() -> void:
@@ -61,6 +66,8 @@ func _gui_input(event: InputEvent) -> void:
 				employee_clicked.emit(id)
 				accept_event()
 	var mm: InputEventMouseMotion = event as InputEventMouseMotion
+	if mm != null:
+		_last_mouse = mm.position
 	if mm != null and _dragging:
 		world.rig.pan(-mm.relative * PAN_PER_PIXEL)
 		accept_event()
@@ -73,7 +80,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if key == null or not key.pressed or key.echo or not is_visible_in_tree():
 		return
 	if key.keycode == KEY_R and build_tool.get("kind", "") == "furniture":
-		build_tool["rot"] = (int(build_tool["rot"]) + 1) % 2
+		rotate_tool(-1 if key.shift_pressed else 1)
+		get_viewport().set_input_as_handled()
 	elif key.keycode == KEY_ESCAPE and not build_tool.is_empty():
 		set_tool({})
 		get_viewport().set_input_as_handled()
@@ -99,12 +107,35 @@ func set_tool(tool: Dictionary) -> void:
 	build_tool = tool
 	_room_start = Vector2.INF
 	world.hide_ghost()
+	remove_hover.emit({})
+	refresh_hover()
+
+
+## Eşya aracını döndürür: 1 saat yönünde, -1 tersine (4 yön).
+func rotate_tool(direction: int) -> void:
+	if build_tool.get("kind", "") != "furniture":
+		return
+	build_tool["rot"] = posmod(int(build_tool["rot"]) + direction, 4)
+	tool_rotated.emit(int(build_tool["rot"]))
+	refresh_hover()
+
+
+## Önizlemeyi farenin son konumuna göre yeniler (döndürme, satış sonrası).
+func refresh_hover() -> void:
+	if _last_mouse != Vector2.INF and not build_tool.is_empty():
+		_build_hover(_last_mouse)
+
+
+## Farenin altındaki zemin noktası (Delete tuşuyla silme için); fare görünüm dışındaysa INF.
+func hover_point() -> Vector2:
+	return ground_point(_last_mouse) if _last_mouse != Vector2.INF else Vector2.INF
 
 
 ## Fare altındaki zemin noktası (metre, y = 0 düzlemi).
 func ground_point(screen_pos: Vector2) -> Vector2:
 	var cam: Camera3D = world.rig.camera
-	var hit: Variant = Plane(Vector3.UP, 0.0).intersects_ray(cam.project_ray_origin(screen_pos), cam.project_ray_normal(screen_pos))
+	var vp_pos: Vector2 = screen_pos * (Vector2(_viewport.size) / size)
+	var hit: Variant = Plane(Vector3.UP, 0.0).intersects_ray(cam.project_ray_origin(vp_pos), cam.project_ray_normal(vp_pos))
 	if hit == null:
 		return Vector2.INF
 	return Vector2((hit as Vector3).x, (hit as Vector3).z)
@@ -116,7 +147,10 @@ static func snap(p: Vector2, step: float) -> Vector2:
 
 func _furniture_rect(p: Vector2) -> Rect2:
 	var def: Dictionary = DataDB.data.furniture[build_tool["id"]]
-	return OfficeLayout.furniture_rect(def, snap(p, OfficeLayout.CELL), int(build_tool["rot"]))
+	var rot: int = int(build_tool["rot"])
+	var r: Rect2 = OfficeLayout.furniture_rect(def, Vector2.ZERO, rot)
+	# Fare eşyanın ortasında dursun (döndürünce eşya imlecin etrafında döner).
+	return OfficeLayout.furniture_rect(def, snap(p - r.size * 0.5 + Vector2.ONE * OfficeLayout.CELL * 0.5, OfficeLayout.CELL), rot)
 
 
 func _room_rect(a: Vector2, b: Vector2) -> Rect2:
@@ -132,18 +166,29 @@ func _build_hover(screen_pos: Vector2) -> void:
 	var sim: Simulation = GameState.sim
 	match str(build_tool["kind"]):
 		"furniture":
+			var def: Dictionary = DataDB.data.furniture[build_tool["id"]]
+			var rot: int = int(build_tool["rot"])
 			var r: Rect2 = _furniture_rect(p)
-			var err: String = sim.build.place_error(sim.state, build_tool["id"], r.position, int(build_tool["rot"]), false)
-			world.show_ghost(r, float(DataDB.data.furniture[build_tool["id"]]["height"]), err.is_empty())
+			var err: String = sim.build.place_error(sim.state, build_tool["id"], r.position, rot, false)
+			world.show_ghost(r, float(def["height"]), "ok" if err.is_empty() else "bad", {
+				"model": str(def.get("model", "")), "size": Vector2(float(def["size"][0]), float(def["size"][1])),
+				"height": float(def["height"]), "yaw": -90.0 * rot, "base_y": float(def.get("mount_y", 0.0))})
 			hover_changed.emit(err)
 		"room":
 			if _room_start != Vector2.INF:
 				var rr: Rect2 = _room_rect(_room_start, p)
 				var err: String = sim.build.room_error(sim.state, build_tool["type"], rr)
-				world.show_ghost(rr, 0.2, err.is_empty())
+				world.show_ghost(rr, 0.2, "ok" if err.is_empty() else "bad")
 				hover_changed.emit(err)
 		"remove":
-			world.show_ghost(Rect2(snap(p, OfficeLayout.CELL), Vector2(OfficeLayout.CELL, OfficeLayout.CELL)), 0.1, true)
+			var prop: Dictionary = sim.build.layout(sim.state).furniture_at(p)
+			if prop.is_empty():
+				world.show_ghost(Rect2(snap(p, OfficeLayout.CELL), Vector2(OfficeLayout.CELL, OfficeLayout.CELL)), 0.1, "remove")
+			else:
+				var def: Dictionary = DataDB.data.furniture[prop["id"]]
+				world.show_ghost((prop["rect"] as Rect2).grow(0.05), float(def["height"]) + 0.05, "remove",
+					{"base_y": float(def.get("mount_y", 0.0))})
+			remove_hover.emit(prop)
 
 
 func _build_click(mb: InputEventMouseButton) -> void:
@@ -154,6 +199,7 @@ func _build_click(mb: InputEventMouseButton) -> void:
 		"furniture":
 			if mb.pressed:
 				place_requested.emit(build_tool["id"], _furniture_rect(p).position, int(build_tool["rot"]))
+				refresh_hover()
 		"room":
 			if mb.pressed:
 				_room_start = p
@@ -164,3 +210,4 @@ func _build_click(mb: InputEventMouseButton) -> void:
 		"remove":
 			if mb.pressed:
 				remove_requested.emit(p)
+				refresh_hover()

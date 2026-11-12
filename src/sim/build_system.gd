@@ -89,12 +89,20 @@ func place(state: SimState, economy: Economy, id: String, pos: Vector2, rot: int
 	return ""
 
 
+## Satılırsa geri gelecek para (ödenen bedelin sell_refund oranı); geçersiz sırada 0.
+func refund(state: SimState, index: int) -> float:
+	var list: Array = state.build["furniture"]
+	if index < 0 or index >= list.size():
+		return 0.0
+	return float(list[index].get("paid", 0.0)) * float(_b("sell_refund"))
+
+
 ## Satış: ödenen bedelin yarısı geri gelir.
 func sell(state: SimState, index: int) -> bool:
 	var list: Array = state.build["furniture"]
 	if index < 0 or index >= list.size():
 		return false
-	state.cash += float(list[index].get("paid", 0.0)) * float(_b("sell_refund"))
+	state.cash += refund(state, index)
 	list.remove_at(index)
 	_changed(state)
 	return true

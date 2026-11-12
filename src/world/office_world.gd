@@ -312,25 +312,17 @@ func pick(camera_ray_from: Vector3, camera_ray_dir: Vector3) -> String:
 
 # --- inşa modu önizlemesi ------------------------------------------------------------
 
-var _ghost: MeshInstance3D
+var _ghost: BuildGhost
 
 
-## Yerleştirme/oda önizlemesi: yeşil uygun, kırmızı değil.
-func show_ghost(rect: Rect2, height: float, ok: bool) -> void:
+## Yerleştirme/oda/kaldırma önizlemesi (BuildGhost): mode "ok" | "bad" | "remove"; item varsa eşyanın kendisi de görünür.
+func show_ghost(rect: Rect2, height: float, mode: String, item: Dictionary = {}) -> void:
 	if _ghost == null:
-		_ghost = MeshInstance3D.new()
-		_ghost.mesh = BoxMesh.new()
-		var mat: StandardMaterial3D = StandardMaterial3D.new()
-		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		_ghost.material_override = mat
+		_ghost = BuildGhost.new()
 		add_child(_ghost)
-	_ghost.visible = true
-	(_ghost.mesh as BoxMesh).size = Vector3(rect.size.x, height, rect.size.y)
-	_ghost.position = Vector3(rect.get_center().x, height * 0.5, rect.get_center().y)
-	(_ghost.material_override as StandardMaterial3D).albedo_color = Color(0.3, 0.75, 0.4, 0.45) if ok else Color(0.85, 0.3, 0.25, 0.45)
+	_ghost.show_at(rect, height, mode, item)
 
 
 func hide_ghost() -> void:
 	if _ghost != null:
-		_ghost.visible = false
+		_ghost.hide_all()
