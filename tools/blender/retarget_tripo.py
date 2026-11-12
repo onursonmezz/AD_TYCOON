@@ -84,7 +84,10 @@ def _release_hair(mesh, tarm, pre: str) -> None:
 
 def retarget(src: str, dst: str) -> None:
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    bpy.ops.import_scene.gltf(filepath=src)
+    if src.lower().endswith(".fbx"):  # Mixamo ya da Tripo FBX çıktısı
+        bpy.ops.import_scene.fbx(filepath=src)
+    else:
+        bpy.ops.import_scene.gltf(filepath=src)
     tarm = next(o for o in bpy.context.scene.objects if o.type == "ARMATURE")
     for o in list(bpy.context.scene.objects):
         # iskelete bağlı olmayan yardımcı nesneler (Tripo'nun kürecik gibi) atılır

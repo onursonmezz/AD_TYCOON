@@ -1,7 +1,7 @@
 """Kadro karakterlerini toplu hazırlar (K2, art/ai_rehberi.md 5).
 
 1. art/incoming/cast/ içindeki adlandırma kuralına uyan dosyaları bulur:
-       char_<dönem>_<f|m|n><sıra>.glb   ör. char_1990_f01.glb, char_2010_m02.glb, char_2020_n01.glb
+       char_<dönem>_<f|m|n><sıra>.glb (Tripo Rig) ya da .fbx (Mixamo)   ör. char_1990_f01.glb, char_2010_m02.fbx
    dönem: 1990, 2000, 2010, 2020 (2020 = 2020 ve sonrası); f kadın, m erkek, n nötr.
 2. Her karaktere hareketleri aktarır (retarget_tripo.py) → assets/models/characters/cast/<id>.glb.
 3. Başarıyla hazırlanan yeni karakterleri data/characters.json "cast" listesine ekler (dosyanın düzenini bozmadan).
@@ -23,15 +23,16 @@ import retarget_tripo  # noqa: E402
 
 INCOMING = os.path.join(ROOT, "art", "incoming", "cast")
 DATA = os.path.join(ROOT, "data", "characters.json")
-NAME = re.compile(r"^char_(1990|2000|2010|2020)_([fmn])(\d{2})\.glb$")
+NAME = re.compile(r"^char_(1990|2000|2010|2020)_([fmn])(\d{2})\.(glb|fbx)$")  # Tripo GLB ya da Mixamo FBX
 GENDERS = {"f": "female", "m": "male", "n": "neutral"}
 ERA_END = {"1990": 1999, "2000": 2009, "2010": 2019, "2020": 9999}
 
 
-def _entry(cid: str) -> dict:
-    era, g, _ = NAME.match(cid + ".glb").groups()
+def _entry(fname: str) -> dict:
+    era, g, _, ext = NAME.match(fname).groups()
+    cid = fname.rsplit(".", 1)[0]
     return {"id": cid, "model": "characters/cast/%s.glb" % cid, "gender": GENDERS[g], "from": int(era),
-            "to": ERA_END[era], "src": "art/incoming/cast/%s.glb" % cid}
+            "to": ERA_END[era], "src": "art/incoming/cast/%s.%s" % (cid, ext)}
 
 
 def _entry_text(e: dict) -> str:
@@ -77,9 +78,9 @@ def main() -> None:
     known = {c["id"] for c in cast}
     files = sorted(os.listdir(INCOMING)) if os.path.isdir(INCOMING) else []
     for n in files:
-        if n.endswith(".glb") and not NAME.match(n):
-            print("UYARI: %s adlandırma kuralına uymuyor (char_<dönem>_<f|m|n><sıra>.glb), atlandı" % n)
-    new = [_entry(n[:-4]) for n in files if NAME.match(n) and n[:-4] not in known]
+        if n.lower().endswith((".glb", ".fbx")) and not NAME.match(n):
+            print("UYARI: %s adlandırma kuralına uymuyor (char_<dönem>_<f|m|n><sıra>.glb ya da .fbx), atlandı" % n)
+    new = [_entry(n) for n in files if NAME.match(n) and n.rsplit(".", 1)[0] not in known]
     done = 0
     for e in cast:
         if (not only or e["id"] in only) and _build(e):

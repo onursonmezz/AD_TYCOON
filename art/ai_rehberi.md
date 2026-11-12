@@ -268,7 +268,7 @@ no bag, no hat, no text, no logo
 
 ### 5.3 Karakter listesi ve adlar
 
-Dosya adı kuralı: **`char_<dönem>_<f|m|n><sıra>.glb`**.
+Dosya adı kuralı: **`char_<dönem>_<f|m|n><sıra>.glb`** (Mixamo'dan gelirse `.fbx`).
 - **Dönem:** `1990`, `2000`, `2010`, `2020`. 2020, 2020 ve sonrası demek.
 - **Harf:** `f` kadın, `m` erkek, `n` nötr.
 - **Sıra:** iki haneli (`01`, `02`…).
@@ -336,6 +336,23 @@ Ben şu komutu çalıştırırım (ya da sen çalıştırabilirsin):
 "C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_cast.py
 ```
 Komut yeni dosyaları bulur, 11 hareketi aktarır, saç ağırlıklarını düzeltir ve karakteri kadro listesine ekler. İskeletsiz dosyayı atlar ve uyarır; o zaman Tripo'da Rig yapıp yeniden indir.
+
+**Tripo'da Rig yoksa: Mixamo yolu (ücretsiz)**
+
+1. Tripo'dan iskeletsiz modeli **FBX** olarak indir. FBX seçeneği yoksa önce GLB indir; bana gönder, FBX'e ben çeviririm.
+2. [mixamo.com](https://www.mixamo.com) adresine git ve ücretsiz bir Adobe hesabıyla gir.
+3. Sağ üstten **Upload Character**'a tıkla ve FBX dosyasını sürükle.
+4. Model önden görünmüyorsa alttaki döndürme oklarıyla düzelt, sonra **Next**'e bas.
+5. İşaretleri yerleştir: **çene (Chin), bilekler (Wrists), dirsekler (Elbows), dizler (Knees), kasık (Groin)**. Simetri açık kalsın. **Skeleton LOD: Standard Skeleton (65)** seç ve **Next**'e bas. 1–2 dakika bekle.
+6. Önizlemede karakter hareket etmeli; kollar ve bacaklar düzgün bükülüyorsa **Next**, ardından **Finish**'e bas.
+7. Hareket seçmene gerek yok. Sağdaki **Download**'a bas ve şunları seç:
+   - Format: **FBX Binary (.fbx)**
+   - Skin: **With Skin**
+   - Frames per Second: 30
+   - Keyframe Reduction: none
+8. İnen dosyayı `art/incoming/cast/char_<dönem>_<f|m|n><sıra>.fbx` adıyla koy (ör. `char_1990_m01.fbx`). Aynı komut GLB'leri de FBX'leri de okur.
+
+Mixamo bazen dokuyu FBX'in içine koymaz. Karakter oyunda gri görünürse Tripo'daki doku görselini (`.jpg`/`.png`) aynı klasöre koy ve bana yaz.
 
 ### 5.5 Karakter kontrol listesi (Tripo önizlemesinde)
 

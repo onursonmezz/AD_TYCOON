@@ -1124,3 +1124,8 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
   - Tripo Rig → GLB teslimi; tek komut.
   - Prompt şablonuna "no hat"; açık uzun saç yerine toplu saç önerisi (kol kalkınca esneme).
 - **Prompt kartları:** Yeni bağlantıda yayınlandı (eski sayfa eski adlarla kaldı). PDF yenilendi.
+
+## K-092 — Kadro aracı Mixamo FBX'i de okur
+Tripo'nun Rig özelliği her hesapta yok. Ücretsiz Mixamo otomatik iskeleti aynı kemik adlarını (mixamorig:*) kullanır.
+`build_cast.py` artık `char_<dönem>_<f|m|n><sıra>.fbx` dosyalarını da kabul eder, `retarget_tripo.py` FBX'i içe alır.
+Tripo FBX'iyle denendi: 11 hareket, dokular yerinde. Mixamo indirme ayarları rehberde (art/ai_rehberi.md 5.4).
