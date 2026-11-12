@@ -40,7 +40,19 @@
 	"_cast": "Görsel AI (Tripo) karakterleri: saçı ve kıyafeti gövdesinde, tek parça. Çalışan, cinsiyetine ve işe alındığı yıla uyan biriyle görünür; uygun yoksa parçalı karakter. src: ham Tripo dosyası (tools/blender/retarget_tripo.py).",
 	"cast": [
 		{ "id": "char_2020_f01", "model": "characters/cast/char_2020_f01.glb", "gender": "female", "from": 2020, "to": 9999,
-			"src": "art/incoming/cast/char_2020_f01.glb" }
+			"src": "art/incoming/cast/char_2020_f01.glb" },
+		{ "id": "char_1990_m01", "model": "characters/cast/char_1990_m01.glb", "gender": "male", "from": 1990, "to": 1999,
+			"src": "art/incoming/cast/char_1990_m01.fbx" },
+		{ "id": "char_2000_f01", "model": "characters/cast/char_2000_f01.glb", "gender": "female", "from": 2000, "to": 2009,
+			"src": "art/incoming/cast/char_2000_f01.fbx" },
+		{ "id": "char_2000_f02", "model": "characters/cast/char_2000_f02.glb", "gender": "female", "from": 2000, "to": 2009,
+			"src": "art/incoming/cast/char_2000_f02.fbx" },
+		{ "id": "char_2000_f03", "model": "characters/cast/char_2000_f03.glb", "gender": "female", "from": 2000, "to": 2009,
+			"src": "art/incoming/cast/char_2000_f03.fbx" },
+		{ "id": "char_2000_f04", "model": "characters/cast/char_2000_f04.glb", "gender": "female", "from": 2000, "to": 2009,
+			"src": "art/incoming/cast/char_2000_f04.fbx" },
+		{ "id": "char_2020_m01", "model": "characters/cast/char_2020_m01.glb", "gender": "male", "from": 2020, "to": 9999,
+			"src": "art/incoming/cast/char_2020_m01.fbx" }
 	],
 	"cast_rig": { "hand_bone": "mixamorig_RightHand" },
 	"hand_props": {

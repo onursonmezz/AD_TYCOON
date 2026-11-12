@@ -1129,3 +1129,10 @@ Bilgili bot yıllık ortalama puan: Y1 7.89 → Y5 6.64 → Y10 5.88. Rastgele: 
 Tripo'nun Rig özelliği her hesapta yok. Ücretsiz Mixamo otomatik iskeleti aynı kemik adlarını (mixamorig:*) kullanır.
 `build_cast.py` artık `char_<dönem>_<f|m|n><sıra>.fbx` dosyalarını da kabul eder, `retarget_tripo.py` FBX'i içe alır.
 Tripo FBX'iyle denendi: 11 hareket, dokular yerinde. Mixamo indirme ayarları rehberde (art/ai_rehberi.md 5.4).
+
+## K-093 — Mixamo karakterleri ve ilk kadro turu
+Orgo 6 karakteri Mixamo'dan FBX olarak getirdi. Bu dosyalar Blender'a yatık giriyor (iskelet ve gövde 90° dönük, ölçek 0.01).
+`retarget_tripo.py` karakteri kalça→baş ve sol kol yönüne bakarak en yakın dik açıyla dik konuma çevirir. Boyu dünya
+ekseninde ölçer; `mesh.dimensions` yerel eksende ölçtüğü için iskelet 4 kat büyük çıkıyordu. Dokunun saydamlık bağı
+kesilir, böylece doku JPEG olarak dışa aktarılır (1,3 MB). Dönemler: askılı pantolonlu adam `char_1990_m01`, bulutlu
+ceketli adam `char_2020_m01`, dört kadın Y2K giyimiyle `char_2000_f01`–`f04`.

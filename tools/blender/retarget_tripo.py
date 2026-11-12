@@ -82,6 +82,41 @@ def _release_hair(mesh, tarm, pre: str) -> None:
     print("saç/gövde: %d noktanın kol ağırlığı göğse aktarıldı" % moved)
 
 
+def _height(mesh) -> float:
+    """Gövdenin dünyadaki boyu. mesh.dimensions yerel eksende ölçer; Mixamo gövdesi ebeveyne göre dönük gelebiliyor."""
+    bpy.context.view_layer.update()
+    zs = [(mesh.matrix_world @ v.co).z for v in mesh.data.vertices]
+    return max(max(zs) - min(zs), 0.01)
+
+
+def _stand_up(tarm, mesh, pre: str) -> None:
+    """Mixamo FBX'leri yatık gelebiliyor (iskelet ve gövde iki kez 90° dönmüş). Kalça→baş yönünü +Z'ye, karakterin
+    solunu (+X) bizim eksene çevirir; sonra dönüş ve ölçeği iskelete ve gövdeye işler. Dik gelen dosyada bir şey yapmaz."""
+    bpy.context.view_layer.update()
+    w = tarm.matrix_world
+    bones = tarm.data.bones
+    up = (w @ bones[pre + "Head"].head_local - w @ bones[pre + "Hips"].head_local).normalized()
+    left = (w @ bones[pre + "LeftArm"].head_local - w @ bones[pre + "RightArm"].head_local)
+    left = (left - up * left.dot(up)).normalized()
+    fwd = left.cross(up)  # karakterin baktığı yön (sol +X, yukarı +Z iken -Y)
+    have = Matrix((left, fwd, up)).transposed()  # sütunlar: sol, ön, yukarı
+    want = Matrix(((1, 0, 0), (0, -1, 0), (0, 0, 1))).transposed()  # sol +X, ön -Y, yukarı +Z
+    fix = want @ have.inverted()
+    # En yakın dik açılı dönüşe yuvarla: gövdenin hafif öne eğikliği karakteri yamultmasın.
+    fix = Matrix([[float(round(fix[i][j])) for j in range(3)] for i in range(3)])
+    if fix == Matrix.Identity(3) or abs(fix.determinant() - 1.0) > 1e-6:
+        return
+    fix = fix.to_4x4()
+    tarm.matrix_world = fix @ tarm.matrix_world
+    bpy.context.view_layer.update()
+    for o in bpy.context.scene.objects:
+        o.select_set(o in (tarm, mesh))
+    bpy.context.view_layer.objects.active = tarm
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+    bpy.context.view_layer.update()
+    print("dik konuma getirildi")
+
+
 def retarget(src: str, dst: str) -> None:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     if src.lower().endswith(".fbx"):  # Mixamo ya da Tripo FBX çıktısı
@@ -95,13 +130,14 @@ def retarget(src: str, dst: str) -> None:
             bpy.data.objects.remove(o, do_unlink=True)
     mesh = next(o for o in bpy.context.scene.objects if o.type == "MESH")
     pre = _prefix(tarm)
-    for a in list(bpy.data.actions):
+    for a in list(bpy.data.actions):  # Mixamo dosyasındaki hazır hareket de atılır
         bpy.data.actions.remove(a)
     if tarm.animation_data:
         tarm.animation_data_clear()
+    _stand_up(tarm, mesh, pre)
 
     # Gerçek boya (1.7 m) ölçekle: model denetimi ve el eşyaları gerçek ölçüyle çalışır.
-    k = characters.HEIGHT / max(mesh.dimensions.z, 0.01)
+    k = characters.HEIGHT / _height(mesh)
     tarm.scale = tarm.scale * k
     for o in bpy.context.scene.objects:
         o.select_set(o in (tarm, mesh))
@@ -114,7 +150,7 @@ def retarget(src: str, dst: str) -> None:
     marm = characters.armature()
     characters_anim.add_all(marm)
     ours = [a for a in bpy.data.actions]
-    top = max(mesh.dimensions.z, 0.01)
+    top = _height(mesh)
     scale_k = top / characters.HEIGHT
 
     tbones = _ordered([b for b in tarm.data.bones])
@@ -185,6 +221,9 @@ def retarget(src: str, dst: str) -> None:
         for n in (mat.node_tree.nodes if mat and mat.use_nodes else []):
             if n.type == "TEX_IMAGE" and n.image:
                 n.image.name = "tex"
+                n.image.filepath_raw = "tex.jpg"  # Mixamo dosyasında özgün PNG adı kalıyor
+                for link in list(n.outputs["Alpha"].links):  # saydamlık yok; JPEG olarak dışa aktarılsın
+                    mat.node_tree.links.remove(link)
                 if max(n.image.size) > 1024:
                     n.image.scale(1024, 1024)
     out = os.path.join(MODELS_DIR, dst)
