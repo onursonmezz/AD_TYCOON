@@ -62,6 +62,7 @@ func save_game(slot: String = "") -> bool:
 
 
 func end_game() -> void:
+	Clock.playtime.save()
 	sim = null
 	current_slot = ""
 	dirty = false

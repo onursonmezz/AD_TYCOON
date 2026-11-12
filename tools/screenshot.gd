@@ -36,6 +36,7 @@ func _ready() -> void:
 
 func _run() -> void:
 	Settings.persist = false
+	Clock.playtime.persist = false
 	Settings.set_value("tutorial", false)
 	Settings.set_value("autosave", false)
 	TranslationServer.set_locale("tr")

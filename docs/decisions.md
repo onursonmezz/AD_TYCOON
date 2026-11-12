@@ -1156,3 +1156,10 @@ Orgo yerleştirmede yalnızca kutu gördüğünü, döndürme ve silme olmadığ
   para yazar (`BuildSystem.refund`). Delete tuşu imlecin altındaki eşyayı satar; oda yıkmaz. Halının üstündeki eşya
   önce seçilir (`OfficeLayout.furniture_at`).
 - İkonlar (çöp, döndürme okları) Tabler çizgi stiline uygun olarak elle çizildi; indirme yapılmadı.
+
+## K-096 — Tempo ölçümü (hız değişmeden)
+Denge raporunda 1x'te bir oyun yılı 2,4 dk (GDD 27.2 hedefi 10–15 dk). K-034'te Orgo "haftada 3 sn iyi" demişti.
+Hız değiştirilmedi. Oyun her yıl için iki gerçek süre kaydediyor: toplam (oyun açık; duraklamalar dahil; 90 sn dokunulmayan
+duraklatılmış anlar ve odak dışı pencere hariç) ve akan süre (hız payıyla). Kampanya sayısı da tutuluyor. Kayıt
+`user://playtime.json`'da, yalnızca oyuncunun bilgisayarında (GDD 27.3); testler ve araçlar yazmaz. Ayarlar → Tempo
+sekmesinde son 8 yıl görünür. Hız kararı bu ölçümlerle verilecek. Sayılar: `balance.json telemetry`.

@@ -1492,6 +1492,10 @@ UI_SET_RESOLUTION,Pencere boyutu,Window size
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
+UI_SET_TEMPO,Tempo,Pace
+UI_SET_TEMPO_HINT,"Her oyun yılının gerçekte ne kadar sürdüğü. Toplam: oyun açıkken geçen süre (duraklamalar dahil, uzun süre dokunmadığın anlar hariç). Akan: zamanın aktığı süre. Kayıt yalnızca bu bilgisayarda durur.","How long each game year really took. Total: time with the game open (pauses included, idle stretches excluded). Running: time the clock was moving. Stored only on this computer."
+UI_SET_TEMPO_EMPTY,Henüz ölçüm yok; biraz oyna ve buraya dön.,No measurements yet; play a while and come back.
+UI_SET_TEMPO_ROW,"%d · toplam %.1f dk · akan %.1f dk · 1x payı %%%.0f · %d kampanya","%d · total %.1f min · running %.1f min · at 1x %.0f%% · %d campaigns"
 UI_TIP,İpucu,Tip
 UI_TIP_OK,Anladım,Got it
 UI_TIP_OFF,İpuçlarını kapat,Turn off tips

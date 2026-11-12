@@ -35,6 +35,7 @@ func _run() -> void:
 		ModelLibrary.overrides = s.make_all("user://perf_samples")
 		ModelLibrary.overrides.merge(s.make_characters("user://perf_samples", DataDB.data))
 	Settings.persist = false
+	Clock.playtime.persist = false
 	Settings.set_value("tutorial", false)
 	Settings.set_value("autosave", false)
 	GameState.new_game(77, "", _year)

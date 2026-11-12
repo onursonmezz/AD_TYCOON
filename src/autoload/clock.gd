@@ -8,6 +8,40 @@ var paused: bool = true
 ## Modal pencere açıkken (sihirbaz, rapor) saat durur; kapanınca oyuncunun seçimi geri gelir.
 var _hold_count: int = 0
 var _accum: float = 0.0
+## Tempo ölçümü (K-096): her oyun yılının gerçek süresi, yalnızca bu bilgisayarda.
+var playtime: PlaytimeLog = PlaytimeLog.new()
+var _last_input_ms: int = 0
+
+
+func _ready() -> void:
+	playtime.persist = DisplayServer.get_name() != "headless"  # testler ve araçlar oyuncunun kaydına yazmaz
+	playtime.load_from_disk()
+	EventBus.campaign_finished.connect(func(_camp: Dictionary) -> void:
+		if GameState.has_game():
+			playtime.count_campaign(DataDB.data, _game_key(), GameState.sim.state.clock.year()))
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
+		playtime.save()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton or event is InputEventKey or event is InputEventMouseMotion:
+		_last_input_ms = Time.get_ticks_msec()
+
+
+func _game_key() -> String:
+	var s: SimState = GameState.sim.state
+	return "%s|%d" % [s.agency_name, s.clock.start_year]
+
+
+func _measure(delta: float) -> void:
+	if not GameState.has_game() or GameState.is_bankrupt():
+		return
+	var idle: bool = Time.get_ticks_msec() - _last_input_ms > int(DataDB.data.bali("telemetry.idle_seconds") * 1000)
+	playtime.record(DataDB.data, _game_key(), GameState.sim.state.clock.year(), delta, is_running(),
+		int(speeds()[speed_index]), idle or not get_window().has_focus())
 
 
 func speeds() -> Array:
@@ -45,6 +79,7 @@ func is_running() -> bool:
 
 
 func _process(delta: float) -> void:
+	_measure(delta)
 	if not is_running():
 		return
 	var seconds_per_day: float = DataDB.data.balf("time.seconds_per_week_1x") / DataDB.data.balf("calendar.days_per_week")

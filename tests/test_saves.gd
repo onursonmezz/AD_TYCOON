@@ -14,6 +14,7 @@ func before_each() -> void:
 	SaveSystem.dir = "user://test_saves_%d/" % randi()
 	DirAccess.make_dir_recursive_absolute(SaveSystem.dir)
 	Settings.persist = false
+	Clock.playtime.persist = false
 	GameState.autosave_needs_clock = false
 
 

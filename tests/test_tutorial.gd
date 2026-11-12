@@ -6,6 +6,7 @@ var screen: Control
 
 func before_each() -> void:
 	Settings.persist = false
+	Clock.playtime.persist = false
 	Settings.set_value("tutorial", true)
 	Settings.set_value("tutorial_seen", [])
 	GameState.new_game(9)

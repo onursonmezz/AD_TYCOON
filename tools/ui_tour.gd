@@ -19,6 +19,7 @@ func _ready() -> void:
 
 func _run() -> void:
 	Settings.persist = false
+	Clock.playtime.persist = false
 	Settings.set_value("tutorial", true)
 	Settings.set_value("tutorial_seen", [])
 	TranslationServer.set_locale(_lang)
@@ -400,6 +401,14 @@ func _tour_saves(screen: Control) -> void:
 	var st: SettingsDialog = SettingsDialog.new()
 	screen.call("open_modal", st)
 	await _shot("43_settings")
+	# Tempo sekmesi örnek ölçümlerle (oyuncunun kaydına yazılmaz).
+	for y: int in [1990, 1991]:
+		Clock.playtime.record(DataDB.data, "tur|1990", y, 600.0 + y - 1990, false, 1, false)
+		Clock.playtime.record(DataDB.data, "tur|1990", y, 170.0, true, 1, false)
+		Clock.playtime.record(DataDB.data, "tur|1990", y, 30.0, true, 2, false)
+	st.set("_tab", "tempo")
+	st.call("_build")
+	await _shot("43b_settings_tempo")
 	st.queue_free()
 	GameState.dirty = true
 	screen.call("_confirm_leave", func() -> void: pass)

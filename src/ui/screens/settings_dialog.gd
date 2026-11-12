@@ -9,7 +9,7 @@ var _tab: String = "audio"
 var _built: bool = false
 
 const TABS: Array = [["audio", "UI_SET_AUDIO", "volume"], ["game", "UI_SET_GAME", "device-gamepad-2"],
-	["display", "UI_SET_DISPLAY", "device-desktop"], ["language", "UI_SET_LANGUAGE", "world"]]
+	["display", "UI_SET_DISPLAY", "device-desktop"], ["language", "UI_SET_LANGUAGE", "world"], ["tempo", "UI_SET_TEMPO", "clock"]]
 
 
 func _init(on_language: Callable = Callable()) -> void:
@@ -72,6 +72,8 @@ func _build() -> void:
 			body.add_child(_option_row("resolution", res, res))
 		"language":
 			body.add_child(_option_row("language", ["tr", "en"], ["UI_LANG_TR", "UI_LANG_EN"]))
+		"tempo":
+			_tempo(body)
 	var buttons: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	buttons.add_child(UiUtil.spacer())
 	buttons.add_child(UiUtil.button(tr("UI_SET_RESET"), func() -> void:
@@ -79,6 +81,23 @@ func _build() -> void:
 		_language_changed()))
 	buttons.add_child(UiUtil.button_kind(tr("UI_CLOSE"), queue_free, "accept"))
 	col.add_child(buttons)
+
+
+## Tempo ölçümü (K-096): son yılların gerçek süresi; hız kararını bu sayılarla veriyoruz.
+func _tempo(body: VBoxContainer) -> void:
+	body.add_child(UiUtil.wrapped(tr("UI_SET_TEMPO_HINT"), 14, UiUtil.MUTED, 480.0))
+	var rows: Array = []
+	for e: Dictionary in Clock.playtime.latest(DataDB.data.bali("telemetry.keep_entries")):
+		if float(e["total"]) >= DataDB.data.balf("telemetry.show_min_seconds") and rows.size() < DataDB.data.bali("telemetry.show_years"):
+			rows.append(e)
+	if rows.is_empty():
+		body.add_child(UiUtil.label(tr("UI_SET_TEMPO_EMPTY"), 15))
+		return
+	for e: Dictionary in rows:
+		var running: float = maxf(0.001, float(e["running"]))
+		var share: float = float((e["by_speed"] as Dictionary).get("1", 0.0)) / running * 100.0
+		body.add_child(UiUtil.label(tr("UI_SET_TEMPO_ROW") % [int(e["year"]), float(e["total"]) / 60.0,
+			float(e["running"]) / 60.0, share, int(e["campaigns"])], 15))
 
 
 func _label(key: String) -> Label:

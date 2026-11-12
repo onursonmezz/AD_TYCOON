@@ -10,6 +10,7 @@ func test_buses_exist_and_volume_settings_reach_them() -> void:
 	for bus: String in ["Music", "SFX", "Ambient"]:
 		assert_gt(AudioServer.get_bus_index(bus), 0, bus)
 	Settings.persist = false
+	Clock.playtime.persist = false
 	Settings.set_value("volume_music", 0.5)
 	assert_almost_eq(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")), linear_to_db(0.5), 0.01)
 	Settings.load_from_disk()
