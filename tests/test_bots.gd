@@ -34,14 +34,15 @@ func test_repeater_keeps_its_combination() -> void:
 	assert_eq(tones.size(), 1, "tekrarcı hep aynı tonu seçer")
 
 
-func test_channel_streak_rule_is_off_by_default() -> void:
+func test_channel_streak_rule_scales_novelty() -> void:
 	var sim: Simulation = Simulation.new(data, 33)
 	var setup: Dictionary = {"sector": "fast_food", "objective": "awareness", "client_id": "x",
 		"mix": [{"channel": "radio", "share": 1.0}]}
 	var history: Array[Dictionary] = []
 	for i: int in 2:
 		history.append({"sector": "retail", "objective": "sales", "client_id": "y%d" % i, "main_channel": "radio", "week": 0})
-	assert_almost_eq(float(sim.scoring.novelty(setup, history, 100, 1990)["n"]), 1.0, 0.0001, "1.0 = etkisiz")
-	data.balance["novelty"]["same_channel_streak"] = 0.85
-	assert_almost_eq(float(sim.scoring.novelty(setup, history, 100, 1990)["n"]), 0.85, 0.0001)
+	var was: float = float(data.balance["novelty"]["same_channel_streak"])
+	assert_almost_eq(float(sim.scoring.novelty(setup, history, 100, 1990)["n"]), was, 0.0001, "üst üste aynı ana kanal (K-097)")
 	data.balance["novelty"]["same_channel_streak"] = 1.0
+	assert_almost_eq(float(sim.scoring.novelty(setup, history, 100, 1990)["n"]), 1.0, 0.0001, "1.0 = etkisiz")
+	data.balance["novelty"]["same_channel_streak"] = was

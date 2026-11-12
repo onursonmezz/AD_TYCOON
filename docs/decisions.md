@@ -1163,3 +1163,12 @@ Hız değiştirilmedi. Oyun her yıl için iki gerçek süre kaydediyor: toplam 
 duraklatılmış anlar ve odak dışı pencere hariç) ve akan süre (hız payıyla). Kampanya sayısı da tutuluyor. Kayıt
 `user://playtime.json`'da, yalnızca oyuncunun bilgisayarında (GDD 27.3); testler ve araçlar yazmaz. Ayarlar → Tempo
 sekmesinde son 8 yıl görünür. Hız kararı bu ölçümlerle verilecek. Sayılar: `balance.json telemetry`.
+
+## K-097 — M10-B denge: Ö1–Ö4 uygulandı, puan eğrisi açıldı
+Orgo onayıyla Ö1–Ö4 uygulandı. Ö1 tek başına rastgele farkını 2.13'e çıkarıyordu (hedef ≥ 2.5). 13 varyant denendi
+(100–200 koşu). Seçilen ek ayarlar GDD 7.9 formülündeki sabitler: `puan_10 = 10·r^1.0 − 1.2` (önce `r^0.8 − 1.5`),
+`tone_exponent` 0.5→0.75, `era_base` 120→135. Üs 1.0 olunca iyi ile kötü iş arasındaki fark açılıyor; ofset −1.2
+ortalamayı 7.0'ın üstünde tutuyor. Tam rapor (1000×10, 200×30) `docs/balance-report.md`'de. Sonuç: hedeflerden
+yalnızca plaza katı (Y17, hedef Y12–16) ve yıl süresi (K-096 ile ölçülecek) tutmuyor. Plaza için ₺15M nakit şartını
+düşürmek Orgo'ya soruldu.
+Not: `balance_report` aynı botu içeren birden çok JSON'u birleştirmez (ilkini alır); her bot tek dosyada koşulmalı.

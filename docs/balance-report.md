@@ -1,92 +1,108 @@
-# Denge raporu (M10-A, değişiklik öncesi)
+# Denge raporu (M10-B, Ö1–Ö4 ve puan eğrisi uygulandı)
 
-Üretildi: 2026-11-04 · kısa koşu: 1000 koşu × 10 yıl · uzun koşu: 200 koşu × 30 yıl.
+Üretildi: 2026-11-12 · kısa koşu: 1000 koşu × 10 yıl · uzun koşu: 200 koşu × 30 yıl.
 Araçlar: `tools/balance_sim.gd` (botlar), `tools/balance_report.gd` (bu rapor). Hedefler GDD 27.2.
 
 ## Hedefler
 
 | Metrik | Hedef | Değer | Durum |
 |---|---|---|---|
-| Rastgele bot ilk 3 yılda iflas | %20–40 | %25.6 | ✓ |
+| Rastgele bot ilk 3 yılda iflas | %20–40 | %22.8 | ✓ |
 | Bilgili bot küçük ofise geçiş (medyan yıl) | Y2–Y3 | Y3 (%99 koşuda) | ✓ |
-| Bilgili bot plaza katına geçiş (medyan yıl) | Y12–Y16 | Y16 (%96 koşuda) | ✓ |
-| Bilgili bot ortalama puan | 7.0–8.5 | 7.48 | ✓ |
-| Tekrarcı bot, bilgiliden en az 1.5 düşük | ≥ 1.5 | 0.42 (tekrarcı 7.06) | ✗ |
-| Rastgele bot, bilgiliden en az 2.5 düşük | ≥ 2.5 | 1.20 (rastgele 6.28) | ✗ |
-| Bilgili bot ilk ödül (medyan yıl) | Y5–Y8 | Y4 (%79 koşuda) | ✗ |
-| Rastgele kombinasyonların uyum çarpanı (ortalama) | 0.93–0.97 | 0.956 | ✓ |
-| …ve en az %20'si 0.85'in altında | ≥ %20 | %22.7 | ✓ |
+| Bilgili bot plaza katına geçiş (medyan yıl) | Y12–Y16 | Y17 (%85 koşuda) | ✗ |
+| Bilgili bot ortalama puan | 7.0–8.5 | 7.12 | ✓ |
+| Tekrarcı bot, bilgiliden en az 1.5 düşük | ≥ 1.5 | 2.38 (tekrarcı 4.74) | ✓ |
+| Rastgele bot, bilgiliden en az 2.5 düşük | ≥ 2.5 | 2.66 (rastgele 4.46) | ✓ |
+| Bilgili bot ilk ödül (medyan yıl) | Y5–Y8 | Y6 (%54 koşuda) | ✓ |
+| Rastgele kombinasyonların uyum çarpanı (ortalama) | 0.93–0.97 | 0.936 | ✓ |
+| …ve en az %20'si 0.85'in altında | ≥ %20 | %36.4 | ✓ |
 | Bir oyun yılı gerçek süre (1x, duraklamasız) | 10–15 dk | 2.4 dk | ✗ |
 
 ## Botlar
 
 | Bot | İflas ilk 3 yıl | İflas 10 yıl | Ort. puan | Kampanya/koşu | Ödül/koşu | Kredi/koşu |
 |---|---|---|---|---|---|---|
-| rastgele | %25.6 | %59.1 | 6.28 | 26.9 | 0.1 | 0.00 |
-| bilgili | %0.8 | %6.2 | 7.48 | 51.1 | 1.6 | 0.14 |
-| tekrarcı | %1.2 | %6.1 | 7.06 | 51.6 | 0.6 | 0.15 |
-| açgözlü | %43.9 | %72.7 | 7.77 | 27.2 | 0.9 | 1.58 |
+| rastgele | %22.8 | %56.7 | 4.46 | 24.1 | 0.0 | 0.00 |
+| bilgili | %1.0 | %5.6 | 7.12 | 51.3 | 0.9 | 0.13 |
+| tekrarcı | %0.9 | %15.9 | 4.74 | 45.0 | 0.0 | 0.25 |
+| açgözlü | %43.5 | %76.4 | 7.39 | 26.2 | 0.4 | 1.55 |
 
 ## Yıllara göre (kısa koşu)
 
 | Yıl | rastgele nakit | puan | ekip | itibar | bilgili nakit | puan | ekip | itibar | tekrarcı nakit | puan | ekip | itibar | açgözlü nakit | puan | ekip | itibar |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Y1 | 115097 | 6.40 | 1.9 | 5.7 | 143827 | 7.27 | 1.7 | 7.7 | 142975 | 6.86 | 1.6 | 7.0 | 136569 | 8.35 | 2.0 | 10.2 |
-| Y2 | 205144 | 6.47 | 1.9 | 6.4 | 277931 | 8.04 | 2.2 | 11.3 | 277429 | 7.67 | 2.3 | 10.0 | 233690 | 8.00 | 3.3 | 14.2 |
-| Y3 | 276012 | 6.35 | 2.0 | 7.3 | 347688 | 8.16 | 3.2 | 17.4 | 360804 | 7.74 | 3.2 | 14.2 | 321757 | 8.21 | 4.8 | 21.0 |
-| Y4 | 337489 | 6.32 | 2.4 | 7.8 | 474155 | 7.89 | 4.6 | 22.7 | 464074 | 7.47 | 4.5 | 17.4 | 563048 | 7.81 | 5.8 | 26.8 |
-| Y5 | 373459 | 6.38 | 2.8 | 8.7 | 679861 | 7.54 | 5.4 | 29.6 | 655872 | 7.17 | 5.3 | 22.0 | 861925 | 7.46 | 6.0 | 33.6 |
-| Y6 | 444768 | 6.37 | 3.2 | 9.3 | 1049533 | 7.41 | 5.8 | 33.9 | 1001603 | 6.93 | 5.7 | 24.3 | 1326644 | 7.36 | 6.0 | 37.7 |
-| Y7 | 620111 | 6.20 | 3.5 | 9.6 | 1560195 | 7.29 | 5.9 | 37.7 | 1424328 | 6.80 | 5.9 | 26.2 | 1937094 | 7.30 | 6.0 | 41.4 |
-| Y8 | 883808 | 6.08 | 3.9 | 9.4 | 2072706 | 7.22 | 6.0 | 41.3 | 1873075 | 6.79 | 7.0 | 27.9 | 1784175 | 7.39 | 8.7 | 45.0 |
-| Y9 | 1163353 | 6.02 | 4.0 | 9.3 | 2419231 | 6.98 | 6.6 | 44.3 | 2360756 | 6.65 | 7.2 | 30.0 | 2229514 | 7.37 | 10.3 | 49.7 |
-| Y10 | 1464705 | 5.92 | 4.2 | 9.3 | 2765624 | 6.84 | 8.5 | 47.7 | 2712668 | 6.39 | 7.6 | 32.0 | 3852581 | 7.31 | 11.6 | 54.6 |
+| Y1 | 118003 | 4.46 | 1.9 | 3.6 | 143164 | 6.06 | 1.7 | 5.5 | 142722 | 4.22 | 1.6 | 3.5 | 138265 | 7.59 | 2.0 | 6.3 |
+| Y2 | 223287 | 4.54 | 1.9 | 2.2 | 276082 | 7.55 | 2.2 | 6.4 | 263693 | 4.26 | 2.2 | 1.4 | 239397 | 7.61 | 3.2 | 7.6 |
+| Y3 | 307044 | 4.34 | 2.1 | 1.5 | 345704 | 7.93 | 3.2 | 9.8 | 320991 | 5.08 | 2.8 | 1.4 | 301842 | 8.01 | 4.7 | 11.6 |
+| Y4 | 372190 | 4.44 | 2.5 | 0.9 | 436395 | 7.64 | 4.6 | 12.9 | 369174 | 5.21 | 3.7 | 1.2 | 480694 | 7.52 | 5.7 | 14.9 |
+| Y5 | 365568 | 4.51 | 3.1 | 1.0 | 650209 | 7.25 | 5.4 | 18.2 | 420386 | 5.11 | 4.4 | 2.1 | 805180 | 6.98 | 6.0 | 20.0 |
+| Y6 | 445461 | 4.58 | 3.5 | 0.9 | 969569 | 7.02 | 5.8 | 21.2 | 607771 | 4.87 | 4.9 | 1.5 | 1199395 | 6.95 | 6.0 | 23.0 |
+| Y7 | 567105 | 4.56 | 3.9 | 0.7 | 1479164 | 6.95 | 5.9 | 23.9 | 810457 | 4.80 | 5.5 | 1.2 | 1793624 | 6.97 | 6.0 | 25.6 |
+| Y8 | 754885 | 4.54 | 4.0 | 0.6 | 1941310 | 6.93 | 6.0 | 26.4 | 1055148 | 4.70 | 5.9 | 1.0 | 1842139 | 7.06 | 7.8 | 28.3 |
+| Y9 | 1026794 | 4.37 | 4.2 | 0.6 | 2378021 | 6.80 | 6.4 | 29.2 | 1269295 | 4.54 | 6.3 | 0.8 | 2130793 | 7.16 | 9.6 | 32.0 |
+| Y10 | 1239599 | 4.24 | 4.2 | 0.6 | 2580601 | 6.74 | 7.9 | 32.5 | 1551648 | 4.46 | 6.6 | 0.9 | 2842000 | 7.08 | 11.1 | 36.8 |
 
 ## Yıllara göre (uzun koşu)
 
 | Yıl | bilgili nakit | puan | ekip | itibar | açgözlü nakit | puan | ekip | itibar |
 |---|---|---|---|---|---|---|---|---|
-| Y1 | 142801 | 7.28 | 1.6 | 7.9 | 145807 | 8.35 | 2.0 | 10.2 |
-| Y2 | 295269 | 7.98 | 2.3 | 11.4 | 218952 | 7.98 | 3.4 | 13.6 |
-| Y3 | 350047 | 8.23 | 3.4 | 17.5 | 334604 | 8.18 | 4.9 | 20.2 |
-| Y4 | 510034 | 7.95 | 4.7 | 22.7 | 605075 | 7.94 | 5.9 | 27.0 |
-| Y5 | 705817 | 7.58 | 5.4 | 29.6 | 915915 | 7.48 | 6.0 | 33.4 |
-| Y6 | 1147943 | 7.43 | 5.8 | 33.9 | 1224379 | 7.61 | 6.0 | 37.8 |
-| Y7 | 1547662 | 7.34 | 6.0 | 37.7 | 1844815 | 7.22 | 6.0 | 41.4 |
-| Y8 | 2031937 | 7.17 | 6.0 | 40.9 | 1666363 | 7.36 | 8.3 | 44.7 |
-| Y9 | 2531045 | 7.04 | 6.7 | 44.0 | 1954793 | 7.35 | 10.0 | 49.7 |
-| Y10 | 2907041 | 6.80 | 8.4 | 47.6 | 3930762 | 7.15 | 11.4 | 55.3 |
-| Y11 | 3770106 | 7.08 | 10.3 | 51.4 | 5434562 | 6.74 | 12.0 | 60.7 |
-| Y12 | 5124633 | 6.99 | 11.6 | 56.6 | 7973634 | 6.55 | 11.9 | 64.3 |
-| Y13 | 7949774 | 6.97 | 11.8 | 59.9 | 11359688 | 6.46 | 11.9 | 66.3 |
-| Y14 | 10473814 | 6.47 | 12.1 | 62.6 | 5264473 | 6.62 | 17.6 | 69.2 |
-| Y15 | 12021459 | 6.39 | 12.7 | 64.6 | 5206904 | 7.17 | 20.0 | 73.0 |
-| Y16 | 10497245 | 6.14 | 15.5 | 67.3 | 7009302 | 7.31 | 22.4 | 78.1 |
-| Y17 | 8692936 | 6.63 | 19.2 | 70.3 | 8050657 | 6.98 | 25.3 | 80.9 |
-| Y18 | 10845483 | 7.08 | 22.0 | 74.0 | 13403765 | 6.86 | 25.6 | 84.4 |
-| Y19 | 13252012 | 7.24 | 23.4 | 85.0 | 13110991 | 6.86 | 25.4 | 90.4 |
-| Y20 | 15681428 | 7.04 | 24.2 | 91.7 | 16338330 | 6.59 | 25.8 | 92.9 |
-| Y21 | 19754466 | 6.70 | 25.3 | 94.6 | 20004540 | 6.43 | 25.3 | 95.4 |
-| Y22 | 23455092 | 6.31 | 25.6 | 95.8 | 29478684 | 5.71 | 26.9 | 95.0 |
-| Y23 | 29500350 | 5.91 | 26.4 | 95.7 | 30850730 | 5.24 | 26.5 | 95.1 |
-| Y24 | 33141372 | 5.59 | 26.4 | 95.3 | 40812657 | 5.11 | 26.2 | 95.2 |
-| Y25 | 39168400 | 5.17 | 26.9 | 94.0 | 39402468 | 5.08 | 27.2 | 94.1 |
-| Y26 | 46433899 | 4.68 | 27.1 | 91.4 | 46235645 | 4.55 | 27.1 | 91.2 |
-| Y27 | 51487889 | 4.40 | 27.2 | 89.3 | 54103773 | 4.32 | 27.6 | 90.3 |
-| Y28 | 59689376 | 3.97 | 27.6 | 85.6 | 56816243 | 4.10 | 28.1 | 86.5 |
-| Y29 | 64079224 | 3.50 | 27.9 | 80.7 | 53958043 | 3.31 | 28.4 | 84.8 |
-| Y30 | 71663938 | 3.38 | 27.9 | 74.5 | 36065499 | 3.47 | 29.0 | 77.3 |
+| Y1 | 144267 | 6.08 | 1.6 | 5.5 | 146120 | 7.55 | 2.0 | 6.3 |
+| Y2 | 277288 | 7.45 | 2.2 | 6.2 | 239022 | 7.60 | 3.3 | 7.3 |
+| Y3 | 334348 | 7.91 | 3.4 | 9.4 | 315819 | 8.00 | 4.9 | 11.7 |
+| Y4 | 418278 | 7.60 | 4.8 | 12.6 | 523311 | 7.55 | 5.9 | 15.0 |
+| Y5 | 709370 | 7.20 | 5.5 | 17.2 | 823067 | 6.96 | 6.0 | 19.7 |
+| Y6 | 996394 | 7.00 | 5.9 | 20.3 | 1250552 | 6.71 | 6.0 | 22.7 |
+| Y7 | 1523505 | 6.86 | 6.0 | 22.8 | 1858549 | 6.91 | 6.0 | 25.6 |
+| Y8 | 1965434 | 6.94 | 6.1 | 25.2 | 1943967 | 7.09 | 7.7 | 29.0 |
+| Y9 | 2408707 | 6.87 | 6.4 | 28.0 | 2130793 | 6.86 | 9.8 | 32.6 |
+| Y10 | 2578131 | 6.78 | 8.1 | 31.1 | 2900868 | 7.10 | 11.4 | 38.3 |
+| Y11 | 3047171 | 7.00 | 10.0 | 35.4 | 5432430 | 6.65 | 11.8 | 42.1 |
+| Y12 | 4208151 | 6.72 | 11.1 | 40.3 | 7525713 | 6.62 | 11.9 | 45.6 |
+| Y13 | 6205367 | 6.60 | 11.5 | 43.0 | 9489798 | 6.34 | 12.0 | 47.0 |
+| Y14 | 9580047 | 6.13 | 11.9 | 45.1 | 8480750 | 5.98 | 14.0 | 47.7 |
+| Y15 | 12068415 | 5.63 | 12.2 | 45.6 | 9679690 | 6.16 | 16.2 | 48.7 |
+| Y16 | 12021575 | 5.56 | 13.3 | 47.4 | 9779888 | 6.23 | 18.2 | 52.8 |
+| Y17 | 11367619 | 5.90 | 16.1 | 48.4 | 14585778 | 5.77 | 20.1 | 56.9 |
+| Y18 | 12373684 | 6.37 | 18.1 | 51.0 | 16339593 | 6.42 | 20.7 | 58.7 |
+| Y19 | 12629081 | 6.71 | 19.5 | 63.0 | 16355529 | 6.59 | 21.0 | 67.9 |
+| Y20 | 13321233 | 6.81 | 20.2 | 72.4 | 20829134 | 6.71 | 21.6 | 74.7 |
+| Y21 | 15841130 | 6.65 | 21.9 | 78.2 | 22777077 | 6.77 | 22.3 | 79.8 |
+| Y22 | 21622822 | 6.53 | 22.8 | 82.0 | 30284844 | 6.56 | 23.1 | 85.4 |
+| Y23 | 26418753 | 6.50 | 23.8 | 84.1 | 32668315 | 5.80 | 22.8 | 89.6 |
+| Y24 | 30713799 | 6.08 | 24.2 | 84.8 | 36435596 | 6.38 | 24.2 | 91.9 |
+| Y25 | 34956223 | 5.75 | 25.0 | 85.3 | 41441668 | 6.14 | 25.5 | 92.6 |
+| Y26 | 40868147 | 5.34 | 25.5 | 85.2 | 31903384 | 5.68 | 24.7 | 93.6 |
+| Y27 | 45153003 | 4.80 | 25.9 | 84.6 | 39398870 | 5.14 | 25.2 | 95.1 |
+| Y28 | 53491584 | 4.65 | 26.2 | 83.7 | 38008700 | 4.46 | 26.8 | 94.6 |
+| Y29 | 57801993 | 4.41 | 26.4 | 81.2 | 45189037 | 4.48 | 28.4 | 90.6 |
+| Y30 | 63916416 | 4.08 | 26.6 | 78.0 | 54262129 | 4.24 | 27.8 | 87.5 |
 
-## Öneriler (onay bekliyor)
+## Uygulanan değişiklikler (K-097) ve önceki raporla karşılaştırma
 
-Hiçbiri henüz uygulanmadı. Denemeler `balance_sim --set=…` ile, dosyalar değiştirilmeden yapıldı: 200 koşu × 10 yıl, 30 yıllık denemeler 60 koşu.
+| Ayar | Önce | Sonra | Neden |
+|---|---|---|---|
+| `fit_multiplier` −3/−2/−1/+1/+2/+3 | 0.45/0.62/0.82/1.06/1.14/1.25 | 0.30/0.45/0.72/1.10/1.25/1.40 | Ö1: uyum tabloları daha keskin |
+| `balance_sk` ceza / üst sınır | 0.25 / 0.30 | 0.5 / 0.5 | Ö1: dengesiz kaydırıcı daha çok acıtır |
+| `focus.min_mult` | 0.80 | 0.60 | Ö1: yanlış odağın tabanı |
+| `novelty.same_channel_streak` | 1.0 (kapalı) | 0.65 | Ö2: üst üste aynı ana kanal |
+| `awards.min_reputation` | 0 | 15 | Ö3: ilk ödül çok erkendi |
+| `score.era_growth` | 1.075 | 1.06 | Ö4: geç yıllardaki çöküş |
+| `score.exponent` / `score.offset` | 0.8 / −1.5 | 1.0 / −1.2 | Puan eğrisi: iyi ile kötü iş arasındaki fark açılır, ortalama yerinde kalır |
+| `scoring.tone_exponent` | 0.5 | 0.75 | Tonun etkisi biraz artar |
+| `score.era_base` | 120 | 135 | Dönem beklentisi biraz yüksek: rastgele işler daha düşük puan alır |
 
-| # | Sorun | Öneri | Deneme sonucu | Yan etki |
-|---|---|---|---|---|
-| Ö1 | Rastgele–bilgili farkı 1.20 (hedef ≥ 2.5) | Uyum çarpanları daha keskin: `fit_multiplier` −3: 0.45→0.30, −2: 0.62→0.45, −1: 0.82→0.72, +1: 1.06→1.10, +2: 1.14→1.25, +3: 1.25→1.40. Kaydırıcı dengesizliği cezası: `balance_sk.penalty_per_log` 0.25→0.5, `max_penalty` 0.30→0.50. Yanlış odağın tabanı: `focus.min_mult` 0.80→0.60 | Fark **2.13** (rastgele 5.16, bilgili 7.29). M1 hedefi (≥ 2) ✓, M10 hedefi (≥ 2.5) ✗ | Rastgele bot 10 yılda %65 iflas (önce %59), ilk 3 yılda %29 (hedef içinde). Bilgili bot 7.48→7.29. Yanlış seçimler daha çok acıtır. |
-| Ö2 | Tekrarcı–bilgili farkı 0.42 (hedef ≥ 1.5) | Yeni yenilik kuralı (GDD 7.8'e ek): aynı ana kanal son iki kampanyada da kullanıldıysa N ×0.65 (`novelty.same_channel_streak`) | 0.85 ile fark 0.83, 0.70 ile **1.41**. 0.65 ile hedefi tutması bekleniyor (M10-B'de doğrulanır). | Bilgili bot etkilenmiyor (7.49). Oyuncu kanalını çeşitlendirmeye teşvik edilir. |
-| Ö3 | İlk ödül Y4 (hedef Y5–Y8) | Ödüle başvurmak için en az itibar: `awards.min_reputation` 0→15 | 25 ile ilk ödül Y8, ama yalnızca koşuların %33'ü ödül alıyor (koşu başına 0.4; önce 1.6): fazla sert. 15 ile Y5–Y6 bekleniyor (M10-B'de doğrulanır). | Erken yıllarda ödül yok; oyuncuya "itibarın yetmiyor" diye söylenir. Alternatif: hedefi Y4–Y8 kabul edip değiştirmemek. |
-| Ö4 | 21. yıldan sonra puan düşüşü (A-014) | Dönem beklentisi daha yavaş büyüsün: `score.era_growth` 1.075→1.06 | Y30 puanı 3.38→**5.15**, Y25 5.17→6.76; 30 yıl ortalaması 6.54→7.18; plaza katı Y16 ✓ | Kalan düşüş ekibin plaza katında ~28 kişide tıkanmasından. Asıl çözüm M11'de: bina katı, eşzamanlı kampanyalar. Bina katının (seviye 5) parasını ₺30M'a indirmek denendi: kira yüzünden %82 iflas, **önerilmiyor**. |
-| Ö5 | 1x'te bir oyun yılı 2.4 dk (hedef 10–15 dk) | **Değişiklik önerilmiyor.** M2 playtest kararı (K-034): haftada 3 sn "iyi" bulundu; 10–15 dk, oyuncunun duraklattığı ve pencerelerde geçirdiği süreyle birlikte okunuyor. | — | M10 playtest'inde oyunculara yeniden sorulur. |
+| Metrik | Önce | Sonra |
+|---|---|---|
+| Rastgele farkı (hedef ≥ 2.5) | 1.20 ✗ | 2.66 ✓ |
+| Tekrarcı farkı (hedef ≥ 1.5) | 0.42 ✗ | 2.38 ✓ |
+| Bilgili ortalama (7.0–8.5) | 7.48 ✓ | 7.12 ✓ |
+| İlk ödül (Y5–Y8) | Y4 ✗ | Y6 ✓ (koşuların %54'ü) |
+| Rastgele iflas ilk 3 yıl (%20–40) | %25.6 ✓ | %22.8 ✓ |
+| Plaza katı (Y12–Y16) | Y16 ✓ | Y17 ✗ |
+| Y30 bilgili puan (uzun koşu) | 3.38 | 4.08 |
 
-Ödül eşiklerini yükseltmek de denendi (kısa liste 7.8, bronz 8.6): ilk ödül yine Y4'te kaldı, ödül sayısı ise dörtte bire düştü. **Önerilmiyor.**
+**Açık kalanlar**
+- Plaza katı bir yıl gecikti. Darboğaz ₺15M nakit şartı (GDD 12.1): bilgili bot Y15'te medyan ₺12M'de. Denendi: plaza itibar şartı 40→35 ve ödül eşiği 15→10 → ikisi de Y17'de kaldı. Olası çözüm nakit şartını ₺12M'ye indirmek (onay bekliyor).
+- Geç yıllardaki puan düşüşü azaldı ama sürüyor (Y30 4.08). Asıl çözüm M11'de (bina katı, eşzamanlı kampanyalar).
+- Yıl süresi: hız değişmedi; Ayarlar → Tempo'daki gerçek ölçümle karar verilecek (K-096).
+- Tekrarcı ile rastgele bot artık birbirine yakın (4.74 / 4.46): hep aynı şeyi yapmak neredeyse rastgele oynamak kadar cezalandırılıyor. Playtest'te sert gelirse `same_channel_streak` 0.65→0.75 yumuşatılabilir.

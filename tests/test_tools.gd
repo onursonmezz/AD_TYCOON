@@ -111,14 +111,14 @@ func test_quick_start_scales_cash_and_era_base() -> void:
 	assert_eq(sim.state.clock.year(), 2010)
 	assert_eq(sim.state.clock.game_year(), 1)
 	assert_almost_eq(sim.state.cash, data.balf("start.cash") * Economy.inflation(data, 2010), 0.01)
-	assert_almost_eq(sim.scoring.era_base(2010, "small"), 120.0, 0.001,
+	assert_almost_eq(sim.scoring.era_base(2010, "small"), data.balf("score.era_base"), 0.001,
 		"dönem tabanı oyunun başladığı yıldan büyür")
 	assert_true(sim.state.rivals.has("yeni_nesil"), "2009'da açılan rakip var")
 	assert_eq(sim.state.hardware, "imak")
 	var errors: Array[String] = []
 	var loaded: Simulation = SaveCodec.decode(data, SaveCodec.encode(sim), errors)
 	assert_eq(loaded.state.clock.year(), 2010, "başlangıç yılı kayda girer")
-	assert_almost_eq(loaded.scoring.era_base(2010, "small"), 120.0, 0.001)
+	assert_almost_eq(loaded.scoring.era_base(2010, "small"), data.balf("score.era_base"), 0.001)
 
 
 func test_new_era_is_announced() -> void:

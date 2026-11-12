@@ -74,6 +74,10 @@ func test_award_entry_only_in_open_month_and_once() -> void:
 	assert_eq(sim.awards.enter(sim.state, sim.economy, "golden_apple", h["campaign"]), "ERR_AWARD_CLOSED")
 	_go_to_month(sim, sim.awards.entry_month("golden_apple"))
 	h["week"] = sim.state.clock.week_index
+	sim.state.reputation = data.balf("awards.min_reputation") - 1.0
+	assert_eq(sim.awards.enter(sim.state, sim.economy, "golden_apple", h["campaign"]), "ERR_AWARD_REPUTATION",
+		"itibarı yetmeyen başvuramaz (K-097)")
+	sim.state.reputation = data.balf("awards.min_reputation")
 	var cash0: float = sim.state.cash
 	assert_eq(sim.awards.enter(sim.state, sim.economy, "golden_apple", h["campaign"]), "")
 	assert_almost_eq(cash0 - sim.state.cash, sim.awards.entry_fee(sim.state, "golden_apple"), 0.01)

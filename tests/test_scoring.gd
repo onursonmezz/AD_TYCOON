@@ -31,14 +31,14 @@ func test_data_loads() -> void:
 
 
 func test_fit_mult_table_values() -> void:
-	assert_almost_eq(scoring.fit_mult(-3), 0.45, 0.0001)
+	assert_almost_eq(scoring.fit_mult(-3), 0.30, 0.0001)
 	assert_almost_eq(scoring.fit_mult(0), 1.0, 0.0001)
-	assert_almost_eq(scoring.fit_mult(3), 1.25, 0.0001)
+	assert_almost_eq(scoring.fit_mult(3), 1.40, 0.0001)
 
 
 func test_fit_mult_interpolates_half_values() -> void:
-	assert_almost_eq(scoring.fit_mult(0.5), 1.03, 0.0001)
-	assert_almost_eq(scoring.fit_mult(-2.5), 0.535, 0.0001)
+	assert_almost_eq(scoring.fit_mult(0.5), 1.05, 0.0001)
+	assert_almost_eq(scoring.fit_mult(-2.5), 0.375, 0.0001)
 
 
 func test_triple_plus_combination_beats_triple_minus() -> void:
@@ -85,8 +85,10 @@ func test_overcap_slider_has_diminishing_returns() -> void:
 func test_balance_near_ideal_ratio_is_one() -> void:
 	var ideal: float = float(data.objectives["sales"]["ideal_sk"])
 	assert_almost_eq(float(scoring.balance_sk(ideal * 100.0, 100.0, "sales")["b"]), 1.0, 0.0001)
-	assert_almost_eq(float(scoring.balance_sk(100.0, 100.0 * 1.05 / ideal, "sales")["b"]), 1.0, 0.02)
-	assert_almost_eq(float(scoring.balance_sk(1000.0, 10.0, "rebrand")["b"]), 0.7, 0.0001, "en fazla %30 ceza")
+	assert_almost_eq(float(scoring.balance_sk(100.0, 100.0 * 1.05 / ideal, "sales")["b"]),
+		1.0 - data.balf("balance_sk.penalty_per_log") * log(1.05), 0.001, "%5 sapma küçük ceza")
+	assert_almost_eq(float(scoring.balance_sk(1000.0, 10.0, "rebrand")["b"]), 1.0 - data.balf("balance_sk.max_penalty"), 0.0001,
+		"ceza üst sınırı")
 
 
 func test_repeating_combination_gets_novelty_penalty() -> void:
@@ -133,10 +135,10 @@ func test_recommended_channels_formula() -> void:
 func test_relative_score_uses_era_base_and_soft_record() -> void:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	var base: float = scoring.era_base(1990, "small")
-	assert_almost_eq(base, 120.0, 0.0001)
-	assert_almost_eq(scoring.era_base(1991, "medium"), 120.0 * 2.6 * data.balf("score.era_growth"), 0.001, "K-064: 1.075")
+	assert_almost_eq(base, data.balf("score.era_base"), 0.0001)
+	assert_almost_eq(scoring.era_base(1991, "medium"), base * 2.6 * data.balf("score.era_growth"), 0.001, "yıllık büyüme")
 	var fin: Dictionary = scoring.final_score(200.0, 0, 1990, "small", 100.0, rng)
-	assert_almost_eq(float(fin["target"]), 120.0, 0.0001, "rekor×1.05 < dönem tabanı → taban")
+	assert_almost_eq(float(fin["target"]), base, 0.0001, "rekor×1.05 < dönem tabanı → taban")
 	assert_almost_eq(float(fin["new_best"]), 160.0, 0.0001, "en_iyi + 0.6*(ham − en_iyi)")
 	var high: Dictionary = scoring.final_score(150.0, 0, 1990, "small", 200.0, rng)
 	assert_almost_eq(float(high["target"]), 210.0, 0.0001)

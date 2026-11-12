@@ -1,5 +1,18 @@
 # Değişiklik günlüğü
 
+## M10-B: Denge ve tempo ölçümü (2026-11-13)
+- **Puanlar daha keskin:** Doğru hedef/kitle/ton/kanal seçimi eskisinden çok daha fazla ödüllendiriliyor, yanlış seçim daha çok cezalandırılıyor. Rastgele oynayan ortalama 4.5, bilen oyuncu 7.1 alıyor (önce 6.3 / 7.5).
+- **Tekrar cezası:** Aynı ana kanalı üst üste üç kampanyada kullanmak yenilik puanını düşürüyor.
+- **Ödüller:** Başvurmak için en az 15 itibar gerekiyor; ilk ödül 4. yıl yerine 6. yılda geliyor.
+- **Geç oyun:** Dönem beklentisi daha yavaş büyüyor; 30. yıldaki puan düşüşü azaldı.
+- **Tempo ölçümü:** Ayarlar → Tempo, her oyun yılının gerçekte kaç dakika sürdüğünü gösteriyor. Hız değişmedi; kararı bu sayılarla vereceğiz.
+- Nasıl test ederim:
+  1. 1990'da yeni oyun başlat ve 3–4 kampanya yap. Bilgi Defteri'nde yeşil hücrelere uyan seçimler belirgin şekilde yüksek, kırmızılar belirgin şekilde düşük puan almalı.
+  2. Aynı ana kanalı (ör. radyo) üst üste üç kampanyada kullan. Üçüncünün raporunda "daha önce gördük" türü bir açıklama ve daha düşük puan görmelisin.
+  3. İtibarın 15'in altındayken ödül başvurusu "itibarın yetmiyor" uyarısı vermeli.
+  4. Normal oynadığın gibi 2–3 oyun yılı oyna, sonra Ayarlar → Tempo'yu aç. Her yıl için toplam ve akan dakika görünmeli; bu sayıları bana yaz.
+  5. Denge raporu: `docs/balance-report.md` (en altta önce/sonra tablosu).
+
 ## K4–A2–B1: Mixamo karakterleri, yeni eşyalar, kolay yerleştirme (2026-11-12)
 - **Karakterler:** Kadroya 6 karakter eklendi. Askılı pantolonlu adam 1990'larda, dört kadın 2000'lerde, bulutlu ceketli adam 2020'lerde işe alınanlarda görünür. Kadro aracı artık Mixamo FBX dosyalarını da okuyor; yatık gelen karakteri kendisi dikiyor.
 - **Eşyalar:** Kitaplık, bitki rafı, ofis kedisi, turkuaz bilgisayar (g4), laptop + monitör (mchip), bank ve sokak feneri yeni modellerle değişti.
