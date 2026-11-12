@@ -1136,3 +1136,12 @@ Orgo 6 karakteri Mixamo'dan FBX olarak getirdi. Bu dosyalar Blender'a yatık gir
 ekseninde ölçer; `mesh.dimensions` yerel eksende ölçtüğü için iskelet 4 kat büyük çıkıyordu. Dokunun saydamlık bağı
 kesilir, böylece doku JPEG olarak dışa aktarılır (1,3 MB). Dönemler: askılı pantolonlu adam `char_1990_m01`, bulutlu
 ceketli adam `char_2020_m01`, dört kadın Y2K giyimiyle `char_2000_f01`–`f04`.
+
+## K-094 — Tripo eşyaları, ikinci tur
+14 model geldi. Bunlardan 7'si mevcut eşyaların yerine geçti: kitaplık, bitki rafı (`plant_big`), ofis kedisi, g4 ve
+mchip bilgisayarları, bank, fener. Üç yeni satın alınabilir eşya eklendi: asılı saksı (`mount_y` 1.3 ile havada),
+çiçek kasası, örgü halı. Halıda `flat: true` var; yürüme ızgarasına engel olarak girmez, üstüne eşya konur. Mutfak
+tezgâhı lavabolu dolap modüllerinin yan yana dizilmesiyle kurulur. Bina önünde kapının iki yanında çit çalısı ve top
+çalı, köşelerin ötesinde tahta çit var. Ölçü değişiklikleri: mchip 0.7×0.6, bank 1.5×0.85 (boy 1.0), fener 0.7×0.65
+(boy 2.8), bitki rafı 1.0×0.5. Halı dik geldiği için `import_ai.py`'ye `rot_x` seçeneği eklendi. glTF nesneleri
+quaternion kullandığı için euler açısından önce `rotation_mode = XYZ` yapılır. Çit çapraz geldi, `rot -41.7` verildi.

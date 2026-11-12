@@ -80,9 +80,13 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 			var withered: bool = dry and def["decor"] == "plant"
 			var col: Color = color_of(_m()["dry_plant_color"]) if withered else color_of(def["color"])
 			var t: Dictionary = thing(parent, str(def.get("model", "")), pr.get_center(),
-				Vector2(float(def["size"][0]), float(def["size"][1])), float(def["height"]), col, -90.0 * int(prop.get("rot", 0)))
+				Vector2(float(def["size"][0]), float(def["size"][1])), float(def["height"]), col, -90.0 * int(prop.get("rot", 0)),
+				float(def.get("mount_y", 0.0)))
 			if withered and bool(t["model"]):
 				ModelLibrary.tint(t["node"], Color(col, 0.55))
+			continue
+		if prop["kind"] == "counter" and props.has("kitchen_sink"):
+			_counter(parent, pr, props)
 			continue
 		var def2: Dictionary = props[prop["kind"]]
 		var h: float = float(def2["height"])
@@ -94,6 +98,17 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 			if not equip.is_empty():
 				thing(parent, str(equip["model"]), pr.get_center() + Vector2(0, -0.1), _v2(equip["size"]),
 					float(equip["height"]), color_of(equip["color"]), 0.0, h)
+
+
+## Mutfak tezgâhı: tezgâh boyunca lavabolu dolap modülleri yan yana dizilir (modelin oranı korunur).
+func _counter(parent: Node3D, pr: Rect2, props: Dictionary) -> void:
+	var sink: Dictionary = props["kitchen_sink"]
+	var unit: float = float(sink["size"][0])
+	var n: int = maxi(1, roundi(pr.size.x / unit))
+	var w: float = pr.size.x / n
+	for i: int in n:
+		thing(parent, str(sink["model"]), Vector2(pr.position.x + w * (i + 0.5), pr.get_center().y), Vector2(w, pr.size.y),
+			float(sink["height"]), color_of(sink["color"]))
 
 
 ## Duvar süsleri (G3): altıgen raf ve çıtalı panel, uzun dış duvarlarda posterin (duvar ortası) yanına,
@@ -175,6 +190,7 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 	var bench: Dictionary = street["bench"]
 	thing(parent, str(bench["model"]), mid - t * 2.5 + n * (sw * 0.5), _v2(bench["size"]), float(bench["height"]),
 		color_of(bench["color"]), yaw)
+	_greenery(parent, layout, mid, n, t, edge_len, yaw)
 	# Billboard: binanın köşesinin ötesinde, kaldırımda, yola bakar.
 	var bb: Dictionary = street["billboard"]
 	var bb_pos: Vector2 = mid + t * (edge_len * 0.5 + BILLBOARD_GAP) + n * (sw * 0.5)
@@ -194,6 +210,35 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 		box(frame, Vector3(0.0, bottom + float(panel[1]) * 0.5, -0.08), Vector3(float(panel[0]) + 0.2, float(panel[1]) + 0.2, 0.12), c)
 	_billboard_anchor = Transform3D(Basis(Vector3.UP, deg_to_rad(yaw)),
 		Vector3(bb_pos.x, bottom + float(panel[1]) * 0.5, bb_pos.y) + Vector3(n.x, 0.0, n.y) * 0.05)
+
+
+## Bina önü: kapının iki yanında duvar boyunca çit çalısı (arada top çalı); bina köşelerinin ötesinde tahta çit.
+func _greenery(parent: Node3D, layout: OfficeLayout, mid: Vector2, n: Vector2, t: Vector2, edge_len: float, yaw: float) -> void:
+	var cfg: Dictionary = _m()["street_layout"]
+	var street: Dictionary = _m()["street"]
+	if not street.has("hedge"):
+		return
+	var off: float = float(cfg["hedge_offset"])
+	var step: float = float(cfg["hedge_step"])
+	var door: float = (layout.entrance - mid).dot(t)
+	var every: int = int(cfg["bush_every"])
+	var k: int = 0
+	var x: float = -edge_len * 0.5 + step * 0.5
+	while x + step * 0.5 <= edge_len * 0.5 + 0.01:
+		if absf(x - door) > float(cfg["door_gap"]) + step * 0.5:
+			var d: Dictionary = street["bush"] if k % every == every - 1 else street["hedge"]
+			thing(parent, str(d["model"]), mid + t * x + n * off, _v2(d["size"]), float(d["height"]), color_of(d["color"]), yaw)
+			k += 1
+		x += step
+	var fence: Dictionary = street["fence"]
+	var fstep: float = float(cfg["fence_step"])
+	for side: float in [-1.0, 1.0]:
+		var fx: float = edge_len * 0.5 + fstep * 0.5
+		while fx < edge_len * 0.5 + float(cfg["fence_reach"]):
+			if side < 0.0 or absf(fx - (edge_len * 0.5 + BILLBOARD_GAP)) > 2.6:
+				thing(parent, str(fence["model"]), mid + t * (side * fx) + n * off, _v2(fence["size"]), float(fence["height"]),
+					color_of(fence["color"]), yaw)
+			fx += fstep
 
 
 ## surface: look.json "street" içindeki doku adı (sidewalk, road); dosyası yoksa düz renk.

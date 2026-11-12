@@ -7,6 +7,7 @@ Her model `tools/blender/ai_imports.json` içinde bir satırdır:
 - fit: "uniform" oranı korur ve kutuya sığdırır; "stretch" üç ekseni ayrı ölçekler. Boyu oyun için önemli olan
   eşyalarda kullanılır: masa yüksekliği klavyeye, oturak yüksekliği oturana uymalı.
 - rot: Z ekseninde döndürme (derece); önü -Y'ye (Blender "Front") bakmalı.
+- rot_x (isteğe bağlı): X ekseninde döndürme (derece); dik gelen halı gibi düz eşyalar için.
 - tris: üçgen sınırı (aşılırsa azaltılır); tex: en büyük doku kenarı (px).
 - grade (isteğe bağlı): {"sat": doygunluk çarpanı, "val": parlaklık çarpanı}; yoksa DEFAULT_GRADE.
 
@@ -89,6 +90,8 @@ def process(name: str, cfg: dict) -> None:
         if o != obj:
             bpy.data.objects.remove(o, do_unlink=True)
     obj.name = name
+    obj.rotation_mode = "XYZ"  # glTF nesneleri quaternion kullanır; euler açıları ancak bu kipte işler
+    obj.rotation_euler.x += math.radians(float(cfg.get("rot_x", 0)))  # dik duran düz eşyayı (halı) yatırır
     obj.rotation_euler.z += math.radians(float(cfg.get("rot", 0)))
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 

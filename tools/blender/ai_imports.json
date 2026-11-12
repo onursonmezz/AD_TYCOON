@@ -3,5 +3,19 @@
 	"chair": { "src": "art/incoming/chair.glb", "dst": "props/chair.glb", "size": [0.5, 0.5, 0.9], "fit": "stretch", "rot": 0, "tris": 3000, "tex": 1024 },
 	"sofa": { "src": "art/incoming/sofa.glb", "dst": "props/sofa.glb", "size": [1.9, 0.8, 0.9], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
 	"pc386": { "src": "art/incoming/pc386.glb", "dst": "equipment/pc386.glb", "size": [0.45, 0.45, 0.4], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
-	"tree": { "src": "art/incoming/tree.glb", "dst": "street/tree.glb", "size": [2.3, 1.8, 3.2], "fit": "uniform", "rot": 0, "tris": 8000, "tex": 1024 }
+	"tree": { "src": "art/incoming/tree.glb", "dst": "street/tree.glb", "size": [2.3, 1.8, 3.2], "fit": "uniform", "rot": 0, "tris": 8000, "tex": 1024 },
+	"bookshelf": { "src": "art/incoming/bookshelf.glb", "dst": "furniture/bookshelf.glb", "size": [1.5, 0.5, 1.9], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"plant_big": { "src": "art/incoming/plant_shelf.glb", "dst": "furniture/plant_big.glb", "size": [1.0, 0.5, 1.6], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"office_cat": { "src": "art/incoming/office_cat.glb", "dst": "furniture/office_cat.glb", "size": [0.7, 0.7, 0.5], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"hanging_plant": { "src": "art/incoming/hanging_plant.glb", "dst": "furniture/hanging_plant.glb", "size": [0.5, 0.5, 1.0], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"flower_box": { "src": "art/incoming/flower_box.glb", "dst": "furniture/flower_box.glb", "size": [1.0, 0.6, 0.73], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"round_rug": { "src": "art/incoming/round_rug.glb", "dst": "furniture/round_rug.glb", "size": [2.0, 2.0, 0.05], "fit": "stretch", "rot": 0, "rot_x": 90, "tris": 3000, "tex": 1024 },
+	"g4": { "src": "art/incoming/g4.glb", "dst": "equipment/g4.glb", "size": [0.45, 0.45, 0.42], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"mchip": { "src": "art/incoming/mchip.glb", "dst": "equipment/mchip.glb", "size": [0.7, 0.6, 0.36], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"bench": { "src": "art/incoming/bench.glb", "dst": "street/bench.glb", "size": [1.5, 0.85, 1.0], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"lamp": { "src": "art/incoming/lamp.glb", "dst": "street/lamp.glb", "size": [0.7, 0.65, 2.8], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"kitchen_sink": { "src": "art/incoming/kitchen_sink.glb", "dst": "props/kitchen_sink.glb", "size": [1.4, 0.6, 0.95], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"hedge": { "src": "art/incoming/hedge.glb", "dst": "street/hedge.glb", "size": [1.6, 0.75, 0.7], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"bush": { "src": "art/incoming/bush.glb", "dst": "street/bush.glb", "size": [0.9, 0.9, 0.7], "fit": "uniform", "rot": 0, "tris": 3000, "tex": 1024 },
+	"fence": { "src": "art/incoming/fence.glb", "dst": "street/fence.glb", "size": [2.0, 0.3, 0.9], "fit": "uniform", "rot": -41.7, "tris": 3000, "tex": 1024 }
 }

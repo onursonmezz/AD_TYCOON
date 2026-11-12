@@ -23,7 +23,8 @@ var rooms: Array[Dictionary] = []
 var walls: Array[Dictionary] = []
 ## { "pos": Vector2, "seat": Vector2 }
 var desks: Array[Dictionary] = []
-## Engel kutuları: { "kind": "desk"|"counter"|"table"|"sofa"|"furniture", "rect": Rect2, "id" (mobilya), "index" }
+## Engel kutuları: { "kind": "desk"|"counter"|"table"|"sofa"|"furniture", "rect": Rect2, "id" (mobilya), "index", "flat" }
+## flat (halı): yürüme ızgarasına engel olarak işlenmez.
 var props: Array[Dictionary] = []
 ## oda tipi → yürünebilir bekleme noktaları
 var spots: Dictionary = {}
@@ -58,6 +59,7 @@ static func build(rec: Dictionary, custom: Dictionary = {}, furniture_defs: Dict
 	for f: Dictionary in custom.get("furniture", []):
 		if furniture_defs.has(f["id"]):
 			l.props.append({"kind": "furniture", "id": f["id"], "index": i, "rot": int(f.get("rot", 0)),
+				"flat": bool(furniture_defs[f["id"]].get("flat", false)),
 				"rect": furniture_rect(furniture_defs[f["id"]], Vector2(float(f["pos"][0]), float(f["pos"][1])), int(f.get("rot", 0)))})
 		i += 1
 	l._build_grid()
@@ -266,6 +268,8 @@ func _build_grid() -> void:
 		_mark(box, func(c: Vector2) -> bool:
 			return Geometry2D.get_closest_point_to_segment(c, a, b).distance_to(c) < WALL_CLEARANCE)
 	for prop: Dictionary in props:
+		if bool(prop.get("flat", false)):  # halı gibi yere serilen eşyanın üstünden yürünür, üstüne eşya konur
+			continue
 		_mark(prop["rect"], func(c: Vector2) -> bool: return (prop["rect"] as Rect2).has_point(c))
 
 

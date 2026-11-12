@@ -55,10 +55,29 @@ func test_furniture_cannot_block_paths_or_exceed_limit() -> void:
 	var l: OfficeLayout = sim.build.layout(sim.state)
 	var kitchen: Rect2 = l.room_rect("kitchen")
 	var door: Vector2 = Vector2(kitchen.position.x - 0.5, kitchen.get_center().y - 0.5)
-	assert_eq(sim.build.place_error(sim.state, "plant_big", door, 0), "ERR_PLACE_PATH", "mutfak kapısı kapatılamaz")
+	assert_eq(sim.build.place_error(sim.state, "plant_big", door, 1), "ERR_PLACE_PATH", "mutfak kapısı kapatılamaz")
 	assert_eq(PlaceFurnitureCommand.new("office_cat", _free_spot(sim, "office_cat"), 0).execute(sim), "")
 	assert_eq(sim.build.place_error(sim.state, "office_cat", _free_spot(sim, "plant_small"), 0), "ERR_FURNITURE_LIMIT")
 	assert_eq(sim.build.place_error(sim.state, "espresso", Vector2(1, 1), 0), "ERR_FURNITURE", "1990'da espresso makinesi yok")
+
+
+func test_rug_is_walkable_and_takes_furniture_on_top() -> void:
+	var sim: Simulation = _sim(2)
+	var p: Vector2 = _free_spot(sim, "round_rug")
+	assert_ne(p, Vector2.INF)
+	assert_eq(PlaceFurnitureCommand.new("round_rug", p, 0).execute(sim), "")
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	var center: Vector2 = p + Vector2(1.0, 1.0)
+	assert_true(l.is_walkable(center), "halının üstünden yürünür")
+	assert_eq(sim.build.place_error(sim.state, "plant_small", p + Vector2(0.5, 0.5), 0), "", "halının üstüne bitki konur")
+
+
+func test_furniture_turns_four_ways() -> void:
+	var def: Dictionary = data.furniture["bookshelf"]
+	for rot: int in 4:
+		var r: Rect2 = OfficeLayout.furniture_rect(def, Vector2.ZERO, rot)
+		var want: Vector2 = Vector2(1.5, 0.5) if rot % 2 == 0 else Vector2(0.5, 1.5)
+		assert_eq(r.size, want, "dönüş %d" % rot)
 
 
 func test_desk_tier_upgrade() -> void:

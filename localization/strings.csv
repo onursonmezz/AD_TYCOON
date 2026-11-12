@@ -827,7 +827,7 @@ ROOM_AWARD_LOBBY_DESC,Ödül lobisi: ziyaretçiler etkilenir; pitch skoru +%5,Aw
 ROOM_EMPTY,Boş alan,Empty space
 ROOM_EMPTY_DESC,Oda çizebileceğin boş alan.,Empty space where you can draw rooms.
 FURN_PLANT_SMALL,Küçük bitki,Small plant
-FURN_PLANT_BIG,Büyük bitki,Big plant
+FURN_PLANT_BIG,Bitki rafı,Plant shelf
 FURN_TEA_URN,Semaver,Tea urn
 FURN_FILTER_COFFEE,Filtre kahve makinesi,Filter coffee maker
 FURN_ESPRESSO,Espresso makinesi,Espresso machine
@@ -839,6 +839,9 @@ FURN_RECORD_PLAYER,Plak çalar,Record player
 FURN_AWARD_CASE,Ödül vitrini,Award case
 FURN_NEON_SIGN,Neon tabela,Neon sign
 FURN_OFFICE_CAT,Ofis kedisi,Office cat
+FURN_HANGING_PLANT,Asılı saksı,Hanging plant
+FURN_FLOWER_BOX,Çiçek kasası,Flower box
+FURN_ROUND_RUG,Örgü halı,Braided rug
 DESK_BASIC,Basit,Basic
 DESK_ERGONOMIC,Ergonomik,Ergonomic
 DESK_ADJUSTABLE,Ayarlanabilir,Adjustable
