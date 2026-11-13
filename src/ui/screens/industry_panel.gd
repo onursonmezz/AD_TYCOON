@@ -69,6 +69,16 @@ func _awards_block() -> VBoxContainer:
 	var sim: Simulation = GameState.sim
 	var data: GameData = DataDB.data
 	var list: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	var titles: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	for spec: Array in [["UI_COL_AWARD", true], ["UI_COL_FEE", false], ["UI_COL_STATUS", false]]:
+		var h: Label = UiUtil.label(tr(spec[0]), 12, CozyTheme.TEXT)
+		if bool(spec[1]):
+			h.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		else:
+			h.custom_minimum_size.x = 96.0
+			h.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		titles.add_child(h)
+	list.add_child(titles)
 	var i: int = 0
 	for id: String in sim.awards.available(sim.state):
 		var card: PanelContainer = PanelContainer.new()

@@ -43,7 +43,9 @@ func rebuild() -> void:
 	var points: Label = UiUtil.label(tr("UI_AP") % float(s.research["points"]), 16, CozyTheme.FOREST)
 	points.add_theme_font_override("font", CozyTheme.title_font(700))
 	head_col.add_child(points)
-	var hint: Label = UiUtil.wrapped(tr("UI_RESEARCH_HINT"), 12, UiUtil.MUTED, 400.0)
+	var hint: Label = UiUtil.label(tr("UI_RESEARCH_SHORT"), 12, CozyTheme.TEXT)
+	hint.tooltip_text = tr("UI_RESEARCH_HINT")
+	hint.mouse_filter = Control.MOUSE_FILTER_STOP
 	head_col.add_child(hint)
 	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	head.add_child(Cards.tile("flask", 48.0, CozyTheme.TERRA_SOFT))
@@ -84,7 +86,7 @@ func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
 	for r: Dictionary in sim.research.requirements(s, id):
 		var need: String = tr(str(r["need"])) if r["key"] == "REQ_RESEARCH" else str(r["need"])
 		var text: String = tr(str(r["key"]) + "_SHORT") % need
-		reqs.add_child(Cards.chip(("✓ " if bool(r["ok"]) else "✗ ") + text,
+		reqs.add_child(Cards.chip(("✓ " if bool(r["ok"]) else "") + text,
 			CozyTheme.SAGE_SOFT if bool(r["ok"]) else CozyTheme.CREAM, CozyTheme.FOREST if bool(r["ok"]) else CozyTheme.MUTED))
 	mid.add_child(reqs)
 	row.add_child(VSeparator.new())

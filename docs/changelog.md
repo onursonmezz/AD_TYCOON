@@ -1,5 +1,21 @@
 # Değişiklik günlüğü
 
+## UI-3 (5.–7. adım): Taslak ölçüleri, görsel paketi, panel ayrıntıları (2026-11-14)
+- **Boyutlar:** Her pencere kendi taslağındaki genişlik ve yükseklikte. Üst kutular ve alt menü Ayarlar taslağının ölçülerinde.
+- **Hız kutusu:** Duraklat ayrı yuvarlak düğme; seçili hız kiremit kutuda, önünde oynat işareti.
+- **İnşa modu:** Alt menü gizlenir; çubuk alçak ve geniş; eşya kartlarında resim; oda çizme "Odalar" sekmesinde.
+- **Görseller:** Simge paketi, marka / rakip / ödül logoları, kanal ve araştırma çizimleri, ofis ve masa resimleri, tören perdesi ve kupaları, sekiz çalışan portresi.
+- **Taşınanlar:** Yükle ve ana menüye dön Ayarlar → Oyun sekmesinde; mesai anahtarı Kampanya penceresinde.
+- **Ayrıntılar:** Ekip, Müşteriler, Finans, Sektör, Ar-Ge ve Araçlar taslaklarıyla karşılaştırılıp düzeltildi.
+- Görüntüler: `docs/screenshots/24_gorsel_*`, `25_panel_*`.
+- Nasıl test ederim:
+  1. Ayarlar taslağını yanına aç: üstteki üç kutu ve alt menü aynı yerde ve boyda olmalı.
+  2. 1× hızda "▶ 1×" kiremit kutuda olmalı; duraklatınca yuvarlak düğme dolmalı.
+  3. Her menüyü taslağıyla karşılaştır: pencere boyutu aynı olmalı.
+  4. Ofis → inşa modu: alt menü kaybolmalı; eşya kartlarında resim olmalı; "Odalar" sekmesinden oda çizebilmelisin.
+  5. Ayarlar → Oyun: "Yükle" ve "Ana menü" orada olmalı. Kampanya penceresinde "Mesai" anahtarı çalışmalı.
+  6. Sektör → Rakip ajanslar: logolar görünmeli. Bir ödül töreninde perde ve elma kupası görünmeli.
+
 ## UI-3 (3.–4. adım): İkon paketi, Kampanya, sihirbaz, rapor, inşa modu, tören (2026-11-14)
 - **İkonlar:** Gönderdiğin ikon paketi alt menüde, üst kutularda ve pencerelerde. Logo, altın ve yıldız renkli.
 - **Kampanya:** Müşteri ve ekip başlığı, faz şeridi, dört sayaç kutusu, ikonlu emek kaydırıcıları, yeşil "Fazı başlat".

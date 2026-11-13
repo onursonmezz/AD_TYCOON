@@ -1281,3 +1281,9 @@ bilgisayar, tören perdeleri ve altın / gümüş kupa. Sekiz portre çalışan 
 başlığı iki etiket, stat değerleri hap içinde, altta "gösteriliyor" satırı.
 Eksik görseller: yazı tipi; 3.–5. seviye ofisler; dokuz eşya; sektör ikonları; bronz kupa; dijital ödül amblemi;
 iki geç dönem rakibi (hashtag_lab, viral_fabrika); dijital / sosyal / influencer kanal kategorileri.
+
+## K-109 — UI-3 (7. adım): panel çekim aracı; Finans, Sektör, Müşteriler, Ar-Ge, Araçlar ayrıntıları
+`tools/panel_shots.tscn` on menü penceresini olay penceresi olmadan çeker (taslakla karşılaştırma için).
+Taslak ayrıntıları: Finans kısa başlık + bilgi işareti (uzun açıklama ipucunda), küçük satır yazıları; Sektör ödül
+listesinde sütun başlıkları; Müşteriler kartında sağ ok ve altta "gösteriliyor" satırı; Ar-Ge kısa açıklama, koşul
+etiketleri "2. yıl" biçiminde; Araçlar iki satırlı bilgisayar başlığı, sık satırlar, küçük düğmeler.

@@ -36,11 +36,16 @@ func rebuild() -> void:
 	# UI-3 (taslak 15): üstte bilgisayar kuşağı ve aylık abonelik; altında alan alan araç tablosu.
 	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	head.add_child(Cards.art("hardware_art", "default", 52.0, "device-desktop"))
-	var hw: Label = UiUtil.wrapped(tr("UI_HARDWARE") % [tr(data.hardware[s.hardware]["name_key"]),
-		int(data.hardware[s.hardware]["max_tool_year"])], 14, CozyTheme.FOREST, 200.0)
+	var hw_col: VBoxContainer = UiUtil.vbox(-2)
+	hw_col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hw_col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	hw_col.add_child(UiUtil.label(tr("UI_HARDWARE_COMPAT") % int(data.hardware[s.hardware]["max_tool_year"]), 12, CozyTheme.TEXT))
+	var hw: Label = UiUtil.label(tr("UI_HARDWARE_NAME") % tr(data.hardware[s.hardware]["name_key"]), 15, CozyTheme.FOREST)
 	hw.add_theme_font_override("font", CozyTheme.title_font(700))
-	hw.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	head.add_child(hw)
+	hw.clip_text = true
+	hw_col.add_child(hw)
+	hw_col.move_child(hw, 0)
+	head.add_child(hw_col)
 	var next_hw: String = ""
 	for id: String in data.hardware_ids:
 		if data.hardware_ids.find(id) > data.hardware_ids.find(s.hardware) and int(data.hardware[id]["available_from"]) <= s.clock.year():
@@ -65,10 +70,10 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	var t: Dictionary = DataDB.data.tools[id]
 	var year: int = s.clock.year()
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	row.custom_minimum_size.y = 30.0
+	row.custom_minimum_size.y = 24.0
 	var owned: bool = sim.tools.owned(s, id)
 	row.add_child(UiUtil.icon("tool", 18, CozyTheme.TERRA if owned else CozyTheme.MUTED))
-	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 14, CozyTheme.TEXT)
+	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 13, CozyTheme.TEXT)
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
 	name_label.custom_minimum_size.x = 170.0
 	row.add_child(name_label)
@@ -89,7 +94,7 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 		color = UiUtil.MUTED
 	if float(t["ai_penalty"]) > 0.0:
 		status += " · " + tr("UI_TOOL_AI")
-	var st: Label = UiUtil.label(status, 13, color)
+	var st: Label = UiUtil.label(status, 12, color)
 	st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	st.clip_text = true
 	row.add_child(st)
@@ -117,7 +122,5 @@ func _action_button(text: String, action: String, id: String) -> Button:
 			EventBus.notification.emit(err, [], "bad")
 		_signature = ""
 		refresh())
-	b.add_theme_font_size_override("font_size", 13)
-	b.add_theme_stylebox_override("normal", CozyTheme.box(CozyTheme.CREAM_LIGHT, CozyTheme.RADIUS_CONTROL, CozyTheme.BORDER, 1, false,
-		Vector2(CozyTheme.SPACE_M, 3)))
+	Cards.compact(b)
 	return b

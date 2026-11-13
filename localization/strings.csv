@@ -968,7 +968,7 @@ UI_RESEARCH_HINT,"Araştırma puanı (AP) her kampanyadan gelir: puan × iş bü
 UI_RESEARCH_ACTIVE,Şu an araştırılıyor: %s (%d hafta kaldı),Researching: %s (%d weeks left)
 UI_RESEARCH_COST,%d AP · %s · %d hafta,%d RP · %s · %d weeks
 UI_RESEARCH_START,Araştır,Research
-REQ_YEAR_SHORT,Y%s,Y%s
+REQ_YEAR_SHORT,%s. yıl,year %s
 REQ_CAL_YEAR_SHORT,%s yılı,year %s
 REQ_RESEARCH_SHORT,%s,%s
 REQ_AP_SHORT,%s AP,%s RP
@@ -1614,3 +1614,11 @@ UI_SET_AUTOSAVED,Değişiklikler otomatik kaydedilir.,Changes are saved automati
 UI_TEAM_COUNT,%d / %d çalışan,%d / %d staff
 UI_TEAM_PAYROLL,Maaş + SGK %s,Payroll + taxes %s
 UI_TEAM_SHOWN,%d / %d çalışan gösteriliyor,Showing %d of %d staff
+UI_FINANCE_SHORT,Tahsilatlar ve nakit akışı.,Receivables and cash flow.
+UI_COL_AWARD,Ödül,Award
+UI_COL_FEE,Katılım bedeli,Entry fee
+UI_COL_STATUS,Durum,Status
+UI_CLIENTS_SHOWN,%d müşteri gösteriliyor,Showing %d client(s)
+UI_RESEARCH_SHORT,"Kampanyalardan AP kazan, yeni yetenekler aç.","Earn RP from campaigns, unlock new abilities."
+UI_HARDWARE_NAME,Bilgisayarlar: %s,Computers: %s
+UI_HARDWARE_COMPAT,%d yılına kadar çıkan yazılımları çalıştırır,Runs software released up to %d

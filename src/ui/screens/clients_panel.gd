@@ -10,6 +10,7 @@ var _search: LineEdit
 var _sector: OptionButton
 var _sector_ids: Array[String] = []
 var _list: VBoxContainer
+var _footer: Label
 var _signature: String = ""
 
 
@@ -35,6 +36,8 @@ func _init() -> void:
 	_list = UiUtil.vbox(CozyTheme.SPACE_S)
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_child(_list)
+	_footer = UiUtil.label("", 12, CozyTheme.TEXT)
+	add_child(_footer)
 
 
 func refresh() -> void:
@@ -52,12 +55,15 @@ func refresh() -> void:
 		_list.add_child(UiUtil.label(tr("UI_NO_CLIENTS"), 15, UiUtil.MUTED))
 	var needle: String = _search.text.strip_edges().to_lower()
 	var sector: String = _sector_ids[_sector.selected - 1] if _sector.selected > 0 else ""
+	var shown: int = 0
 	for client: Dictionary in s.clients.values():
 		if not sector.is_empty() and str(client["sector"]) != sector:
 			continue
 		if not needle.is_empty() and not str(client["name"]).to_lower().contains(needle):
 			continue
 		_list.add_child(_client_card(client))
+		shown += 1
+	_footer.text = tr("UI_CLIENTS_SHOWN") % shown
 
 
 ## Sektör süzgeci: yalnızca müşterisi olan sektörler (ilk seçenek "tüm sektörler").
@@ -112,6 +118,9 @@ func _client_card(client: Dictionary) -> PanelContainer:
 	camp.add_child(UiUtil.icon("speakerphone", 18, CozyTheme.TERRA))
 	camp.add_child(UiUtil.label(tr("UI_CAMPAIGN_COUNT") % (client["history"] as Array).size(), 13, CozyTheme.TEXT))
 	side.add_child(camp)
+	var arrow: TextureRect = UiUtil.icon("chevron-right", 14, CozyTheme.FOREST)
+	arrow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(arrow)
 	return card
 
 
