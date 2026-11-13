@@ -18,8 +18,7 @@ func _ready() -> void:
 	add_child(col)
 	var emp: Dictionary = GameState.sim.state.staff.get(_emp_id, {})
 	var top: HBoxContainer = UiUtil.hbox()
-	if emp.has("avatar"):
-		top.add_child(MenuArt.picture(MenuArt.avatar_path(str(emp["avatar"])), Vector2(52.0, 52.0)))
+	top.add_child(Cards.avatar(emp, 52.0))
 	var name: Label = UiUtil.label(GameState.employee_name(emp), 18, CozyTheme.FOREST)
 	name.add_theme_font_override("font", CozyTheme.title_font())
 	top.add_child(name)

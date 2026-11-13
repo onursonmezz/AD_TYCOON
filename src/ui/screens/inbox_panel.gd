@@ -54,12 +54,9 @@ func _supplier_offer_card(offer: Dictionary, s: SimState) -> PanelContainer:
 	var card: PanelContainer = UiUtil.card()
 	var col: VBoxContainer = UiUtil.vbox(4)
 	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(tr(DataDB.data.suppliers[offer["supplier"]]["name_key"]), 18, UiUtil.WOOD))
-	top.add_child(UiUtil.label(tr("UI_SUPPLIER_OFFER"), 14, UiUtil.MUSTARD))
-	top.add_child(UiUtil.spacer())
-	top.add_child(UiUtil.label(tr("UI_EXPIRES") % (int(offer["expires_week"]) - s.clock.week_index), 13, UiUtil.MUTED))
-	col.add_child(top)
+	col.add_child(Cards.header(Cards.tile("receipt", 44.0, CozyTheme.ACCENT_SOFT),
+		tr(DataDB.data.suppliers[offer["supplier"]]["name_key"]), tr("UI_SUPPLIER_OFFER"),
+		[Cards.chip(tr("UI_EXPIRES") % (int(offer["expires_week"]) - s.clock.week_index), CozyTheme.CREAM, CozyTheme.MUTED)]))
 	col.add_child(UiUtil.wrapped(UiUtil.supplier_offer_text(offer), 15, UiUtil.TEXT, 400.0))
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())
@@ -79,21 +76,18 @@ func _brief_card(brief: Dictionary, s: SimState) -> PanelContainer:
 	var card: PanelContainer = UiUtil.card()
 	var col: VBoxContainer = UiUtil.vbox(4)
 	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(str(client.get("name", "?")), 19, UiUtil.SAGE_DARK))
+	var tags: Array = []
 	if not (brief["prospect"] as Dictionary).is_empty():
-		top.add_child(UiUtil.label(tr("UI_NEW_CLIENT"), 14, UiUtil.TERRACOTTA))
-	top.add_child(UiUtil.spacer())
-	var weeks_left: int = int(brief["expires_week"]) - s.clock.week_index
-	top.add_child(UiUtil.label(tr("UI_EXPIRES") % weeks_left, 13, UiUtil.MUTED))
-	col.add_child(top)
+		tags.append(Cards.accent_chip(tr("UI_NEW_CLIENT")))
+	tags.append(Cards.chip(tr("UI_EXPIRES") % (int(brief["expires_week"]) - s.clock.week_index), CozyTheme.CREAM, CozyTheme.MUTED))
+	col.add_child(Cards.header(Cards.tile("inbox"), str(client.get("name", "?")),
+		"%s · %s · %s" % [UiUtil.name_of(data.sectors, brief["sector"]), tr("SCALE_%d" % int(client.get("scale", 0))),
+		tr("SIZE_" + str(brief["size"]).to_upper())], tags))
 	var objective: String = tr("UI_OBJECTIVE_FREE") if str(brief["objective"]).is_empty() \
 		else UiUtil.name_of(data.objectives, brief["objective"])
-	col.add_child(UiUtil.label("%s · %s · %s" % [UiUtil.name_of(data.sectors, brief["sector"]),
-		tr("SCALE_%d" % int(client.get("scale", 0))), tr("SIZE_" + str(brief["size"]).to_upper())], 14, UiUtil.WOOD))
-	col.add_child(UiUtil.label(tr("UI_BRIEF_OBJECTIVE") % objective, 15))
+	col.add_child(UiUtil.label(tr("UI_BRIEF_OBJECTIVE") % objective, 14))
 	col.add_child(UiUtil.label(tr("UI_BRIEF_MONEY") % [UiUtil.money(brief["fee"]), UiUtil.money(brief["media_budget"]),
-		int(brief["deadline_weeks"])], 15))
+		int(brief["deadline_weeks"])], 14))
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())
 	buttons.add_child(UiUtil.button(tr("UI_DECLINE"), func() -> void:
@@ -101,6 +95,7 @@ func _brief_card(brief: Dictionary, s: SimState) -> PanelContainer:
 	var accept: Button = UiUtil.button(tr("UI_ACCEPT"), func() -> void:
 		_main.call("open_modal", WizardDialog.new(brief, _main)))
 	accept.disabled = not s.is_idle()
+	accept.theme_type_variation = "PrimaryButton"
 	buttons.add_child(accept)
 	col.add_child(buttons)
 	return card
@@ -113,14 +108,10 @@ func _pitch_invite_card(inv: Dictionary, s: SimState) -> PanelContainer:
 	var card: PanelContainer = UiUtil.card()
 	var col: VBoxContainer = UiUtil.vbox(4)
 	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(str(client["name"]), 19, UiUtil.SAGE_DARK))
-	top.add_child(UiUtil.label(tr("UI_PITCH_INVITE"), 14, UiUtil.MUSTARD))
-	top.add_child(UiUtil.spacer())
-	top.add_child(UiUtil.label(tr("UI_EXPIRES") % (int(inv["expires_week"]) - s.clock.week_index), 13, UiUtil.MUTED))
-	col.add_child(top)
-	col.add_child(UiUtil.label("%s · %s" % [UiUtil.name_of(data.sectors, client["sector"]), tr("SCALE_%d" % int(client["scale"]))],
-		14, UiUtil.WOOD))
+	col.add_child(Cards.header(Cards.tile("trophy", 44.0, CozyTheme.ACCENT_SOFT), str(client["name"]),
+		"%s · %s" % [UiUtil.name_of(data.sectors, client["sector"]), tr("SCALE_%d" % int(client["scale"]))],
+		[Cards.accent_chip(tr("UI_PITCH_INVITE")),
+		Cards.chip(tr("UI_EXPIRES") % (int(inv["expires_week"]) - s.clock.week_index), CozyTheme.CREAM, CozyTheme.MUTED)]))
 	col.add_child(UiUtil.wrapped(PitchInviteDialog.summary(inv), 15, UiUtil.TEXT, 400.0))
 	var buttons: HBoxContainer = UiUtil.hbox()
 	buttons.add_child(UiUtil.spacer())

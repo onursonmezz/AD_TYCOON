@@ -36,28 +36,18 @@ func refresh() -> void:
 func _client_card(client: Dictionary) -> PanelContainer:
 	var data: GameData = DataDB.data
 	var card: PanelContainer = UiUtil.card()
-	var col: VBoxContainer = UiUtil.vbox(4)
+	var col: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
 	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(str(client["name"]), 19, UiUtil.SAGE_DARK))
-	top.add_child(UiUtil.spacer())
 	var sat: float = float(client["satisfaction"])
-	if sat < data.balf("clients.risk_threshold"):
-		top.add_child(UiUtil.label(tr("UI_RISK_TAG"), 14, UiUtil.TERRACOTTA))
-	col.add_child(top)
-	col.add_child(UiUtil.label("%s · %s · %s" % [UiUtil.name_of(data.sectors, client["sector"]),
-		tr("SCALE_%d" % int(client["scale"])), tr("CONTRACT_" + str(client["contract"]).to_upper())], 14, UiUtil.WOOD))
-	var row: HBoxContainer = UiUtil.hbox()
-	row.add_child(UiUtil.label(tr("UI_SATISFACTION"), 14))
-	var bar: ProgressBar = ProgressBar.new()
-	bar.max_value = 100.0
-	bar.value = sat
-	bar.custom_minimum_size = Vector2(180.0, 18.0)
-	bar.show_percentage = false
-	row.add_child(bar)
-	row.add_child(UiUtil.label("%d" % int(sat), 14))
-	row.add_child(UiUtil.label(tr("UI_TRUST") % int(client["trust"]), 14))
+	var risky: bool = sat < data.balf("clients.risk_threshold")
+	var tags: Array = [Cards.warn_chip(tr("UI_RISK_TAG"))] if risky else []
+	col.add_child(Cards.header(Cards.tile("building"), str(client["name"]),
+		"%s · %s · %s" % [UiUtil.name_of(data.sectors, client["sector"]), tr("SCALE_%d" % int(client["scale"])),
+		tr("CONTRACT_" + str(client["contract"]).to_upper())], tags))
+	var row: HFlowContainer = Cards.flow_row(CozyTheme.SPACE_M)
+	row.add_child(Cards.meter(tr("UI_SATISFACTION"), sat, CozyTheme.NEGATIVE if risky else CozyTheme.POSITIVE, 150.0))
+	row.add_child(Cards.chip(tr("UI_TRUST") % int(client["trust"])))
 	col.add_child(row)
 	col.add_child(UiUtil.label(tr("UI_CLIENT_BUDGET") % [UiUtil.money(client["annual_budget"]),
-		(client["history"] as Array).size()], 14))
+		(client["history"] as Array).size()], 13, UiUtil.MUTED))
 	return card

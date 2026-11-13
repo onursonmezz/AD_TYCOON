@@ -46,70 +46,51 @@ func _card(emp: Dictionary, sim: Simulation) -> PanelContainer:
 	var data: GameData = DataDB.data
 	var s: SimState = sim.state
 	var card: PanelContainer = UiUtil.card()
-	var col: VBoxContainer = UiUtil.vbox(5)
+	var col: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
 	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(GameState.employee_name(emp), 19, UiUtil.SAGE_DARK))
-	top.add_child(UiUtil.label("%s · %s" % [tr(Employee.title_key(data, emp)), tr("UI_LEVEL") % int(emp["level"])], 15, UiUtil.WOOD))
-	top.add_child(UiUtil.spacer())
-	if not Employee.is_available(emp, s.clock.week_index):
-		top.add_child(UiUtil.label(tr("BUSY_" + str(emp["busy_reason"]).to_upper()) % (int(emp["busy_until"]) - s.clock.week_index),
-			14, UiUtil.TERRACOTTA))
-	col.add_child(top)
+	# C2: portre + ad, sağda durum etiketleri.
+	var tags: Array = []
 	if not str(emp.get("specialization", "")).is_empty():
-		col.add_child(UiUtil.label(tr("UI_SPECIALIZED") % UiUtil.name_of(data.sectors, emp["specialization"]), 14, UiUtil.MUSTARD))
-	col.add_child(_stats_row(emp))
+		tags.append(Cards.accent_chip(UiUtil.name_of(data.sectors, emp["specialization"]),
+			tr("UI_SPECIALIZED") % UiUtil.name_of(data.sectors, emp["specialization"])))
+	if not Employee.is_available(emp, s.clock.week_index):
+		tags.append(Cards.warn_chip(tr("BUSY_" + str(emp["busy_reason"]).to_upper()) % (int(emp["busy_until"]) - s.clock.week_index)))
+	col.add_child(Cards.header(Cards.avatar(emp), GameState.employee_name(emp),
+		"%s · %s" % [tr(Employee.title_key(data, emp)), tr("UI_LEVEL") % int(emp["level"])], tags))
+	col.add_child(Cards.stats(emp["stats"]))
 	col.add_child(_bars_row(emp))
 	col.add_child(_traits_row(emp))
 	if not bool(emp["is_founder"]):
 		var market: float = Employee.market_value(data, emp, s.clock.year())
-		var pay_color: Color = UiUtil.TERRACOTTA if float(emp["salary"]) < market * data.balf("staff_rules.offer_check_ratio") else UiUtil.TEXT
-		col.add_child(UiUtil.label(tr("UI_SALARY_LINE") % [UiUtil.money(emp["salary"]), UiUtil.money(market)], 14, pay_color))
+		var pay_color: Color = UiUtil.TERRACOTTA if float(emp["salary"]) < market * data.balf("staff_rules.offer_check_ratio") else UiUtil.MUTED
+		col.add_child(UiUtil.label(tr("UI_SALARY_LINE") % [UiUtil.money(emp["salary"]), UiUtil.money(market)], 13, pay_color))
 	col.add_child(_actions_row(emp, sim))
 	return card
 
 
-func _stats_row(emp: Dictionary) -> HBoxContainer:
-	var row: HBoxContainer = UiUtil.hbox(14)
-	for stat: Variant in DataDB.data.bal("staff_rules.stats"):
-		row.add_child(UiUtil.label("%s %d" % [tr("STAT_" + str(stat).to_upper()), int(emp["stats"][stat])], 14))
-	var hidden: String = tr("UI_HIDDEN_UNKNOWN")
-	if bool(emp["hidden_revealed"]):
-		hidden = tr("UI_HIDDEN_LINE") % [int(emp["hidden"]["potential"]), int(emp["hidden"]["loyalty"])]
-	var h: Label = UiUtil.label(hidden, 13, UiUtil.MUTED)
-	h.tooltip_text = tr("TIP_HIDDEN")
-	h.mouse_filter = Control.MOUSE_FILTER_PASS
-	row.add_child(h)
-	return row
-
-
-func _bars_row(emp: Dictionary) -> HBoxContainer:
-	var row: HBoxContainer = UiUtil.hbox(8)
+func _bars_row(emp: Dictionary) -> HFlowContainer:
+	var row: HFlowContainer = Cards.flow_row(CozyTheme.SPACE_M)
+	var colors: Dictionary = {"energy": CozyTheme.POSITIVE, "morale": CozyTheme.ACCENT, "burnout": CozyTheme.NEGATIVE}
 	for key: String in ["energy", "morale", "burnout"]:
-		row.add_child(UiUtil.label(tr("UI_" + key.to_upper()), 13))
-		var bar: ProgressBar = ProgressBar.new()
-		bar.max_value = 100.0
-		bar.value = float(emp[key])
-		bar.show_percentage = false
-		bar.custom_minimum_size = Vector2(90.0, 14.0)
-		bar.tooltip_text = "%d" % int(emp[key])
-		row.add_child(bar)
+		row.add_child(Cards.meter(tr("UI_" + key.to_upper()), float(emp[key]), colors[key]))
 	return row
 
 
-func _traits_row(emp: Dictionary) -> HBoxContainer:
-	var row: HBoxContainer = UiUtil.hbox(8)
+## Özellikler, sertifikalar ve gizli statlar (potansiyel, sadakat) küçük etiketler hâlinde.
+func _traits_row(emp: Dictionary) -> HFlowContainer:
+	var row: HFlowContainer = Cards.flow_row()
 	for t: Variant in emp.get("traits", []):
 		var rec: Dictionary = DataDB.data.traits.get(str(t), {})
-		var l: Label = UiUtil.label("◆ " + tr(str(rec.get("name_key", t))), 13, UiUtil.WOOD)
-		l.tooltip_text = tr(str(rec.get("desc_key", "")))
-		l.mouse_filter = Control.MOUSE_FILTER_PASS
-		row.add_child(l)
+		row.add_child(Cards.accent_chip(tr(str(rec.get("name_key", t))), tr(str(rec.get("desc_key", "")))))
 	var certs: PackedStringArray = PackedStringArray()
 	for area: Variant in emp.get("certs", []):
 		certs.append(tr("AREA_" + str(area).to_upper()))
 	if not certs.is_empty():
-		row.add_child(UiUtil.label(tr("UI_CERTS") % ", ".join(certs), 13, UiUtil.SAGE_DARK))
+		row.add_child(Cards.chip(tr("UI_CERTS") % ", ".join(certs)))
+	var hidden: String = tr("UI_HIDDEN_UNKNOWN")
+	if bool(emp["hidden_revealed"]):
+		hidden = tr("UI_HIDDEN_LINE") % [int(emp["hidden"]["potential"]), int(emp["hidden"]["loyalty"])]
+	row.add_child(Cards.chip(hidden, CozyTheme.CREAM, CozyTheme.MUTED, tr("TIP_HIDDEN")))
 	return row
 
 
@@ -122,7 +103,7 @@ func _actions_row(emp: Dictionary, sim: Simulation) -> HFlowContainer:
 	var stat_pick: OptionButton = OptionButton.new()
 	var stats: Array = data.bal("staff_rules.stats")
 	for stat: Variant in stats:
-		stat_pick.add_item(tr("STAT_" + str(stat).to_upper()))
+		stat_pick.add_item(tr("STAT_" + str(stat).to_upper() + "_NAME"))
 	row.add_child(stat_pick)
 	row.add_child(UiUtil.button(tr("UI_TRAIN") % UiUtil.money(sim.staff.training_cost(sim.state)), func() -> void:
 		_run(TrainEmployeeCommand.new(emp["id"], str(stats[stat_pick.selected])))))

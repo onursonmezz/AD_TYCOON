@@ -1198,3 +1198,10 @@ Tarih sağ üste, para ve itibarın yanına taşındı. Menü penceresi artık e
 üstünde, 640 px genişlikte, ekranın üst %14'ünü boş bırakır; içerik sığmazsa pencere büyümez, içerik kayar.
 İnşa çubuğu ve çalışan kartı alt çubuğun üstünde durur; ipucu balonu alt çubuktaki düğmenin üstünde açılır.
 Panellerin içi (yoğunluk, kartlar, stat adları) henüz değişmedi; panel panel ele alınacak.
+
+## K-101 — C2 kart dili: ortak parçalar, portreler, tam stat adları
+Panel kartları için ortak parçalar `src/ui/widgets/cards.gd` (`Cards`): portre/ikon + başlık satırı, hap etiket,
+tam adlı stat rozeti (açıklamalı), renkli ince ölçer. Ekip, çalışan kartı, Müşteriler ve Gelen Kutusu bunlarla
+yeniden kuruldu. Çalışan portresi yalnızca görünüş: kurucuda seçtiği avatar, diğerlerinde cinsiyetine uyan
+avatarlardan kimliğine göre sabit biri (simülasyona yazılmaz; avatar az olduğu için aynı yüz tekrar edebilir).
+Kalan paneller (Kampanya, Ofis, Araçlar, Ar-Ge, Finans, Sektör, Raporlar) ve pencereler sırada.

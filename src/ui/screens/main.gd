@@ -21,6 +21,7 @@ var _content: VBoxContainer
 var _window: PanelContainer
 var _window_title: Label
 var _office: OfficeView
+var _hint: Label
 var _employee_card: EmployeeCard = null
 var _build_bar: BuildToolbar = null
 var _feed: VBoxContainer
@@ -68,6 +69,7 @@ func _build() -> void:
 	_office.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_office.employee_clicked.connect(_on_employee_clicked)
 	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 13, CozyTheme.CREAM_LIGHT)
+	_hint = hint
 	hint.add_theme_color_override("font_outline_color", CozyTheme.FOREST)
 	hint.add_theme_constant_override("outline_size", 4)
 	add_child(hint)
@@ -241,6 +243,7 @@ func show_panel(id: String) -> void:
 
 ## Açık pencerenin ikonu yeşil (seçili) görünür.
 func _refresh_menu_state() -> void:
+	_hint.visible = not _window.visible  # pencere açıkken kontrol ipucu arkasında kalmasın
 	for id: String in _menu_buttons:
 		(_menu_buttons[id] as Button).theme_type_variation = "IconButtonActive" if id == _panel_id else "IconButton"
 
@@ -250,7 +253,7 @@ func _refresh() -> void:
 		return
 	var s: SimState = GameState.sim.state
 	if not is_nan(_last_cash) and not is_equal_approx(s.cash, _last_cash):
-		Juice.cash_fly(_cash, s.cash - _last_cash, s.clock.year())
+		Juice.cash_fly(_cash.get_parent() as Control, s.cash - _last_cash, s.clock.year())  # tarih hapının solunda
 	_last_cash = s.cash
 	_cash.set_value(s.cash)
 	_cash.label_node().add_theme_color_override("font_color", CozyTheme.NEGATIVE if s.cash < 0.0 else CozyTheme.TEXT)

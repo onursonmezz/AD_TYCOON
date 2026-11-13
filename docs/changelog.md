@@ -1,5 +1,19 @@
 # Değişiklik günlüğü
 
+## C2: Yeni kartlar — Ekip, Müşteriler, Gelen Kutusu (2026-11-13)
+- **Ekip:** Her çalışanın portresi var. Statlar tam adıyla rozet hâlinde (üzerine gelince açıklama); enerji yeşil, moral turuncu, tükenmişlik kırmızı çubuk. Özellikler ve uzmanlık küçük etiket.
+- **Çalışan kartı:** Ofiste tıklanan herkesin portresi görünür.
+- **Müşteriler:** İkonlu başlık, renkli memnuniyet çubuğu, kırmızı "RİSKLİ" etiketi.
+- **Gelen Kutusu:** İkonlu başlık, "yeni müşteri" ve süre etiketleri; "Kabul et" turuncu.
+- **Düzeltmeler:** Pencere açıkken kontrol ipucu yazısı gizlenir; uçan "+₺" yazısı tarihin üstüne binmez.
+- Görüntüler: `docs/screenshots/18_cards_*`.
+- Nasıl test ederim:
+  1. Ekip'i aç: her kartta portre, altı stat rozeti ve üç renkli çubuk olmalı. Fareyi bir rozetin üstünde beklet: açıklama çıkmalı.
+  2. "Eğit" yanındaki listede statlar tam adıyla yazmalı (Strateji, Kreatif…).
+  3. Müşteriler'i aç: memnuniyeti düşük müşteride çubuk kırmızı ve "RİSKLİ" etiketi olmalı.
+  4. Gelen Kutusu'nda bir brief kartına bak: "Kabul et" turuncu, süre sağ üstte etiket olmalı.
+  5. Ofiste bir çalışana tıkla: sağ alttaki kartta portresi görünmeli.
+
 ## C1: Alt çubuk düzeni (2026-11-13)
 - **Kenarlar boş:** Soldaki dikey ikon çubuğu kalktı. Menü ikonları ekranın altında, ortada tek sıra duruyor.
 - **Alt çubuk:** Solda kaydet/yükle/ayarlar/çıkış, ortada menüler, sağda mesai, duraklat ve hız.
