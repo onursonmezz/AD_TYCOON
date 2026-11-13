@@ -123,3 +123,9 @@ static func tilted(child: Control, degrees: float) -> Control:
 	child.minimum_size_changed.connect(fit)
 	fit.call_deferred()
 	return holder
+
+
+## Bir fontun eğik (italik görünümlü) hâli.
+static func italic(base: FontVariation) -> FontVariation:
+	base.variation_transform = ITALIC
+	return base

@@ -267,7 +267,7 @@ func _buttons(back_text: String, on_back: Callable, next_text: String, on_next: 
 	back.custom_minimum_size = Vector2(120.0, 46.0)
 	row.add_child(back)
 	var next: Button = UiUtil.button(next_text, on_next)
-	next.theme_type_variation = "PrimaryButton"
+	next.theme_type_variation = "OrangeButton"
 	next.icon = UiUtil.icon_texture("player-play", 20)
 	next.custom_minimum_size = Vector2(180.0, 46.0)
 	row.add_child(next)

@@ -152,8 +152,8 @@ NOTE_DELIVERED,%s kampanyası teslim edildi ve yayında.,The %s campaign was del
 NOTE_REPORT_READY,%s kampanyasının raporu hazır: %.1f,The %s campaign report is ready: %.1f
 UI_INBOX_EMPTY,Gelen kutusu boş. Zamanı ilerlet; brief'ler haftalık gelir.,The inbox is empty. Let time run; briefs arrive weekly.
 UI_BUSY_HINT,Şu an bir kampanya üretimde. Yeni bir işi kabul etmek için onun bitmesini bekle.,A campaign is in production. Wait for it to finish before accepting a new job.
-UI_NEW_CLIENT,YENİ MÜŞTERİ,NEW CLIENT
-UI_EXPIRES,%d hafta içinde düşer,expires in %d week(s)
+UI_NEW_CLIENT,Yeni müşteri,New client
+UI_EXPIRES,%d hafta kaldı,%d week(s) left
 UI_OBJECTIVE_FREE,Serbest (sen seç),Open (your choice)
 SCALE_0,Mahalle esnafı,Neighborhood shop
 SCALE_1,Yerel,Local
@@ -432,7 +432,7 @@ MENU_TEAM,Ekip,Team
 MENU_OFFICE,Ofis,Office
 UI_YOU,Sen,You
 UI_HIRE,İşe al,Hire
-UI_TEAM_HEADER,%d / %d kişi · aylık maaş + SGK %s,%d / %d people · monthly payroll + taxes %s
+UI_TEAM_HEADER,%d / %d kişi · maaş + SGK %s,%d / %d people · payroll + taxes %s
 UI_LEVEL,Seviye %d,Level %d
 BUSY_TRAINING,Eğitimde (%d hafta),In training (%d weeks)
 BUSY_SICK,Hastalık izninde (%d hafta),On sick leave (%d weeks)
@@ -540,7 +540,7 @@ UI_NEGOTIATION_ACCEPTED,Kabul edildi: %s (%%%d indirim).,Accepted: %s (%d%% off)
 UI_NEGOTIATION_FAILED,Anlaşma olmadı; liste fiyatı geçerli.,No deal; the list price stands.
 UI_NEGOTIATION_REJECTED,Reddedildi (tur %d / %d).,Rejected (round %d / %d).
 UI_NEGOTIATION_STRAINED,Matbaa biraz bozuldu; ilişki zedelendi.,The printer is a little annoyed; the relationship took a hit.
-UI_SUPPLIER_OFFER,TEDARİKÇİ TEKLİFİ,SUPPLIER OFFER
+UI_SUPPLIER_OFFER,Tedarikçi teklifi,Supplier offer
 UI_OFFER_VOLUME,"%d adet ve üzeri baskı işlerinde %%%d indirim, %d hafta geçerli.","Print jobs of %d+ pieces get %d%% off, valid for %d weeks."
 UI_OFFER_ANNUAL,Yıl sonuna kadar %d adet baskı taahhüdü karşılığında %%%d indirim. Taahhüt tutmazsa ceza var.,Commit to %d pieces of printing by year end and get %d%% off. Missing the commitment costs a penalty.
 NOTE_DEAL_SIGNED,%s ile anlaşma imzalandı.,Deal signed with %s.
@@ -1549,3 +1549,34 @@ STAT_TECHNICAL_DESC,Tasarım ve prodüksiyon becerisi.,Design and production ski
 STAT_COMMUNICATION_DESC,Müşteri ilişkisi ve sunum.,Client relations and presenting.
 STAT_SPEED_DESC,İşi ne kadar çabuk bitirdiği.,How quickly work gets done.
 STAT_ATTENTION_DESC,Hata yapmama ve ince işçilik.,Avoiding mistakes and fine detail.
+UI_AGENCY_TAGLINE,Yaratıcı Reklam Ajansı,Creative Advertising Agency
+UI_TEAM_SEARCH,Çalışan ara…,Search staff…
+UI_TEAM_ALL_ROLES,Tüm roller,All roles
+UI_SORT_NAME,İsme göre,By name
+UI_SORT_ROLE,Role göre,By role
+UI_SORT_LEVEL,Seviyeye göre,By level
+UI_COL_EMPLOYEE,Çalışan,Employee
+UI_COL_ROLE,Rol,Role
+STAT_STRATEGY_SHORT,Str.,Str
+STAT_CREATIVE_SHORT,Kre.,Cre
+STAT_TECHNICAL_SHORT,Tek.,Tec
+STAT_COMMUNICATION_SHORT,İlt.,Com
+STAT_SPEED_SHORT,Hız,Spd
+STAT_ATTENTION_SHORT,Dik.,Att
+UI_CLIENTS_COUNT,%d müşteri,%d client(s)
+UI_CLIENT_SEARCH,Müşteri ara…,Search clients…
+UI_ALL_SECTORS,Tüm sektörler,All sectors
+UI_ANNUAL_BUDGET,Yıllık reklam bütçesi,Annual ad budget
+UI_CAMPAIGN_COUNT,%d kampanya,%d campaign(s)
+UI_TRUST_NAME,Güven,Trust
+UI_TAB_ALL,Tümü,All
+UI_TAB_BRIEFS,Briefler,Briefs
+UI_TAB_OFFERS,Teklifler,Offers
+UI_FACT_FEE,Ajans ücreti,Agency fee
+UI_FACT_MEDIA,Medya bütçesi,Media budget
+UI_FACT_DURATION,Süre,Duration
+UI_WEEKS,%d hafta,%d week(s)
+UI_FACT_DISCOUNT,İndirim,Discount
+UI_FACT_QUANTITY,Baskı adedi,Print quantity
+UI_FACT_VALID,Geçerlilik,Valid for
+UI_FACT_YEAR_END,Yıl sonuna kadar,Until year end

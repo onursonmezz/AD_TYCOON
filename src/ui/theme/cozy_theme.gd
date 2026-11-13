@@ -12,22 +12,24 @@ extends RefCounted
 ##   Eski adlar da tanımlı (AcceptButton, WaitButton, DeclineButton, IconButton, IconButtonActive, CloseButton,
 ##   CardLight, HeaderStrip, Badge, Toast, DarkPill) ki bu temaya geçen ekranlarda eski görünüm karışmasın.
 
-const FOREST: Color = Color("#304F40")
-const FOREST_LIGHT: Color = Color("#416B55")
+const FOREST: Color = Color("#1F5B37")
+const FOREST_LIGHT: Color = Color("#2F7A4C")
 const SAGE: Color = Color("#8DAA8E")
-const SAGE_SOFT: Color = Color("#DCE6D6")
+const SAGE_SOFT: Color = Color("#D9E2BF")
 const CREAM: Color = Color("#F5EBD9")
 const CREAM_LIGHT: Color = Color("#FFF8ED")
 const ACCENT: Color = Color("#E98A24")
 const ACCENT_HOVER: Color = Color("#F1A448")
 const ACCENT_PRESSED: Color = Color("#D47719")
 const BORDER: Color = Color("#D7CDBA")
-const TEXT: Color = Color("#283C32")
-const MUTED: Color = Color("#718076")
+const TEXT: Color = Color("#23382C")
+const MUTED: Color = Color("#6E7A6C")
 const POSITIVE: Color = Color("#3F7A4E")
 const NEGATIVE: Color = Color("#B4533A")
 const WOOD: Color = Color("#8A6440")  # ikincil etiket (sıcak kahve)
 const GOLD: Color = Color("#D9A441")  # yıldız, taç, ödül vurgusu
+const TERRA: Color = Color("#D4572B")  # kiremit: dok ve kart ikonları, puanlar (UI-3 taslakları)
+const TERRA_SOFT: Color = Color("#F6D9C6")  # kiremit etiket zemini
 const ACCENT_SOFT: Color = Color("#FCE3C4")  # seçili kartın zemini
 const SHADOW: Color = Color(0.09, 0.15, 0.12, 0.12)
 
@@ -42,7 +44,9 @@ const RADIUS_CONTROL: int = 8
 
 static var _theme: Theme = null
 
-const FONT_TITLE: String = "res://assets/fonts/Fraunces.ttf"  # serif başlık (OFL), değişken: wght, opsz, SOFT
+const FONT_TITLE: String = "res://assets/fonts/Fraunces.ttf"  # serif (OFL), değişken: wght, opsz, SOFT
+const BODY_WEIGHT: int = 400
+const STRONG_MAX: int = 620
 
 
 ## Paylaşılan tema (bir kez kurulur).
@@ -82,14 +86,23 @@ static func title_font(weight: int = 620) -> FontVariation:
 	return f
 
 
-## Kalın gövde fontu (düğmeler, kart başlıkları, sayılar). Fredoka "ş" çengelini harften ayrık çiziyor.
+## Gövde fontu (UI-3): taslaklardaki gibi serif; küçük boyda okunaklı olsun diye optik boyut düşük.
+static func body_font(weight: int = BODY_WEIGHT) -> FontVariation:
+	var f: FontVariation = FontVariation.new()
+	f.base_font = load(FONT_TITLE) as FontFile
+	var ts: TextServer = TextServerManager.get_primary_interface()
+	f.variation_opentype = {ts.name_to_tag("wght"): weight, ts.name_to_tag("opsz"): 30, ts.name_to_tag("SOFT"): 30}
+	return f
+
+
+## Kalın gövde fontu (düğmeler, kart başlıkları, sayılar).
 static func strong_font(weight: int = 760) -> FontVariation:
-	return UiTheme.font(UiTheme.FONT_BODY, weight)
+	return body_font(mini(weight, STRONG_MAX))
 
 
 static func build() -> Theme:
 	var t: Theme = Theme.new()
-	t.default_font = UiTheme.body_font()
+	t.default_font = body_font()
 	t.default_font_size = 16
 	var head: FontVariation = title_font()
 	_panels(t)
@@ -171,7 +184,10 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	_button(t, "Button", [CREAM_LIGHT, CREAM, SAGE], BORDER, TEXT, TEXT)
 	for v: String in ["PrimaryButton", "AcceptButton"]:
 		t.set_type_variation(v, "Button")
-		_button(t, v, [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE)
+		_button(t, v, [FOREST, FOREST_LIGHT, FOREST.darkened(0.15)], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT)
+	# Açılış sayfalarının turuncu ana düğmesi (menü taslağı); oyun içinde ana düğme yeşil.
+	t.set_type_variation("OrangeButton", "Button")
+	_button(t, "OrangeButton", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, CREAM_LIGHT, Color.WHITE)
 	t.set_type_variation("WaitButton", "Button")
 	_button(t, "WaitButton", [CREAM_LIGHT, CREAM, SAGE], BORDER, TEXT, TEXT)
 	t.set_type_variation("DeclineButton", "Button")
@@ -192,11 +208,23 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	t.set_type_variation("DockButtonActive", "Button")
 	_button(t, "DockButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE,
 		Vector2(SPACE_S, 6))
+	# UI-3 krem haplar (üst zaman çubuğu, alt dok): açık zemin üstünde koyu ikon / yazı.
+	t.set_type_variation("PillButton", "Button")
+	_button(t, "PillButton", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, FOREST, FOREST, Vector2(SPACE_S, 5))
+	t.set_type_variation("SpeedActive", "Button")
+	_button(t, "SpeedActive", [TERRA, TERRA.lightened(0.1), TERRA.darkened(0.1)], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT,
+		Vector2(SPACE_S, 5))
+	t.set_type_variation("DockIcon", "Button")
+	_button(t, "DockIcon", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, TERRA, FOREST, Vector2(10, 8))
+	t.set_type_variation("DockIconActive", "Button")
+	_button(t, "DockIconActive", [SAGE_SOFT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, FOREST, FOREST, Vector2(10, 8))
+	t.set_type_variation("MiniButton", "Button")
+	_button(t, "MiniButton", [FOREST_LIGHT, FOREST, FOREST], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT, Vector2(6, 4))
 	# Sol gezinme (ayarlar sekmeleri gibi): sessiz satır; seçili olan turuncu.
 	t.set_type_variation("NavButton", "Button")
 	_button(t, "NavButton", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, TEXT, TEXT, Vector2(SPACE_M, 10))
 	t.set_type_variation("NavButtonActive", "Button")
-	_button(t, "NavButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, TEXT, Vector2(SPACE_M, 10))
+	_button(t, "NavButtonActive", [SAGE_SOFT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, FOREST, FOREST, Vector2(SPACE_M, 10))
 	# Seçim kartı (portreli geçmiş seçimi gibi): krem kart, seçili olan turuncu çerçeveli.
 	t.set_type_variation("PickCard", "Button")
 	_button(t, "PickCard", [CREAM_LIGHT, CREAM_LIGHT, CREAM_LIGHT], BORDER, TEXT, TEXT, Vector2(SPACE_S, SPACE_S))

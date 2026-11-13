@@ -1215,3 +1215,17 @@ kadar, en çok ekranın yarısı (gerisi kayar). Panellerin kendi dikey kaydırm
 İnşa çubuğu aynı yerde açılır. Dokun yüksekliği ölçülüp üstündeki parçalar ona göre dizilir (`main.gd _layout`).
 Tema: `DockButton` (sıkı zaman düğmeleri), pencere başlık bandı inceltildi (başlık 26→21). Yalnızca yerleşim örnek
 alındı; görünüş bizim krem/yeşil/turuncu dilimiz.
+
+## K-103 — UI-3: Orgo'nun taslaklarına göre kabuk ve tema (K-102'nin yerine)
+Orgo 17 ekran taslağı gönderdi (`docs/reference/ui_mockups/`); bundan sonra oyun içi ekranların hedefi bunlar.
+K-102'deki tek dok kalktı. Kabuk: sol üstte ajans kartı + küçük oyun düğmeleri, üst ortada zaman hapı (tarih, mesai,
+duraklat, hızlar), sağ üstte para + itibar hapı ve bildirimler, alt ortada krem dok (kiremit ikonlar, aralarında
+çizgi; açık olan yeşil). Menü penceresi ekranın ortasında, içeriği kadar; 780 px.
+Tema: başlık yeşili koyulaştı (#1F5B37), oyun içi ana düğme turuncudan yeşile döndü (açılış sayfalarında turuncu
+`OrangeButton` kaldı), gövde yazısı Nunito'dan serif Fraunces'e geçti (ağırlık 400, kalın 620), ikon rengi kiremit
+(`TERRA`). Bu taslağa göre kurulanlar: Ekip (aranabilir, süzülebilir tablo; satıra tıklayınca ayrıntı ve eylemler),
+Müşteriler (arama + sektör süzgeci, iki çubuk, sağda bütçe), Gelen Kutusu (sekmeler, üç bilgi sütunu).
+Taslaktan sapmalar: sektöre özel çizim ikonlar yok (hazır ikon seti kiremit renkte); Ekip'te sayfalama yerine
+kaydırma; oyun düğmeleri taslaktaki iki yerine dört (yükle ve çıkış da gerekli).
+Sıradakiler: Kampanya, yeni kampanya sihirbazı, kanal seçici, rapor, yankılar, olay, Sektör, Araçlar, Finans,
+Ar-Ge, Ofis, Ayarlar.

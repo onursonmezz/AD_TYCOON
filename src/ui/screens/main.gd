@@ -1,13 +1,14 @@
 extends Control
-## Oyun ekranı (GDD 20; C3 düzeni): 3D ofis tam ekran. Altta tek dok (menü ikonları; zaman, ajans adı, para/itibar);
-## sağ üstte küçük oyun düğmeleri ve bildirimler. Menü ekranları dokun hemen üstünde, ortada açılır ve içeriği
-## kadar yer kaplar; inşa çubuğu aynı yerde açılır. Modal pencereler en üstte.
+## Oyun ekranı (GDD 20; UI-3 kabuğu, docs/reference/ui_mockups): 3D ofis tam ekran. Sol üstte ajans kartı ve oyun
+## düğmeleri, üst ortada zaman hapı, sağ üstte para/itibar ve bildirimler, alt ortada krem dok (menü ikonları).
+## Menü ekranları ekranın ortasında açılır ve içeriği kadar yer kaplar; inşa çubuğu dokun üstünde açılır.
+## Modal pencereler en üstte.
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
 const WINDOW_MARGIN: float = MainHud.MARGIN
-## Menü penceresi: sabit genişlik; yüksekliği içeriğe göre, en çok ekranın bu kadarı (üstü ofise kalır).
-const WINDOW_WIDTH: float = 720.0
-const WINDOW_MAX_HEIGHT: float = 0.5
+## Menü penceresi: sabit genişlik; yüksekliği içeriğe göre, en çok üst haplarla dok arasındaki boşluk kadar.
+const WINDOW_WIDTH: float = 780.0
+const WINDOW_CHROME: float = 104.0  # başlık bandı + iç kenar boşlukları
 const WINDOW_MIN_CONTENT: float = 70.0
 const BUILD_BAR_WIDTH: float = 0.8  # inşa çubuğu: ekran genişliğinin oranı, ortada
 const MENU_ICONS: Dictionary = {"inbox": "inbox", "clients": "users", "campaign": "speakerphone", "team": "users-group",
@@ -83,15 +84,16 @@ func _build() -> void:
 	var d: Dictionary = MainHud.dock(self)
 	_dock = d["dock"]
 	_build_menu(d["menu"])
-	_cash = d["cash"]
-	_rep = d["rep"]
-	_date = d["date"]
-	_overtime = d["overtime"]
-	_pause_button = d["pause"]
-	_speed_buttons.assign(d["speeds"])
-	var c: Dictionary = MainHud.corner(self)
-	_save_button = c["save"]
-	_feed = c["feed"]
+	_save_button = MainHud.agency_card(self)
+	var t: Dictionary = MainHud.time_bar(self)
+	_date = t["date"]
+	_overtime = t["overtime"]
+	_pause_button = t["pause"]
+	_speed_buttons.assign(t["speeds"])
+	var w: Dictionary = MainHud.wallet(self)
+	_cash = w["cash"]
+	_rep = w["rep"]
+	_feed = w["feed"]
 	_build_window()
 	_modal_layer = Control.new()
 	_modal_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -102,11 +104,12 @@ func _build() -> void:
 	_layout.call_deferred()
 
 
-## Dokun üstünde kalan parçaları (pencere, inşa çubuğu, çalışan kartı, ipucu) dokun gerçek yüksekliğine göre dizer.
+## Pencereyi üst haplarla dok arasında ortalar; inşa çubuğu, çalışan kartı ve ipucunu dokun üstüne dizer.
 func _layout() -> void:
 	var clearance: float = _dock.size.y + MainHud.MARGIN + MainHud.GAP
-	_window.offset_bottom = -clearance
-	_window.offset_top = -clearance
+	var middle: float = (MainHud.TOP_CLEARANCE + size.y - clearance) * 0.5
+	_window.offset_top = middle
+	_window.offset_bottom = middle
 	_hint.offset_bottom = -clearance
 	_hint.offset_top = -clearance - _hint.size.y
 	if _build_bar != null:
@@ -118,11 +121,12 @@ func _layout() -> void:
 	_fit_window()
 
 
-## Pencere içeriği kadar yer kaplar; içerik uzunsa en çok WINDOW_MAX_HEIGHT'a kadar büyür, gerisi kayar.
+## Pencere içeriği kadar yer kaplar; içerik uzunsa üst haplarla dok arasını doldurur, gerisi kayar.
 func _fit_window() -> void:
 	if _scroll == null or _panel == null:
 		return
-	var room: float = maxf(WINDOW_MIN_CONTENT, size.y * WINDOW_MAX_HEIGHT)
+	var clearance: float = _dock.size.y + MainHud.MARGIN + MainHud.GAP
+	var room: float = maxf(WINDOW_MIN_CONTENT, size.y - clearance - MainHud.TOP_CLEARANCE - MainHud.GAP - WINDOW_CHROME)
 	var need: float = _panel.get_combined_minimum_size().y
 	# Kaydırma çubuğu ya hep var ya hiç yok: çubuk belirip kaybolurken metin genişliği değişip titremesin.
 	var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need > room \
@@ -134,17 +138,20 @@ func _fit_window() -> void:
 		_scroll.custom_minimum_size.y = height
 
 
-## Dokun üst satırı (menü ekranları): seçili ikon turuncu (UI-2b); üzerine gelince adı;
-## gelen kutusu ve kampanyada sayı balonu.
+## Dok (menü ekranları): kiremit ikonlar, aralarında ince çizgi; açık olanın ikonu yeşil, zemini açık yeşil.
+## Üzerine gelince adı; gelen kutusu ve kampanyada sayı balonu.
 func _build_menu(col: HBoxContainer) -> void:
 	for id: String in MENU_ICONS:
+		if not _menu_buttons.is_empty():
+			col.add_child(MainHud.dock_divider())
 		var b: Button = UiUtil.icon_button(MENU_ICONS[id], tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id),
 			MainHud.MENU_ICON)
+		b.theme_type_variation = "DockIcon"
 		_menu_buttons[id] = b
-		var dot: Label = UiUtil.label("", 13, CozyTheme.CREAM_LIGHT)
+		var dot: Label = UiUtil.label("", 12, CozyTheme.CREAM_LIGHT)
 		dot.add_theme_font_override("font", CozyTheme.strong_font(800))
-		dot.add_theme_stylebox_override("normal", CozyTheme.box(CozyTheme.NEGATIVE, 10, CozyTheme.FOREST, 2, false, Vector2(6, 0)))
-		dot.position = Vector2(32, -4)
+		dot.add_theme_stylebox_override("normal", CozyTheme.box(CozyTheme.TERRA, 10, CozyTheme.CREAM_LIGHT, 2, false, Vector2(6, 0)))
+		dot.position = Vector2(28, -6)
 		dot.visible = false
 		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		b.add_child(dot)
@@ -152,17 +159,15 @@ func _build_menu(col: HBoxContainer) -> void:
 		col.add_child(b)
 
 
-## Menü ekranlarının yüzen penceresi: dokun hemen üstünde, ortada; tabanı sabit, yukarı doğru içeriği kadar büyür.
+## Menü ekranlarının yüzen penceresi: ekranın ortasında; içeriği kadar, merkezden iki yana büyür.
 func _build_window() -> void:
 	_window = PanelContainer.new()
 	add_child(_window)
 	_window.anchor_left = 0.5
 	_window.anchor_right = 0.5
-	_window.anchor_top = 1.0
-	_window.anchor_bottom = 1.0
 	_window.offset_left = -WINDOW_WIDTH * 0.5
 	_window.offset_right = WINDOW_WIDTH * 0.5
-	_window.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_window.grow_vertical = Control.GROW_DIRECTION_BOTH
 	# UI-2: yeşil başlık bandı (ikon + başlık + kapat), altında içerik.
 	var parts: Array = UiUtil.window_frame(_window)
 	_window_title = parts[0]
@@ -287,7 +292,7 @@ func show_panel(id: String) -> void:
 func _refresh_menu_state() -> void:
 	_hint.visible = not _window.visible and _build_bar == null  # pencere / inşa çubuğu açıkken arkada kalmasın
 	for id: String in _menu_buttons:
-		(_menu_buttons[id] as Button).theme_type_variation = "IconButtonActive" if id == _panel_id else "IconButton"
+		(_menu_buttons[id] as Button).theme_type_variation = "DockIconActive" if id == _panel_id else "DockIcon"
 
 
 func _refresh() -> void:
@@ -298,12 +303,12 @@ func _refresh() -> void:
 		Juice.cash_fly(_cash, s.cash - _last_cash, s.clock.year())
 	_last_cash = s.cash
 	_cash.set_value(s.cash)
-	_cash.label_node().add_theme_color_override("font_color", CozyTheme.NEGATIVE if s.cash < 0.0 else CozyTheme.TEXT)
+	_cash.label_node().add_theme_color_override("font_color", CozyTheme.NEGATIVE if s.cash < 0.0 else CozyTheme.FOREST)
 	_rep.set_value(s.reputation)
 	_date.text = UiUtil.date_text(s.clock)
 	_set_dot("inbox", str(s.inbox.size()) if not s.inbox.is_empty() else "")
 	_set_dot("campaign", "!" if GameState.is_waiting() else "")
-	_overtime.theme_type_variation = "DockButtonActive" if s.overtime else "DockButton"
+	_overtime.theme_type_variation = "SpeedActive" if s.overtime else "PillButton"
 	if _panel != null:
 		_panel.call("refresh")
 	_refresh_speed()
@@ -316,11 +321,11 @@ func _set_dot(id: String, text: String) -> void:
 
 
 func _refresh_speed() -> void:
-	_pause_button.icon = UiUtil.icon_texture("player-play" if Clock.paused else "player-pause", MainHud.SMALL_ICON)
-	_pause_button.theme_type_variation = "DockButtonActive" if Clock.paused else "DockButton"
+	_pause_button.icon = UiUtil.icon_texture("player-play" if Clock.paused else "player-pause", MainHud.TIME_ICON)
+	_pause_button.theme_type_variation = "SpeedActive" if Clock.paused else "PillButton"
 	for i: int in _speed_buttons.size():
-		_speed_buttons[i].theme_type_variation = "DockButtonActive" if not Clock.paused and Clock.speed_index == i \
-			else "DockButton"
+		_speed_buttons[i].theme_type_variation = "SpeedActive" if not Clock.paused and Clock.speed_index == i \
+			else "PillButton"
 
 
 func _on_notification(key: String, args: Array, kind: String) -> void:

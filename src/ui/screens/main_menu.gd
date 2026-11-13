@@ -39,10 +39,10 @@ func _build() -> void:
 	# Tek birincil (turuncu) eylem: kayıt varsa "Devam et", yoksa "Yeni oyun".
 	var has_save: bool = SaveSystem.has_save()
 	_continue_button = _menu_button(tr("MENU_CONTINUE"), "player-track-next", _on_continue,
-		"PrimaryButton" if has_save else "")
+		"OrangeButton" if has_save else "")
 	_continue_button.disabled = not has_save
 	var new_button: Button = _menu_button(tr("MENU_NEW_GAME"), "player-play", _on_new_game,
-		"" if has_save else "PrimaryButton")
+		"" if has_save else "OrangeButton")
 	col.add_child(_continue_button if has_save else new_button)
 	col.add_child(new_button if has_save else _continue_button)
 	var load_button: Button = _menu_button(tr("MENU_LOAD"), "folder-open", func() -> void:

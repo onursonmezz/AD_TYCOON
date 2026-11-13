@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## UI-3 (1. adım): Taslaklara göre kabuk, tema ve üç ekran (2026-11-14)
+- **Kabuk:** Sol üstte ajans kartı ve küçük oyun düğmeleri, üst ortada tarih ve hız, sağ üstte para ve itibar, alt ortada krem menü çubuğu. Pencereler ekranın ortasında açılır.
+- **Tema:** Koyu yeşil başlıklar, yeşil ana düğmeler, serif yazı, kiremit renkli ikonlar.
+- **Ekip:** Tablo hâlinde. Çalışan arama, rol süzgeci ve sıralama var. Satıra tıklayınca altında özellikler, maaş ve eğitim / zam / kovma düğmeleri açılır.
+- **Müşteriler:** Arama ve sektör süzgeci; memnuniyet ve güven çubukları; sağda yıllık bütçe ve kampanya sayısı.
+- **Gelen Kutusu:** Tümü / Briefler / Teklifler sekmeleri; her kartta ücret, medya bütçesi ve süre yan yana.
+- Taslaklar: `docs/reference/ui_mockups/`. Görüntüler: `docs/screenshots/20_ui3_*`.
+- Nasıl test ederim:
+  1. Bir oyuna gir: üstte üç krem kutu, altta ortada krem menü çubuğu olmalı.
+  2. Menü ikonlarına bas: pencere ekranın ortasında açılmalı, açık olanın ikonu yeşil olmalı.
+  3. Ekip'i aç, bir satıra tıkla: altında ayrıntı ve düğmeler açılmalı; tekrar tıklayınca kapanmalı. Arama kutusuna bir ad yaz: liste süzülmeli.
+  4. Müşteriler'de arama kutusuna yaz ve sektör seç: liste süzülmeli.
+  5. Gelen Kutusu'nda sekmeler arasında geç: Briefler yalnızca briefleri, Teklifler yalnızca tedarikçi tekliflerini ve ihale davetlerini göstermeli.
+  6. Hız düğmelerine bas: seçili hız kiremit renginde olmalı.
+
 ## C3: Tek dok, pencereler ortada (2026-11-13)
 - **Dok:** Her şey altta tek çubukta. Üst satırda menü ikonları; alt satırda solda mesai/duraklat/hız ve tarih, ortada ajansının adı, sağda para ve itibar.
 - **Pencereler:** Menüye basınca pencere dokun hemen üstünde, ortada açılır. İçeriği kadar yer kaplar; uzun içerik kayar.

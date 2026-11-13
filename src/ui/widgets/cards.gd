@@ -129,3 +129,29 @@ static func meter(caption: String, value: float, color: Color = CozyTheme.FOREST
 	n.custom_minimum_size.x = 22.0
 	row.add_child(n)
 	return row
+
+
+## Bilgi sütunu (UI-3): kiremit ikon, küçük başlık, altında kalın değer (ajans ücreti, süre, indirim...).
+static func fact(icon_name: String, caption: String, value: String) -> HBoxContainer:
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var ic: TextureRect = UiUtil.icon(icon_name, 24, CozyTheme.TERRA)
+	ic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(ic)
+	var col: VBoxContainer = UiUtil.vbox(-2)
+	col.add_child(UiUtil.label(caption, 12, CozyTheme.MUTED))
+	var v: Label = UiUtil.label(value, 16, CozyTheme.FOREST)
+	v.add_theme_font_override("font", CozyTheme.strong_font())
+	col.add_child(v)
+	row.add_child(col)
+	return row
+
+
+## Yan yana bilgi sütunları, aralarında ince dikey çizgi.
+static func facts(items: Array) -> HBoxContainer:
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	for i: int in items.size():
+		if i > 0:
+			row.add_child(VSeparator.new())
+		row.add_child(items[i] as Control)
+	return row
