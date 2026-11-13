@@ -183,3 +183,34 @@ static func mini_fact(icon_name: String, text: String) -> HBoxContainer:
 	row.add_child(UiUtil.icon(icon_name, 16, CozyTheme.TERRA))
 	row.add_child(UiUtil.label(text, 13, CozyTheme.TEXT))
 	return row
+
+
+## Çizim karesi (UI-3): data/ui_layout.json içindeki <map> tablosunda <key> için bir görsel varsa onu renkli çizer;
+## yoksa ikonlu kareye düşer. px: kenar uzunluğu.
+static func art(map: String, key: String, px: float, fallback_icon: String, fill: Color = CozyTheme.TERRA_SOFT) -> Control:
+	var file: String = str((DataDB.data.raw["ui_layout.json"].get(map, {}) as Dictionary).get(key, ""))
+	var tex: Texture2D = IconPack.art(file, int(px)) if not file.is_empty() else null
+	if tex == null:
+		return tile(fallback_icon, px, fill)
+	var r: TextureRect = TextureRect.new()
+	r.texture = tex
+	r.custom_minimum_size = Vector2(px, px)
+	r.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	r.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r
+
+
+## Küçük araç çubuğu denetimi (UI-3, taslak 13): arama kutusu, açılır liste ve düğme için sıkı kenar ve küçük yazı.
+static func compact(c: Control, primary: bool = false) -> Control:
+	var fill: Color = CozyTheme.FOREST if primary else CozyTheme.CREAM_LIGHT
+	var style: StyleBoxFlat = CozyTheme.box(fill, 7, fill if primary else CozyTheme.BORDER, 1, false, Vector2(9.0, 3.0))
+	for st: String in ["normal", "hover", "pressed", "hover_pressed", "read_only"]:
+		c.add_theme_stylebox_override(st, style)
+	c.add_theme_font_size_override("font_size", 12)
+	c.custom_minimum_size.y = 26.0
+	c.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	if primary:
+		for col: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+			c.add_theme_color_override(col, CozyTheme.CREAM_LIGHT)
+	return c

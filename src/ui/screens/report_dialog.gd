@@ -29,7 +29,8 @@ func _ready() -> void:
 	col.add_child(UiUtil.heading(tr("UI_REPORT_HEADING"), "chart-bar"))
 	var title: String = str(setup.get("name", "")) if not str(setup.get("name", "")).is_empty() else tr("UI_UNTITLED")
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	var head: HBoxContainer = Cards.header(Cards.tile("speakerphone", 44.0, CozyTheme.TERRA_SOFT), str(setup.get("client_name", "")),
+	var head: HBoxContainer = Cards.header(Cards.art("brand_art", str(setup.get("client_name", "")), 44.0, "speakerphone"),
+		str(setup.get("client_name", "")),
 		"%s · %s" % [title, UiUtil.name_of(data.channels, Scoring.main_channel(setup["mix"]))])
 	head.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.tooltip_text = "%s · %s · %s" % [UiUtil.name_of(data.objectives, setup["objective"]),
@@ -109,6 +110,9 @@ func _reviews() -> HBoxContainer:
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var v: VBoxContainer = UiUtil.vbox(4)
 		card.add_child(v)
+		var mark: Control = Cards.art("reviewer_art", str(r["reviewer_key"]), 34.0, "user", Color.TRANSPARENT)
+		mark.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		v.add_child(mark)
 		var who: Label = UiUtil.wrapped(tr(r["reviewer_key"]), 13, CozyTheme.TEXT, 100.0)
 		who.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		who.add_theme_font_override("font", CozyTheme.strong_font())

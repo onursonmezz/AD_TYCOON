@@ -73,7 +73,8 @@ func _add_row(channel_index: int) -> void:
 	var box: VBoxContainer = UiUtil.vbox(4)
 	card.add_child(box)
 	var line: HBoxContainer = UiUtil.hbox(8)
-	line.add_child(UiUtil.icon("speakerphone", 20, CozyTheme.TERRA))
+	var icon_box: HBoxContainer = UiUtil.hbox(0)
+	line.add_child(icon_box)
 	var pick: OptionButton = OptionButton.new()
 	for id: String in _channel_ids:
 		pick.add_item("%s (%s)" % [UiUtil.name_of(data.channels, id), tr("CAT_" + str(data.channels[id]["category"]).to_upper())])
@@ -104,7 +105,7 @@ func _add_row(channel_index: int) -> void:
 	box.add_child(share_line)
 	var print_box: VBoxContainer = UiUtil.vbox(4)
 	box.add_child(print_box)
-	var row: Dictionary = {"box": card, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box,
+	var row: Dictionary = {"box": card, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box, "icon": icon_box,
 		"job": {}, "auto": true, "opts": {}, "influencer": ""}
 	_rows.append(row)
 	_rows_box.add_child(card)
@@ -135,6 +136,8 @@ func _refresh() -> void:
 		var row: Dictionary = _rows[i]
 		var ch: String = mix[i]["channel"]
 		var budget: float = media_budget() * float(mix[i]["share"])
+		UiUtil.clear(row["icon"])
+		(row["icon"] as HBoxContainer).add_child(_channel_art(ch))
 		var label: Label = row["share"]
 		label.text = "%s · %s" % [UiUtil.percent(roundf(float(mix[i]["share"]) * 100.0)), UiUtil.money(budget)]
 		var too_small: bool = budget < float(data.channels[ch]["min_budget"]) * infl
@@ -313,3 +316,11 @@ func _build_influencer_panel(row: Dictionary, channel_id: String, budget: float)
 		box.add_child(UiUtil.label(tr("ERR_INFLUENCER_FEE"), 14, UiUtil.TERRACOTTA))
 	if not see:
 		box.add_child(UiUtil.label(tr("UI_AUTHENTICITY_HIDDEN"), 13, UiUtil.MUTED))
+
+
+## Kanalın görseli: önce kanalın kendi çizimi, yoksa kategorisinin çizimi, o da yoksa megafon ikonu.
+func _channel_art(channel_id: String) -> Control:
+	var layout: Dictionary = DataDB.data.raw["ui_layout.json"]
+	if (layout["channel_art"] as Dictionary).has(channel_id):
+		return Cards.art("channel_art", channel_id, 26.0, "speakerphone", Color.TRANSPARENT)
+	return Cards.art("channel_category_art", str(DataDB.data.channels[channel_id]["category"]), 26.0, "speakerphone", Color.TRANSPARENT)

@@ -8,6 +8,8 @@ var _signature: String = ""
 var _col: VBoxContainer  # o an doldurulan sütun
 
 const COLUMN_TEXT: float = 300.0
+const OFFICE_ART: float = 84.0
+const DESK_ART: int = 40
 
 
 func _init(main_screen: Control) -> void:
@@ -33,7 +35,7 @@ func refresh() -> void:
 	cols.add_child(_col)
 	var cur: Dictionary = sim.offices.current(s)
 	_col.add_child(Cards.section(tr("UI_OFFICE_CURRENT")))
-	_col.add_child(Cards.header(Cards.tile("building", 48.0, CozyTheme.TERRA_SOFT), tr(cur["name_key"]), "",
+	_col.add_child(Cards.header(Cards.art("office_art", str(s.office_level), OFFICE_ART, "building"), tr(cur["name_key"]), "",
 		[Cards.chip(tr("UI_OFFICE_CURRENT_TAG"))]))
 	_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_LINE") % [s.staff.size(), int(cur["capacity"]),
 		UiUtil.money(sim.offices.monthly_rent(s)), int(roundf(s.room_quality))], 13, CozyTheme.TEXT, COLUMN_TEXT))
@@ -54,7 +56,8 @@ func refresh() -> void:
 	if next.is_empty():
 		_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_MAX"), 14, UiUtil.MUTED, COLUMN_TEXT))
 		return
-	_col.add_child(Cards.header(Cards.tile("building-bank", 48.0, CozyTheme.SAGE_SOFT), tr(next["name_key"])))
+	_col.add_child(Cards.header(Cards.art("office_art", str(s.office_level + 1), OFFICE_ART, "building-bank", CozyTheme.SAGE_SOFT),
+		tr(next["name_key"])))
 	_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_LINE_NEXT") % [int(next["capacity"]),
 		UiUtil.money(float(next["rent_1990"]) * Economy.inflation(DataDB.data, s.clock.year())), int(next["room_quality"])], 13,
 		CozyTheme.TEXT, COLUMN_TEXT))
@@ -126,7 +129,13 @@ func _desk_tiers(sim: Simulation, s: SimState) -> void:
 			_signature = ""
 			refresh())
 		b.theme_type_variation = "PickCardActive" if current else "PickCard"
-		b.add_theme_font_size_override("font_size", 12)
+		b.add_theme_font_size_override("font_size", 11)
+		var desk: String = str(DataDB.data.raw["ui_layout.json"]["desk_art"].get(tier, ""))
+		b.icon = IconPack.art(desk, DESK_ART) if not desk.is_empty() else null
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+		for st: String in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color", "icon_disabled_color"]:
+			b.add_theme_color_override(st, Color.WHITE)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.disabled = int(defs[tier]["available_from"]) > s.clock.year()
 		b.mouse_filter = Control.MOUSE_FILTER_IGNORE if current else Control.MOUSE_FILTER_STOP

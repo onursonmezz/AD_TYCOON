@@ -10,12 +10,41 @@
 		"channel_picker": [475, 504]
 	},
 	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
-	"_furniture_art": "İnşa modundaki eşya kartının resmi: eşya kimliği → assets/ui/icons altındaki dosya adı. Yoksa ikon.",
+	"_art": "Görsel eşlemeleri: kimlik (ya da ad) → assets/ui/icons altındaki dosya adı. Eşleme yoksa arayüz ikon kullanır.",
 	"furniture_art": {
 		"plant_small": "kucuk-bitki", "plant_big": "bitki-rafi", "tea_urn": "semaver", "water_cooler": "su-sebili",
 		"whiteboard": "beyaz-tahta", "mood_board": "mood-board", "bookshelf": "kitaplik", "award_case": "gumus-elma-kupasi"
 	},
-	"_office_art": "Ofis seviyesi (1..) → resim; masa kademesi → resim.",
 	"office_art": { "1": "ev-garaj-ofisi", "2": "kucuk-ofis" },
-	"desk_art": { "basic": "basit-masa", "ergonomic": "ergonomik-masa", "adjustable": "ayarlanabilir-masa" }
+	"desk_art": { "basic": "basit-masa", "ergonomic": "ergonomik-masa", "adjustable": "ayarlanabilir-masa" },
+	"hardware_art": { "default": "imak-bilgisayar" },
+	"rival_art": {
+		"mavi_ok": "mavi-ok", "kivilcim": "kivilcim-kreatif", "ekonomik": "ekonomik-ajans", "anadolu_tanitim": "anadolu-tanitim",
+		"global_grup": "global-grup", "atolye_34": "atolye-34", "piksel": "piksel-medya", "mega_iletisim": "mega-holding",
+		"tik": "tik-ajans", "yeni_nesil": "yeni-nesil"
+	},
+	"award_art": {
+		"golden_apple": "altin-elma-amblem", "effie": "etkin-odulleri", "coastal_lions": "kiyi-aslanlari", "good_cause": "iyilik-odulleri"
+	},
+	"channel_art": {
+		"newspaper": "gazete-ilani", "magazine": "dergi-ilani", "flyer_brochure": "brosur", "catalog": "katalog",
+		"pop_instore": "magaza-ici-pop", "street_furniture": "raket-durak", "radio": "radyo", "cinema": "sinema",
+		"event_launch": "lansman", "trade_fair": "fuar-standi", "concert_sponsorship": "festival-sponsorlugu",
+		"sports_sponsorship": "spor-sponsorlugu", "pr_press": "basin-bulteni", "csr_project": "sosyal-sorumluluk"
+	},
+	"channel_category_art": {
+		"print": "baski-kategorisi", "ooh": "acik-hava-kategorisi", "guerrilla": "gerilla-kategorisi", "broadcast": "yayin-kategorisi",
+		"event": "etkinlik", "sponsorship": "sponsorluk", "pr": "pr"
+	},
+	"reviewer_art": {
+		"REVIEWER_REKLAM_DUNYASI": "reklam-dunyasi", "REVIEWER_PAZARLAMA_GAZETESI": "pazarlama-gazetesi",
+		"REVIEWER_KREATIF_BLOG": "kreatif-blog"
+	},
+	"research_art": {
+		"tone_choice": "ton-secimi", "audience_analysis": "hedef-kitle", "media_planning": "medya-planlama",
+		"market_research": "pazar-arastirma-hizmeti"
+	},
+	"brand_art": { "Lezzetçi Köfte": "lezzetci-kofte", "Çınar Mobilya": "cinar-mobilya", "Altın Tatil": "altin-tatil" },
+	"supplier_art": { "renkli_baski": "renkli-baski" },
+	"trophy_art": { "gold": "altin-elma-kupasi", "grand_prix": "altin-elma-kupasi", "silver": "gumus-elma-kupasi" }
 }

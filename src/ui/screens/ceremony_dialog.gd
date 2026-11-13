@@ -5,6 +5,8 @@ extends Control
 ## Taslaktaki perde ve elma çizimi yerine şimdilik büyük kupa ikonu var (çizim dosyası gelince değişir).
 
 const REVEAL_SECONDS: float = 0.8
+const CUP_SIZE: float = 110.0
+const CURTAIN_SIZE: float = 96.0
 const LEVEL_COLORS: Dictionary = {"gold": Color("#D9A441"), "grand_prix": Color("#D9A441"), "silver": Color("#A9B0B3"),
 	"bronze": Color("#B9793F"), "shortlist": Color("#8DAA8E")}
 
@@ -74,7 +76,12 @@ func _entry_card(r: Dictionary) -> PanelContainer:
 	var color: Color = LEVEL_COLORS.get(level, CozyTheme.MUTED)
 	var card: PanelContainer = UiUtil.card()
 	var v: VBoxContainer = UiUtil.vbox(2)
-	card.add_child(v)
+	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var stage: HBoxContainer = UiUtil.hbox(0)
+	card.add_child(stage)
+	stage.add_child(_curtain("perde-sol"))
+	stage.add_child(v)
+	stage.add_child(_curtain("perde-sag"))
 	var title: Label = UiUtil.label(str(r.get("name", "")) if not str(r.get("name", "")).is_empty() else tr("UI_UNTITLED"), 20,
 		CozyTheme.FOREST)
 	title.add_theme_font_override("font", CozyTheme.title_font(700))
@@ -84,8 +91,12 @@ func _entry_card(r: Dictionary) -> PanelContainer:
 	client.add_theme_font_override("font", MenuArt.italic(CozyTheme.body_font()))
 	client.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(client)
-	var cup: TextureRect = UiUtil.icon("trophy", 72, color)
-	cup.custom_minimum_size.y = 84.0
+	# Kupa: altın ve gümüş için çizim (data/ui_layout.json trophy_art); diğer derecelerde derece renginde ikon.
+	var cup: Control = Cards.art("trophy_art", level, CUP_SIZE, "trophy", Color.TRANSPARENT)
+	if cup is PanelContainer:
+		cup = UiUtil.icon("trophy", 72, color)
+	cup.custom_minimum_size = Vector2(CUP_SIZE, CUP_SIZE)
+	cup.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	v.add_child(cup)
 	var ribbon: HBoxContainer = UiUtil.hbox()
 	ribbon.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -99,3 +110,14 @@ func _entry_card(r: Dictionary) -> PanelContainer:
 	v.add_child(ribbon)
 	UiUtil.pop_in(card)
 	return card
+
+
+## Sahnenin yanındaki perde çizimi (dosya yoksa boş yer).
+func _curtain(file: String) -> TextureRect:
+	var r: TextureRect = TextureRect.new()
+	r.texture = IconPack.art(file, int(CURTAIN_SIZE))
+	r.custom_minimum_size = Vector2(CURTAIN_SIZE, CURTAIN_SIZE)
+	r.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	r.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r

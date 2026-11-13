@@ -67,7 +67,8 @@ func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
 	var card: PanelContainer = UiUtil.card()
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	card.add_child(row)
-	var tile: PanelContainer = Cards.tile("check" if done else "flask", 44.0, CozyTheme.SAGE_SOFT if done else CozyTheme.TERRA_SOFT)
+	var tile: Control = Cards.art("research_art", id, 44.0, "check" if done else "flask",
+		CozyTheme.SAGE_SOFT if done else CozyTheme.TERRA_SOFT)
 	tile.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(tile)
 	var mid: VBoxContainer = UiUtil.vbox(2)

@@ -78,7 +78,7 @@ func _awards_block() -> VBoxContainer:
 		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 		card.add_child(row)
 		var icon_name: String = str(data.awards[id].get("icon", AWARD_ICONS[i % AWARD_ICONS.size()]))
-		row.add_child(UiUtil.icon(icon_name, 28, CozyTheme.TERRA))
+		row.add_child(Cards.art("award_art", id, 34.0, icon_name, Color.TRANSPARENT))
 		i += 1
 		var info: VBoxContainer = UiUtil.vbox(0)
 		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -170,7 +170,9 @@ func _rivals() -> VBoxContainer:
 		var color: Color = CozyTheme.TEXT if alive else CozyTheme.MUTED
 		box.add_child(HSeparator.new())
 		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-		row.add_child(UiUtil.icon("building-bank", 18, CozyTheme.TERRA if alive else CozyTheme.MUTED))
+		var logo: Control = Cards.art("rival_art", id, 22.0, "building-bank", Color.TRANSPARENT)
+		logo.modulate.a = 1.0 if alive else 0.45
+		row.add_child(logo)
 		var name_label: Label = UiUtil.label(UiUtil.name_of(data.rivals, id), 14, CozyTheme.FOREST if alive else CozyTheme.MUTED)
 		name_label.add_theme_font_override("font", CozyTheme.title_font(700))
 		name_label.custom_minimum_size.x = RIVAL_NAME

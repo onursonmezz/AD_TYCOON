@@ -17,16 +17,18 @@ func _init() -> void:
 	add_theme_constant_override("separation", CozyTheme.SPACE_S)
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	top.add_child(UiUtil.heading(tr("MENU_CLIENTS")))
-	_count = UiUtil.label("", 14, CozyTheme.FOREST)
+	_count = UiUtil.label("", 13, CozyTheme.FOREST)
 	_count.add_theme_font_override("font", CozyTheme.strong_font())
 	_count.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(_count)
 	_search = LineEdit.new()
 	_search.placeholder_text = tr("UI_CLIENT_SEARCH")
 	_search.custom_minimum_size.x = 200.0
+	Cards.compact(_search)
 	_search.text_changed.connect(func(_t: String) -> void: refresh())
 	top.add_child(_search)
 	_sector = OptionButton.new()
+	Cards.compact(_sector)
 	_sector.item_selected.connect(func(_i: int) -> void: refresh())
 	top.add_child(_sector)
 	add_child(top)
@@ -80,7 +82,7 @@ func _client_card(client: Dictionary) -> PanelContainer:
 	var card: PanelContainer = UiUtil.card()
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
 	card.add_child(row)
-	var tile: PanelContainer = Cards.tile("building", 56.0, CozyTheme.TERRA_SOFT)
+	var tile: Control = Cards.art("brand_art", str(client["name"]), 56.0, "building")
 	tile.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(tile)
 	var sat: float = float(client["satisfaction"])

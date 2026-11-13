@@ -104,7 +104,8 @@ func _build_header(s: SimState, camp: Dictionary) -> void:
 	var setup: Dictionary = camp["setup"]
 	var title: String = str(setup.get("name", "")) if not str(setup.get("name", "")).is_empty() else tr("UI_UNTITLED")
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	var head: HBoxContainer = Cards.header(Cards.tile("speakerphone", 44.0, CozyTheme.TERRA_SOFT), str(setup.get("client_name", "")), title)
+	var head: HBoxContainer = Cards.header(Cards.art("brand_art", str(setup.get("client_name", "")), 44.0, "speakerphone"),
+		str(setup.get("client_name", "")), title)
 	head.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(head)
 	var tags: VBoxContainer = UiUtil.vbox(4)

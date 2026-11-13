@@ -1271,3 +1271,13 @@ yazı boyutları); diğer taslaklardan yalnızca ortadaki pencere esas alınacak
   `ui_layout.json furniture_art` ile bağlı. Henüz bağlanmayanlar: marka / rakip / ödül logoları, kanal ikonları,
   ofis ve masa resimleri, portreler, tören çizimleri.
 - Yazı tipi hâlâ Fraunces; taslaktaki yazı tipinin dosyası pakette yok.
+
+## K-108 — UI-3 (6. adım): görsellerin bağlanması, Ekip araç çubuğu
+Görsel eşlemeleri `data/ui_layout.json` içinde (`*_art` tabloları: kimlik ya da ad → dosya); `Cards.art` görsel varsa
+renkli çizer, yoksa ikon karesine düşer. Bağlananlar: marka (müşteri adıyla; yalnızca üç hazır marka), tedarikçi, rakip
+logoları, ödül amblemleri, araştırma, yorumcu ve kanal görselleri (kanal → kategori → ikon), ofis ve masa resimleri,
+bilgisayar, tören perdeleri ve altın / gümüş kupa. Sekiz portre çalışan havuzuna eklendi (`avatars.json`,
+`staff_only`; oyuncu seçemez). Ekip ve Müşteriler araç çubukları taslaktaki gibi küçük (`Cards.compact`); Ekip
+başlığı iki etiket, stat değerleri hap içinde, altta "gösteriliyor" satırı.
+Eksik görseller: yazı tipi; 3.–5. seviye ofisler; dokuz eşya; sektör ikonları; bronz kupa; dijital ödül amblemi;
+iki geç dönem rakibi (hashtag_lab, viral_fabrika); dijital / sosyal / influencer kanal kategorileri.

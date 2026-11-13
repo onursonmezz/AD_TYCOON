@@ -13,6 +13,8 @@ const SORTS: Array[String] = ["name", "role", "level"]
 
 var _main: Control
 var _header: Label
+var _payroll: Label
+var _footer: Label
 var _search: LineEdit
 var _role: OptionButton
 var _sort: OptionButton
@@ -27,44 +29,53 @@ func _init(main_screen: Control) -> void:
 	add_theme_constant_override("separation", CozyTheme.SPACE_S)
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	top.add_child(UiUtil.heading(tr("MENU_TEAM")))
-	_header = UiUtil.label("", 14, CozyTheme.FOREST)
+	_header = UiUtil.label("", 13, CozyTheme.FOREST)
 	_header.add_theme_font_override("font", CozyTheme.strong_font())
-	_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_header.clip_text = true
+	_payroll = UiUtil.label("", 13, CozyTheme.FOREST)
+	_payroll.add_theme_font_override("font", CozyTheme.strong_font())
+	_payroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(_header)
+	top.add_child(VSeparator.new())
+	top.add_child(_payroll)
 	_search = LineEdit.new()
 	_search.placeholder_text = tr("UI_TEAM_SEARCH")
-	_search.custom_minimum_size.x = 110.0
+	_search.custom_minimum_size.x = 130.0
+	Cards.compact(_search)
 	_search.text_changed.connect(func(_t: String) -> void: refresh())
 	top.add_child(_search)
 	_role = OptionButton.new()
 	_role.fit_to_longest_item = false
-	_role.custom_minimum_size.x = 124.0
+	_role.custom_minimum_size.x = 96.0
+	Cards.compact(_role)
 	_role.clip_text = true
 	_role.item_selected.connect(func(_i: int) -> void: refresh())
 	top.add_child(_role)
 	_sort = OptionButton.new()
 	_sort.fit_to_longest_item = false
-	_sort.custom_minimum_size.x = 124.0
+	_sort.custom_minimum_size.x = 96.0
+	Cards.compact(_sort)
 	_sort.clip_text = true
 	for key: String in SORTS:
 		_sort.add_item(tr("UI_SORT_" + key.to_upper()))
 	_sort.item_selected.connect(func(_i: int) -> void: refresh())
 	top.add_child(_sort)
 	var hire: Button = UiUtil.button("+ " + tr("UI_HIRE"), func() -> void: _main.call("open_modal", HiringDialog.new()))
-	hire.theme_type_variation = "PrimaryButton"
+	Cards.compact(hire, true)
 	top.add_child(hire)
 	add_child(top)
 	add_child(_column_titles())
 	_list = UiUtil.vbox(2)
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_child(_list)
+	_footer = UiUtil.label("", 12, CozyTheme.TEXT)
+	add_child(_footer)
 
 
 func refresh() -> void:
 	var sim: Simulation = GameState.sim
 	var s: SimState = sim.state
-	_header.text = tr("UI_TEAM_HEADER") % [s.staff.size(), sim.staff.capacity(s), UiUtil.money(sim.staff.monthly_payroll(s))]
+	_header.text = tr("UI_TEAM_COUNT") % [s.staff.size(), sim.staff.capacity(s)]
+	_payroll.text = tr("UI_TEAM_PAYROLL") % UiUtil.money(sim.staff.monthly_payroll(s))
 	_fill_roles(s)
 	var sig: String = "%d|%s|%d|%d|%s" % [s.clock.week_index, _search.text, _role.selected, _sort.selected, _open_id]
 	for emp: Dictionary in s.staff.values():
@@ -73,7 +84,9 @@ func refresh() -> void:
 		return
 	_signature = sig
 	UiUtil.clear(_list)
-	for emp: Dictionary in _visible_staff(s):
+	var shown: Array = _visible_staff(s)
+	_footer.text = tr("UI_TEAM_SHOWN") % [shown.size(), s.staff.size()]
+	for emp: Dictionary in shown:
 		_list.add_child(_row(emp))
 		if str(emp["id"]) == _open_id:
 			_list.add_child(_detail(emp, sim))
@@ -133,7 +146,7 @@ func _cell(text: String, width: float, size: int = 13, color: Color = CozyTheme.
 
 func _column_titles() -> PanelContainer:
 	var strip: PanelContainer = PanelContainer.new()
-	strip.theme_type_variation = "HeaderStrip"
+	strip.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.CREAM_LIGHT, 7, CozyTheme.BORDER, 1, false, Vector2(CozyTheme.SPACE_L, 3.0)))
 	var row: HBoxContainer = UiUtil.hbox(COL_GAP)
 	strip.add_child(row)
 	row.add_child(_cell(tr("UI_COL_EMPLOYEE"), COL_AVATAR + COL_GAP + COL_NAME, 12, CozyTheme.FOREST, true))
@@ -174,9 +187,12 @@ func _row(emp: Dictionary) -> Button:
 	row.add_child(name)
 	row.add_child(_cell(tr(Employee.title_key(DataDB.data, emp)), COL_ROLE))
 	for stat: Variant in DataDB.data.bal("staff_rules.stats"):
-		var v: Label = _cell(str(int(emp["stats"][stat])), COL_STAT, 13, CozyTheme.TEXT, true)
-		v.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		row.add_child(v)
+		var pill: PanelContainer = Cards.chip(str(int(emp["stats"][stat])), CozyTheme.CREAM_LIGHT, CozyTheme.TEXT)
+		pill.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.CREAM_LIGHT, 999, CozyTheme.BORDER, 1, false, Vector2(2.0, 1.0)))
+		pill.custom_minimum_size.x = COL_STAT
+		pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		(pill.get_child(0) as Label).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		row.add_child(pill)
 	row.add_child(_bar_cell(float(emp["energy"]), CozyTheme.POSITIVE))
 	row.add_child(_bar_cell(float(emp["morale"]), CozyTheme.ACCENT))
 	b.custom_minimum_size.y = 40.0

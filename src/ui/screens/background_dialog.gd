@@ -49,7 +49,12 @@ func _ready() -> void:
 
 
 static func avatar_ids() -> Array:
-	return (DataDB.data.raw.get("avatars.json", []) as Array).map(func(rec: Variant) -> String: return str(rec["id"]))
+	# Yalnızca oyuncunun seçebildikleri; "staff_only" portreler çalışanlara atanır.
+	var out: Array = []
+	for rec: Variant in DataDB.data.raw.get("avatars.json", []):
+		if not bool(rec.get("staff_only", false)):
+			out.append(str(rec["id"]))
+	return out
 
 
 func show_step(step: int) -> void:

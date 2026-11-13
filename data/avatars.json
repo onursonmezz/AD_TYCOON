@@ -9,5 +9,13 @@
 	{ "id": "nonbinary_01", "gender": "neutral" },
 	{ "id": "nonbinary_02", "gender": "neutral" },
 	{ "id": "nonbinary_03", "gender": "neutral" },
-	{ "id": "nonbinary_04", "gender": "neutral" }
+	{ "id": "nonbinary_04", "gender": "neutral" },
+	{ "id": "portre-kurucu", "gender": "female", "staff_only": true },
+	{ "id": "portre-ada", "gender": "female", "staff_only": true },
+	{ "id": "portre-ece", "gender": "female", "staff_only": true },
+	{ "id": "portre-selin", "gender": "female", "staff_only": true },
+	{ "id": "portre-can", "gender": "male", "staff_only": true },
+	{ "id": "portre-deniz", "gender": "male", "staff_only": true },
+	{ "id": "portre-mert", "gender": "male", "staff_only": true },
+	{ "id": "portre-evren", "gender": "neutral", "staff_only": true }
 ]

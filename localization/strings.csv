@@ -1611,3 +1611,6 @@ UI_BUILD_ROTATE,Döndür,Rotate
 UI_BUILD_SELL,Sat,Sell
 UI_BUILD_QUALITY_SHORT,Kalite %.0f · Üretim ×%.2f,Quality %.0f · Output ×%.2f
 UI_SET_AUTOSAVED,Değişiklikler otomatik kaydedilir.,Changes are saved automatically.
+UI_TEAM_COUNT,%d / %d çalışan,%d / %d staff
+UI_TEAM_PAYROLL,Maaş + SGK %s,Payroll + taxes %s
+UI_TEAM_SHOWN,%d / %d çalışan gösteriliyor,Showing %d of %d staff

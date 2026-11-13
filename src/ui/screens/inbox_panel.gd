@@ -84,7 +84,7 @@ func _supplier_offer_card(offer: Dictionary, s: SimState) -> PanelContainer:
 	var col: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
 	card.add_child(col)
 	var supplier: String = tr(DataDB.data.suppliers[offer["supplier"]]["name_key"])
-	col.add_child(Cards.header(Cards.tile("receipt", 44.0, CozyTheme.TERRA_SOFT), supplier, "",
+	col.add_child(Cards.header(Cards.art("supplier_art", str(offer["supplier"]), 44.0, "receipt"), supplier, "",
 		[Cards.chip(tr("UI_SUPPLIER_OFFER"), CozyTheme.TERRA_SOFT, CozyTheme.TERRA),
 		Cards.chip(tr("UI_EXPIRES") % (int(offer["expires_week"]) - s.clock.week_index), CozyTheme.CREAM, CozyTheme.TEXT)]))
 	col.add_child(HSeparator.new())
@@ -113,7 +113,7 @@ func _brief_card(brief: Dictionary, s: SimState) -> PanelContainer:
 	if not (brief["prospect"] as Dictionary).is_empty():
 		tags.append(Cards.chip(tr("UI_NEW_CLIENT"), CozyTheme.TERRA_SOFT, CozyTheme.TERRA))
 	tags.append(Cards.chip(tr("UI_EXPIRES") % (int(brief["expires_week"]) - s.clock.week_index), CozyTheme.CREAM, CozyTheme.TEXT))
-	col.add_child(Cards.header(Cards.tile("building", 44.0, CozyTheme.TERRA_SOFT), str(client.get("name", "?")),
+	col.add_child(Cards.header(Cards.art("brand_art", str(client.get("name", "")), 44.0, "building"), str(client.get("name", "?")),
 		"%s · %s · %s" % [UiUtil.name_of(data.sectors, brief["sector"]), tr("SCALE_%d" % int(client.get("scale", 0))),
 		tr("SIZE_" + str(brief["size"]).to_upper())], tags))
 	var objective: String = tr("UI_OBJECTIVE_FREE") if str(brief["objective"]).is_empty() \

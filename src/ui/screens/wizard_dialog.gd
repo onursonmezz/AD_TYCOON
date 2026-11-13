@@ -29,7 +29,7 @@ func _ready() -> void:
 	col.add_child(UiUtil.heading(tr("UI_WIZARD_NEW"), "speakerphone"))
 	# UI-3 (taslak 05): üstte müşteri ve üç bilgi; altında iki sütun (kampanya bilgileri | medya planı + ekip).
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	var head: HBoxContainer = Cards.header(Cards.tile("building", 44.0, CozyTheme.TERRA_SOFT), str(client.get("name", "")),
+	var head: HBoxContainer = Cards.header(Cards.art("brand_art", str(client.get("name", "")), 44.0, "building"), str(client.get("name", "")),
 		"%s · %s" % [UiUtil.name_of(data.sectors, _brief["sector"]), tr("SIZE_" + str(_brief["size"]).to_upper())])
 	head.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(head)

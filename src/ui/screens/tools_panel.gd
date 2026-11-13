@@ -35,7 +35,7 @@ func rebuild() -> void:
 	var data: GameData = DataDB.data
 	# UI-3 (taslak 15): üstte bilgisayar kuşağı ve aylık abonelik; altında alan alan araç tablosu.
 	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	head.add_child(Cards.tile("device-desktop", 48.0, CozyTheme.TERRA_SOFT))
+	head.add_child(Cards.art("hardware_art", "default", 52.0, "device-desktop"))
 	var hw: Label = UiUtil.wrapped(tr("UI_HARDWARE") % [tr(data.hardware[s.hardware]["name_key"]),
 		int(data.hardware[s.hardware]["max_tool_year"])], 14, CozyTheme.FOREST, 200.0)
 	hw.add_theme_font_override("font", CozyTheme.title_font(700))
