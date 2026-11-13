@@ -261,16 +261,30 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) 
 	root.add_child(center)
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var panel: PanelContainer = PanelContainer.new()
-	panel.custom_minimum_size = min_size
+	panel.custom_minimum_size = Vector2(min_size.x, 0.0)  # yükseklik içerikten gelir
 	center.add_child(panel)
 	var parts: Array = window_frame(panel)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, minf(min_size.y, 600.0))
 	(parts[1] as VBoxContainer).add_child(scroll)
 	var content: VBoxContainer = vbox(10)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
+	# UI-3: pencere içeriği kadar yer kaplar; min_size.y en fazla yüksekliktir, aşan kısım kayar.
+	# Kaydırma çubuğu ya hep var ya hiç yok (belirip kaybolurken metin genişliği oynamasın).
+	var cap: float = minf(min_size.y, 600.0)
+	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, 0.0)
+	var fit: Callable = func() -> void:
+		var need: float = content.get_combined_minimum_size().y
+		var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need > cap \
+			else ScrollContainer.SCROLL_MODE_DISABLED
+		if scroll.vertical_scroll_mode != mode:
+			scroll.vertical_scroll_mode = mode
+		var h: float = minf(need, cap)
+		if not is_equal_approx(scroll.custom_minimum_size.y, h):
+			scroll.custom_minimum_size.y = h
+	content.minimum_size_changed.connect(fit)
+	fit.call_deferred()
 	if animate:
 		pop_in(panel)
 	# Esc ile kapanan pencerelerde başlık bandında kapat düğmesi.

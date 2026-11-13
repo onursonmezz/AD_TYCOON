@@ -1,5 +1,22 @@
 # Değişiklik günlüğü
 
+## UI-3 (2. adım): Küçük pencereler, dört panel ve olay penceresi (2026-11-14)
+- **Pencere boyutları:** Menü pencereleri taslaklardaki ölçüye indi. Açılır pencereler artık içerikleri kadar yer kaplıyor; boş alan kalmıyor.
+- **Ar-Ge:** İkonlu kartlar; koşullar etiket hâlinde; sağda AP, para ve süre alt alta; yeşil "Araştır".
+- **Araçlar:** Üstte bilgisayar ve aylık abonelik; alan alan şeritli tablo; kullanılan araçta "Kullanılıyor" etiketi.
+- **Ofis:** Solda mevcut ofis, sağda sonraki ofis ve taşınma koşulları. Masa kademeleri seçim kartı.
+- **Sektör:** Ödül satırları kiremit ikonlu; rakipler tabloda, güçleri çubukla.
+- **Olay penceresi:** Tür etiketi ve oklu seçenek satırları; stat kontrolü sağda yüzdeyle.
+- **Ekip:** Sütunlar daraldı, tablo küçük pencereye sığıyor.
+- Görüntüler: `docs/screenshots/21_ui3_*`.
+- Nasıl test ederim:
+  1. Menülerin hepsini sırayla aç: hiçbiri ekranın üçte ikisinden yüksek olmamalı, bildirimlerin üstüne binmemeli.
+  2. Ar-Ge'de bir araştırma kartına bak: koşul etiketleri (✓ / ✗) ve sağda üç satır maliyet olmalı.
+  3. Araçlar'da bir araç al ya da aboneliği bitir: satır hemen güncellenmeli.
+  4. Ofis'te masa kademesi kartına bas: kullanılan kart turuncu çerçeveli olmalı; "İnşa moduna geç" çalışmalı.
+  5. Sektör → Rakip ajanslar: güce göre sıralı tablo ve çubuklar görünmeli.
+  6. Bir olay çıkınca: pencere küçük olmalı, seçenekler ok işaretli satırlar hâlinde durmalı.
+
 ## UI-3 (1. adım): Taslaklara göre kabuk, tema ve üç ekran (2026-11-14)
 - **Kabuk:** Sol üstte ajans kartı ve küçük oyun düğmeleri, üst ortada tarih ve hız, sağ üstte para ve itibar, alt ortada krem menü çubuğu. Pencereler ekranın ortasında açılır.
 - **Tema:** Koyu yeşil başlıklar, yeşil ana düğmeler, serif yazı, kiremit renkli ikonlar.

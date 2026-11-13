@@ -3,10 +3,12 @@ extends VBoxContainer
 ## Ekip ekranı (GDD 20, 11; UI-3 taslağı 13_ekip): arama, rol süzgeci ve sıralamalı çalışan tablosu.
 ## Satıra tıklayınca altında ayrıntı açılır: özellikler, maaş, eğitim / uzmanlaşma / sertifika / zam / kovma.
 
-const COL_NAME: float = 120.0
-const COL_ROLE: float = 106.0
-const COL_STAT: float = 34.0
-const COL_BAR: float = 78.0
+const COL_NAME: float = 104.0
+const COL_ROLE: float = 96.0
+const COL_STAT: float = 30.0
+const COL_AVATAR: float = 34.0
+const COL_GAP: int = 6
+const COL_BAR: float = 70.0
 const SORTS: Array[String] = ["name", "role", "level"]
 
 var _main: Control
@@ -132,9 +134,9 @@ func _cell(text: String, width: float, size: int = 13, color: Color = CozyTheme.
 func _column_titles() -> PanelContainer:
 	var strip: PanelContainer = PanelContainer.new()
 	strip.theme_type_variation = "HeaderStrip"
-	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	var row: HBoxContainer = UiUtil.hbox(COL_GAP)
 	strip.add_child(row)
-	row.add_child(_cell(tr("UI_COL_EMPLOYEE"), 38.0 + CozyTheme.SPACE_S + COL_NAME, 12, CozyTheme.FOREST, true))
+	row.add_child(_cell(tr("UI_COL_EMPLOYEE"), COL_AVATAR + COL_GAP + COL_NAME, 12, CozyTheme.FOREST, true))
 	row.add_child(_cell(tr("UI_COL_ROLE"), COL_ROLE, 12, CozyTheme.FOREST, true))
 	for stat: Variant in DataDB.data.bal("staff_rules.stats"):
 		var key: String = "STAT_" + str(stat).to_upper()
@@ -159,12 +161,12 @@ func _row(emp: Dictionary) -> Button:
 	b.pressed.connect(func() -> void:
 		_open_id = "" if open else id
 		refresh())
-	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	var row: HBoxContainer = UiUtil.hbox(COL_GAP)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 4)
-	row.offset_left = CozyTheme.SPACE_L
+	row.offset_left = CozyTheme.SPACE_L  # başlık şeridinin iç boşluğuyla hizalı
 	b.add_child(row)
-	var pic: PanelContainer = Cards.avatar(emp, 38.0)
+	var pic: PanelContainer = Cards.avatar(emp, COL_AVATAR)
 	pic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(pic)
 	var name: Label = _cell(GameState.employee_name(emp), COL_NAME, 14, CozyTheme.FOREST)
@@ -177,7 +179,7 @@ func _row(emp: Dictionary) -> Button:
 		row.add_child(v)
 	row.add_child(_bar_cell(float(emp["energy"]), CozyTheme.POSITIVE))
 	row.add_child(_bar_cell(float(emp["morale"]), CozyTheme.ACCENT))
-	b.custom_minimum_size.y = 46.0
+	b.custom_minimum_size.y = 40.0
 	return b
 
 

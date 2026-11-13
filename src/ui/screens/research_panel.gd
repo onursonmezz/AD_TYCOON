@@ -37,46 +37,73 @@ func rebuild() -> void:
 	var s: SimState = sim.state
 	var data: GameData = DataDB.data
 	var active: Dictionary = s.research["active"]
-	_body.add_child(UiUtil.label(tr("UI_AP") % float(s.research["points"]), 18, UiUtil.SAGE_DARK))
-	_body.add_child(UiUtil.wrapped(tr("UI_RESEARCH_HINT"), 13, UiUtil.MUTED, 640.0))
+	# UI-3 (taslak 17): üstte ikon, araştırma puanı ve kısa açıklama.
+	var head_col: VBoxContainer = UiUtil.vbox(2)
+	head_col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var points: Label = UiUtil.label(tr("UI_AP") % float(s.research["points"]), 16, CozyTheme.FOREST)
+	points.add_theme_font_override("font", CozyTheme.title_font(700))
+	head_col.add_child(points)
+	var hint: Label = UiUtil.wrapped(tr("UI_RESEARCH_HINT"), 12, UiUtil.MUTED, 400.0)
+	head_col.add_child(hint)
+	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	head.add_child(Cards.tile("flask", 48.0, CozyTheme.TERRA_SOFT))
+	head.add_child(head_col)
+	_body.add_child(head)
 	if not active.is_empty():
-		_body.add_child(UiUtil.label(tr("UI_RESEARCH_ACTIVE") % [tr(data.research[active["id"]]["name_key"]), int(active["weeks_left"])],
-			15, UiUtil.WOOD))
+		_body.add_child(Cards.section(tr("UI_RESEARCH_ACTIVE") % [tr(data.research[active["id"]]["name_key"]), int(active["weeks_left"])],
+			"", "clock"))
 	for id: String in data.research_ids:
 		_body.add_child(_research_row(sim, s, id))
-	_body.add_child(UiUtil.label(tr("UI_KNOWLEDGE_BOOK"), 18, UiUtil.SAGE_DARK))
-	_body.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 13, UiUtil.MUTED, 640.0))
+	_body.add_child(Cards.section(tr("UI_KNOWLEDGE_BOOK")))
+	_body.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 12, UiUtil.MUTED, 400.0))
 	_body.add_child(_knowledge_table(sim, s))
 
 
+## Araştırma kartı: solda ikon, ortada ad, açıklama ve koşul etiketleri; sağda maliyet satırları ve düğme.
 func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
 	var data: GameData = DataDB.data
-	var card: PanelContainer = UiUtil.card()
-	var col: VBoxContainer = UiUtil.vbox(2)
-	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
+	var rec: Dictionary = data.research[id]
 	var done: bool = sim.research.has(s, id)
-	top.add_child(UiUtil.label(("✓ " if done else "") + tr(data.research[id]["name_key"]), 16, UiUtil.SAGE_DARK if done else UiUtil.TEXT))
-	top.add_child(UiUtil.spacer())
-	if not done:
-		top.add_child(UiUtil.label(tr("UI_RESEARCH_COST") % [int(data.research[id]["ap"]), UiUtil.money(sim.research.cost(s, id)),
-			int(data.research[id]["weeks"])], 13, UiUtil.WOOD))
-		var b: Button = UiUtil.button(tr("UI_RESEARCH_START"), func() -> void:
-			var err: String = GameState.execute(ResearchActionCommand.new("begin", id))
-			if not err.is_empty():
-				EventBus.notification.emit(err, [], "bad")
-			_signature = ""
-			refresh())
-		b.disabled = not sim.research.can_start(s, id)
-		top.add_child(b)
-	col.add_child(top)
-	col.add_child(UiUtil.wrapped(tr(data.research[id]["desc_key"]), 13, UiUtil.MUTED, 600.0))
-	if not done:
-		var reqs: PackedStringArray = PackedStringArray()
-		for r: Dictionary in sim.research.requirements(s, id):
-			var need: String = tr(str(r["need"])) if r["key"] == "REQ_RESEARCH" else str(r["need"])
-			reqs.append(("✓ " if bool(r["ok"]) else "✗ ") + tr(str(r["key"]) + "_SHORT") % need)
-		col.add_child(UiUtil.label(" · ".join(reqs), 12, UiUtil.TEXT))
+	var card: PanelContainer = UiUtil.card()
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	card.add_child(row)
+	var tile: PanelContainer = Cards.tile("check" if done else "flask", 44.0, CozyTheme.SAGE_SOFT if done else CozyTheme.TERRA_SOFT)
+	tile.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(tile)
+	var mid: VBoxContainer = UiUtil.vbox(2)
+	mid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(mid)
+	var name: Label = UiUtil.label(tr(rec["name_key"]), 15, CozyTheme.FOREST)
+	name.add_theme_font_override("font", CozyTheme.title_font(700))
+	mid.add_child(name)
+	mid.add_child(UiUtil.wrapped(tr(rec["desc_key"]), 12, CozyTheme.TEXT, 240.0))
+	if done:
+		return card
+	var reqs: HFlowContainer = Cards.flow_row()
+	for r: Dictionary in sim.research.requirements(s, id):
+		var need: String = tr(str(r["need"])) if r["key"] == "REQ_RESEARCH" else str(r["need"])
+		var text: String = tr(str(r["key"]) + "_SHORT") % need
+		reqs.add_child(Cards.chip(("✓ " if bool(r["ok"]) else "✗ ") + text,
+			CozyTheme.SAGE_SOFT if bool(r["ok"]) else CozyTheme.CREAM, CozyTheme.FOREST if bool(r["ok"]) else CozyTheme.MUTED))
+	mid.add_child(reqs)
+	row.add_child(VSeparator.new())
+	var cost: VBoxContainer = UiUtil.vbox(0)
+	cost.custom_minimum_size.x = 96.0
+	cost.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	cost.add_child(Cards.mini_fact("flask", tr("REQ_AP_SHORT") % str(int(rec["ap"]))))
+	cost.add_child(Cards.mini_fact("coins", UiUtil.money(sim.research.cost(s, id))))
+	cost.add_child(Cards.mini_fact("calendar", tr("UI_WEEKS") % int(rec["weeks"])))
+	row.add_child(cost)
+	var b: Button = UiUtil.button(tr("UI_RESEARCH_START"), func() -> void:
+		var err: String = GameState.execute(ResearchActionCommand.new("begin", id))
+		if not err.is_empty():
+			EventBus.notification.emit(err, [], "bad")
+		_signature = ""
+		refresh())
+	b.disabled = not sim.research.can_start(s, id)
+	b.theme_type_variation = "PrimaryButton"
+	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(b)
 	return card
 
 

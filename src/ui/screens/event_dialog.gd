@@ -15,23 +15,37 @@ func _init(inst: Dictionary) -> void:
 func _ready() -> void:
 	var sim: Simulation = GameState.sim
 	var ev: Dictionary = sim.events.events[_inst["id"]]
-	_col = UiUtil.modal_frame(self, Vector2(620.0, 360.0))
-	_col.add_child(UiUtil.label(tr("UI_EVENT_CAT_" + str(_inst["category"]).to_upper()), 14, UiUtil.MUTED))
+	_col = UiUtil.modal_frame(self, Vector2(560.0, 420.0))
 	_col.add_child(UiUtil.heading(_text("T"), "alert-triangle" if _inst["category"] == "crisis" else "bell"))
-	_col.add_child(UiUtil.wrapped(_text("X"), 16, UiUtil.TEXT, 560.0))
+	# UI-3 (taslak 10): olay türü etiketi, metin, altında oklu seçenek satırları.
+	var cat: HBoxContainer = UiUtil.hbox()
+	cat.add_child(Cards.chip(tr("UI_EVENT_CAT_" + str(_inst["category"]).to_upper())))
+	_col.add_child(cat)
+	_col.add_child(UiUtil.wrapped(_text("X"), 15, UiUtil.TEXT, 480.0))
+	_col.add_child(HSeparator.new())
 	_buttons = UiUtil.vbox(6)
 	for i: Variant in _inst["options"]:
 		var opt: Dictionary = ev["options"][int(i)]
 		var label: String = _text("O%d" % (int(i) + 1))
 		if opt.has("requires_research"):
 			label = "★ %s  [%s]" % [label, tr("UI_EVENT_RESEARCH_TAG")]
+		var idx: int = int(i)
+		var b: Button = UiUtil.button("", func() -> void: _choose(idx))
+		b.custom_minimum_size.y = 42.0
+		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, CozyTheme.SPACE_M)
+		b.add_child(row)
+		var text: Label = UiUtil.label(label, 15, CozyTheme.FOREST)
+		text.add_theme_font_override("font", CozyTheme.strong_font())
+		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		text.clip_text = true
+		row.add_child(text)
 		if opt.has("check"):
 			var check: Dictionary = opt["check"]
-			label += "  (%s)" % (tr("UI_EVENT_CHECK") % [tr("STAT_" + str(check["stat"]).to_upper() + "_NAME"),
-				int(roundf(100.0 * sim.events.check_chance(sim.state, _inst, check)))])
-		var idx: int = int(i)
-		var b: Button = UiUtil.button(label, func() -> void: _choose(idx))
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			row.add_child(UiUtil.label(tr("STAT_" + str(check["stat"]).to_upper() + "_NAME"), 13, CozyTheme.MUTED))
+			row.add_child(Cards.chip(UiUtil.percent(roundf(100.0 * sim.events.check_chance(sim.state, _inst, check)))))
+		row.add_child(UiUtil.icon("chevron-right", 18, CozyTheme.FOREST))
 		_buttons.add_child(b)
 	_col.add_child(_buttons)
 

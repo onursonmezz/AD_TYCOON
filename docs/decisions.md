@@ -1229,3 +1229,13 @@ Taslaktan sapmalar: sektöre özel çizim ikonlar yok (hazır ikon seti kiremit 
 kaydırma; oyun düğmeleri taslaktaki iki yerine dört (yükle ve çıkış da gerekli).
 Sıradakiler: Kampanya, yeni kampanya sihirbazı, kanal seçici, rapor, yankılar, olay, Sektör, Araçlar, Finans,
 Ar-Ge, Ofis, Ayarlar.
+
+## K-104 — UI-3 (2. adım): pencere boyutları taslaklardan; Ar-Ge, Araçlar, Ofis, Sektör, olay penceresi
+Orgo iki taslak daha gönderdi (inşa modu, ödül töreni; `docs/reference/ui_mockups/20`, `21`) ve pencerelerin
+taslaklardaki kadar küçük olmasını istedi. Menü penceresi 720 px genişlik, en çok ekranın %66'sı yükseklik
+(taslaklardaki ölçüler). Açılır pencereler (`UiUtil.modal_frame`) artık sabit yükseklikte değil: içerik kadar yer
+kaplar, verilen yükseklik üst sınırdır. Taslağa göre kurulanlar: Ar-Ge (ikonlu kartlar, koşul etiketleri, sağda
+maliyet satırları), Araçlar (alan şeritleri, satır tablosu), Ofis (mevcut / sonraki iki sütun, taşınma koşulları),
+Sektör (ödül satırları, rakip tablosu güç çubuğuyla), olay penceresi (tür etiketi, oklu seçenek satırları).
+Sıradakiler: Kampanya, yeni kampanya sihirbazı + kanal seçici, kampanya raporu, yankılar, ödül töreni, inşa modu,
+Finans, Raporlar, işe alım. Ödül töreni ve inşa modundaki çizimler (perde, kupa, eşya resimleri) görsel dosya ister.

@@ -155,3 +155,31 @@ static func facts(items: Array) -> HBoxContainer:
 			row.add_child(VSeparator.new())
 		row.add_child(items[i] as Control)
 	return row
+
+
+## Bölüm şeridi (UI-3): açık yeşil bant içinde başlık; sağda (varsa) kısa bilgi.
+static func section(title: String, trailing: String = "", icon_name: String = "") -> PanelContainer:
+	var strip: PanelContainer = PanelContainer.new()
+	strip.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.SAGE_SOFT, CozyTheme.RADIUS_CONTROL, Color.TRANSPARENT, 0,
+		false, Vector2(CozyTheme.SPACE_M, 2)))
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	strip.add_child(row)
+	if not icon_name.is_empty():
+		row.add_child(UiUtil.icon(icon_name, 18, CozyTheme.FOREST))
+	var l: Label = UiUtil.label(title, 15, CozyTheme.FOREST)
+	l.add_theme_font_override("font", CozyTheme.title_font(700))
+	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(l)
+	if not trailing.is_empty():
+		var t: Label = UiUtil.label(trailing, 13, CozyTheme.FOREST)
+		t.add_theme_font_override("font", CozyTheme.strong_font())
+		row.add_child(t)
+	return strip
+
+
+## Küçük ikonlu satır (maliyet, süre gibi alt alta bilgiler).
+static func mini_fact(icon_name: String, text: String) -> HBoxContainer:
+	var row: HBoxContainer = UiUtil.hbox(6)
+	row.add_child(UiUtil.icon(icon_name, 16, CozyTheme.TERRA))
+	row.add_child(UiUtil.label(text, 13, CozyTheme.TEXT))
+	return row

@@ -6,8 +6,9 @@ extends Control
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
 const WINDOW_MARGIN: float = MainHud.MARGIN
-## Menü penceresi: sabit genişlik; yüksekliği içeriğe göre, en çok üst haplarla dok arasındaki boşluk kadar.
-const WINDOW_WIDTH: float = 780.0
+## Menü penceresi (boyutlar taslaklardan): sabit genişlik; yüksekliği içeriğe göre, en çok ekranın üçte ikisi.
+const WINDOW_WIDTH: float = 720.0
+const WINDOW_MAX_HEIGHT: float = 0.66  # taslaklardaki en yüksek pencere: ekranın üçte ikisi
 const WINDOW_CHROME: float = 104.0  # başlık bandı + iç kenar boşlukları
 const WINDOW_MIN_CONTENT: float = 70.0
 const BUILD_BAR_WIDTH: float = 0.8  # inşa çubuğu: ekran genişliğinin oranı, ortada
@@ -126,7 +127,8 @@ func _fit_window() -> void:
 	if _scroll == null or _panel == null:
 		return
 	var clearance: float = _dock.size.y + MainHud.MARGIN + MainHud.GAP
-	var room: float = maxf(WINDOW_MIN_CONTENT, size.y - clearance - MainHud.TOP_CLEARANCE - MainHud.GAP - WINDOW_CHROME)
+	var space: float = size.y - clearance - MainHud.TOP_CLEARANCE - MainHud.GAP
+	var room: float = maxf(WINDOW_MIN_CONTENT, minf(space, size.y * WINDOW_MAX_HEIGHT) - WINDOW_CHROME)
 	var need: float = _panel.get_combined_minimum_size().y
 	# Kaydırma çubuğu ya hep var ya hiç yok: çubuk belirip kaybolurken metin genişliği değişip titremesin.
 	var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need > room \

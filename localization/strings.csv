@@ -1580,3 +1580,10 @@ UI_FACT_DISCOUNT,İndirim,Discount
 UI_FACT_QUANTITY,Baskı adedi,Print quantity
 UI_FACT_VALID,Geçerlilik,Valid for
 UI_FACT_YEAR_END,Yıl sonuna kadar,Until year end
+UI_TOOL_IN_USE,Kullanılıyor,In use
+UI_OFFICE_CURRENT,Mevcut ofis,Current office
+UI_OFFICE_CURRENT_TAG,Mevcut,Current
+UI_OFFICE_NEXT_TITLE,Sonraki ofis,Next office
+UI_OFFICE_QUALITY,Oda kalitesi,Room quality
+UI_OFFICE_JOBS,Uygun işler,Suitable jobs
+UI_MOVE_REQS,Taşınma koşulları,Moving requirements
