@@ -15,7 +15,7 @@ func _init(inst: Dictionary) -> void:
 func _ready() -> void:
 	var sim: Simulation = GameState.sim
 	var ev: Dictionary = sim.events.events[_inst["id"]]
-	_col = UiUtil.modal_frame(self, Vector2(560.0, 420.0))
+	_col = UiUtil.modal_frame(self, UiUtil.dialog_size("event"), true, true)
 	_col.add_child(UiUtil.heading(_text("T"), "alert-triangle" if _inst["category"] == "crisis" else "bell"))
 	# UI-3 (taslak 10): olay türü etiketi, metin, altında oklu seçenek satırları.
 	var cat: HBoxContainer = UiUtil.hbox()

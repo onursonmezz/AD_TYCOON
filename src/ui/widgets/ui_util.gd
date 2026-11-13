@@ -13,6 +13,8 @@ const MUSTARD: Color = CozyTheme.GOLD
 const TEXT: Color = CozyTheme.TEXT
 const MUTED: Color = CozyTheme.MUTED
 
+const MODAL_CHROME: float = 92.0  # başlık bandı + iç kenar boşlukları
+
 static var _icon_cache: Dictionary = {}
 static var _head_font: Font = null
 
@@ -251,7 +253,7 @@ static func segmented(tabs: Array, current: String, on_pick: Callable) -> PanelC
 
 ## Modal pencere iskeleti: root'un içine karartılmış arka plan + ortada kaydırılabilir kart kurar.
 ## Dönüş: içeriğin ekleneceği kutu.
-static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) -> VBoxContainer:
+static func modal_frame(root: Control, min_size: Vector2, animate: bool = true, fixed: bool = false) -> VBoxContainer:
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var dim: ColorRect = ColorRect.new()
 	dim.color = Color(0.08, 0.14, 0.1, 0.45)
@@ -261,7 +263,8 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) 
 	root.add_child(center)
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var panel: PanelContainer = PanelContainer.new()
-	panel.custom_minimum_size = Vector2(min_size.x, 0.0)  # yükseklik içerikten gelir
+	# fixed: pencere tam verilen boyda (taslak ölçüsü); değilse yükseklik içerikten gelir, min_size.y üst sınırdır.
+	panel.custom_minimum_size = min_size if fixed else Vector2(min_size.x, 0.0)
 	center.add_child(panel)
 	var parts: Array = window_frame(panel)
 	var scroll: ScrollContainer = ScrollContainer.new()
@@ -272,7 +275,7 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) 
 	scroll.add_child(content)
 	# UI-3: pencere içeriği kadar yer kaplar; min_size.y en fazla yüksekliktir, aşan kısım kayar.
 	# Kaydırma çubuğu ya hep var ya hiç yok (belirip kaybolurken metin genişliği oynamasın).
-	var cap: float = minf(min_size.y, 600.0)
+	var cap: float = min_size.y - MODAL_CHROME if fixed else minf(min_size.y, 600.0)
 	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, 0.0)
 	var fit: Callable = func() -> void:
 		var need: float = content.get_combined_minimum_size().y
@@ -280,7 +283,7 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) 
 			else ScrollContainer.SCROLL_MODE_DISABLED
 		if scroll.vertical_scroll_mode != mode:
 			scroll.vertical_scroll_mode = mode
-		var h: float = minf(need, cap)
+		var h: float = cap if fixed else minf(need, cap)
 		if not is_equal_approx(scroll.custom_minimum_size.y, h):
 			scroll.custom_minimum_size.y = h
 	content.minimum_size_changed.connect(fit)
@@ -380,3 +383,9 @@ static func pop_in(c: Control) -> void:
 	t.tween_callback(func() -> void: c.pivot_offset = c.size * 0.5)
 	t.tween_property(c, "scale", Vector2.ONE, 0.26).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	t.tween_property(c, "modulate:a", 1.0, 0.14)
+
+
+## Açılır pencerenin taslaktaki boyutu (data/ui_layout.json "dialogs").
+static func dialog_size(id: String) -> Vector2:
+	var a: Array = DataDB.data.raw["ui_layout.json"]["dialogs"][id]
+	return Vector2(float(a[0]), float(a[1]))

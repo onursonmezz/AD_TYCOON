@@ -1,18 +1,12 @@
 extends Control
 ## Oyun ekranı (GDD 20; UI-3 kabuğu, docs/reference/ui_mockups): 3D ofis tam ekran. Sol üstte ajans kartı ve oyun
 ## düğmeleri, üst ortada zaman hapı, sağ üstte para/itibar ve bildirimler, alt ortada krem dok (menü ikonları).
-## Menü ekranları ekranın ortasında açılır ve içeriği kadar yer kaplar; inşa çubuğu dokun üstünde açılır.
-## Modal pencereler en üstte.
+## Menü ekranları ekranın ortasında, her biri kendi taslağındaki boyutta açılır (data/ui_layout.json).
+## İnşa modunda dok gizlenir, yerine inşa çubuğu gelir. Modal pencereler en üstte.
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
-const WINDOW_MARGIN: float = MainHud.MARGIN
-## Menü penceresi (boyutlar taslaklardan): sabit genişlik; yüksekliği içeriğe göre, en çok ekranın üçte ikisi.
-const WINDOW_WIDTH: float = 720.0
-const WINDOW_MAX_HEIGHT: float = 0.66  # taslaklardaki en yüksek pencere: ekranın üçte ikisi
-const WINDOW_CHROME: float = 104.0  # başlık bandı + iç kenar boşlukları
-const WINDOW_MIN_CONTENT: float = 70.0
-const BUILD_BAR_WIDTH: float = 0.58  # inşa çubuğu: ekran genişliğinin oranı, ortada (taslak 20)
-const MENU_ICONS: Dictionary = {"inbox": "inbox", "clients": "users", "campaign": "speakerphone", "team": "users-group",
+const WINDOW_CHROME: float = 92.0  # başlık bandı + iç kenar boşlukları (kaydırma alanı = pencere − bu)
+const MENU_ICONS: Dictionary = {"inbox": "inbox", "clients": "user", "campaign": "speakerphone", "team": "users-group",
 	"office": "building", "tools": "tool", "research": "flask", "finance": "coins", "industry": "trophy", "history": "chart-bar"}
 
 var _cash: CountBadge
@@ -20,7 +14,6 @@ var _rep: CountBadge
 var _date: Label
 var _speed_buttons: Array[Button] = []
 var _pause_button: Button
-var _overtime: Button
 var _content: VBoxContainer
 var _window: PanelContainer
 var _window_title: Label
@@ -88,7 +81,6 @@ func _build() -> void:
 	_save_button = MainHud.agency_card(self)
 	var t: Dictionary = MainHud.time_bar(self)
 	_date = t["date"]
-	_overtime = t["overtime"]
 	_pause_button = t["pause"]
 	_speed_buttons.assign(t["speeds"])
 	var w: Dictionary = MainHud.wallet(self)
@@ -100,44 +92,36 @@ func _build() -> void:
 	_modal_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_modal_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_modal_layer)
-	_dock.resized.connect(_layout)
-	resized.connect(_layout)
 	_layout.call_deferred()
 
 
-## Pencereyi üst haplarla dok arasında ortalar; inşa çubuğu, çalışan kartı ve ipucunu dokun üstüne dizer.
+## Açık pencerenin taslaktaki boyutu ([genişlik, yükseklik], data/ui_layout.json).
+func _window_size() -> Vector2:
+	var layout: Dictionary = DataDB.data.raw["ui_layout.json"]
+	var a: Array = layout["windows"].get(_panel_id, layout["default_window"])
+	return Vector2(float(a[0]), float(a[1]))
+
+
+## Pencereye taslaktaki boyutunu verir ve ekranın ortasına koyar; ipucu ve çalışan kartı dokun üstünde durur.
 func _layout() -> void:
-	var clearance: float = _dock.size.y + MainHud.MARGIN + MainHud.GAP
-	var middle: float = (MainHud.TOP_CLEARANCE + size.y - clearance) * 0.5
-	_window.offset_top = middle
-	_window.offset_bottom = middle
+	var half: Vector2 = _window_size() * 0.5
+	_window.offset_left = -half.x
+	_window.offset_right = half.x
+	_window.offset_top = -half.y
+	_window.offset_bottom = half.y
+	var clearance: float = MainHud.DOCK_BOTTOM + MainHud.DOCK_HEIGHT + 8.0
 	_hint.offset_bottom = -clearance
 	_hint.offset_top = -clearance - _hint.size.y
-	if _build_bar != null:
-		_build_bar.offset_bottom = -clearance
-		_build_bar.offset_top = -clearance
 	if _employee_card != null:
 		_employee_card.offset_bottom = -clearance
 		_employee_card.offset_top = -clearance
 	_fit_window()
 
 
-## Pencere içeriği kadar yer kaplar; içerik uzunsa üst haplarla dok arasını doldurur, gerisi kayar.
+## Pencere sabit boyda; içerik sığmazsa içinde kayar.
 func _fit_window() -> void:
-	if _scroll == null or _panel == null:
-		return
-	var clearance: float = _dock.size.y + MainHud.MARGIN + MainHud.GAP
-	var space: float = size.y - clearance - MainHud.TOP_CLEARANCE - MainHud.GAP
-	var room: float = maxf(WINDOW_MIN_CONTENT, minf(space, size.y * WINDOW_MAX_HEIGHT) - WINDOW_CHROME)
-	var need: float = _panel.get_combined_minimum_size().y
-	# Kaydırma çubuğu ya hep var ya hiç yok: çubuk belirip kaybolurken metin genişliği değişip titremesin.
-	var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need > room \
-		else ScrollContainer.SCROLL_MODE_DISABLED
-	if _scroll.vertical_scroll_mode != mode:
-		_scroll.vertical_scroll_mode = mode
-	var height: float = clampf(need, WINDOW_MIN_CONTENT, room)
-	if not is_equal_approx(_scroll.custom_minimum_size.y, height):
-		_scroll.custom_minimum_size.y = height
+	if _scroll != null and _panel != null:
+		MainHud.fit_scroll(_scroll, _panel, _window_size().y - WINDOW_CHROME)
 
 
 ## Dok (menü ekranları): kiremit ikonlar, aralarında ince çizgi; açık olanın ikonu yeşil, zemini açık yeşil.
@@ -149,6 +133,8 @@ func _build_menu(col: HBoxContainer) -> void:
 		var b: Button = UiUtil.icon_button(MENU_ICONS[id], tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id),
 			MainHud.MENU_ICON)
 		b.theme_type_variation = "DockIcon"
+		b.custom_minimum_size = MainHud.DOCK_SLOT
+		b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		_menu_buttons[id] = b
 		var dot: Label = UiUtil.label("", 12, CozyTheme.CREAM_LIGHT)
 		dot.add_theme_font_override("font", CozyTheme.strong_font(800))
@@ -161,15 +147,11 @@ func _build_menu(col: HBoxContainer) -> void:
 		col.add_child(b)
 
 
-## Menü ekranlarının yüzen penceresi: ekranın ortasında; içeriği kadar, merkezden iki yana büyür.
+## Menü ekranlarının yüzen penceresi: ekranın tam ortasında, boyutu açılan panele göre (_layout).
 func _build_window() -> void:
 	_window = PanelContainer.new()
 	add_child(_window)
-	_window.anchor_left = 0.5
-	_window.anchor_right = 0.5
-	_window.offset_left = -WINDOW_WIDTH * 0.5
-	_window.offset_right = WINDOW_WIDTH * 0.5
-	_window.grow_vertical = Control.GROW_DIRECTION_BOTH
+	_window.set_anchors_preset(Control.PRESET_CENTER)
 	# UI-2: yeşil başlık bandı (ikon + başlık + kapat), altında içerik.
 	var parts: Array = UiUtil.window_frame(_window)
 	_window_title = parts[0]
@@ -199,13 +181,15 @@ func enter_build_mode() -> void:
 	_build_bar = BuildToolbar.new(_office, exit_build_mode)
 	add_child(_build_bar)
 	move_child(_build_bar, _modal_layer.get_index())
-	# Dokun hemen üstünde, ortada (menü penceresiyle aynı yer).
-	_build_bar.anchor_left = (1.0 - BUILD_BAR_WIDTH) * 0.5
-	_build_bar.anchor_right = 1.0 - (1.0 - BUILD_BAR_WIDTH) * 0.5
-	_build_bar.anchor_top = 1.0
-	_build_bar.anchor_bottom = 1.0
-	_build_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_layout()
+	# Taslak 20: inşa modunda dok gizlenir; çubuk ekranın altında, ortada, sabit boyda.
+	var bar: Dictionary = DataDB.data.raw["ui_layout.json"]["build_bar"]
+	var width: float = float(bar["tools_width"]) + float(bar["gap"]) + float(bar["palette_width"])
+	_build_bar.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_build_bar.offset_left = -width * 0.5
+	_build_bar.offset_right = width * 0.5
+	_build_bar.offset_bottom = -float(bar["bottom"])
+	_build_bar.offset_top = -float(bar["bottom"]) - float(bar["height"])
+	_dock.visible = false
 	_refresh_menu_state()
 
 
@@ -213,6 +197,7 @@ func exit_build_mode() -> void:
 	if _build_bar != null:
 		_build_bar.queue_free()
 		_build_bar = null
+		_dock.visible = true
 		_refresh_menu_state()
 
 
@@ -227,7 +212,7 @@ func _on_employee_clicked(employee_id: String) -> void:
 	_employee_card.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
 	_employee_card.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_employee_card.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_employee_card.offset_right = -WINDOW_MARGIN
+	_employee_card.offset_right = -MainHud.EDGE
 	_layout()
 	UiUtil.pop_in(_employee_card)
 
@@ -271,8 +256,8 @@ func show_panel(id: String) -> void:
 			_panel = HistoryPanel.new(self)
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	# C3: tek kaydırma pencerenin kendisinde. Panellerin kendi dikey listeleri kaymaz, boyları içerik kadar olur;
-	# böylece pencere içeriği kadar yer kaplar.
+	_layout()
+	# Tek kaydırma pencerenin kendisinde; panellerin kendi dikey listeleri kaymaz.
 	for inner: Node in _panel.find_children("*", "ScrollContainer", true, false):
 		if (inner as ScrollContainer).horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED:
 			(inner as ScrollContainer).vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -310,7 +295,6 @@ func _refresh() -> void:
 	_date.text = UiUtil.date_text(s.clock)
 	_set_dot("inbox", str(s.inbox.size()) if not s.inbox.is_empty() else "")
 	_set_dot("campaign", "!" if GameState.is_waiting() else "")
-	_overtime.theme_type_variation = "SpeedActive" if s.overtime else "PillButton"
 	if _panel != null:
 		_panel.call("refresh")
 	_refresh_speed()
@@ -323,11 +307,7 @@ func _set_dot(id: String, text: String) -> void:
 
 
 func _refresh_speed() -> void:
-	_pause_button.icon = UiUtil.icon_texture("player-play" if Clock.paused else "player-pause", MainHud.TIME_ICON)
-	_pause_button.theme_type_variation = "SpeedActive" if Clock.paused else "PillButton"
-	for i: int in _speed_buttons.size():
-		_speed_buttons[i].theme_type_variation = "SpeedActive" if not Clock.paused and Clock.speed_index == i \
-			else "PillButton"
+	MainHud.show_speed(_pause_button, _speed_buttons, Clock.paused, Clock.speed_index)
 
 
 func _on_notification(key: String, args: Array, kind: String) -> void:

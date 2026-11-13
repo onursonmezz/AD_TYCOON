@@ -11,10 +11,16 @@ const NAMES: Dictionary = {
 	"flask": "ar-ge", "coins": "finans", "trophy": "oduller", "chart-bar": "raporlar", "settings": "ayarlar",
 	"device-floppy": "kaydet", "calendar": "takvim", "clock": "tempo", "player-pause": "duraklat", "player-play": "oynat",
 	"bell": "bildirim", "x": "kapat", "world": "dil", "device-desktop": "ekran", "device-gamepad-2": "oyun",
-	"volume": "ses", "receipt": "belge",
+	"volume": "ses", "receipt": "belge", "user": "insan", "users": "insan", "check": "onay", "alert-triangle": "uyari",
+	"trash": "sil-sat", "rotate-left": "geri-al", "rotate-right": "ileri-al", "chevron-right": "saga-ok",
+	"building-bank": "banka", "folder-open": "klasor", "plant": "yaprak", "arrow-up": "yukari-gelir",
+	"arrow-down": "asagi-gider", "search": "arama", "lock": "kilit", "info": "bilgi", "move": "tasi", "refresh": "dondur",
+	"laurel": "itibar", "stat-strategy": "strateji", "stat-creative": "kreatif", "stat-technical": "teknik",
+	"focus-research": "pazar-arastirmasi", "focus-insight": "icgoru", "focus-positioning": "konumlandirma",
 }
 
 const ALPHA_FLOOR: float = 0.2
+const EDGE_SKIP: float = 0.06  # dosya kenarındaki komşu ikon kırıntıları sayılmaz
 
 static var _cache: Dictionary = {}
 
@@ -63,8 +69,9 @@ static func _load(file_name: String, px: int, whiten: bool) -> Texture2D:
 static func _solid_rect(img: Image) -> Rect2i:
 	var lo: Vector2i = img.get_size()
 	var hi: Vector2i = Vector2i(-1, -1)
-	for y: int in img.get_height():
-		for x: int in img.get_width():
+	var skip: int = int(img.get_width() * EDGE_SKIP)
+	for y: int in range(skip, img.get_height() - skip):
+		for x: int in range(skip, img.get_width() - skip):
 			if img.get_pixel(x, y).a > ALPHA_FLOOR:
 				lo = Vector2i(mini(lo.x, x), mini(lo.y, y))
 				hi = Vector2i(maxi(hi.x, x), maxi(hi.y, y))

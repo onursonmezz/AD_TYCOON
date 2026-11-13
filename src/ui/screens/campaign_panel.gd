@@ -5,7 +5,7 @@ extends VBoxContainer
 var _info: VBoxContainer
 var _counter_labels: Array[Label] = []
 
-const SLIDER_ICONS: Array[String] = ["chart-bar", "star", "speakerphone"]
+const SLIDER_ICONS: Array[String] = ["focus-research", "focus-insight", "focus-positioning"]
 var _phase_label: Label
 var _progress: ProgressBar
 var _slider_box: VBoxContainer
@@ -63,8 +63,8 @@ func _rebuild(s: SimState) -> void:
 		_info.add_child(_progress)
 		# Canlı sayaçlar: üç stat ve hata.
 		var counters: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-		for spec: Array in [["tool", tr("STAT_STRATEGY_NAME")], ["star", tr("STAT_CREATIVE_NAME")],
-				["device-desktop", tr("STAT_TECHNICAL_NAME")], ["alert-triangle", tr("UI_COUNT_ERRORS")]]:
+		for spec: Array in [["stat-strategy", tr("STAT_STRATEGY_NAME")], ["stat-creative", tr("STAT_CREATIVE_NAME")],
+				["stat-technical", tr("STAT_TECHNICAL_NAME")], ["alert-triangle", tr("UI_COUNT_ERRORS")]]:
 			var box: PanelContainer = PanelContainer.new()
 			box.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.CREAM, CozyTheme.RADIUS_CONTROL, CozyTheme.BORDER, 1, false,
 				Vector2(CozyTheme.SPACE_M, 4)))
@@ -81,6 +81,14 @@ func _rebuild(s: SimState) -> void:
 			_counter_labels.append(value)
 			counters.add_child(box)
 		_info.add_child(counters)
+		# Mesai (GDD 11): üst çubuktan buraya taşındı; üretimi hızlandırır, ekibi yorar.
+		var overtime: CheckButton = CheckButton.new()
+		overtime.text = tr("UI_OVERTIME")
+		overtime.tooltip_text = tr("TIP_OVERTIME")
+		overtime.button_pressed = s.overtime
+		overtime.add_theme_font_size_override("font_size", 13)
+		overtime.toggled.connect(func(on: bool) -> void: GameState.execute(SetOvertimeCommand.new(on)))
+		_info.add_child(overtime)
 		if s.waiting_for_input:
 			_build_sliders(camp)
 	for a: Dictionary in s.airing:

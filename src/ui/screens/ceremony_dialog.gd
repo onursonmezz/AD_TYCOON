@@ -19,7 +19,7 @@ func _init(result: Dictionary) -> void:
 
 func _ready() -> void:
 	var data: GameData = DataDB.data
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(600.0, 460.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("ceremony"), true, true)
 	col.add_child(UiUtil.heading("%s · %d" % [UiUtil.name_of(data.awards, _result["award"]), int(_result["year"])], "trophy"))
 	_stage = UiUtil.vbox(CozyTheme.SPACE_S)
 	col.add_child(_stage)

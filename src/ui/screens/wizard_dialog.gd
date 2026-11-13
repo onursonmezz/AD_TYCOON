@@ -23,7 +23,7 @@ func _init(brief: Dictionary, main_screen: Control) -> void:
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	var s: SimState = GameState.sim.state
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(720.0, 440.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("wizard") - Vector2(0.0, 62.0), true, true)
 	var client: Dictionary = _brief["prospect"] if not (_brief["prospect"] as Dictionary).is_empty() \
 		else s.clients.get(_brief["client_id"], {})
 	col.add_child(UiUtil.heading(tr("UI_WIZARD_NEW"), "speakerphone"))
@@ -99,10 +99,12 @@ func _ready() -> void:
 		who.add_child(UiUtil.label(tr(Employee.title_key(data, emp)), 12, CozyTheme.MUTED))
 		row.add_child(who)
 		right.add_child(row)
-	col.add_child(HSeparator.new())
+	# Alt satır kaydırmanın dışında: düğmeler hep görünür.
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
 	_error = UiUtil.label("", 14, UiUtil.TERRACOTTA)
 	_error.visible = false
-	col.add_child(_error)
+	frame.add_child(_error)
 	var buttons: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	buttons.add_child(UiUtil.icon("alert-triangle", 16, CozyTheme.MUTED))
 	var hint: Label = UiUtil.wrapped(tr("UI_WIZARD_HINT"), 12, UiUtil.MUTED, 200.0)
@@ -116,7 +118,7 @@ func _ready() -> void:
 	var start: Button = UiUtil.button(tr("UI_START_CAMPAIGN"), _on_start)
 	start.theme_type_variation = "PrimaryButton"
 	buttons.add_child(start)
-	col.add_child(buttons)
+	frame.add_child(buttons)
 
 
 func _fail(key: String) -> void:

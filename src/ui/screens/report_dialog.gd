@@ -25,7 +25,7 @@ func _ready() -> void:
 	var setup: Dictionary = _camp["setup"]
 	var report: Dictionary = _camp["report"]
 	var score: float = float(report["score"])
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(720.0, 380.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("report") - Vector2(0.0, 62.0), true, true)
 	col.add_child(UiUtil.heading(tr("UI_REPORT_HEADING"), "chart-bar"))
 	var title: String = str(setup.get("name", "")) if not str(setup.get("name", "")).is_empty() else tr("UI_UNTITLED")
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)

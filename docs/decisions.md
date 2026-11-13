@@ -1254,3 +1254,20 @@ Kampanya raporu ekranda doğrulandı; alt satır kaydırmanın dışına alınd�
 araçlar ve durum, sağda kategori sekmeleri ve eşya kartları (eşya resmi yok, ikon var; kategori `decor` alanından:
 bitkiler / diğer). Ödül töreni sahne kartlı (taslak 21); perde ve elma çizimi yerine kupa ikonu.
 Sıradakiler: kanal seçici (taslak 04), yankılar penceresi (01), Finans ince ayarı, işe alım, eşya ve ofis çizimleri.
+
+## K-107 — UI-3 (5. adım): taslak ölçüleri birebir; görsel paketi
+Orgo: panel boyutları taslaklarla aynı değildi; kabuk "Ayarlar" taslağındaki gibi olmalı (ikon boşlukları, köşeler,
+yazı boyutları); diğer taslaklardan yalnızca ortadaki pencere esas alınacak. Yapılanlar:
+- Ölçüler taslaklardan piksel olarak ölçüldü (1672×941 → 1280×720, ×0,7655). Pencere boyutları `data/ui_layout.json`
+  içinde, her panel ve açılır pencere için ayrı ve SABİT (içerik sığmazsa içinde kayar). K-104teki "içerik kadar
+  yükseklik" kuralı taslağı olan pencereler için kalktı; taslağı olmayan açılır pencerelerde sürüyor.
+- Kabuk ölçüleri `MainHud` sabitlerinde: ajans kartı 223×56, küçük düğmeler 36×27, zaman kutusu 427×38, para kutusu
+  260×38, bildirim 176×38 (ilk kart y=108), dok 58 yüksek ve alttan 26.
+- Zaman kutusu: duraklat ayrı yuvarlak düğme; seçili hız kiremit kutuda ve önünde oynat işareti ("▶ 1×").
+- Üstte yalnızca kaydet ve ayarlar düğmesi (taslaktaki gibi); yükle ve ana menüye dönüş Ayarlar → Oyun sekmesinde.
+  Mesai anahtarı üst çubuktan Kampanya penceresine taşındı (taslaktaki zaman kutusunda yok).
+- İnşa modu: dok gizlenir; çubuk 173 + 539 genişlik, 151 yükseklik, alttan 45; oda çizme "Odalar" sekmesinde.
+- Görsel paketi (129 PNG) `assets/ui/icons/` altında; simgeler `IconPack` eşlemesiyle, eşya resimleri
+  `ui_layout.json furniture_art` ile bağlı. Henüz bağlanmayanlar: marka / rakip / ödül logoları, kanal ikonları,
+  ofis ve masa resimleri, portreler, tören çizimleri.
+- Yazı tipi hâlâ Fraunces; taslaktaki yazı tipinin dosyası pakette yok.

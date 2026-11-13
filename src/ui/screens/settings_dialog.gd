@@ -7,6 +7,9 @@ extends Control
 var _on_language: Callable
 var _tab: String = "audio"
 var _built: bool = false
+## Oyun içinden açıldıysa ana ekran: "Oyun" sekmesine yükle ve ana menüye dön düğmeleri eklenir (üstte yalnızca
+## kaydet ve ayarlar düğmesi var; taslak 19).
+var game: Control = null
 
 const TABS: Array = [["audio", "UI_SET_AUDIO", "volume"], ["game", "UI_SET_GAME", "device-gamepad-2"],
 	["display", "UI_SET_DISPLAY", "device-desktop"], ["language", "UI_SET_LANGUAGE", "world"], ["tempo", "UI_SET_TEMPO", "clock"]]
@@ -24,7 +27,7 @@ func _ready() -> void:
 ## UI-2d: solda ikonlu sekmeler (Ses, Oynanış, Ekran, Dil), sağda seçili sekmenin ayarları; altta sıfırla / kapat.
 func _build() -> void:
 	UiUtil.clear(self)
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(780.0, 400.0), not _built)
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("settings"), not _built, true)
 	_built = true
 	col.add_child(UiUtil.heading(tr("UI_SETTINGS"), "settings"))
 	var split: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
@@ -42,12 +45,16 @@ func _build() -> void:
 		b.theme_type_variation = "NavButtonActive" if _tab == tab[0] else "NavButton"
 		nav.add_child(b)
 	var panel: PanelContainer = PanelContainer.new()
-	panel.theme_type_variation = "QuietPanel"
+	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())  # taslak 19: sağ taraf kutusuz
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.custom_minimum_size.y = 300.0
+	panel.custom_minimum_size.y = 250.0
 	split.add_child(panel)
 	var body: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_M)
 	panel.add_child(body)
+	var tab_title: Label = UiUtil.label(tr("UI_SET_" + _tab.to_upper()), 18, CozyTheme.FOREST)
+	tab_title.add_theme_font_override("font", CozyTheme.title_font(700))
+	body.add_child(tab_title)
+	body.add_child(HSeparator.new())
 	match _tab:
 		"audio":
 			for key: String in ["volume_master", "volume_music", "volume_sfx", "volume_ambient"]:
@@ -66,6 +73,16 @@ func _build() -> void:
 			tools.add_child(UiUtil.button(tr("UI_SET_LOGS"), func() -> void:
 				OS.shell_open(ProjectSettings.globalize_path("user://logs"))))
 			body.add_child(tools)
+			if game != null:
+				var session: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+				var main: Control = game
+				session.add_child(UiUtil.button(tr("MENU_LOAD"), func() -> void:
+					main.call("open_modal", SaveLoadDialog.new(false, func() -> void: main.get_tree().reload_current_scene()))
+					queue_free()))
+				session.add_child(UiUtil.button(tr("UI_MAIN_MENU"), func() -> void:
+					main.call("_confirm_leave", Callable(main, "_to_menu"))
+					queue_free()))
+				body.add_child(session)
 		"display":
 			body.add_child(_check_row("fullscreen"))
 			var res: Array = Array(Settings.RESOLUTIONS)
@@ -79,7 +96,10 @@ func _build() -> void:
 		"tempo":
 			_tempo(body)
 	var buttons: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	buttons.add_child(UiUtil.spacer())
+	var note: Label = UiUtil.label(tr("UI_SET_AUTOSAVED"), 13, UiUtil.MUTED)
+	note.add_theme_font_override("font", MenuArt.italic(CozyTheme.body_font()))
+	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	buttons.add_child(note)
 	buttons.add_child(UiUtil.button(tr("UI_SET_RESET"), func() -> void:
 		Settings.reset()
 		_language_changed()))

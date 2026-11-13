@@ -1,0 +1,21 @@
+{
+	"_doc": "UI-3: pencere boyutları Orgo'nun taslaklarından ölçüldü (docs/reference/ui_mockups, 1672×941 görüntü → 1280×720 mantıksal piksel). [genişlik, yükseklik].",
+	"windows": {
+		"inbox": [677, 475], "clients": [706, 449], "campaign": [674, 491], "team": [713, 425], "office": [703, 423],
+		"tools": [703, 410], "research": [706, 449], "finance": [706, 440], "industry": [706, 452], "history": [706, 449]
+	},
+	"default_window": [706, 449],
+	"dialogs": {
+		"wizard": [708, 475], "report": [681, 504], "event": [527, 292], "ceremony": [619, 525], "settings": [775, 430],
+		"channel_picker": [475, 504]
+	},
+	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
+	"_furniture_art": "İnşa modundaki eşya kartının resmi: eşya kimliği → assets/ui/icons altındaki dosya adı. Yoksa ikon.",
+	"furniture_art": {
+		"plant_small": "kucuk-bitki", "plant_big": "bitki-rafi", "tea_urn": "semaver", "water_cooler": "su-sebili",
+		"whiteboard": "beyaz-tahta", "mood_board": "mood-board", "bookshelf": "kitaplik", "award_case": "gumus-elma-kupasi"
+	},
+	"_office_art": "Ofis seviyesi (1..) → resim; masa kademesi → resim.",
+	"office_art": { "1": "ev-garaj-ofisi", "2": "kucuk-ofis" },
+	"desk_art": { "basic": "basit-masa", "ergonomic": "ergonomik-masa", "adjustable": "ayarlanabilir-masa" }
+}

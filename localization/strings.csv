@@ -1606,3 +1606,8 @@ UI_BUILD_CAT_ALL,Tümü,All
 UI_BUILD_CAT_PLANTS,Bitkiler,Plants
 UI_BUILD_CAT_OTHER,Diğer,Other
 UI_CEREMONY_RIVALS_SHORT,Bu törende %d ödül kazandı.,Won %d award(s) here.
+UI_BUILD_CAT_ROOMS,Odalar,Rooms
+UI_BUILD_ROTATE,Döndür,Rotate
+UI_BUILD_SELL,Sat,Sell
+UI_BUILD_QUALITY_SHORT,Kalite %.0f · Üretim ×%.2f,Quality %.0f · Output ×%.2f
+UI_SET_AUTOSAVED,Değişiklikler otomatik kaydedilir.,Changes are saved automatically.

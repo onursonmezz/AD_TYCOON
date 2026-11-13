@@ -12,23 +12,23 @@ extends RefCounted
 ##   Eski adlar da tanımlı (AcceptButton, WaitButton, DeclineButton, IconButton, IconButtonActive, CloseButton,
 ##   CardLight, HeaderStrip, Badge, Toast, DarkPill) ki bu temaya geçen ekranlarda eski görünüm karışmasın.
 
-const FOREST: Color = Color("#1F5B37")
+const FOREST: Color = Color("#1E5631")
 const FOREST_LIGHT: Color = Color("#2F7A4C")
 const SAGE: Color = Color("#8DAA8E")
 const SAGE_SOFT: Color = Color("#D9E2BF")
-const CREAM: Color = Color("#F5EBD9")
-const CREAM_LIGHT: Color = Color("#FFF8ED")
+const CREAM: Color = Color("#F8EFE0")
+const CREAM_LIGHT: Color = Color("#FFFAF1")
 const ACCENT: Color = Color("#E98A24")
 const ACCENT_HOVER: Color = Color("#F1A448")
 const ACCENT_PRESSED: Color = Color("#D47719")
-const BORDER: Color = Color("#D7CDBA")
+const BORDER: Color = Color("#E0D4BE")
 const TEXT: Color = Color("#23382C")
 const MUTED: Color = Color("#6E7A6C")
 const POSITIVE: Color = Color("#3F7A4E")
 const NEGATIVE: Color = Color("#B4533A")
 const WOOD: Color = Color("#8A6440")  # ikincil etiket (sıcak kahve)
 const GOLD: Color = Color("#D9A441")  # yıldız, taç, ödül vurgusu
-const TERRA: Color = Color("#D4572B")  # kiremit: dok ve kart ikonları, puanlar (UI-3 taslakları)
+const TERRA: Color = Color("#C9532A")  # kiremit: dok ve kart ikonları, puanlar (UI-3 taslakları)
 const TERRA_SOFT: Color = Color("#F6D9C6")  # kiremit etiket zemini
 const ACCENT_SOFT: Color = Color("#FCE3C4")  # seçili kartın zemini
 const SHADOW: Color = Color(0.09, 0.15, 0.12, 0.12)
@@ -218,8 +218,15 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	_button(t, "DockIcon", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, TERRA, FOREST, Vector2(10, 8))
 	t.set_type_variation("DockIconActive", "Button")
 	_button(t, "DockIconActive", [SAGE_SOFT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, FOREST, FOREST, Vector2(10, 8))
+	# Zaman kutusu: yuvarlak duraklat düğmesi (boş daire; duraklatılınca dolu).
+	for v: Array in [["PauseButton", CREAM_LIGHT, FOREST], ["PauseButtonOn", FOREST, CREAM_LIGHT]]:
+		t.set_type_variation(v[0], "Button")
+		for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+			t.set_stylebox(st, v[0], box(v[1], 999, BORDER if st == "normal" else FOREST_LIGHT, 1, false, Vector2(4, 4)))
+		for st: String in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
+			t.set_color(st, v[0], v[2])
 	t.set_type_variation("MiniButton", "Button")
-	_button(t, "MiniButton", [FOREST_LIGHT, FOREST, FOREST], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT, Vector2(6, 4))
+	_button(t, "MiniButton", [FOREST, FOREST_LIGHT, FOREST_LIGHT], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT, Vector2(6, 4))
 	# Sol gezinme (ayarlar sekmeleri gibi): sessiz satır; seçili olan turuncu.
 	t.set_type_variation("NavButton", "Button")
 	_button(t, "NavButton", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, TEXT, TEXT, Vector2(SPACE_M, 10))
