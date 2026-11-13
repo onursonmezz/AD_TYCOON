@@ -30,6 +30,19 @@ func create_founder(state: SimState, background_id: String) -> Dictionary:
 	return emp
 
 
+## Kurucunun adı ve avatarı (A1, yeni oyun sayfası). Avatarın cinsiyeti ofisteki 3D karakteri belirler.
+## Bilinmeyen avatar yok sayılır; ad boşsa arayüz "Sen" yazar.
+func set_founder_profile(state: SimState, founder_name: String, avatar_id: String) -> void:
+	var emp: Dictionary = state.founder()
+	if emp.is_empty():
+		return
+	emp["name"] = founder_name.strip_edges()
+	for rec: Dictionary in data.raw.get("avatars.json", []):
+		if str(rec["id"]) == avatar_id:
+			emp["avatar"] = avatar_id
+			emp["gender"] = str(rec["gender"])
+
+
 func _blank(state: SimState, role: String, level: int) -> Dictionary:
 	return {"id": state.next_id("em"), "role": role, "level": level, "xp": 0.0, "stats": {}, "hidden": {},
 		"hidden_revealed": false, "energy": _r("start_energy"), "morale": _r("start_morale"), "burnout": 0.0,

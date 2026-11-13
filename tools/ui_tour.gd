@@ -28,6 +28,8 @@ func _run() -> void:
 	await _shot("01_main_menu")
 	menu.call("_on_new_game")
 	await _shot("01b_background")
+	menu.get_child(menu.get_child_count() - 1).call("show_step", 2)
+	await _shot("01b2_character")
 	menu.queue_free()
 	GameState.new_game(5, "marketing_manager")
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()

@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## A1: Yeni açılış ve karakter sayfaları (2026-11-13)
+- **Ana menü:** Oda illüstrasyonu arka planda; sağda eğik logo, kâğıt etiket ve ikonlu büyük düğmeler.
+- **"Sen kimsin?":** Küçük pencere yerine tam sayfa. Dört geçmişin portresi var; başlangıç yılı hap biçimli düğmelerle seçilir.
+- **Stat açıklamaları:** S K T İ H D yerine tam adlar yazıyor (Strateji, Kreatif, Teknik, İletişim, Hız, Dikkat). Üzerine gelince ne işe yaradığı çıkıyor.
+- **"Karakterini oluştur" (yeni):** 11 avatardan birini seç, adını yaz. Solda seçimin büyük hâli görünür.
+- **Oyun içinde:** Ad girdiysen "Sen" yerine adın yazar; ofiste kendi karakterine tıklayınca kartında avatarın görünür.
+- Görüntüler: `docs/screenshots/16_menu_*`.
+- Nasıl test ederim:
+  1. Oyunu aç. Ana menüde oda resmi, eğik "Ajans Tycoon" logosu ve düğmeler görünmeli.
+  2. "Yeni Oyun"a bas. "Sen kimsin?" sayfasında dört portreye sırayla tıkla: alttaki açıklama ve stat sayıları değişmeli.
+  3. Fareyi "Strateji 65" gibi bir rozetin üstünde beklet: kısa açıklama çıkmalı.
+  4. "Devam Et"e bas. Bir avatar seç ve adını yaz: soldaki büyük kartta resim ve ad hemen değişmeli. "Geri" ile dönünce ilk sayfadaki seçimlerin durmalı.
+  5. "Oyuna Başla"ya bas. Ofiste kendi karakterine tıkla: kartta avatarın ve adın görünmeli. Ekip panelinde de adın yazmalı.
+  6. Kaydet, ana menüye dön, "Devam Et": ad ve avatar korunmuş olmalı.
+
 ## B1: Daha pürüzsüz 3D görüntü (2026-11-13)
 - **Kenarlar:** Sandalye ayağı, bank, duvar kenarı gibi ince çizgilerdeki tırtıklar giderildi.
 - **Dokular:** Duvar kâğıdı, çim ve halı uzaktan bakınca artık kumlanmıyor.

@@ -1180,3 +1180,13 @@ Orgo "görüntü kesik kesik" dedi. Sebepler: 3D pencere MSAA 2x'te kalıyordu, 
 ışık `look.json`'da yumuşatıldı (ortam 0.38→0.6, güneş 1.7→1.45, gölge opaklığı 0.8, bulanıklık 3.5, kontrast 1.12→1.03,
 SSAO 3.2→2.0, dolgu 0.25→0.35, vinyet 0.28→0.2). Ayarlar → Ekran'a "Grafik kalitesi" (düşük/orta/yüksek) eklendi;
 kademeler `look.json quality` altında, varsayılan yüksek. Düşük kademe ölçülmedi (perf_check ile bakılacak).
+
+## K-099 — A1 açılış: illüstrasyonlu menü, tam sayfa yeni oyun, kurucu adı ve avatarı
+Orgo'nun referans görsellerine göre ana menü oda illüstrasyonunun (`assets/ui/menu_background.webp`) üstüne kuruldu.
+Yeni oyun küçük pencere yerine iki tam sayfa: "Sen kimsin?" (ajans adı, yıl, geçmiş) ve "Karakterini oluştur"
+(avatar + ad). Kurucunun adı ve avatarı çalışan kaydına yazılır (`name`, `avatar`); avatarın cinsiyeti kurucunun
+`gender` alanını, dolayısıyla ofisteki 3D karakterini belirler. Ad girilirse arayüz "Sen" yerine o adı gösterir.
+Avatar listesi `data/avatars.json`, resimler `assets/ui/avatars`; geçmiş portreleri `assets/ui/portraits/<geçmiş>.png`
+(Orgo'nun toplu sayfasından kesildi). Logo şimdilik Fraunces yazı tipi + megafon ikonu; hazır logo PNG'si gelirse değişir.
+Statlar bu sayfada tam adıyla yazılır, üzerine gelince açıklaması çıkar (`STAT_*_DESC`); oyun içi paneller C aşamasında.
+Alt başlık "Reklam Dünyasında Kendi Ajansını Kur" oldu (referanstaki metin).

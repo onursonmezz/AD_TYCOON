@@ -19,11 +19,14 @@ func has_game() -> bool:
 ## background: oyuncunun geçmişi (data/backgrounds.json, GDD 11.5).
 ## start_year: hızlı başlangıç yılı (GDD 5.1), 0 = 1990.
 ## agency_name: oyuncunun verdiği ad (M9); boşsa arayüz varsayılanı gösterir.
-func new_game(seed_value: int = -1, background: String = "", start_year: int = 0, agency_name: String = "") -> void:
+## founder: { "name", "avatar" } (A1); boşsa adsız, avatarsız kurucu.
+func new_game(seed_value: int = -1, background: String = "", start_year: int = 0, agency_name: String = "",
+		founder: Dictionary = {}) -> void:
 	if seed_value < 0:
 		seed_value = int(Time.get_unix_time_from_system()) % 1000000
 	_attach(Simulation.new(DataDB.data, seed_value, background, start_year))
 	sim.state.agency_name = agency_name.strip_edges()
+	sim.staff.set_founder_profile(sim.state, str(founder.get("name", "")), str(founder.get("avatar", "")))
 	current_slot = ""
 	dirty = true
 	EventBus.game_started.emit()
@@ -167,9 +170,9 @@ func lang() -> String:
 	return "en" if TranslationServer.get_locale().begins_with("en") else "tr"
 
 
-## Çalışanın görünen adı: kurucu için "Sen (unvan)".
+## Çalışanın görünen adı: kurucu ad girmediyse "Sen".
 func employee_name(emp: Dictionary) -> String:
-	if bool(emp.get("is_founder", false)):
+	if bool(emp.get("is_founder", false)) and str(emp.get("name", "")).is_empty():
 		return tr("UI_YOU")
 	return str(emp.get("name", ""))
 

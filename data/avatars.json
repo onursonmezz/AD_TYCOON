@@ -1,0 +1,13 @@
+[
+	{ "id": "kadin_02", "gender": "female" },
+	{ "id": "kadin_03", "gender": "female" },
+	{ "id": "kadin_04", "gender": "female" },
+	{ "id": "erkek_01", "gender": "male" },
+	{ "id": "erkek_02", "gender": "male" },
+	{ "id": "erkek_03", "gender": "male" },
+	{ "id": "erkek_04", "gender": "male" },
+	{ "id": "nonbinary_01", "gender": "neutral" },
+	{ "id": "nonbinary_02", "gender": "neutral" },
+	{ "id": "nonbinary_03", "gender": "neutral" },
+	{ "id": "nonbinary_04", "gender": "neutral" }
+]

@@ -1,6 +1,6 @@
 keys,tr,en
 GAME_TITLE,Ajans Tycoon,Ajans Tycoon
-BOOT_SUBTITLE,Garajdan reklam holdingine,From garage to advertising holding
+BOOT_SUBTITLE,Reklam Dünyasında Kendi Ajansını Kur,Build Your Own Agency in Advertising
 BOOT_MILESTONE,M0 iskeleti: proje çalışıyor. Oynanış M1–M2 ile gelecek.,M0 skeleton: the project runs. Gameplay arrives with M1–M2.
 COMBO_SALES_CSR_INSINCERE,Samimiyetsiz: satış ve sosyal sorumluluk birlikte,Insincere: sales and CSR together
 OBJ_AWARENESS,Bilinirlik,Awareness
@@ -935,7 +935,7 @@ UI_ERA_TITLE,%d: %s başladı,%d: %s begins
 UI_ERA_CHANNELS,Bu dönemde açılan kanallar,Channels opening in this era
 UI_ERA_TOOLS,Yeni araçlar ve bilgisayarlar,New tools and computers
 UI_ERA_GO,Hadi bakalım,Let's go
-UI_START_YEAR,Başlangıç yılı:,Start year:
+UI_START_YEAR,Başlangıç yılı,Start year
 UI_START_YEAR_HINT,"1990 tam oyundur. 2000 ve 2010 hızlı başlangıçtır: o yılın kanalları ve rakipleriyle ev odasında başlarsın.","1990 is the full game. 2000 and 2010 are quick starts: you begin in a spare room with that year's channels and rivals."
 UI_TOOLS_HINT,"Her alanın verimi araçlarına bağlı (çarpan ×0.6–×1.6). Yeni sürüm çıkınca eski sürüm gitgide daha az verir. 2013'ten sonra büyük yazılımlar yalnızca abonelikle güncellenir. AI araçları hızlıdır ama kampanyanın yenilik puanını düşürür.","Each area's output depends on its tools (×0.6–×1.6). When a new version comes out, older versions give less and less. From 2013, big software updates only by subscription. AI tools are fast but lower a campaign's novelty."
 UI_HARDWARE,"Bilgisayarlar: %s (en fazla %d yılı yazılımları çalıştırır)","Computers: %s (runs software up to %d)"
@@ -1537,3 +1537,15 @@ UI_FIN_TAB_QUARTER,Son 3 ay,Last 3 months
 UI_FIN_INCOME,Gelir,Income
 UI_FIN_EXPENSE,Gider,Expenses
 UI_FIN_CHART,Son 6 ay gelir,"Income, last 6 months"
+UI_FOUNDER_TITLE,Karakterini Oluştur,Create Your Character
+UI_FOUNDER_HINT,Bir görünüş seç ve adını yaz. Ekip seni bu adla tanıyacak.,Pick a look and enter your name. Your team will know you by it.
+UI_FOUNDER_NAME,Adın,Your name
+UI_DEFAULT_FOUNDER,Kurucu,Founder
+UI_BACK,Geri,Back
+UI_START_GAME,Oyuna Başla,Start Game
+STAT_STRATEGY_DESC,"Planlama ve doğru karar: brif, hedef, kitle.","Planning and good calls: brief, objective, audience."
+STAT_CREATIVE_DESC,Fikir ve metin gücü.,Strength of ideas and copy.
+STAT_TECHNICAL_DESC,Tasarım ve prodüksiyon becerisi.,Design and production skill.
+STAT_COMMUNICATION_DESC,Müşteri ilişkisi ve sunum.,Client relations and presenting.
+STAT_SPEED_DESC,İşi ne kadar çabuk bitirdiği.,How quickly work gets done.
+STAT_ATTENTION_DESC,Hata yapmama ve ince işçilik.,Avoiding mistakes and fine detail.
