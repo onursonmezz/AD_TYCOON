@@ -11,7 +11,7 @@ const WINDOW_WIDTH: float = 720.0
 const WINDOW_MAX_HEIGHT: float = 0.66  # taslaklardaki en yüksek pencere: ekranın üçte ikisi
 const WINDOW_CHROME: float = 104.0  # başlık bandı + iç kenar boşlukları
 const WINDOW_MIN_CONTENT: float = 70.0
-const BUILD_BAR_WIDTH: float = 0.8  # inşa çubuğu: ekran genişliğinin oranı, ortada
+const BUILD_BAR_WIDTH: float = 0.58  # inşa çubuğu: ekran genişliğinin oranı, ortada (taslak 20)
 const MENU_ICONS: Dictionary = {"inbox": "inbox", "clients": "users", "campaign": "speakerphone", "team": "users-group",
 	"office": "building", "tools": "tool", "research": "flask", "finance": "coins", "industry": "trophy", "history": "chart-bar"}
 

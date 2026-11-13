@@ -1245,3 +1245,12 @@ Taslağa göre kurulanlar: Kampanya paneli (03), yeni kampanya sihirbazı (05; k
 (02; dört sekme, yorumlar dört kartta). Rapor penceresi kodu yazıldı ve derleniyor ama ekranda henüz görülmedi.
 Orgo ana ekran ikon paketini gönderdi (25 PNG, `assets/ui/icons/`); dosyalar kopyalandı, arayüze henüz bağlanmadı.
 Sıradakiler: ikon paketini dok ve üst haplara bağlamak, kanal seçici, yankılar, ödül töreni, inşa modu, Finans, işe alım.
+
+## K-106 — UI-3 (4. adım): ikon paketi bağlandı; rapor, inşa çubuğu, ödül töreni
+Orgonun ikon paketi (`assets/ui/icons/`, 25 PNG) `IconPack` ile bağlandı: tek renkli ikonlar beyaza çevrilip tema
+rengiyle boyanıyor (dokta kiremit, açık olan yeşil); logo, para ve yıldız renkli çiziliyor. Koddaki ikon adları pakete
+eşleniyor, karşılığı olmayanlar eski SVG setinde kalıyor (müşteriler, sil, döndür, uyarı, onay gibi).
+Kampanya raporu ekranda doğrulandı; alt satır kaydırmanın dışına alındı. İnşa çubuğu iki kutu (taslak 20): solda
+araçlar ve durum, sağda kategori sekmeleri ve eşya kartları (eşya resmi yok, ikon var; kategori `decor` alanından:
+bitkiler / diğer). Ödül töreni sahne kartlı (taslak 21); perde ve elma çizimi yerine kupa ikonu.
+Sıradakiler: kanal seçici (taslak 04), yankılar penceresi (01), Finans ince ayarı, işe alım, eşya ve ofis çizimleri.

@@ -13,7 +13,8 @@ const TOAST_SECONDS: float = 7.0
 const SMALL_ICON: int = 16
 const TIME_ICON: int = 18
 const MENU_ICON: int = 26
-const BADGE_CIRCLE: float = 26.0
+const BADGE_CIRCLE: float = 30.0
+const LOGO_SIZE: int = 40
 const BADGE_FONT: int = 18
 const TOAST_WIDTH: float = 250.0
 
@@ -44,7 +45,12 @@ static func agency_card(main: Control) -> Button:
 	col.add_child(card)
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	card.add_child(row)
-	row.add_child(UiUtil.icon("speakerphone", 30, CozyTheme.TERRA))
+	var logo: TextureRect = UiUtil.icon("speakerphone", LOGO_SIZE, CozyTheme.TERRA)
+	var logo_art: Texture2D = IconPack.art("ajans-logo", LOGO_SIZE)
+	if logo_art != null:
+		logo.texture = logo_art
+		logo.modulate = Color.WHITE
+	row.add_child(logo)
 	var names: VBoxContainer = UiUtil.vbox(-4)
 	row.add_child(names)
 	var agency: Label = UiUtil.label(GameState.agency_display(), 19, CozyTheme.FOREST)
@@ -131,6 +137,8 @@ static func wallet(main: Control) -> Dictionary:
 		func(v: float) -> String: return "%d" % int(roundf(v)), 62.0, BADGE_CIRCLE, BADGE_FONT)
 	rep.tooltip_text = main.tr("TIP_REPUTATION")
 	row.add_child(rep)
+	cash.set_art(IconPack.art("para", int(BADGE_CIRCLE)))
+	rep.set_art(IconPack.art("yildiz", int(BADGE_CIRCLE)))
 	for badge: CountBadge in [cash, rep]:
 		badge.add_theme_stylebox_override("panel", StyleBoxEmpty.new())  # ikisi tek hapın içinde
 	var feed: VBoxContainer = UiUtil.vbox(8)

@@ -320,6 +320,10 @@ static func icon_texture(name: String, px: int) -> Texture2D:
 	var key: String = "%s@%d" % [name, px]
 	if _icon_cache.has(key):
 		return _icon_cache[key]
+	var packed: Texture2D = IconPack.texture(name, px)  # UI-3: Orgo ikon paketi; yoksa SVG seti
+	if packed != null:
+		_icon_cache[key] = packed
+		return packed
 	var text: String = FileAccess.get_file_as_string("res://assets/icons/ui/%s.svg" % name)
 	var tex: Texture2D = null
 	if not text.is_empty():

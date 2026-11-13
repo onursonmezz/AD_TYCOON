@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## UI-3 (3.–4. adım): İkon paketi, Kampanya, sihirbaz, rapor, inşa modu, tören (2026-11-14)
+- **İkonlar:** Gönderdiğin ikon paketi alt menüde, üst kutularda ve pencerelerde. Logo, altın ve yıldız renkli.
+- **Kampanya:** Müşteri ve ekip başlığı, faz şeridi, dört sayaç kutusu, ikonlu emek kaydırıcıları, yeşil "Fazı başlat".
+- **Yeni kampanya:** İki sütun: solda kampanya bilgileri, sağda medya planı ve ekip; üstte ücret, medya bütçesi, süre.
+- **Kampanya raporu:** Üstte genel puan; dört sekme: Özet, Yorumlar, Gelir ve kazanımlar, Puan dökümü.
+- **İnşa modu:** İki kutu: solda döndür / sat ve durum, sağda Tümü / Bitkiler / Diğer sekmeleri ve eşya kartları.
+- **Ödül töreni:** Kampanya adı, müşteri, derece renginde kupa ve derece şeridi; altında rakipler ve Grand Prix.
+- Görüntüler: `docs/screenshots/22_ui3_*`.
+- Nasıl test ederim:
+  1. Bir brief kabul et: yeni kampanya penceresi iki sütunlu olmalı. Kanal ekle, payı kaydır, kampanyayı başlat.
+  2. Kampanya penceresinde kaydırıcıları oynat: sağdaki yüzdeler değişmeli. "Fazı başlat"a bas.
+  3. Kampanya bitince rapor açılır: dört sekmeye sırayla bas; "Kapat" her sekmede altta görünmeli.
+  4. Ofis → "İnşa moduna geç": bir eşya kartına bas, ofise yerleştir; Bitkiler sekmesine geç; "Sil / sat" ile bir eşyayı sat.
+  5. Alt menüdeki ikonlar paketteki ikonlar olmalı; açık olan yeşil, diğerleri kiremit.
+
 ## UI-3 (2. adım): Küçük pencereler, dört panel ve olay penceresi (2026-11-14)
 - **Pencere boyutları:** Menü pencereleri taslaklardaki ölçüye indi. Açılır pencereler artık içerikleri kadar yer kaplıyor; boş alan kalmıyor.
 - **Ar-Ge:** İkonlu kartlar; koşullar etiket hâlinde; sağda AP, para ve süre alt alta; yeşil "Araştır".

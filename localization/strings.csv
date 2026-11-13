@@ -1602,3 +1602,7 @@ UI_REP_OVERALL,Genel puan,Overall score
 UI_REP_CHANNELS,Kanal performansı,Channel performance
 UI_REP_AP,+%.0f AP,+%.0f RP
 UI_REP_LEARNED,%d yeni bilgi,%d new insight(s)
+UI_BUILD_CAT_ALL,Tümü,All
+UI_BUILD_CAT_PLANTS,Bitkiler,Plants
+UI_BUILD_CAT_OTHER,Diğer,Other
+UI_CEREMONY_RIVALS_SHORT,Bu törende %d ödül kazandı.,Won %d award(s) here.

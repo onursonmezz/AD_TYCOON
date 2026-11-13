@@ -9,6 +9,7 @@ const FONT: int = 19
 
 var _label: Label
 var _circle: PanelContainer
+var _icon: TextureRect
 var _fmt: Callable
 var _shown: float = NAN
 var _target: float = NAN
@@ -33,6 +34,7 @@ func _init(icon_name: String, circle_color: Color, fmt: Callable, width: float =
 	_circle.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var ic: TextureRect = UiUtil.icon(icon_name, int(circle * 0.65), CozyTheme.CREAM_LIGHT)
 	ic.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	_icon = ic
 	_circle.add_child(ic)
 	row.add_child(_circle)
 	_label = Label.new()
@@ -74,3 +76,12 @@ func set_value(v: float) -> void:
 func _show(v: float) -> void:
 	_shown = v
 	_label.text = _fmt.call(v)
+
+
+## Renkli dairenin yerine hazır bir çizim koyar (UI-3: altın yığını, yıldız).
+func set_art(tex: Texture2D) -> void:
+	if tex == null:
+		return
+	_circle.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	_icon.texture = tex
+	_icon.modulate = Color.WHITE

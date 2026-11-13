@@ -25,7 +25,7 @@ func _ready() -> void:
 	var setup: Dictionary = _camp["setup"]
 	var report: Dictionary = _camp["report"]
 	var score: float = float(report["score"])
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(720.0, 470.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(720.0, 380.0))
 	col.add_child(UiUtil.heading(tr("UI_REPORT_HEADING"), "chart-bar"))
 	var title: String = str(setup.get("name", "")) if not str(setup.get("name", "")).is_empty() else tr("UI_UNTITLED")
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
@@ -57,8 +57,10 @@ func _ready() -> void:
 	_body = UiUtil.vbox(CozyTheme.SPACE_S)
 	col.add_child(_body)
 	_show_tab("summary")
-	col.add_child(HSeparator.new())
-	col.add_child(_footer())
+	# Alt satır kaydırmanın dışında: uzun raporda da Kapat hep görünür.
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
+	frame.add_child(_footer())
 	var tween: Tween = create_tween()
 	tween.tween_method(_set_shown_score, 0.0, score, data.balf("ui.score_count_seconds")) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
