@@ -1239,3 +1239,9 @@ maliyet satırları), Araçlar (alan şeritleri, satır tablosu), Ofis (mevcut /
 Sektör (ödül satırları, rakip tablosu güç çubuğuyla), olay penceresi (tür etiketi, oklu seçenek satırları).
 Sıradakiler: Kampanya, yeni kampanya sihirbazı + kanal seçici, kampanya raporu, yankılar, ödül töreni, inşa modu,
 Finans, Raporlar, işe alım. Ödül töreni ve inşa modundaki çizimler (perde, kupa, eşya resimleri) görsel dosya ister.
+
+## K-105 — UI-3 (3. adım): Kampanya, sihirbaz, rapor; ikon paketi geldi
+Taslağa göre kurulanlar: Kampanya paneli (03), yeni kampanya sihirbazı (05; kanal satırı iki satırlı kart), kampanya raporu
+(02; dört sekme, yorumlar dört kartta). Rapor penceresi kodu yazıldı ve derleniyor ama ekranda henüz görülmedi.
+Orgo ana ekran ikon paketini gönderdi (25 PNG, `assets/ui/icons/`); dosyalar kopyalandı, arayüze henüz bağlanmadı.
+Sıradakiler: ikon paketini dok ve üst haplara bağlamak, kanal seçici, yankılar, ödül töreni, inşa modu, Finans, işe alım.

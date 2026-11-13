@@ -975,8 +975,8 @@ REQ_AP_SHORT,%s AP,%s RP
 UI_KNOWLEDGE_BOOK,Bilgi Defteri,Knowledge Book
 UI_KNOWLEDGE_HINT,"Raporlarla öğrendiğin uyumlar: sektör × hedef ve sektör × kitle. Her biten kampanya kullandığı hücreleri açar; ""?"" henüz bilinmiyor.","What reports have taught you: sector × objective and sector × audience. Each finished campaign reveals the cells it used; ""?"" is still unknown."
 UI_BUY_INSIGHT,Pazar araştırması (%s): bir hücre aç,Market research (%s): reveal a cell
-UI_AUTO_AUDIENCE,Otomatik (Hedef Kitle Analizi araştırması gerekli),Automatic (needs Audience Analysis research)
-UI_AUTO_TONE,Otomatik (Ton Seçimi araştırması gerekli),Automatic (needs Tone Choice research)
+UI_AUTO_AUDIENCE,Otomatik · Hedef Kitle Analizi gerekli,Automatic · needs Audience Analysis
+UI_AUTO_TONE,Otomatik · Ton Seçimi gerekli,Automatic · needs Tone Choice
 UI_FOCUS_GROUP,Fokus grup,Focus group
 UI_FOCUS_GOOD,Fokus grup: çok beğendi,Focus group: loved it
 UI_FOCUS_MID,Fokus grup: kararsız,Focus group: lukewarm
@@ -1587,3 +1587,18 @@ UI_OFFICE_NEXT_TITLE,Sonraki ofis,Next office
 UI_OFFICE_QUALITY,Oda kalitesi,Room quality
 UI_OFFICE_JOBS,Uygun işler,Suitable jobs
 UI_MOVE_REQS,Taşınma koşulları,Moving requirements
+UI_COUNT_ERRORS,Hata,Errors
+UI_NO_AIRING,Henüz yayında kampanya yok.,No campaigns on air yet.
+UI_WIZARD_NEW,Yeni kampanya,New campaign
+UI_CAMPAIGN_INFO,Kampanya bilgileri,Campaign details
+UI_MEDIA_PLAN,Medya planı,Media plan
+UI_CHANNEL_LIMIT,en fazla %d kanal,up to %d channels
+UI_REPORT_HEADING,Kampanya raporu,Campaign report
+UI_REP_SUMMARY,Özet,Summary
+UI_REP_REVIEWS,Yorumlar,Reviews
+UI_REP_INCOME,Gelir ve kazanımlar,Income and gains
+UI_REP_BREAKDOWN,Puan dökümü,Score breakdown
+UI_REP_OVERALL,Genel puan,Overall score
+UI_REP_CHANNELS,Kanal performansı,Channel performance
+UI_REP_AP,+%.0f AP,+%.0f RP
+UI_REP_LEARNED,%d yeni bilgi,%d new insight(s)
