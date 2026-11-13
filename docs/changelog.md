@@ -1,5 +1,19 @@
 # Değişiklik günlüğü
 
+## C3: Tek dok, pencereler ortada (2026-11-13)
+- **Dok:** Her şey altta tek çubukta. Üst satırda menü ikonları; alt satırda solda mesai/duraklat/hız ve tarih, ortada ajansının adı, sağda para ve itibar.
+- **Pencereler:** Menüye basınca pencere dokun hemen üstünde, ortada açılır. İçeriği kadar yer kaplar; uzun içerik kayar.
+- **Sağ üst:** Yalnızca küçük kaydet/yükle/ayarlar/çıkış düğmeleri ve bildirimler.
+- **İnşa modu:** Çubuk dokun üstünde, ortada açılır.
+- **Daha ince başlıklar:** Pencere başlık bantları küçüldü.
+- Görüntüler: `docs/screenshots/19_dock_*`.
+- Nasıl test ederim:
+  1. Bir oyuna gir. Altta tek çubuk olmalı; sol, sağ ve üst (sağ üst köşe hariç) boş kalmalı.
+  2. Menü ikonlarına sırayla bas: pencere ortada, çubuğun hemen üstünde açılmalı; aynı ikona tekrar basınca kapanmalı.
+  3. Raporlar gibi kısa bir pencere küçük, Ekip gibi uzun bir pencere daha yüksek açılmalı; Ekip'te içerik tekerlekle kaymalı.
+  4. Ofis → "İnşa moduna geç": inşa çubuğu aynı yerde açılmalı.
+  5. Hız düğmelerine ve duraklat'a bas: seçili olan turuncu olmalı, tarih yanında ilerlemeli.
+
 ## C2: Yeni kartlar — Ekip, Müşteriler, Gelen Kutusu (2026-11-13)
 - **Ekip:** Her çalışanın portresi var. Statlar tam adıyla rozet hâlinde (üzerine gelince açıklama); enerji yeşil, moral turuncu, tükenmişlik kırmızı çubuk. Özellikler ve uzmanlık küçük etiket.
 - **Çalışan kartı:** Ofiste tıklanan herkesin portresi görünür.

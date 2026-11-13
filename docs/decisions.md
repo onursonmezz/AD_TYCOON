@@ -1205,3 +1205,13 @@ tam adlı stat rozeti (açıklamalı), renkli ince ölçer. Ekip, çalışan kar
 yeniden kuruldu. Çalışan portresi yalnızca görünüş: kurucuda seçtiği avatar, diğerlerinde cinsiyetine uyan
 avatarlardan kimliğine göre sabit biri (simülasyona yazılmaz; avatar az olduğu için aynı yüz tekrar edebilir).
 Kalan paneller (Kampanya, Ofis, Araçlar, Ar-Ge, Finans, Sektör, Raporlar) ve pencereler sırada.
+
+## K-102 — C3 düzen: tek dok, pencereler dokun üstünde ortada (K-100'ün yerine)
+Orgo sol altta açılan pencereyi mantıksız buldu ve referans olarak altta tam genişlik çubuğu olan, pencerelerin
+çubuğun hemen üstünde açıldığı bir düzen gösterdi. K-100'deki "sol altta pencere" kararı kalktı. Yeni düzen:
+altta tek dok (üst satır menü ikonları; alt satır zaman + tarih, ajansın adı, para + itibar); sağ üstte yalnızca
+küçük oyun düğmeleri ve bildirimler. Menü penceresi dokun hemen üstünde, ortada; 720 px genişlik; yüksekliği içerik
+kadar, en çok ekranın yarısı (gerisi kayar). Panellerin kendi dikey kaydırmaları kapatılır, tek kaydırma pencerede.
+İnşa çubuğu aynı yerde açılır. Dokun yüksekliği ölçülüp üstündeki parçalar ona göre dizilir (`main.gd _layout`).
+Tema: `DockButton` (sıkı zaman düğmeleri), pencere başlık bandı inceltildi (başlık 26→21). Yalnızca yerleşim örnek
+alındı; görünüş bizim krem/yeşil/turuncu dilimiz.

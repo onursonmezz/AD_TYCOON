@@ -112,7 +112,7 @@ static func _panels(t: Theme) -> void:
 	var win: StyleBoxFlat = box(CREAM, RADIUS_MODAL, BORDER, 1, true, Vector2.ZERO)
 	t.set_stylebox("panel", "WindowPanel", win)
 	t.set_type_variation("HeaderBand", "PanelContainer")
-	var band: StyleBoxFlat = box(FOREST, RADIUS_MODAL, Color.TRANSPARENT, 0, false, Vector2(SPACE_XL, SPACE_M))
+	var band: StyleBoxFlat = box(FOREST, RADIUS_MODAL, Color.TRANSPARENT, 0, false, Vector2(SPACE_L, SPACE_S))
 	band.corner_radius_bottom_left = 0
 	band.corner_radius_bottom_right = 0
 	band.expand_margin_left = 1.0
@@ -185,6 +185,13 @@ static func _buttons(t: Theme, _head: FontVariation) -> void:
 	t.set_type_variation("IconButtonActive", "Button")
 	_button(t, "IconButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE,
 		Vector2(SPACE_M, SPACE_M))
+	# Dokun alt satırı (zaman düğmeleri): IconButton'ın daha sıkı hâli.
+	t.set_type_variation("DockButton", "Button")
+	_button(t, "DockButton", [Color.TRANSPARENT, FOREST_LIGHT, FOREST_LIGHT], Color.TRANSPARENT, CREAM_LIGHT, CREAM_LIGHT,
+		Vector2(SPACE_S, 6))
+	t.set_type_variation("DockButtonActive", "Button")
+	_button(t, "DockButtonActive", [ACCENT, ACCENT_HOVER, ACCENT_PRESSED], Color.TRANSPARENT, TEXT, Color.WHITE,
+		Vector2(SPACE_S, 6))
 	# Sol gezinme (ayarlar sekmeleri gibi): sessiz satır; seçili olan turuncu.
 	t.set_type_variation("NavButton", "Button")
 	_button(t, "NavButton", [Color.TRANSPARENT, SAGE_SOFT, SAGE_SOFT], Color.TRANSPARENT, TEXT, TEXT, Vector2(SPACE_M, 10))
@@ -224,7 +231,7 @@ static func _labels(t: Theme, head: FontVariation) -> void:
 	_label(t, "TitleLabel", FOREST, 44, head)
 	_label(t, "SectionHeading", FOREST, 24, head)
 	_label(t, "CardHeading", FOREST, 18, strong_font(800))
-	_label(t, "WindowTitle", CREAM_LIGHT, 26, head)
+	_label(t, "WindowTitle", CREAM_LIGHT, 21, head)
 	_label(t, "MutedLabel", MUTED, 14)
 	_label(t, "StatValue", TEXT, 26, strong_font(800))
 	_label(t, "StatLabel", MUTED, 13)

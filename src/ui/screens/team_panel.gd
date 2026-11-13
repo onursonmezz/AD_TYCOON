@@ -13,11 +13,11 @@ func _init(main_screen: Control) -> void:
 	add_theme_constant_override("separation", 10)
 	var top: HBoxContainer = UiUtil.hbox()
 	top.add_child(UiUtil.heading(tr("MENU_TEAM")))
-	top.add_child(UiUtil.spacer())
+	_header = UiUtil.label("", 14, UiUtil.WOOD)
+	_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top.add_child(_header)
 	top.add_child(UiUtil.button(tr("UI_HIRE"), func() -> void: _main.call("open_modal", HiringDialog.new())))
 	add_child(top)
-	_header = UiUtil.label("", 15, UiUtil.WOOD)
-	add_child(_header)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
