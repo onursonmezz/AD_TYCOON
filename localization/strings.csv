@@ -1489,6 +1489,11 @@ UI_SET_AUTOSAVE,Her ay otomatik kaydet,Autosave every month
 UI_SET_TUTORIAL,İpuçlarını göster,Show tips
 UI_SET_FULLSCREEN,Tam ekran,Fullscreen
 UI_SET_RESOLUTION,Pencere boyutu,Window size
+UI_SET_GRAPHICS,Grafik kalitesi,Graphics quality
+UI_SET_GRAPHICS_LOW,Düşük,Low
+UI_SET_GRAPHICS_MEDIUM,Orta,Medium
+UI_SET_GRAPHICS_HIGH,Yüksek,High
+UI_SET_GRAPHICS_HINT,"Oyun takılıyorsa düşür. Yüksek: en pürüzsüz kenarlar ve yumuşak gölgeler.","Lower this if the game stutters. High: smoothest edges and soft shadows."
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults

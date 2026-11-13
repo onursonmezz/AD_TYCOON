@@ -51,6 +51,7 @@ static func make_environment() -> WorldEnvironment:
 	e.adjustment_brightness = float(adj["brightness"])
 	e.adjustment_contrast = float(adj["contrast"])
 	e.adjustment_saturation = float(adj["saturation"])
+	WorldQuality.apply_environment(e)
 	var we: WorldEnvironment = WorldEnvironment.new()
 	we.environment = e
 	return we
@@ -64,6 +65,7 @@ static func make_sun() -> DirectionalLight3D:
 	sun.rotation_degrees = Vector3(float(s["pitch"]), float(s["yaw"]), 0.0)
 	sun.shadow_enabled = true
 	sun.shadow_blur = float(s["shadow_blur"])
+	sun.shadow_opacity = float(s["shadow_opacity"])
 	sun.shadow_bias = float(s["shadow_bias"])
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
 	sun.directional_shadow_max_distance = float(s["shadow_max_distance"])
@@ -89,12 +91,12 @@ static func apply_camera(camera: Camera3D, distance: float) -> void:
 		attrs = CameraAttributesPractical.new()
 		camera.attributes = attrs
 	var far: Dictionary = c["dof_far"]
-	attrs.dof_blur_far_enabled = bool(far["enabled"])
+	attrs.dof_blur_far_enabled = bool(far["enabled"]) and WorldQuality.dof()
 	attrs.dof_blur_far_distance = distance * float(far["distance_factor"])
 	attrs.dof_blur_far_transition = distance * float(far["transition_factor"])
 	attrs.dof_blur_amount = float(far["amount"])
 	var near: Dictionary = c["dof_near"]
-	attrs.dof_blur_near_enabled = bool(near["enabled"])
+	attrs.dof_blur_near_enabled = bool(near["enabled"]) and WorldQuality.dof()
 	attrs.dof_blur_near_distance = float(near["distance"])
 	attrs.dof_blur_near_transition = float(near["transition"])
 
@@ -148,7 +150,7 @@ static func has_surface(entry: Dictionary) -> bool:
 ## Dokulu yüzey: dünya koordinatında döşenir (tile = bir tekrarın metre cinsinden boyu); tint varsa dokuyu boyar.
 static func surface_material(entry: Dictionary) -> StandardMaterial3D:
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
-	mat.albedo_texture = load(SURFACES.path_join(str(entry["texture"]) + ".png")) as Texture2D
+	mat.albedo_texture = WorldQuality.mipmapped(SURFACES.path_join(str(entry["texture"]) + ".png"))
 	mat.albedo_color = col(entry["tint"]) if entry.has("tint") else Color.WHITE
 	mat.uv1_triplanar = true
 	mat.uv1_world_triplanar = true

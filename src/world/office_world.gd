@@ -24,10 +24,18 @@ var _place_of: Dictionary = {}
 var _last_day: int = -1
 var _last_errors: int = 0
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _environment: WorldEnvironment
+
+
+## Grafik kalitesi değişince ortam efektlerini yeniden uygular (kamera her karede kendini günceller).
+func refresh_quality() -> void:
+	if _environment != null:
+		WorldQuality.apply_environment(_environment.environment)
 
 
 func _ready() -> void:
-	add_child(WorldLook.make_environment())
+	_environment = WorldLook.make_environment()
+	add_child(_environment)
 	add_child(WorldLook.make_sun())
 	add_child(WorldLook.make_fill())
 	rig = CameraRig.new()

@@ -1,24 +1,30 @@
 {
 	"build_ghost": { "ok": [0.3, 0.75, 0.4], "bad": [0.85, 0.3, 0.25], "remove": [0.9, 0.35, 0.25],
 		"box_alpha": 0.22, "box_alpha_no_model": 0.45, "model_transparency": 0.3, "tint_alpha": 0.28 },
+	"_quality": "Grafik kalitesi kademeleri (Ayarlar → Ekran). msaa: 0/2/4/8; screen_aa: none/fxaa/smaa; scale: 3D çizim ölçeği.",
+	"quality": { "default": "high", "levels": {
+		"low": { "msaa": 0, "screen_aa": "fxaa", "scale": 0.85, "debanding": false, "ssao": false, "ssil": false, "glow": false, "dof": false },
+		"medium": { "msaa": 2, "screen_aa": "smaa", "scale": 1.0, "debanding": true, "ssao": true, "ssil": false, "glow": true, "dof": true },
+		"high": { "msaa": 4, "screen_aa": "smaa", "scale": 1.0, "debanding": true, "ssao": true, "ssil": true, "glow": true, "dof": true }
+	} },
 	"environment": {
 		"background": [0.25, 0.36, 0.24],
-		"ambient_color": [0.6, 0.72, 0.66], "ambient_energy": 0.38,
+		"ambient_color": [0.6, 0.72, 0.66], "ambient_energy": 0.6,
 		"tonemap": "aces", "exposure": 0.92, "white": 5.0,
-		"ssao": { "enabled": true, "radius": 1.4, "intensity": 3.2, "power": 2.0, "detail": 0.8 },
+		"ssao": { "enabled": true, "radius": 1.4, "intensity": 2.0, "power": 2.0, "detail": 0.8 },
 		"ssil": { "enabled": true, "radius": 3.0, "intensity": 0.8 },
 		"glow": { "enabled": true, "intensity": 0.45, "strength": 1.0, "bloom": 0.02, "hdr_threshold": 1.0 },
-		"adjustments": { "brightness": 0.97, "contrast": 1.12, "saturation": 1.05 }
+		"adjustments": { "brightness": 0.97, "contrast": 1.03, "saturation": 1.0 }
 	},
 	"sun": {
-		"color": [1.0, 0.86, 0.66], "energy": 1.7, "pitch": -44.0, "yaw": 32.0,
-		"shadow_blur": 2.5, "shadow_max_distance": 45.0, "shadow_bias": 0.03
+		"color": [1.0, 0.86, 0.66], "energy": 1.45, "pitch": -44.0, "yaw": 32.0,
+		"shadow_blur": 3.5, "shadow_opacity": 0.8, "shadow_max_distance": 45.0, "shadow_bias": 0.03
 	},
-	"fill": { "color": [0.75, 0.85, 1.0], "energy": 0.25, "pitch": -35.0, "yaw": -140.0 },
+	"fill": { "color": [0.75, 0.85, 1.0], "energy": 0.35, "pitch": -35.0, "yaw": -140.0 },
 	"camera": { "pitch": -50.0, "fov": 30.0,
 		"dof_far": { "enabled": true, "distance_factor": 1.05, "transition_factor": 0.6, "amount": 0.07 },
 		"dof_near": { "enabled": false, "distance": 2.0, "transition": 1.0 } },
-	"vignette": { "strength": 0.28, "radius": 0.85 },
+	"vignette": { "strength": 0.2, "radius": 0.85 },
 	"walls": {
 		"outer_height": 2.6, "partition_height": 1.3, "cut_height": 0.65, "thickness": 0.18,
 		"trim_width": 0.32, "trim_height": 0.1, "corner_radius": 0.5,

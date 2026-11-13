@@ -1172,3 +1172,11 @@ ortalamayı 7.0'ın üstünde tutuyor. Tam rapor (1000×10, 200×30) `docs/balan
 yalnızca plaza katı (Y17, hedef Y12–16) ve yıl süresi (K-096 ile ölçülecek) tutmuyor. Plaza için ₺15M nakit şartını
 düşürmek Orgo'ya soruldu.
 Not: `balance_report` aynı botu içeren birden çok JSON'u birleştirmez (ilkini alır); her bot tek dosyada koşulmalı.
+
+## K-098 — B1 görüntü: kenar yumuşatma, doku mipmap'i, yumuşak gölge, grafik kalitesi
+Orgo "görüntü kesik kesik" dedi. Sebepler: 3D pencere MSAA 2x'te kalıyordu, zemin/duvar dokularının mipmap'i yoktu
+(`.import` dosyaları depoda tutulmadığı için içe aktarma ayarına güvenilemiyor), gölgeler çok koyu ve kontrast yüksekti.
+Çözüm: dokuların mipmap'i yüklenirken kodla üretiliyor (`WorldQuality.mipmapped`); kenar yumuşatma MSAA 4x + SMAA;
+ışık `look.json`'da yumuşatıldı (ortam 0.38→0.6, güneş 1.7→1.45, gölge opaklığı 0.8, bulanıklık 3.5, kontrast 1.12→1.03,
+SSAO 3.2→2.0, dolgu 0.25→0.35, vinyet 0.28→0.2). Ayarlar → Ekran'a "Grafik kalitesi" (düşük/orta/yüksek) eklendi;
+kademeler `look.json quality` altında, varsayılan yüksek. Düşük kademe ölçülmedi (perf_check ile bakılacak).

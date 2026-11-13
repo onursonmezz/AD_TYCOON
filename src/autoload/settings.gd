@@ -7,7 +7,7 @@ signal changed(key: String)
 const PATH: String = "user://settings.cfg"
 const DEFAULTS: Dictionary = {
 	"volume_master": 0.8, "volume_music": 0.6, "volume_sfx": 0.8, "volume_ambient": 0.5,
-	"language": "", "fullscreen": false, "resolution": "1280x720", "ui_scale": 1.0,
+	"language": "", "fullscreen": false, "resolution": "1280x720", "ui_scale": 1.0, "graphics": "high",
 	"autosave": true, "tutorial": true, "tutorial_seen": [],
 }
 const RESOLUTIONS: Array[String] = ["1280x720", "1600x900", "1920x1080", "2560x1440"]

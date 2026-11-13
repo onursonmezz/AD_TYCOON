@@ -1,5 +1,17 @@
 # Değişiklik günlüğü
 
+## B1: Daha pürüzsüz 3D görüntü (2026-11-13)
+- **Kenarlar:** Sandalye ayağı, bank, duvar kenarı gibi ince çizgilerdeki tırtıklar giderildi.
+- **Dokular:** Duvar kâğıdı, çim ve halı uzaktan bakınca artık kumlanmıyor.
+- **Işık:** Gölgeler daha açık ve yumuşak, kontrast daha düşük; görüntü daha sıcak ve sakin.
+- **Grafik kalitesi:** Ayarlar → Ekran'da Düşük / Orta / Yüksek seçeneği var (varsayılan Yüksek).
+- Önce/sonra görüntüleri: `docs/screenshots/14_cast_*` ve `15_smooth_*`.
+- Nasıl test ederim:
+  1. Oyunu aç, bir kayda gir. Ofise bak: masa ve sandalye kenarları pürüzsüz olmalı, duvar kâğıdı kamerayı kaydırırken titreşmemeli.
+  2. Tekerlekle yakınlaş ve uzaklaş: zemin tahtaları ve çim her mesafede temiz görünmeli.
+  3. Ayarlar → Ekran → Grafik kalitesi'ni Düşük yap: görüntü hemen biraz kabalaşmalı, gölgelerin köşe kararması kaybolmalı. Yüksek'e geri al.
+  4. Kamera ya da karakterler hâlâ takılıyorsa bana yaz; o ayrı bir konu.
+
 ## M10-B: Denge ve tempo ölçümü (2026-11-13)
 - **Puanlar daha keskin:** Doğru hedef/kitle/ton/kanal seçimi eskisinden çok daha fazla ödüllendiriliyor, yanlış seçim daha çok cezalandırılıyor. Rastgele oynayan ortalama 4.5, bilen oyuncu 7.1 alıyor (önce 6.3 / 7.5).
 - **Tekrar cezası:** Aynı ana kanalı üst üste üç kampanyada kullanmak yenilik puanını düşürüyor.

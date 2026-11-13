@@ -32,7 +32,8 @@ func _init() -> void:
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_viewport = SubViewport.new()
-	_viewport.msaa_3d = Viewport.MSAA_2X
+	WorldQuality.apply_viewport(_viewport)
+	Settings.changed.connect(_on_setting_changed)
 	_viewport.own_world_3d = true
 	add_child(_viewport)
 	world = OfficeWorld.new()
@@ -41,6 +42,12 @@ func _init() -> void:
 	var vignette: ColorRect = WorldLook.make_vignette()
 	add_child(vignette)
 	vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+
+func _on_setting_changed(key: String) -> void:
+	if key == WorldQuality.SETTING:
+		WorldQuality.apply_viewport(_viewport)
+		world.refresh_quality()
 
 
 func _gui_input(event: InputEvent) -> void:

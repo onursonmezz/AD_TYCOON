@@ -70,6 +70,10 @@ func _build() -> void:
 			body.add_child(_check_row("fullscreen"))
 			var res: Array = Array(Settings.RESOLUTIONS)
 			body.add_child(_option_row("resolution", res, res))
+			var levels: Array = WorldQuality.ids()
+			body.add_child(_option_row("graphics", levels,
+				levels.map(func(id: Variant) -> String: return "UI_SET_GRAPHICS_" + str(id).to_upper())))
+			body.add_child(UiUtil.wrapped(tr("UI_SET_GRAPHICS_HINT"), 13, UiUtil.MUTED, 480.0))
 		"language":
 			body.add_child(_option_row("language", ["tr", "en"], ["UI_LANG_TR", "UI_LANG_EN"]))
 		"tempo":
