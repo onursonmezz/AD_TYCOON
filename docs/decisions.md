@@ -1190,3 +1190,11 @@ Avatar listesi `data/avatars.json`, resimler `assets/ui/avatars`; geçmiş portr
 (Orgo'nun toplu sayfasından kesildi). Logo şimdilik Fraunces yazı tipi + megafon ikonu; hazır logo PNG'si gelirse değişir.
 Statlar bu sayfada tam adıyla yazılır, üzerine gelince açıklaması çıkar (`STAT_*_DESC`); oyun içi paneller C aşamasında.
 Alt başlık "Reklam Dünyasında Kendi Ajansını Kur" oldu (referanstaki metin).
+
+## K-100 — C1 oyun içi düzen: alt çubuk, boş kenarlar, küçük pencere
+Orgo ekranın sağını solunu doldurmak istemedi, menüleri büyük buldu ve altta dizili bir düzen istedi. Sol dikey ikon
+çubuğu kalktı; altta tek sıra çubuk var: solda oyun düğmeleri, ortada 10 menü ikonu, sağda mesai/duraklat/hız.
+Tarih sağ üste, para ve itibarın yanına taşındı. Menü penceresi artık ekranın yarısı değil: sol altta, çubuğun
+üstünde, 640 px genişlikte, ekranın üst %14'ünü boş bırakır; içerik sığmazsa pencere büyümez, içerik kayar.
+İnşa çubuğu ve çalışan kartı alt çubuğun üstünde durur; ipucu balonu alt çubuktaki düğmenin üstünde açılır.
+Panellerin içi (yoğunluk, kartlar, stat adları) henüz değişmedi; panel panel ele alınacak.

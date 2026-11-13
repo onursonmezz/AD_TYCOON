@@ -1,5 +1,18 @@
 # Değişiklik günlüğü
 
+## C1: Alt çubuk düzeni (2026-11-13)
+- **Kenarlar boş:** Soldaki dikey ikon çubuğu kalktı. Menü ikonları ekranın altında, ortada tek sıra duruyor.
+- **Alt çubuk:** Solda kaydet/yükle/ayarlar/çıkış, ortada menüler, sağda mesai, duraklat ve hız.
+- **Sağ üst:** Tarih, para ve itibar yan yana; bildirimler altında.
+- **Pencereler küçüldü:** Menü penceresi sol altta, çubuğun üstünde açılıyor ve ekranın yarısını kaplamıyor. İçerik uzunsa kayıyor.
+- Görüntüler: `docs/screenshots/17_bottombar_*`.
+- Nasıl test ederim:
+  1. Bir oyuna gir. Sol ve sağ kenar boş olmalı; ikonlar altta ortada dizili olmalı.
+  2. Alt çubuktaki ikonlara sırayla tıkla: pencere sol altta açılmalı, aynı ikona tekrar basınca kapanmalı.
+  3. Finans'ı aç: pencere ekrandan taşmamalı, içerik fare tekerleğiyle kaymalı.
+  4. Ofis → "İnşa moduna geç": inşa çubuğu alt çubuğun hemen üstünde açılmalı.
+  5. Bir çalışana tıkla: kartı sağ altta, hız düğmelerinin üstünde çıkmalı.
+
 ## A1: Yeni açılış ve karakter sayfaları (2026-11-13)
 - **Ana menü:** Oda illüstrasyonu arka planda; sağda eğik logo, kâğıt etiket ve ikonlu büyük düğmeler.
 - **"Sen kimsin?":** Küçük pencere yerine tam sayfa. Dört geçmişin portresi var; başlangıç yılı hap biçimli düğmelerle seçilir.

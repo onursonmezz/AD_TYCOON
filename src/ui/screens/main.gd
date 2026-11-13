@@ -1,14 +1,13 @@
 extends Control
-## Oyun ekranı (GDD 20; G2 düzeni, art-direction 8): 3D ofis tam ekran; üstünde yüzen arayüz: sol ikon çubuğu,
-## sol alt oyun düğmeleri, sağ üst para/itibar rozetleri ve bildirimler, sağ alt tarih ve hız; menü ekranları
-## soldan açılan yüzen pencere; modal pencereler en üstte.
+## Oyun ekranı (GDD 20; C1 düzeni): 3D ofis tam ekran, sağı solu boş. Altta tek sıra çubuk (oyun düğmeleri, menü,
+## hız); sağ üstte tarih, para/itibar ve bildirimler; menü ekranları sol altta, çubuğun üstünde açılan küçük pencere;
+## modal pencereler en üstte.
 
 const MENU_SCENE: String = "res://src/ui/screens/main_menu.tscn"
-const WINDOW_MARGIN: float = 20.0
-const EMPLOYEE_CARD_BOTTOM: float = 132.0  # tarih hapı + hız grubu yüksekliği
-## Sol ikon çubuğunun genişliği + boşluk: pencere, çalışan kartı ve inşa çubuğu bunun sağından başlar.
-const LEFT_GUTTER: float = 92.0
-const BUILD_BAR_BOTTOM: float = 130.0  # alt HUD (tarih + hız) yüksekliği ve boşluk
+const WINDOW_MARGIN: float = MainHud.MARGIN
+## Menü penceresi: sabit genişlik, ekranın üst kısmını boş bırakır (ofis görünsün).
+const WINDOW_WIDTH: float = 640.0
+const WINDOW_TOP: float = 0.14
 const MENU_ICONS: Dictionary = {"inbox": "inbox", "clients": "users", "campaign": "speakerphone", "team": "users-group",
 	"office": "building", "tools": "tool", "research": "flask", "finance": "coins", "industry": "trophy", "history": "chart-bar"}
 
@@ -74,16 +73,19 @@ func _build() -> void:
 	add_child(hint)
 	hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	hint.position.y -= 14.0
+	hint.position.y -= MainHud.BAR_CLEARANCE
 	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_build_menu()
-	_save_button = MainHud.game_buttons(self)
+	var bar: HBoxContainer = MainHud.bottom_bar(self)
+	_save_button = MainHud.game_buttons(self, bar)
+	MainHud.gap(bar)
+	_build_menu(bar)
+	MainHud.gap(bar)
+	var t: Dictionary = MainHud.time_controls(self, bar)
 	var b: Dictionary = MainHud.badges(self)
 	_cash = b["cash"]
 	_rep = b["rep"]
 	_feed = b["feed"]
-	var t: Dictionary = MainHud.time_controls(self)
-	_date = t["date"]
+	_date = b["date"]
 	_overtime = t["overtime"]
 	_pause_button = t["pause"]
 	_speed_buttons.assign(t["speeds"])
@@ -94,23 +96,23 @@ func _build() -> void:
 	add_child(_modal_layer)
 
 
-## Sol dikey ikon çubuğu (menü ekranları): koyu yeşil zemin, seçili ikon turuncu (UI-2b); üzerine gelince adı;
+## Alt çubuğun ortası (menü ekranları): koyu yeşil zemin, seçili ikon turuncu (UI-2b); üzerine gelince adı;
 ## gelen kutusu ve kampanyada sayı balonu.
-func _build_menu() -> void:
+func _build_menu(bar: HBoxContainer) -> void:
 	var rail: PanelContainer = PanelContainer.new()
-	rail.theme_type_variation = "RailPanel"
-	add_child(rail)
-	rail.position = Vector2(WINDOW_MARGIN, WINDOW_MARGIN)
-	var col: VBoxContainer = UiUtil.vbox(4)
+	rail.theme_type_variation = "DarkPill"
+	rail.size_flags_vertical = Control.SIZE_SHRINK_END
+	bar.add_child(rail)
+	var col: HBoxContainer = UiUtil.hbox(2)
 	rail.add_child(col)
 	for id: String in MENU_ICONS:
-		var b: Button = UiUtil.icon_button(MENU_ICONS[id], tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id), 24)
-		b.custom_minimum_size = Vector2(52, 52)
+		var b: Button = UiUtil.icon_button(MENU_ICONS[id], tr("MENU_" + id.to_upper()), func() -> void: toggle_panel(id),
+			MainHud.MENU_ICON)
 		_menu_buttons[id] = b
 		var dot: Label = UiUtil.label("", 13, CozyTheme.CREAM_LIGHT)
 		dot.add_theme_font_override("font", CozyTheme.strong_font(800))
 		dot.add_theme_stylebox_override("normal", CozyTheme.box(CozyTheme.NEGATIVE, 10, CozyTheme.FOREST, 2, false, Vector2(6, 0)))
-		dot.position = Vector2(36, -6)
+		dot.position = Vector2(30, -8)
 		dot.visible = false
 		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		b.add_child(dot)
@@ -118,18 +120,19 @@ func _build_menu() -> void:
 		col.add_child(b)
 
 
-## Menü ekranlarının yüzen penceresi: ikon çubuğunun sağında, ekranın yaklaşık yarısı; başlık bandında kapat.
+## Menü ekranlarının yüzen penceresi: sol altta, alt çubuğun üstünde; sabit genişlik; başlık bandında kapat.
 func _build_window() -> void:
 	_window = PanelContainer.new()
 	add_child(_window)
 	_window.anchor_left = 0.0
-	_window.anchor_right = 0.5
-	_window.anchor_top = 0.0
+	_window.anchor_right = 0.0
+	_window.anchor_top = WINDOW_TOP
 	_window.anchor_bottom = 1.0
-	_window.offset_left = LEFT_GUTTER
-	_window.offset_right = 120.0
-	_window.offset_top = WINDOW_MARGIN
-	_window.offset_bottom = -WINDOW_MARGIN - 70.0
+	_window.offset_left = WINDOW_MARGIN
+	_window.offset_right = WINDOW_MARGIN + WINDOW_WIDTH
+	_window.offset_top = 0.0
+	_window.offset_bottom = -MainHud.BAR_CLEARANCE
+	_window.grow_vertical = Control.GROW_DIRECTION_BEGIN  # içerik uzunsa yukarı büyür, alt çubuğu örtmez
 	# UI-2: yeşil başlık bandı (ikon + başlık + kapat), altında içerik.
 	var parts: Array = UiUtil.window_frame(_window)
 	_window_title = parts[0]
@@ -156,9 +159,9 @@ func enter_build_mode() -> void:
 	add_child(_build_bar)
 	move_child(_build_bar, _modal_layer.get_index())
 	_build_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_build_bar.offset_left = LEFT_GUTTER
+	_build_bar.offset_left = WINDOW_MARGIN
 	_build_bar.offset_right = -WINDOW_MARGIN
-	_build_bar.offset_bottom = -BUILD_BAR_BOTTOM  # sağ alttaki tarih ve hız hapının üstünde
+	_build_bar.offset_bottom = -MainHud.BAR_CLEARANCE  # alt çubuğun üstünde
 	_build_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 
@@ -180,7 +183,7 @@ func _on_employee_clicked(employee_id: String) -> void:
 	_employee_card.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_employee_card.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_employee_card.offset_right = -WINDOW_MARGIN
-	_employee_card.offset_bottom = -EMPLOYEE_CARD_BOTTOM
+	_employee_card.offset_bottom = -MainHud.BAR_CLEARANCE
 	UiUtil.pop_in(_employee_card)
 
 
@@ -222,7 +225,13 @@ func show_panel(id: String) -> void:
 		"history":
 			_panel = HistoryPanel.new(self)
 	_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_content.add_child(_panel)
+	_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# C1: pencere küçük; içerik sığmazsa pencere büyümez, içerik kayar.
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_panel)
+	_content.add_child(scroll)
 	_panel.call("refresh")
 	UiUtil.adopt_heading(_window_title, _panel, tr("MENU_" + id.to_upper()), MENU_ICONS.get(id, ""))
 	if not was_visible:
@@ -262,7 +271,7 @@ func _set_dot(id: String, text: String) -> void:
 
 
 func _refresh_speed() -> void:
-	_pause_button.icon = UiUtil.icon_texture("player-play" if Clock.paused else "player-pause", 24)
+	_pause_button.icon = UiUtil.icon_texture("player-play" if Clock.paused else "player-pause", MainHud.GAME_ICON)
 	_pause_button.theme_type_variation = "IconButtonActive" if Clock.paused else "IconButton"
 	for i: int in _speed_buttons.size():
 		_speed_buttons[i].theme_type_variation = "IconButtonActive" if not Clock.paused and Clock.speed_index == i \
