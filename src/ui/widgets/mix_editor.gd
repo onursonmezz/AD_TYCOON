@@ -83,6 +83,18 @@ func _add_row(channel_index: int) -> void:
 	pick.fit_to_longest_item = false
 	pick.clip_text = true
 	line.add_child(pick)
+	pick.visible = false  # seçim durumunu tutar; kullanıcı aşağıdaki düğmeyle kanal seçiciyi açar (taslak 04)
+	var open: Button = UiUtil.button("", func() -> void:
+		_main.call("open_modal", ChannelPickerDialog.new(_channel_ids, _channel_ids[pick.selected], func(id: String) -> void:
+			pick.selected = _channel_ids.find(id)
+			pick.item_selected.emit(pick.selected))))
+	open.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	open.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	open.clip_text = true
+	open.icon = UiUtil.icon_texture("chevron-right", 12)
+	open.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	Cards.compact(open)
+	line.add_child(open)
 	var remove: Button = Button.new()
 	remove.icon = UiUtil.icon_texture("x", 16)
 	remove.tooltip_text = tr("UI_REMOVE_CHANNEL")
@@ -106,6 +118,7 @@ func _add_row(channel_index: int) -> void:
 	var print_box: VBoxContainer = UiUtil.vbox(4)
 	box.add_child(print_box)
 	var row: Dictionary = {"box": card, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box, "icon": icon_box,
+		"open": open,
 		"job": {}, "auto": true, "opts": {}, "influencer": ""}
 	_rows.append(row)
 	_rows_box.add_child(card)
@@ -136,6 +149,7 @@ func _refresh() -> void:
 		var row: Dictionary = _rows[i]
 		var ch: String = mix[i]["channel"]
 		var budget: float = media_budget() * float(mix[i]["share"])
+		(row["open"] as Button).text = UiUtil.name_of(data.channels, ch)
 		UiUtil.clear(row["icon"])
 		(row["icon"] as HBoxContainer).add_child(_channel_art(ch))
 		var label: Label = row["share"]

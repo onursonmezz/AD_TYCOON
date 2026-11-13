@@ -14,10 +14,10 @@ var _error: Label
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	var s: SimState = GameState.sim.state
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(760.0, 620.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(706.0, 450.0))
 	col.add_child(UiUtil.heading(tr("UI_HIRE_TITLE"), "users-group"))
 	col.add_child(UiUtil.label(tr("UI_TEAM_HEADER") % [s.staff.size(), GameState.sim.staff.capacity(s),
-		UiUtil.money(GameState.sim.staff.monthly_payroll(s))], 15, UiUtil.WOOD))
+		UiUtil.money(GameState.sim.staff.monthly_payroll(s))], 13, CozyTheme.FOREST))
 	_role = OptionButton.new()
 	for id: String in data.position_ids:
 		var pos: Dictionary = data.positions[id]
@@ -34,6 +34,7 @@ func _ready() -> void:
 	_channel.item_selected.connect(func(_i: int) -> void: _update_hint())
 	_add_row(col, "UI_HIRE_CHANNEL", _channel)
 	_search_button = UiUtil.button(tr("UI_SEARCH"), _on_search)
+	_search_button.theme_type_variation = "PrimaryButton"
 	col.add_child(_search_button)
 	_error = UiUtil.label("", 14, UiUtil.TERRACOTTA)
 	col.add_child(_error)
@@ -48,8 +49,10 @@ func _ready() -> void:
 
 func _add_row(col: VBoxContainer, key: String, control: Control) -> void:
 	var row: HBoxContainer = UiUtil.hbox()
-	var l: Label = UiUtil.label(tr(key), 16)
-	l.custom_minimum_size.x = 160.0
+	var l: Label = UiUtil.label(tr(key), 13, CozyTheme.FOREST)
+	l.add_theme_font_override("font", CozyTheme.strong_font())
+	l.custom_minimum_size.x = 120.0
+	Cards.compact(control)
 	row.add_child(l)
 	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(control)
@@ -74,39 +77,43 @@ func _on_search() -> void:
 		_list.add_child(_candidate_card(cand))
 
 
+## Aday kartı (UI-3 kart dili): portre, ad ve unvan, sağda beklenen maaş; stat rozetleri (pozisyonun ana statları
+## yeşil çerçeveli), özellik etiketleri ve yeşil "İşe al".
 func _candidate_card(cand: Dictionary) -> PanelContainer:
 	var data: GameData = DataDB.data
 	var card: PanelContainer = UiUtil.card()
-	var col: VBoxContainer = UiUtil.vbox(4)
+	var col: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
 	card.add_child(col)
-	var top: HBoxContainer = UiUtil.hbox()
-	top.add_child(UiUtil.label(str(cand["name"]), 18, UiUtil.SAGE_DARK))
-	top.add_child(UiUtil.label("%s · %s" % [tr(Employee.title_key(data, cand)), tr("UI_LEVEL") % int(cand["level"])], 14, UiUtil.WOOD))
+	var tags: Array = []
 	if data.rivals.has(str(cand.get("from_rival", ""))):
-		top.add_child(UiUtil.label(tr("UI_FROM_RIVAL") % UiUtil.name_of(data.rivals, cand["from_rival"]), 14, UiUtil.TERRACOTTA))
-	top.add_child(UiUtil.spacer())
-	top.add_child(UiUtil.label(tr("UI_EXPECTED_SALARY") % UiUtil.money(cand["salary"]), 14))
-	col.add_child(top)
-	var stats: HBoxContainer = UiUtil.hbox(14)
+		tags.append(Cards.chip(tr("UI_FROM_RIVAL") % UiUtil.name_of(data.rivals, cand["from_rival"]), CozyTheme.TERRA_SOFT, CozyTheme.TERRA))
+	tags.append(Cards.chip(tr("UI_EXPECTED_SALARY") % UiUtil.money(cand["salary"]), CozyTheme.CREAM, CozyTheme.TEXT))
+	col.add_child(Cards.header(Cards.avatar(cand, 44.0), str(cand["name"]),
+		"%s · %s" % [tr(Employee.title_key(data, cand)), tr("UI_LEVEL") % int(cand["level"])], tags))
+	var stats: HFlowContainer = Cards.flow_row()
 	var prim: Array = data.positions[cand["role"]]["primary_stats"]
 	for stat: Variant in data.bal("staff_rules.stats"):
-		stats.add_child(UiUtil.label("%s %d" % [tr("STAT_" + str(stat).to_upper()), int(cand["stats"][stat])], 14,
-			UiUtil.SAGE_DARK if prim.has(stat) else UiUtil.TEXT))
+		var chip: PanelContainer = Cards.stat(str(stat), int(cand["stats"][stat]))
+		if prim.has(stat):
+			chip.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.SAGE_SOFT, 999, CozyTheme.FOREST_LIGHT, 1, false,
+				Vector2(10.0, 2.0)))
+		stats.add_child(chip)
 	col.add_child(stats)
-	var bottom: HBoxContainer = UiUtil.hbox(8)
+	var bottom: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	var traits: HFlowContainer = Cards.flow_row()
+	traits.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for t: Variant in cand.get("traits", []):
 		var rec: Dictionary = data.traits.get(str(t), {})
-		var l: Label = UiUtil.label("◆ " + tr(str(rec.get("name_key", t))), 13, UiUtil.WOOD)
-		l.tooltip_text = tr(str(rec.get("desc_key", "")))
-		l.mouse_filter = Control.MOUSE_FILTER_PASS
-		bottom.add_child(l)
-	bottom.add_child(UiUtil.spacer())
-	bottom.add_child(UiUtil.button(tr("UI_HIRE_THIS"), func() -> void:
+		traits.add_child(Cards.accent_chip(tr(str(rec.get("name_key", t))), tr(str(rec.get("desc_key", "")))))
+	bottom.add_child(traits)
+	var hire: Button = UiUtil.button(tr("UI_HIRE_THIS"), func() -> void:
 		var err: String = GameState.execute(HireEmployeeCommand.new(cand["id"]))
 		if err.is_empty():
 			EventBus.notification.emit("NOTE_HIRED", [cand["name"]], "good")
 			queue_free()
 		else:
-			_error.text = tr(err)))
+			_error.text = tr(err))
+	hire.theme_type_variation = "PrimaryButton"
+	bottom.add_child(hire)
 	col.add_child(bottom)
 	return card

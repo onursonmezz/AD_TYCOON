@@ -344,7 +344,8 @@ func _open_event() -> void:
 
 
 func _on_campaign_finished(camp: Dictionary) -> void:
-	open_modal(ReportDialog.new(camp))
+	# Taslak 01: önce yankılar; ayrıntılı rapor oradan açılır.
+	open_modal(EchoDialog.new(camp, func() -> void: open_modal(ReportDialog.new(camp))))
 
 
 func _on_bankrupt() -> void:

@@ -449,6 +449,6 @@ func _step() -> void:
 func _close_modals(screen: Node) -> void:
 	for i: int in 3:
 		for n: Node in screen.find_children("*", "", true, false):
-			if n is ReportDialog or n is EventDialog:
+			if n is ReportDialog or n is EventDialog or n is EchoDialog:
 				n.queue_free()
 		await get_tree().process_frame

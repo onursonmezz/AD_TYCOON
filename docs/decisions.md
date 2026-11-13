@@ -1287,3 +1287,10 @@ iki geç dönem rakibi (hashtag_lab, viral_fabrika); dijital / sosyal / influenc
 Taslak ayrıntıları: Finans kısa başlık + bilgi işareti (uzun açıklama ipucunda), küçük satır yazıları; Sektör ödül
 listesinde sütun başlıkları; Müşteriler kartında sağ ok ve altta "gösteriliyor" satırı; Ar-Ge kısa açıklama, koşul
 etiketleri "2. yıl" biçiminde; Araçlar iki satırlı bilgisayar başlığı, sık satırlar, küçük düğmeler.
+
+## K-110 — UI-3 (8. adım): yankılar, kanal seçici, işe alım
+Kampanya bitince artık önce "Kampanyanın yankıları" (`EchoDialog`, taslak 01; 728×492) açılır: dört yayının puanı ve
+yorumu, altında genel değerlendirme; "Raporu incele" ayrıntılı raporu açar. Sihirbazda kanal açılır listesi yerine
+kanal seçici (`ChannelPickerDialog`, taslak 04; 475×504): kategori etiketleri, arama, kategori kategori iki sütun.
+Eski `OptionButton` gizli durumda seçimi tutmaya devam ediyor (karışım mantığı değişmedi). İşe alım penceresi
+kart diline geçti (taslağı yok): portreli aday kartları, tam adlı stat rozetleri (ana statlar yeşil), yeşil "İşe al".

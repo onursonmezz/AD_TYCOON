@@ -1622,3 +1622,9 @@ UI_CLIENTS_SHOWN,%d müşteri gösteriliyor,Showing %d client(s)
 UI_RESEARCH_SHORT,"Kampanyalardan AP kazan, yeni yetenekler aç.","Earn RP from campaigns, unlock new abilities."
 UI_HARDWARE_NAME,Bilgisayarlar: %s,Computers: %s
 UI_HARDWARE_COMPAT,%d yılına kadar çıkan yazılımları çalıştırır,Runs software released up to %d
+UI_ECHO_TITLE,Kampanyanın yankıları,Campaign reactions
+UI_ECHO_OVERALL,Genel değerlendirme,Overall rating
+UI_ECHO_REPORT,Raporu incele,View report
+UI_PICK_CHANNEL,Medya kanalı seç,Choose a media channel
+UI_CHANNEL_SEARCH,Kanal ara…,Search channels…
+UI_CHANNEL_SELECTED,Seçili: %s,Selected: %s

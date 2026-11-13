@@ -1,5 +1,15 @@
 # Değişiklik günlüğü
 
+## UI-3 (8. adım): Yankılar, kanal seçici, işe alım (2026-11-14)
+- **Kampanyanın yankıları:** Kampanya bitince önce dört yayının puanı ve yorumu, altında genel değerlendirme. "Raporu incele" ayrıntılı raporu açar.
+- **Kanal seçici:** Yeni kampanyada kanal satırına basınca açılır; kategori etiketleri, arama ve çizimli kanal düğmeleri var.
+- **İşe alım:** Aday kartlarında portre, tam adlı stat rozetleri (pozisyonun ana statları yeşil), özellik etiketleri.
+- Görüntüler: `docs/screenshots/26_pencere_*`.
+- Nasıl test ederim:
+  1. Bir kampanyayı bitir: önce "Kampanyanın yankıları" açılmalı. "Raporu incele"ye bas: rapor açılmalı. "Kapat" raporu açmadan kapatmalı.
+  2. Bir brief kabul et, kanal satırındaki düğmeye bas: kanal seçici açılmalı. Bir kategori etiketine bas, arama kutusuna yaz, bir kanal seç: satırdaki ad ve çizim değişmeli.
+  3. Ekip → "+ İşe al" → "Aday ara": aday kartları portreli olmalı; "İşe al" çalışmalı.
+
 ## UI-3 (5.–7. adım): Taslak ölçüleri, görsel paketi, panel ayrıntıları (2026-11-14)
 - **Boyutlar:** Her pencere kendi taslağındaki genişlik ve yükseklikte. Üst kutular ve alt menü Ayarlar taslağının ölçülerinde.
 - **Hız kutusu:** Duraklat ayrı yuvarlak düğme; seçili hız kiremit kutuda, önünde oynat işareti.
