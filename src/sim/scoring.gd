@@ -277,8 +277,9 @@ func evaluate(campaign: Dictionary, client: Dictionary, history: Array[Dictionar
 	var syn: Dictionary = synergy(setup["mix"], float(setup["media_budget"]), year)
 	var errors: int = int(campaign["errors"])
 	var raw: float = (s + k + t) * float(comb["m"]) * float(foc["f"]) * float(bal_sk["b"]) * float(nov["n"]) \
-		* float(syn["synergy"]) * (1.0 - error_penalty(errors))
+		* float(syn["synergy"]) * (1.0 - error_penalty(errors)) * Minigames.mult(data, campaign)
 	var fin: Dictionary = final_score(raw, errors, year, setup["size"], best, rng)
-	return {"s": s, "k": k, "t": t, "errors": errors, "combination": comb, "focus": foc, "balance": bal_sk,
+	# Mini oyun bonusu (K-120): en çok +%5, raporda gösterilir.
+	return {"minigame": Minigames.mult(data, campaign), "s": s, "k": k, "t": t, "errors": errors, "combination": comb, "focus": foc, "balance": bal_sk,
 		"novelty": nov, "synergy": syn, "raw": raw, "score": fin["score"], "r": fin["r"], "target": fin["target"],
 		"perfect": fin["perfect"], "new_best": fin["new_best"]}
