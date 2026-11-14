@@ -112,6 +112,12 @@ func execute(command: RefCounted) -> Variant:
 	return result
 
 
+func set_phase_plan(plan: Dictionary) -> String:
+	var err: String = sim.set_phase_plan(plan)
+	EventBus.state_changed.emit()
+	return err
+
+
 func set_phase_sliders(sliders: Array) -> bool:
 	var ok: bool = sim.set_phase_sliders(sliders)
 	EventBus.state_changed.emit()

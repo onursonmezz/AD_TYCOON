@@ -24,8 +24,12 @@ func _team(state: SimState) -> Array:
 func daily(state: SimState) -> void:
 	var team: Array = _team(state)
 	var drain: float = _r("energy_work_per_day") * (data.balf("staff.overtime_energy_mult") if state.overtime else 1.0)
+	var camp: Dictionary = state.active_campaign
+	var phase: int = CampaignProduction.phase_of(camp) if not camp.is_empty() else 0
 	for emp: Dictionary in state.staff.values():
-		var delta: float = -drain if team.has(emp["id"]) \
+		# Görev panosu (K-099): yük kadar yorulur; bu fazda görevsiz ekip üyesi dinlenir.
+		var load: float = WorkPlan.load_of(camp, phase, str(emp["id"])) if team.has(emp["id"]) else 0.0
+		var delta: float = -drain * WorkPlan.energy_mult(data, load) if load > 0.0 \
 			else _r("energy_rest_per_day") * float(state.office_effects.get("energy_rest_mult", 1.0))
 		emp["energy"] = clampf(float(emp["energy"]) + delta, 0.0, 100.0)
 

@@ -1492,6 +1492,18 @@ UI_SET_RESOLUTION,Pencere boyutu,Window size
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
+ERR_PLAN,Görev planı geçersiz.,The work plan is not valid.
+ERR_PLAN_MEMBER,Planda ekipte olmayan biri var.,Someone in the plan is not on the team.
+ERR_PLAN_OVERLOAD,Bir kişiye %200'den fazla iş verilemez.,Nobody can take more than 200% of the work.
+ERR_PLAN_EMPTY,Bu faza kimse atanmadı.,Nobody is assigned to this phase.
+UI_BOARD_TITLE,"Görev panosu · %s","Work board · %s"
+UI_BOARD_HINT,"Hücrelere tıkla: her tık kişinin zamanının %25'ini o alana verir (sağ tık geri alır). %100'ü aşan kişi daha çok iş çıkarır ama verimi düşer, çabuk yorulur ve hata yapar.","Click a cell: each click gives 25% of that person's time to the area (right-click takes it back). Above 100% a person gets more done but less efficiently, tires fast and makes mistakes."
+UI_BOARD_AUTO,Otomatik dağıt,Auto assign
+UI_BOARD_CLEAR,Temizle,Clear
+UI_BOARD_LOAD,"yük %s","load %s"
+UI_BOARD_FOCUS,Odak dağılımı,Focus split
+UI_BOARD_FREE,"Görevsiz: dinlenir","Unassigned: rests"
+UI_BOARD_START,Fazı başlat,Start phase
 UI_FOCUS_UNKNOWN,"Bu alanın bu hedefteki önemini henüz bilmiyorsun. Kaydırıcıyı belirgin şekilde artırıp azalttığın kampanyalardan öğrenirsin.","You don't know yet how much this area matters for this objective. Campaigns where you clearly raise or lower the slider teach you."
 UI_FOCUS_LEARN_HIGH,"%s kampanyalarında %s çok önemli (%s).","%s campaigns: %s matters a lot (%s)."
 UI_FOCUS_LEARN_MID,"%s kampanyalarında %s biraz katkı veriyor (%s).","%s campaigns: %s helps a little (%s)."

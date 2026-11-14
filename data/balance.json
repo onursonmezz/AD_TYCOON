@@ -69,6 +69,8 @@
 		"hidden_min": 20, "hidden_max": 90 },
 	"morale": { "mult_base": 0.6, "mult_range": 0.8 },
 	"energy": { "low_threshold": 20, "low_mult": 0.5 },
+	"workload": { "step": 0.25, "max_load": 2.0, "overload_exp": 0.6, "overload_energy_exp": 1.5, "overload_error": 0.8,
+		"warn_load": 1.0, "danger_load": 1.5 },
 	"scoring": { "error_penalty_per_error": 0.03, "error_penalty_max": 0.4, "tone_exponent": 0.75, "min_score": 1.0, "max_score": 10.0,
 		"perfect_min_score": 9.5, "perfect_min_r": 1.25, "perfect_chance": 0.5 },
 	"novelty_rules": { "recent_pair_window": 3, "same_client_weeks": 12, "pioneer_years": 2, "channel_streak": 2 },

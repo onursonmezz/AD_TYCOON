@@ -1,7 +1,7 @@
 class_name CampaignProduction
 extends RefCounted
 ## Kampanya kurulumu doğrulama ve günlük puan üretimi (GDD 7.1, 7.4, 7.5).
-## M1'de tek üretici oyuncu karakteridir; M3'te ekip ataması gelecek.
+## Faz başına görev planı varsa (K-099, WorkPlan) her çalışan kendi zaman paylarıyla üretir; yoksa kaydırıcı paylarıyla.
 
 var data: GameData
 var scoring: Scoring
@@ -101,19 +101,25 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 	var points: Dictionary = campaign["points"]
 	# Oda etkisi (12.2): ör. beyin fırtınası odası konsepte +%10.
 	var focus_mult: Dictionary = state.office_effects.get("focus_mult", {})
+	var plan: Dictionary = WorkPlan.phase_plan(campaign, phase)
 	for id: Variant in setup.get("team", []):
 		var emp: Dictionary = state.staff.get(str(id), {})
 		if emp.is_empty() or not Employee.is_available(emp, state.clock.week_index):
 			continue
+		var alloc: Array = plan.get(str(id), []) if not plan.is_empty() else []
+		if not plan.is_empty() and WorkPlan.load_of_alloc(alloc) <= 0.0:
+			continue  # bu fazda görevsiz
+		var load: float = WorkPlan.load_of_alloc(alloc) if not plan.is_empty() else 1.0
+		var over: float = WorkPlan.overload_mult(data, load)
 		var base: float = data.balf("production.base_per_day") * Employee.person_mult(data, emp, state.room_quality) \
 			* Employee.campaign_mult(data, emp, setup, year) * overtime_out
 		for i: int in ids.size():
-			var share: float = scoring.effective_share(float(sliders[i]))
+			var share: float = float(alloc[i]) * over if not plan.is_empty() else scoring.effective_share(float(sliders[i]))
 			points[ids[i]] = float(points[ids[i]]) + base * Employee.area_stat(data, emp, ids[i]) / ref \
 				* Employee.specialty_mult(data, emp, ids[i]) * share * float(focus_mult.get(ids[i], 1.0)) \
 				* ToolSystem.focus_mult(data, state, ids[i]) * Employee.cert_mult(data, emp, ids[i])
 		var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(emp["stats"]["attention"]) / 100.0) \
-			* Employee.trait_effect(data, emp, "error_mult")
+			* Employee.trait_effect(data, emp, "error_mult") * WorkPlan.error_mult(data, load)
 		if rush:
 			p_error *= data.balf("production.rush_error_mult")
 		if state.overtime:

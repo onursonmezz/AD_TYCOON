@@ -206,6 +206,21 @@ func set_phase_sliders(sliders: Array) -> bool:
 	return true
 
 
+## Oyuncu fazın görev planını onaylar (K-099): { emp_id: [a0, a1, a2] }. Kaydırıcılar plandan hesaplanır.
+func set_phase_plan(plan: Dictionary) -> String:
+	if state.active_campaign.is_empty() or not state.waiting_for_input:
+		return "ERR_PLAN"
+	var camp: Dictionary = state.active_campaign
+	var err: String = WorkPlan.validate(data, plan, camp["setup"].get("team", []))
+	if not err.is_empty():
+		return err
+	var phase: int = production.current_phase(camp)
+	var plans: Array = camp["setup"].get("plan", [{}, {}, {}])
+	plans[phase] = plan.duplicate(true)
+	camp["setup"]["plan"] = plans
+	return "" if set_phase_sliders(WorkPlan.shares_of(plan)) else "ERR_PLAN"
+
+
 func step_week() -> void:
 	for i: int in state.clock.days_per_week:
 		step_day()
