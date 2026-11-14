@@ -1207,3 +1207,9 @@ günü, film ekibi, drone ekibi (2012), helikopter çekimi (2013'e kadar).
 - Kiralıklar prodüksiyon fazının panosunda seçilir, bedeli faz başlarken ödenir, yalnızca o kampanyaya sayılır.
 - Botlar ekipman almıyor; denge raporu değişmedi. Ekipmanın gücü (+%5…25, prodüksiyon alanında) playtest'te izlenecek.
 - `simulation.gd` 400 satırı geçtiği için faz girişleri `PhaseInput`'a taşındı.
+
+## K-097 eki — plaza nakit şartı denendi, geri alındı
+Orgo plaza katının nakit şartını ₺15M→₺12M indirmeyi onayladı. 200×30 koşuda plaza yine Y17'de kaldı, yani darboğaz
+şart değil; bot taşınmayı taşınma bedeli ve plaza kirasını güvenle karşılayacak nakde ulaşınca yapıyor. Değişiklik
+etkisiz olduğu için şart GDD 12.1'deki ₺15M'ye geri alındı. Plazayı öne çekmek için taşınma bedeli ya da kira
+konuşulmalı.

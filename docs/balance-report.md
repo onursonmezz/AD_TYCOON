@@ -1,6 +1,6 @@
 # Denge raporu (M10-B, Ö1–Ö4 ve puan eğrisi uygulandı)
 
-Üretildi: 2026-11-12 · kısa koşu: 1000 koşu × 10 yıl · uzun koşu: 200 koşu × 30 yıl.
+Üretildi: 2026-11-14 · kısa koşu: 1000 koşu × 10 yıl · uzun koşu: 200 koşu × 30 yıl.
 Araçlar: `tools/balance_sim.gd` (botlar), `tools/balance_report.gd` (bu rapor). Hedefler GDD 27.2.
 
 ## Hedefler
@@ -102,7 +102,7 @@ Araçlar: `tools/balance_sim.gd` (botlar), `tools/balance_report.gd` (bu rapor).
 | Y30 bilgili puan (uzun koşu) | 3.38 | 4.08 |
 
 **Açık kalanlar**
-- Plaza katı bir yıl gecikti. Darboğaz ₺15M nakit şartı (GDD 12.1): bilgili bot Y15'te medyan ₺12M'de. Denendi: plaza itibar şartı 40→35 ve ödül eşiği 15→10 → ikisi de Y17'de kaldı. Olası çözüm nakit şartını ₺12M'ye indirmek (onay bekliyor).
+- Plaza katı bir yıl gecikti (Y17). Denendi: plaza itibar şartı 40→35, ödül eşiği 15→10 ve nakit şartı ₺15M→₺12M → üçü de Y17'de kaldı, şartlar GDD'deki değerlerinde bırakıldı. Asıl fren taşınma bedeli ve plaza kirası: bot taşınmayı ancak bunları güvenle karşılayacak nakde ulaşınca yapıyor. Plazayı öne çekmek için bunlara bakılmalı (karar Orgo'da).
 - Geç yıllardaki puan düşüşü azaldı ama sürüyor (Y30 4.08). Asıl çözüm M11'de (bina katı, eşzamanlı kampanyalar).
 - Yıl süresi: hız değişmedi; Ayarlar → Tempo'daki gerçek ölçümle karar verilecek (K-096).
 - Tekrarcı ile rastgele bot artık birbirine yakın (4.74 / 4.46): hep aynı şeyi yapmak neredeyse rastgele oynamak kadar cezalandırılıyor. Playtest'te sert gelirse `same_channel_streak` 0.65→0.75 yumuşatılabilir.
