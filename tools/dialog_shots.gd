@@ -113,6 +113,14 @@ func _run() -> void:
 	await _shot("offer")
 	await _open(NegotiationDialog.new("renkli_baski", 20000.0, func(_d: float) -> void: pass))
 	await _shot("negotiation")
+	await _open(PitchInviteDialog.new({"id": "pi_shot", "client": sim.clients.create_client(sim.state, "soft_drinks", 2),
+		"rivals": ["mavi_ok", "kivilcim"], "prep_weeks": 2, "participation_fee": 34242.0}))
+	await _shot("pitch_invite")
+	await _open(ConfirmDialog.new("UI_UNSAVED_TITLE", "UI_UNSAVED_TEXT", [["UI_SAVE_AND_EXIT", Callable()],
+		["UI_EXIT_NO_SAVE", Callable()], ["UI_CANCEL", Callable()]]))
+	await _shot("confirm")
+	await _open(GameOverDialog.new(func() -> void: pass))
+	await _shot("game_over")
 	var fake: Dictionary = {"award": "golden_apple", "year": sim.state.clock.year(), "rivals": [{"rival": "mavi_ok", "level": "gold"}],
 		"player": [{"name": "Yaz Kampanyası", "client_name": "Lezzetçi Köfte", "level": "silver"}],
 		"grand_prix": {"who": "kivilcim", "campaign": ""}}
