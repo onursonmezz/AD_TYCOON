@@ -1497,6 +1497,24 @@ UI_SET_GRAPHICS_HINT,"Oyun takılıyorsa düşür. Yüksek: en pürüzsüz kenar
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
+UI_SET_MINIGAMES,Fazlar arasında mini oyunlar,Mini games between phases
+UI_MG_TITLE,Mini oyun · %s,Mini game · %s
+UI_MG_SKIP,Atla,Skip
+MG_RADIO_WAVE_NAME,Radyo spotu,Radio spot
+MG_RADIO_WAVE_HINT,Ses dalgasının üç parçasını doğru sırayla tıkla.,Click the three pieces of the sound wave in the right order.
+MG_BILLBOARD_NAME,Billboard,Billboard
+MG_BILLBOARD_HINT,"Araba ilanın tam önündeyken tıkla (ya da boşluk tuşu).","Click when the car is right in front of the ad (or press space)."
+MG_NEWSPAPER_NAME,Gazete ilanı,Newspaper ad
+MG_NEWSPAPER_HINT,İlanı sürükleyip sayfadaki boş kutuya bırak.,Drag the ad into the empty box on the page.
+MG_DRAFT_NAME,Ekibin taslakları,The team's drafts
+MG_DRAFT_HINT,"Kreatif ekip üç taslak hazırladı. Birini seç: ofisteki posterde ve sokaktaki billboard'da bu görünecek.","The creative team made three drafts. Pick one: it will appear on the office poster and the street billboard."
+MG_DRAFT_TEAM,Ekibin üç taslağı,The team's three drafts
+MG_DRAFT_PICK,Bu taslağı seç,Pick this draft
+MG_DRAFT_SKIP,Ekibe bırak,Let the team decide
+MG_DRAFT_DONE,Taslak seçildi!,Draft chosen!
+MG_RESULT_GREAT,Harika! +%%%s,Great! +%s%%
+MG_RESULT_OK,Fena değil: +%%%s,Not bad: +%s%%
+MG_RESULT_MISS,Kaçtı: +%%%s,Missed: +%s%%
 EQ_VHS_CAMCORDER,VHS kamera,VHS camcorder
 EQ_DV_CAMERA,Dijital video kamera,DV camera
 EQ_HD_CAMERA,HD kamera,HD camera

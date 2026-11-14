@@ -201,6 +201,12 @@ func test_ui_full_loop_smoke() -> void:
 	screen.call("show_panel", "campaign")
 	await wait_physics_frames(1)
 	var panel: CampaignPanel = screen.get("_panel")
+	# Faz başında önce mini oyun (K-120): atla, sonuç süresi dolunca pano açılır.
+	var hosts: Array[Node] = panel.find_children("*", "MinigameHost", true, false)
+	assert_eq(hosts.size(), 1, "faz başında mini oyun açılır")
+	var host: MinigameHost = hosts[0]
+	(host.get("_game") as MinigameGame).time_up()
+	await wait_seconds(DataDB.data.balf("minigames.result_hold") + 0.3)
 	var boards: Array[Node] = panel.find_children("*", "WorkBoard", true, false)
 	assert_eq(boards.size(), 1, "faz başında görev panosu açılır (K-118)")
 	var board: WorkBoard = boards[0]

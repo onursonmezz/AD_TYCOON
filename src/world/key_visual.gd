@@ -1,6 +1,6 @@
 class_name KeyVisual
 extends RefCounted
-## Kampanya "key visual"ı (GDD 21.4): şablon + marka rengi + slogan. Ofisin önündeki billboard'da ve duvar
+## Kampanya "key visual"ı (GDD 21.4): şablon + marka rengi + slogan; oyuncu taslak seçtiyse DraftArt çizimi (K-120). Ofisin önündeki billboard'da ve duvar
 ## posterlerinde görünür. spec() saf veridir (test edilir); make_viewport() onu bir SubViewport'a bir kez çizer.
 
 
@@ -52,7 +52,8 @@ static func spec(data: GameData, camp: Dictionary, awarded: Dictionary = {}) -> 
 	return {"empty": false, "brand": brand, "title": title if not title.is_empty() else brand,
 		"slogan_key": "KV_SLOGAN_%d" % (h % int(kv["slogans"]) + 1), "sector": data.sectors[setup["sector"]]["name_key"],
 		"bg": Color(float(c[0]), float(c[1]), float(c[2])), "accent": Color(float(a[0]), float(a[1]), float(a[2])),
-		"layout": (h / 7) % int(kv["layouts"]), "award": str(awarded.get(camp["id"], ""))}
+		"layout": (h / 7) % int(kv["layouts"]), "award": str(awarded.get(camp["id"], "")),
+		"draft": (setup.get("draft", {}) as Dictionary).duplicate()}
 
 
 ## Görseli bir kez çizen SubViewport (ağaca eklenmeli). Doku: viewport.get_texture().
@@ -68,6 +69,11 @@ static func make_viewport(s: Dictionary, px: Vector2i) -> SubViewport:
 	var unit: float = float(mini(px.x, px.y))
 	if bool(s["empty"]):
 		_text(vp, TranslationServer.translate("KV_EMPTY"), unit * 0.11, s["accent"], Rect2(Vector2.ZERO, Vector2(px)), true)
+		return vp
+	if not (s.get("draft", {}) as Dictionary).is_empty():
+		# Oyuncunun seçtiği taslak (K-120): seçim kartındaki çizimin aynısı.
+		DraftArt.compose(vp, s["draft"], Vector2(px), str(s["brand"]), s["accent"])
+		_award_badge(vp, s, Vector2(px))
 		return vp
 	var light: bool = (s["bg"] as Color).get_luminance() < 0.5
 	var ink: Color = UiUtil.CREAM if light else UiUtil.TEXT
@@ -99,6 +105,13 @@ static func make_viewport(s: Dictionary, px: Vector2i) -> SubViewport:
 			vp.add_child(band)
 			_text(vp, "%s · %s" % [str(s["brand"]).to_upper(), s["title"]], unit * 0.065, UiUtil.CREAM,
 				Rect2(0, hgt * 0.72, w, hgt * 0.28), true)
+	_award_badge(vp, s, Vector2(px))
+	return vp
+
+
+static func _award_badge(vp: Node, s: Dictionary, px: Vector2) -> void:
+	var unit: float = minf(px.x, px.y)
+	var w: float = px.x
 	if not str(s["award"]).is_empty():
 		var badge: ColorRect = ColorRect.new()
 		badge.color = UiUtil.MUSTARD
@@ -106,7 +119,6 @@ static func make_viewport(s: Dictionary, px: Vector2i) -> SubViewport:
 		badge.position = Vector2(w - unit * 0.27, unit * 0.05)
 		vp.add_child(badge)
 		_text(vp, "★", unit * 0.15, UiUtil.TEXT, Rect2(badge.position, badge.size), true)
-	return vp
 
 
 static func _text(parent: Node, text: String, font_size: float, color: Color, rect: Rect2, center: bool) -> void:

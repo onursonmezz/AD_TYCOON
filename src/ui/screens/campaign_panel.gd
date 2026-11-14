@@ -148,5 +148,13 @@ func _update_live(camp: Dictionary) -> void:
 		_counter_labels[i].text = str(values[i])
 
 
+## Faz başı: önce fazın mini oyunu (K-120, Ayarlar'dan kapatılabilir), sonra emek dağılımı panosu.
 func _build_sliders(camp: Dictionary) -> void:
+	UiUtil.clear(_slider_box)
+	var phase: int = GameState.sim.production.current_phase(camp)
+	if bool(Settings.get_value("minigames")) and Minigames.pending(camp, phase):
+		_slider_box.add_child(MinigameHost.new(camp, phase, func() -> void:
+			if GameState.has_game() and GameState.sim.state.active_campaign == camp:
+				_build_sliders(camp)))
+		return
 	_slider_box.add_child(WorkBoard.new(camp, func() -> void: Clock.set_paused(false)))
