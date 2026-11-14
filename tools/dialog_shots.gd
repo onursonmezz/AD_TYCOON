@@ -100,6 +100,19 @@ func _run() -> void:
 		settings.call("_build")
 		await _shot("settings_" + tab)
 	await _clear()
+	# Taslağı olmayan pencereler (UI-3 dili).
+	await _open(ScandalDialog.new({"id": "sc_shot", "influencer": "@moda_ece"}))
+	await _shot("scandal")
+	await _open(AwardEntryDialog.new("golden_apple", func() -> void: pass))
+	await _shot("award_entry")
+	await _open(EraDialog.new("mobile"))
+	await _shot("era")
+	var emp: Dictionary = sim.state.staff.values()[0]
+	await _open(OfferDialog.new({"id": "of_shot", "employee_id": emp["id"], "offer_salary": float(emp["salary"]) * 1.4,
+		"rival": "mavi_ok"}))
+	await _shot("offer")
+	await _open(NegotiationDialog.new("renkli_baski", 20000.0, func(_d: float) -> void: pass))
+	await _shot("negotiation")
 	var fake: Dictionary = {"award": "golden_apple", "year": sim.state.clock.year(), "rivals": [{"rival": "mavi_ok", "level": "gold"}],
 		"player": [{"name": "Yaz Kampanyası", "client_name": "Lezzetçi Köfte", "level": "silver"}],
 		"grand_prix": {"who": "kivilcim", "campaign": ""}}

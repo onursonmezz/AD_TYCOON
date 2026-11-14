@@ -219,3 +219,23 @@ static func compact(c: Control, primary: bool = false) -> Control:
 		for col: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
 			c.add_theme_color_override(col, CozyTheme.CREAM_LIGHT)
 	return c
+
+
+## Seçenek kartı (skandal, ihale gibi karar pencereleri): üstte kiremit ikon karesi ve başlık, altında açıklama,
+## en altta tam genişlik düğme. Kartlar yan yana eşit genişlikte durur.
+static func choice(icon_name: String, title: String, desc: String, button_text: String, on_press: Callable) -> PanelContainer:
+	var card: PanelContainer = UiUtil.card()
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var v: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	card.add_child(v)
+	v.add_child(header(tile(icon_name, 36.0), title, "", [], true))
+	var d: Label = UiUtil.label(desc, 13, CozyTheme.TEXT)
+	d.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	d.custom_minimum_size.x = 120.0
+	d.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	v.add_child(d)
+	var b: Button = UiUtil.button(button_text, on_press)
+	compact(b)
+	b.custom_minimum_size.y = 30.0
+	v.add_child(b)
+	return card

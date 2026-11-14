@@ -628,9 +628,9 @@ UI_SCANDAL_TEXT,Kampanyada çalıştığın %s bir skandala karıştı. Müşter
 UI_SCANDAL_TERMINATE,Sözleşmeyi feshet,Terminate the contract
 UI_SCANDAL_SILENT,Sessiz kal,Stay silent
 UI_SCANDAL_STATEMENT,Açıklama yap,Make a statement
-UI_SCANDAL_TERMINATE_DESC,Feshet: müşteri biraz rahatlar ama kanalın erişimi büyük ölçüde kaybolur.,"Terminate: the client calms down a little, but the channel loses most of its reach."
-UI_SCANDAL_SILENT_DESC,Sessiz kal: erişim korunur ama müşteri ve itibar ciddi zarar görür.,"Stay silent: reach is kept, but the client and your reputation take a hit."
-UI_SCANDAL_STATEMENT_DESC,"Açıklama yap: ekibindeki en iyi iletişimciye bağlı; iyi giderse hasar az, kötü giderse büyük.","Make a statement: depends on your best communicator; done well it limits damage, done badly it makes it worse."
+UI_SCANDAL_TERMINATE_DESC,Müşteri biraz rahatlar ama kanalın erişimi büyük ölçüde kaybolur.,"The client calms down a little, but the channel loses most of its reach."
+UI_SCANDAL_SILENT_DESC,Erişim korunur ama müşteri ve itibar ciddi zarar görür.,"Reach is kept, but the client and your reputation take a hit."
+UI_SCANDAL_STATEMENT_DESC,"Ekibindeki en iyi iletişimciye bağlı; iyi giderse hasar az, kötü giderse büyük.","Depends on your best communicator; done well it limits damage, done badly it makes it worse."
 UI_SCANDAL_RESULT,Müşteri memnuniyetine etkisi: %s.,Effect on client satisfaction: %s.
 UI_SCANDAL_STATEMENT_OK,Açıklama iyi karşılandı.,The statement was well received.
 UI_SCANDAL_STATEMENT_FAIL,Açıklama ters tepti.,The statement backfired.
@@ -1648,3 +1648,15 @@ UI_RIBBON_GRAND_PRIX,Grand Prix,Grand Prix
 UI_RIBBON_NONE,Ödül yok,No award
 UI_CEREMONY_SEASON,%d ödül sezonu,%d awards season
 UI_CEREMONY_CONTINUE,Devam et,Continue
+UI_CHOOSE,Seç,Choose
+UI_SCANDAL_HINT,Cevap vermezsen sessiz kalmış sayılırsın.,No answer counts as staying silent.
+UI_AWARD_FEE,Başvuru ücreti,Entry fee
+UI_AWARD_ENTRY_MONTH,Başvuru ayı,Entry month
+UI_AWARD_CEREMONY_MONTH,Tören ayı,Ceremony month
+UI_AWARD_ELIGIBLE,Uygun kampanyalar,Eligible campaigns
+UI_AWARD_JURY,"Son 12 ayda biten kampanyalarından seç. Jüri puanı, yeniliği, viral olmayı ve kategori uyumunu da tartar.","Pick from campaigns finished in the last 12 months. The jury also weighs novelty, going viral and category fit."
+UI_OFFER_NOW,Şu anki maaş,Current salary
+UI_OFFER_THEIRS,Rakibin teklifi,Rival offer
+UI_OFFER_KEEP,Tutmak için,To keep them
+UI_NEGOTIATION_YOUR_OFFER,Teklifin,Your offer
+UI_AWARD_ENTRY_TITLE,Ödüle başvur,Enter an award

@@ -7,7 +7,7 @@
 	"default_window": [706, 449],
 	"dialogs": {
 		"wizard": [708, 475], "report": [681, 504], "event": [527, 292], "ceremony": [619, 525], "settings": [775, 430],
-		"channel_picker": [475, 504], "echo": [728, 492], "client": [620, 452]
+		"channel_picker": [475, 504], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [540, 400]
 	},
 	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
 	"_art": "Görsel eşlemeleri: kimlik (ya da ad) → assets/ui/icons altındaki dosya adı. Eşleme yoksa arayüz ikon kullanır.",
