@@ -26,7 +26,8 @@ static func make_environment() -> WorldEnvironment:
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	e.ambient_light_color = col(c["ambient_color"])
 	e.ambient_light_energy = float(c["ambient_energy"])
-	e.tonemap_mode = Environment.TONE_MAPPER_ACES if str(c["tonemap"]) == "aces" else Environment.TONE_MAPPER_FILMIC
+	e.tonemap_mode = {"aces": Environment.TONE_MAPPER_ACES, "agx": Environment.TONE_MAPPER_AGX}.get(str(c["tonemap"]),
+		Environment.TONE_MAPPER_FILMIC)
 	e.tonemap_exposure = float(c["exposure"])
 	e.tonemap_white = float(c["white"])
 	var ao: Dictionary = c["ssao"]
@@ -51,6 +52,10 @@ static func make_environment() -> WorldEnvironment:
 	e.adjustment_brightness = float(adj["brightness"])
 	e.adjustment_contrast = float(adj["contrast"])
 	e.adjustment_saturation = float(adj["saturation"])
+	if c.has("grade"):
+		e.adjustment_color_correction = _grade(c["grade"])
+	if c.has("fog"):
+		_fog(e, c["fog"])
 	WorldQuality.apply_environment(e)
 	var we: WorldEnvironment = WorldEnvironment.new()
 	we.environment = e
@@ -109,17 +114,21 @@ static func make_vignette() -> ColorRect:
 shader_type canvas_item;
 uniform float strength = 0.3;
 uniform float radius = 0.85;
+uniform vec3 tint = vec3(0.06, 0.1, 0.07);
 void fragment() {
 	vec2 p = (UV - 0.5) * vec2(1.0, 0.75);
 	float d = length(p) * 1.6;
 	float k = smoothstep(radius * 0.55, radius, d);
-	COLOR = vec4(0.06, 0.1, 0.07, k * strength);
+	COLOR = vec4(tint, k * strength);
 }
 """
 	var mat: ShaderMaterial = ShaderMaterial.new()
 	mat.shader = shader
 	mat.set_shader_parameter("strength", float(v["strength"]))
 	mat.set_shader_parameter("radius", float(v["radius"]))
+	if v.has("color"):
+		var vc: Color = col(v["color"])
+		mat.set_shader_parameter("tint", Vector3(vc.r, vc.g, vc.b))
 	var r: ColorRect = ColorRect.new()
 	r.material = mat
 	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -285,3 +294,29 @@ static func wall_color(layout: OfficeLayout, seg: Dictionary) -> Color:
 	if room.is_empty():
 		return col(w["color"])
 	return col(cfg()["walls_by_room"].get(room["type"], w["color"]))
+
+
+# --- renk derecelendirme ve sis (B2) -------------------------------------------------
+
+## Renk derecelendirme: her kanal için ton eğrisi (gölge → orta → parlak). Gölgeleri hafif soğuk ve kaldırılmış,
+## parlakları sıcak yapar; "minyatür" sıcaklığını tek yerden ayarlamak için. look.json environment.grade.
+static func _grade(g: Dictionary) -> GradientTexture1D:
+	var gr: Gradient = Gradient.new()
+	gr.offsets = PackedFloat32Array([0.0, 0.5, 1.0])
+	gr.colors = PackedColorArray([col(g["shadows"]), col(g["mids"]), col(g["highs"])])
+	var tex: GradientTexture1D = GradientTexture1D.new()
+	tex.gradient = gr
+	tex.width = 256
+	return tex
+
+
+## Derinlik sisi: sahnenin kenarları arka plan rengine yumuşakça karışır (dünya keskin bir kenarla bitmesin).
+static func _fog(e: Environment, f: Dictionary) -> void:
+	e.fog_enabled = bool(f["enabled"])
+	e.fog_mode = Environment.FOG_MODE_DEPTH
+	e.fog_light_color = col(f["color"])
+	e.fog_density = float(f["density"])
+	e.fog_depth_begin = float(f["begin"])
+	e.fog_depth_end = float(f["end"])
+	e.fog_depth_curve = float(f["curve"])
+	e.fog_sky_affect = 0.0

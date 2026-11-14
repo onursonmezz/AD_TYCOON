@@ -7,24 +7,27 @@
 		"medium": { "msaa": 2, "screen_aa": "smaa", "scale": 1.0, "debanding": true, "ssao": true, "ssil": false, "glow": true, "dof": true },
 		"high": { "msaa": 4, "screen_aa": "smaa", "scale": 1.0, "debanding": true, "ssao": true, "ssil": true, "glow": true, "dof": true }
 	} },
+	"_environment": "B2 sıcak minyatür: alçak akşamüstü güneşi, ılık ortam, soğuk dolgu; AgX ton eşleme; renk derecelendirme (grade: her kanal için gölge/orta/parlak eğrisi); derinlik sisi (fog) kenarları arka plan rengine karıştırır.",
 	"environment": {
-		"background": [0.25, 0.36, 0.24],
-		"ambient_color": [0.6, 0.72, 0.66], "ambient_energy": 0.6,
-		"tonemap": "aces", "exposure": 0.92, "white": 5.0,
-		"ssao": { "enabled": true, "radius": 1.4, "intensity": 2.0, "power": 2.0, "detail": 0.8 },
-		"ssil": { "enabled": true, "radius": 3.0, "intensity": 0.8 },
-		"glow": { "enabled": true, "intensity": 0.45, "strength": 1.0, "bloom": 0.02, "hdr_threshold": 1.0 },
-		"adjustments": { "brightness": 0.97, "contrast": 1.03, "saturation": 1.0 }
+		"background": [0.33, 0.36, 0.27],
+		"ambient_color": [0.8, 0.76, 0.7], "ambient_energy": 0.42,
+		"tonemap": "agx", "exposure": 1.12, "white": 6.0,
+		"ssao": { "enabled": true, "radius": 1.2, "intensity": 2.2, "power": 1.6, "detail": 0.6 },
+		"ssil": { "enabled": true, "radius": 3.0, "intensity": 0.9 },
+		"glow": { "enabled": true, "intensity": 0.35, "strength": 1.0, "bloom": 0.04, "hdr_threshold": 0.9 },
+		"adjustments": { "brightness": 1.0, "contrast": 1.06, "saturation": 0.95 },
+		"grade": { "shadows": [0.03, 0.04, 0.06], "mids": [0.51, 0.5, 0.47], "highs": [1.0, 0.96, 0.88] },
+		"fog": { "enabled": true, "color": [0.33, 0.36, 0.27], "density": 1.0, "begin": 34.0, "end": 70.0, "curve": 1.6 }
 	},
 	"sun": {
-		"color": [1.0, 0.86, 0.66], "energy": 1.45, "pitch": -44.0, "yaw": 32.0,
-		"shadow_blur": 3.5, "shadow_opacity": 0.8, "shadow_max_distance": 45.0, "shadow_bias": 0.03
+		"color": [1.0, 0.82, 0.6], "energy": 2.0, "pitch": -36.0, "yaw": 38.0,
+		"shadow_blur": 4.0, "shadow_opacity": 0.72, "shadow_max_distance": 45.0, "shadow_bias": 0.03
 	},
-	"fill": { "color": [0.75, 0.85, 1.0], "energy": 0.35, "pitch": -35.0, "yaw": -140.0 },
+	"fill": { "color": [0.62, 0.74, 0.92], "energy": 0.32, "pitch": -40.0, "yaw": -140.0 },
 	"camera": { "pitch": -50.0, "fov": 30.0,
 		"dof_far": { "enabled": true, "distance_factor": 1.05, "transition_factor": 0.6, "amount": 0.07 },
 		"dof_near": { "enabled": false, "distance": 2.0, "transition": 1.0 } },
-	"vignette": { "strength": 0.2, "radius": 0.85 },
+	"vignette": { "strength": 0.22, "radius": 0.95, "color": [0.24, 0.18, 0.1] },
 	"walls": {
 		"outer_height": 2.6, "partition_height": 1.3, "cut_height": 0.65, "thickness": 0.18,
 		"trim_width": 0.32, "trim_height": 0.1, "corner_radius": 0.5,
@@ -32,9 +35,9 @@
 		"baseboard_height": 0.12, "baseboard_color": [0.55, 0.42, 0.3]
 	},
 	"floors": {
-		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks", "texture": "floor_planks", "tile": 2.4 },
+		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks", "texture": "floor_planks", "tile": 2.0, "tint": [0.84, 0.72, 0.62] },
 		"meeting": { "color": [0.47, 0.6, 0.5], "pattern": "carpet", "texture": "floor_carpet", "tile": 3.0 },
-		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles", "texture": "floor_tiles", "tile": 2.4 },
+		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles", "texture": "floor_tiles", "tile": 1.6, "tint": [0.86, 0.82, 0.74] },
 		"lounge": { "color": [0.55, 0.38, 0.24], "pattern": "planks", "texture": "floor_planks", "tile": 2.4, "tint": [0.78, 0.66, 0.58] },
 		"empty": { "color": [0.62, 0.6, 0.58], "pattern": "concrete", "texture": "floor_concrete", "tile": 4.0 },
 		"brainstorm": { "color": [0.56, 0.66, 0.72], "pattern": "carpet" },
