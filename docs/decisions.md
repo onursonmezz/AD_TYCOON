@@ -1294,3 +1294,10 @@ yorumu, altında genel değerlendirme; "Raporu incele" ayrıntılı raporu açar
 kanal seçici (`ChannelPickerDialog`, taslak 04; 475×504): kategori etiketleri, arama, kategori kategori iki sütun.
 Eski `OptionButton` gizli durumda seçimi tutmaya devam ediyor (karışım mantığı değişmedi). İşe alım penceresi
 kart diline geçti (taslağı yok): portreli aday kartları, tam adlı stat rozetleri (ana statlar yeşil), yeşil "İşe al".
+
+## K-111 — Yazı tipleri: Lora Bold ve Source Sans 3
+Orgo seçti: başlıklarda Lora Bold, menü ve açıklamalarda Source Sans 3 (ikisi de Türkçe karakterli, OFL). Değişken
+dosyalar `assets/fonts/` altında (Lora, Lora-Italic, SourceSans3, SourceSans3-Italic). `CozyTheme.title_font` artık
+Lora (varsayılan 700; daha yüksek istekler 700e iner), `body_font` Source Sans 3 Regular, `strong_font` SemiBold.
+İtalik yazılar (alt yazı, yorum alıntıları, logo) artık gerçek italik kesimden (`CozyTheme.italic_of`); eğme yalnızca
+yedek. Eski Fraunces / Nunito / Fredoka dosyaları depoda duruyor ama kodda kullanılmıyor.

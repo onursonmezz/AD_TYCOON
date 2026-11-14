@@ -31,8 +31,8 @@ const RADIUS_PANEL: int = 22
 const RADIUS_PILL: int = 22
 const FRAME_WIDTH: int = 5
 
-const FONT_BODY: String = "res://assets/fonts/Nunito.ttf"
-const FONT_HEAD: String = "res://assets/fonts/Fredoka.ttf"
+const FONT_BODY: String = CozyTheme.FONT_BODY  # UI-3: Source Sans 3
+const FONT_HEAD: String = CozyTheme.FONT_BODY  # UI-3: rozet ve sayılar da Source Sans 3
 
 
 static func font(path: String, weight: int) -> FontVariation:
@@ -49,7 +49,7 @@ static func body_font() -> FontVariation:
 
 
 static func head_font() -> FontVariation:
-	return font(FONT_HEAD, 560)
+	return font(FONT_HEAD, 700)
 
 
 ## Köşesi yuvarlak düz kutu; border_bottom > 0 ise altında "basılabilir" koyu kenar.

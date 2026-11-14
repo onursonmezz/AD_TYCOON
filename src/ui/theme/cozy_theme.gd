@@ -44,9 +44,17 @@ const RADIUS_CONTROL: int = 8
 
 static var _theme: Theme = null
 
-const FONT_TITLE: String = "res://assets/fonts/Fraunces.ttf"  # serif (OFL), değişken: wght, opsz, SOFT
-const BODY_WEIGHT: int = 400
-const STRONG_MAX: int = 620
+## Yazı tipleri (UI-3, Orgo'nun seçimi): başlıklarda Lora Bold, menü ve açıklamalarda Source Sans 3. İkisi de değişken
+## (wght) ve Türkçe karakterli; lisanslar assets/fonts/*-OFL.txt.
+const FONT_TITLE: String = "res://assets/fonts/Lora.ttf"  # wght 400–700
+const FONT_TITLE_ITALIC: String = "res://assets/fonts/Lora-Italic.ttf"
+const FONT_BODY: String = "res://assets/fonts/SourceSans3.ttf"  # wght 200–900
+const FONT_BODY_ITALIC: String = "res://assets/fonts/SourceSans3-Italic.ttf"
+const TITLE_WEIGHT: int = 700  # Lora Bold
+const TITLE_MIN: int = 400
+const BODY_WEIGHT: int = 400  # Source Sans 3 Regular
+const STRONG_WEIGHT: int = 600  # Source Sans 3 SemiBold
+const STRONG_MAX: int = 700
 
 
 ## Paylaşılan tema (bir kez kurulur).
@@ -77,27 +85,39 @@ static func box(fill: Color, radius: int = RADIUS_CONTROL, border_color: Color =
 	return b
 
 
-## Serif başlık fontu (pencere başlıkları, logo, bölüm başlıkları).
-static func title_font(weight: int = 620) -> FontVariation:
+static func _variable(path: String, weight: int) -> FontVariation:
 	var f: FontVariation = FontVariation.new()
-	f.base_font = load(FONT_TITLE) as FontFile
+	f.base_font = load(path) as FontFile
 	var ts: TextServer = TextServerManager.get_primary_interface()
-	f.variation_opentype = {ts.name_to_tag("wght"): weight, ts.name_to_tag("opsz"): 48, ts.name_to_tag("SOFT"): 60}
+	f.variation_opentype = {ts.name_to_tag("wght"): weight}
 	return f
 
 
-## Gövde fontu (UI-3): taslaklardaki gibi serif; küçük boyda okunaklı olsun diye optik boyut düşük.
+## Başlık fontu: Lora (pencere başlıkları, logo, bölüm ve kart başlıkları). Varsayılan Bold; Lora en çok 700 olduğundan
+## daha yüksek istenen ağırlıklar 700'e iner.
+static func title_font(weight: int = TITLE_WEIGHT) -> FontVariation:
+	return _variable(FONT_TITLE, clampi(weight, TITLE_MIN, TITLE_WEIGHT))
+
+
+## Gövde fontu: Source Sans 3 (menüler, açıklamalar, düğmeler, sayılar).
 static func body_font(weight: int = BODY_WEIGHT) -> FontVariation:
-	var f: FontVariation = FontVariation.new()
-	f.base_font = load(FONT_TITLE) as FontFile
-	var ts: TextServer = TextServerManager.get_primary_interface()
-	f.variation_opentype = {ts.name_to_tag("wght"): weight, ts.name_to_tag("opsz"): 30, ts.name_to_tag("SOFT"): 30}
-	return f
+	return _variable(FONT_BODY, weight)
 
 
-## Kalın gövde fontu (düğmeler, kart başlıkları, sayılar).
-static func strong_font(weight: int = 760) -> FontVariation:
-	return body_font(mini(weight, STRONG_MAX))
+## Kalın gövde fontu (düğmeler, kart başlıkları, sayılar): Source Sans 3 SemiBold; istenirse en çok Bold.
+static func strong_font(weight: int = STRONG_WEIGHT) -> FontVariation:
+	return body_font(clampi(weight, STRONG_WEIGHT, STRONG_MAX) if weight > STRONG_WEIGHT else STRONG_WEIGHT)
+
+
+## Bir fontun gerçek italik kesimi (Lora / Source Sans 3 italik dosyası); başka fontlarda null.
+static func italic_of(f: FontVariation) -> FontVariation:
+	var path: String = f.base_font.resource_path if f.base_font != null else ""
+	var italic_path: String = {FONT_TITLE: FONT_TITLE_ITALIC, FONT_BODY: FONT_BODY_ITALIC}.get(path, "")
+	if italic_path.is_empty():
+		return null
+	var out: FontVariation = f.duplicate() as FontVariation
+	out.base_font = load(italic_path) as FontFile
+	return out
 
 
 static func build() -> Theme:

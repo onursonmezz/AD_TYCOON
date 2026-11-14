@@ -46,7 +46,10 @@ static func backdrop(zoom: float = 0.0) -> Control:
 
 ## Eğik yazılı serif logo fontu.
 static func logo_font() -> FontVariation:
-	var f: FontVariation = CozyTheme.title_font(800)
+	var f: FontVariation = CozyTheme.title_font()
+	var it: FontVariation = CozyTheme.italic_of(f)
+	if it != null:
+		return it
 	f.variation_transform = ITALIC
 	return f
 
@@ -127,5 +130,8 @@ static func tilted(child: Control, degrees: float) -> Control:
 
 ## Bir fontun eğik (italik görünümlü) hâli.
 static func italic(base: FontVariation) -> FontVariation:
+	var it: FontVariation = CozyTheme.italic_of(base)
+	if it != null:
+		return it
 	base.variation_transform = ITALIC
 	return base

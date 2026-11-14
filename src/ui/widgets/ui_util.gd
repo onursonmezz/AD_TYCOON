@@ -46,7 +46,7 @@ static func heading(text: String, icon_name: String = "") -> Label:
 	return l
 
 
-## Başlık fontu (Fredoka; sayılar, rozetler, başlıklar).
+## Rozet ve sayı fontu (Source Sans 3 Bold).
 static func head_font() -> Font:
 	if _head_font == null:
 		_head_font = UiTheme.head_font()

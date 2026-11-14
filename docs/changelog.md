@@ -1,5 +1,15 @@
 # Değişiklik günlüğü
 
+## Yazı tipleri (2026-11-15)
+- **Başlıklar:** Lora Bold (pencere başlıkları, kart ve bölüm başlıkları, logo, büyük sayılar).
+- **Menü ve açıklamalar:** Source Sans 3 (düğmeler, listeler, tablolar, bildirimler); kalın yerlerde SemiBold.
+- **İtalik:** Alt yazılar, yorum alıntıları ve logo gerçek italik kesimle yazılıyor.
+- Görüntüler: `docs/screenshots/27_font_*`.
+- Nasıl test ederim:
+  1. Ana menüyü aç: logo eğik Lora, düğmeler Source Sans 3 olmalı.
+  2. Bir oyuna gir ve birkaç menü aç: pencere başlıkları Lora Bold, içerik Source Sans 3 olmalı.
+  3. Türkçe karakterleri kontrol et: ı, İ, ş, ğ, ü, ö, ç her yerde doğru görünmeli.
+
 ## UI-3 (8. adım): Yankılar, kanal seçici, işe alım (2026-11-14)
 - **Kampanyanın yankıları:** Kampanya bitince önce dört yayının puanı ve yorumu, altında genel değerlendirme. "Raporu incele" ayrıntılı raporu açar.
 - **Kanal seçici:** Yeni kampanyada kanal satırına basınca açılır; kategori etiketleri, arama ve çizimli kanal düğmeleri var.

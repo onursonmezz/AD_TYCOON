@@ -226,7 +226,7 @@ static func toast(feed: VBoxContainer, key: String, args: Array, kind: String) -
 	var icon_color: Color = {"good": CozyTheme.POSITIVE, "bad": CozyTheme.NEGATIVE}.get(kind, CozyTheme.FOREST)
 	row.add_child(UiUtil.icon(icon_name, 18, icon_color))
 	var text: Label = UiUtil.wrapped(UiUtil.tr_fmt(key, args), 12, UiUtil.TEXT, TOAST_WIDTH - 54.0)
-	text.add_theme_font_override("font", UiTheme.font(UiTheme.FONT_BODY, 760))  # taslakta bildirimler düz (sans) yazı
+	text.add_theme_font_override("font", CozyTheme.strong_font())  # taslakta bildirimler düz (sans), yarı kalın
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(text)
 	feed.add_child(card)
