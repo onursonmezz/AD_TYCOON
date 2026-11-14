@@ -5,6 +5,9 @@ extends Node
 
 const PANELS: Array[String] = ["inbox", "clients", "campaign", "team", "office", "tools", "research", "finance", "industry", "history"]
 const WARMUP_DAYS: int = 400
+## Panel içi sekmeler (K-122): [panel, değişken, değer]; ana çekimden sonra ayrıca çekilir.
+const SUB_VIEWS: Array = [["research", "_tab", "fit"], ["research", "_tab", "focus"], ["finance", "_view", "loan"],
+	["finance", "_view", "suppliers"]]
 
 var _out: String = "user://panel_shots"
 var _only: PackedStringArray = PackedStringArray()
@@ -36,6 +39,7 @@ func _run() -> void:
 	Clock.playtime.persist = false
 	Settings.set_value("tutorial", false)
 	Settings.set_value("autosave", false)
+	Settings.set_value("minigames", false)  # mini oyun penceresi panelin üstüne çıkmasın
 	TranslationServer.set_locale(_lang)
 	GameState.new_game(7, "marketing_manager", 0, "", {"name": "Defne", "avatar": "kadin_02"})
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
@@ -61,6 +65,18 @@ func _run() -> void:
 			c.queue_free()
 		screen.call("show_panel", id)
 		await get_tree().create_timer(0.9).timeout
+		var panel: Control = screen.get("_panel")
+		var need: Vector2 = panel.get_combined_minimum_size()
+		print("%s: içerik %.0f×%.0f" % [id, need.x, need.y])
 		get_viewport().get_texture().get_image().save_png(_out.path_join(id + ".png"))
+		for sub: Array in SUB_VIEWS:
+			if sub[0] != id:
+				continue
+			panel.set(str(sub[1]), sub[2])
+			panel.call("refresh")
+			await get_tree().create_timer(0.5).timeout
+			need = panel.get_combined_minimum_size()
+			print("%s/%s: içerik %.0f×%.0f" % [id, sub[2], need.x, need.y])
+			get_viewport().get_texture().get_image().save_png(_out.path_join("%s_%s.png" % [id, sub[2]]))
 	print("Panel çekimleri: %s" % _out)
 	get_tree().quit()

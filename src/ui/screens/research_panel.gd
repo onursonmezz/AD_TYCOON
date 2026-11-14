@@ -2,29 +2,30 @@ class_name ResearchPanel
 extends VBoxContainer
 ## Ar-Ge (GDD 17) ve Bilgi Defteri: AP, yürüyen araştırma, araştırma listesi (koşullar ✓/✗), keşfedilen uyum hücreleri;
 ## Pazar Araştırması varsa parayla hücre açma.
+## K-122: kaydırma yok; üç sekme (araştırmalar, sektör uyumu, odak önemi), araştırma listesi sayfalı.
 
 const SYMBOLS: Dictionary = {3: "+++", 2: "++", 1: "+", 0: "0", -1: "−", -2: "−−", -3: "−−−"}
+const TABS: Array = [["list", "UI_RESEARCH_TAB_LIST"], ["fit", "UI_RESEARCH_TAB_FIT"], ["focus", "UI_RESEARCH_TAB_FOCUS"]]
 
 var _body: VBoxContainer
 var _signature: String = ""
 var _sector: String = ""
+var _tab: String = "list"
+var _page: int = -1  # -1: ilk bitmemiş araştırmanın sayfası
 
 
 func _init() -> void:
 	add_theme_constant_override("separation", 10)
 	add_child(UiUtil.heading(tr("MENU_RESEARCH")))
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	add_child(scroll)
 	_body = UiUtil.vbox(8)
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(_body)
+	add_child(_body)
 
 
 func refresh() -> void:
 	var s: SimState = GameState.sim.state
-	var sig: String = "%d|%s|%d|%d|%s" % [s.clock.week_index, str(s.research), int(s.cash / 1000.0), str(s.knowledge).length(), _sector]
+	var sig: String = "%d|%s|%d|%d|%s|%s|%d" % [s.clock.week_index, str(s.research), int(s.cash / 1000.0), str(s.knowledge).length(),
+		_sector, _tab, _page]
 	if sig == _signature:
 		return
 	_signature = sig
@@ -51,15 +52,56 @@ func rebuild() -> void:
 	head.add_child(Cards.tile("flask", 48.0, CozyTheme.TERRA_SOFT))
 	head.add_child(head_col)
 	_body.add_child(head)
-	if not active.is_empty():
-		_body.add_child(Cards.section(tr("UI_RESEARCH_ACTIVE") % [tr(data.research[active["id"]]["name_key"]), int(active["weeks_left"])],
-			"", "clock"))
-	for id: String in data.research_ids:
-		_body.add_child(_research_row(sim, s, id))
-	_body.add_child(Cards.section(tr("UI_KNOWLEDGE_BOOK")))
-	_body.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 12, UiUtil.MUTED, 400.0))
-	_body.add_child(_knowledge_table(sim, s))
-	_body.add_child(_focus_table(sim, s))
+	head_col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var seg: PanelContainer = UiUtil.segmented(TABS, _tab, func(id: String) -> void:
+		_tab = id
+		refresh())
+	seg.custom_minimum_size.x = 330.0
+	head.add_child(seg)
+	match _tab:
+		"list":
+			if not active.is_empty():
+				_body.add_child(Cards.section(tr("UI_RESEARCH_ACTIVE") % [tr(data.research[active["id"]]["name_key"]),
+					int(active["weeks_left"])], "", "clock"))
+			_list_page(sim, s)
+		"fit":
+			_body.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 12, UiUtil.MUTED, 600.0))
+			_body.add_child(_knowledge_table(sim, s))
+		"focus":
+			_body.add_child(_focus_table(sim, s))
+
+
+## Araştırma kartları sayfa sayfa (ui_layout research_per_page); açılışta ilk bitmemiş araştırmanın sayfası.
+func _list_page(sim: Simulation, s: SimState) -> void:
+	var ids: Array[String] = DataDB.data.research_ids
+	var per: int = int(DataDB.data.raw["ui_layout.json"]["research_per_page"])
+	var pages: int = maxi(1, ceili(float(ids.size()) / float(per)))
+	if _page < 0:
+		_page = 0
+		for i: int in ids.size():
+			if not sim.research.has(s, ids[i]):
+				_page = i / per
+				break
+	_page = clampi(_page, 0, pages - 1)
+	for i: int in range(_page * per, mini(ids.size(), (_page + 1) * per)):
+		_body.add_child(_research_row(sim, s, ids[i]))
+	if pages <= 1:
+		return
+	var pager: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	pager.alignment = BoxContainer.ALIGNMENT_CENTER
+	var prev: Button = UiUtil.button("◀", func() -> void: _turn(-1))
+	prev.disabled = _page == 0
+	pager.add_child(prev)
+	pager.add_child(UiUtil.label(tr("UI_PAGE") % [_page + 1, pages], 13, CozyTheme.FOREST))
+	var next: Button = UiUtil.button("▶", func() -> void: _turn(1))
+	next.disabled = _page >= pages - 1
+	pager.add_child(next)
+	_body.add_child(pager)
+
+
+func _turn(step: int) -> void:
+	_page += step
+	refresh()
 
 
 ## Araştırma kartı: solda ikon, ortada ad, açıklama ve koşul etiketleri; sağda maliyet satırları ve düğme.
@@ -117,19 +159,22 @@ func _focus_table(sim: Simulation, s: SimState) -> VBoxContainer:
 	var box: VBoxContainer = UiUtil.vbox(6)
 	box.add_child(UiUtil.label(tr("UI_KNOW_FOCUS_TITLE"), 16, UiUtil.SAGE_DARK))
 	var grid: GridContainer = GridContainer.new()
-	grid.columns = data.focus_ids.size() + 1
-	grid.add_theme_constant_override("h_separation", 8)
+	grid.columns = data.objective_ids.size() + 1
+	grid.add_theme_constant_override("h_separation", 10)
+	grid.add_theme_constant_override("v_separation", 4)
 	grid.add_child(Control.new())
-	for f: String in data.focus_ids:
-		var head: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, f), 11, UiUtil.WOOD)
-		head.custom_minimum_size.x = 74.0
+	for obj: String in data.objective_ids:
+		var head: Label = UiUtil.label(UiUtil.name_of(data.objectives, obj), 11, UiUtil.WOOD)
+		head.custom_minimum_size.x = 80.0
 		head.autowrap_mode = TextServer.AUTOWRAP_WORD
 		head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		grid.add_child(head)
-	for obj: String in data.objective_ids:
-		grid.add_child(UiUtil.label(UiUtil.name_of(data.objectives, obj), 12, UiUtil.TEXT))
-		for f: String in data.focus_ids:
-			grid.add_child(FocusHint.badge(obj, f, 14))
+	for f: String in data.focus_ids:
+		grid.add_child(UiUtil.label(UiUtil.name_of(data.focus_areas, f), 12, UiUtil.TEXT))
+		for obj: String in data.objective_ids:
+			var cell: CenterContainer = CenterContainer.new()
+			cell.add_child(FocusHint.badge(obj, f, 14))
+			grid.add_child(cell)
 	box.add_child(grid)
 	return box
 

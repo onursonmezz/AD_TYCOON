@@ -1,5 +1,17 @@
 # Değişiklik günlüğü
 
+## Pencereler kaydırmasız sığıyor (2026-11-14)
+- **Ar-Ge ortada:** Pencere artık sağa taşmıyor.
+- **Kaydırma yok:** Menü pencerelerinde içerik sığmazsa pencere büyümüyor, içerik biraz küçülüyor (en fazla %72'ye kadar).
+- **Ar-Ge:** Üç sekme var: Araştırmalar, Sektör uyumu, Odak önemi. Araştırmalar sayfa sayfa geliyor, her sayfada 3 kart ve altta ◀ 1/4 ▶.
+- **Finans:** Üstte Özet, Banka kredisi ve Matbaalar sekmeleri var.
+- **Araçlar:** Alanlar iki sütunda gösteriliyor.
+- **Kampanya:** Emek dağılımı satırları daha sıkı.
+- Nasıl test ederim:
+  1. Ar-Ge'yi aç. Pencere ekranın ortasında olmalı ve kaydırma çubuğu görünmemeli. ◀ ▶ ile sayfaları gez, sonra Sektör uyumu ve Odak önemi sekmelerine bak.
+  2. Finans'ı aç. Özet'te dönem sekmeleri sağda görünmeli. Banka kredisi sekmesinden kredi çekmeyi dene.
+  3. Araçlar, Ofis, Kampanya ve Müşteriler pencerelerinde kaydırma çubuğu olmamalı, her şey pencerenin içinde görünmeli.
+
 ## Mini oyunlar: prova pencereleri ve altı yeni oyun (2026-11-16)
 - **Ayrı pencere:** Mini oyunlar artık kendi penceresinde açılıyor: "Ses provası", "Kurgu provası" gibi bir başlık, altında müşteri ve kanal, tek cümlelik görev, ortada oyun, altta "Kalan süre 04,3 sn", süre çubuğu ve Atla. Faz başında kendiliğinden açılır.
 - **Sıra:** 1. fazın başında bir strateji provası (hedef kitle ya da konum), 2. fazın başında kanalın provası, 3. fazın başında taslak seçimi.

@@ -4,11 +4,17 @@ extends VBoxContainer
 ## banka kredisi (GDD 13.5, M10). UI-2d (Cozy Refined referansı):
 ## sekmeler (bu ay / son 3 ay / bu yıl), nakit-gelir-gider şeridi, ikonlu ödeme satırları, son 6 ay gelir grafiği,
 ## kredi ve matbaa kartları. Dönem gelir-gideri SimState.finance_months kaydından okunur.
+## K-122: kaydırma yok; üstte görünüm sekmeleri (özet / banka kredisi / matbaalar), dönem sekmeleri yalnız özette.
 
 const PERIODS: Array = [["month", "UI_FIN_TAB_MONTH"], ["quarter", "UI_FIN_TAB_QUARTER"], ["year", "UI_FIN_SECTION_YEAR"]]
 const CHART_MONTHS: int = 6
+const VIEWS: Array = [["summary", "UI_FIN_VIEW_SUMMARY"], ["loan", "UI_LOAN_TITLE"], ["suppliers", "UI_SUPPLIERS"]]
 
 var _period: String = "month"
+var _view: String = "summary"
+var _views: HBoxContainer
+var _summary_card: PanelContainer
+var _mid: HBoxContainer
 var _tabs: HBoxContainer
 var _summary: HBoxContainer
 var _rows: VBoxContainer
@@ -23,21 +29,24 @@ func _init() -> void:
 	add_child(UiUtil.heading(tr("MENU_FINANCE")))
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	# Taslak 16: kısa başlık ve bilgi işareti; uzun açıklama işaretin üstüne gelince çıkar.
-	var hint: Label = UiUtil.label(tr("UI_FINANCE_SHORT"), 13, CozyTheme.TEXT)
-	top.add_child(hint)
+	_views = UiUtil.hbox(0)
+	top.add_child(_views)
 	var info: TextureRect = UiUtil.icon("info", 16, CozyTheme.FOREST)
 	info.mouse_filter = Control.MOUSE_FILTER_STOP
-	info.tooltip_text = tr("UI_FINANCE_HINT")
+	info.tooltip_text = tr("UI_FINANCE_SHORT") + "
+" + tr("UI_FINANCE_HINT")
+	info.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	top.add_child(info)
 	top.add_child(UiUtil.spacer())
 	_tabs = UiUtil.hbox(0)
 	top.add_child(_tabs)
 	add_child(top)
-	var summary_card: PanelContainer = _card()
+	_summary_card = _card()
 	_summary = UiUtil.hbox(CozyTheme.SPACE_M)
-	summary_card.add_child(_summary)
+	_summary_card.add_child(_summary)
 	var mid: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	add_child(mid)
+	_mid = mid
 	var rows_card: PanelContainer = _card(mid)
 	rows_card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rows_card.size_flags_stretch_ratio = 1.6
@@ -80,10 +89,19 @@ func _titled_card(icon_name: String, title: String) -> VBoxContainer:
 
 
 func _tab_buttons() -> void:
+	UiUtil.clear(_views)
+	_views.add_child(UiUtil.segmented(VIEWS, _view, func(id: String) -> void:
+		_view = id
+		refresh()))
 	UiUtil.clear(_tabs)
 	_tabs.add_child(UiUtil.segmented(PERIODS, _period, func(id: String) -> void:
 		_period = id
 		refresh()))
+	_tabs.visible = _view == "summary"
+	_summary_card.visible = _view == "summary"
+	_mid.visible = _view == "summary"
+	_loan.get_parent().get_parent().visible = _view == "loan"
+	_suppliers.get_parent().get_parent().visible = _view == "suppliers"
 
 
 ## Seçili dönemin (gelir, gider)'i: bu ay ve son 3 ay aylık kayıttan, bu yıl yıl toplamından.

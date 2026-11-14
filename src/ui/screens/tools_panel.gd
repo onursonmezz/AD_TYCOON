@@ -2,6 +2,7 @@ class_name ToolsPanel
 extends VBoxContainer
 ## Araçlar (GDD 12.4–12.5): alan başına araç seti ve çarpanı, sürüm durumu, al / güncelle / aboneliğe geç / iptal;
 ## bilgisayar kuşağı ve aylık abonelik gideri. "Ekipman" sekmesi: prodüksiyon ekipmanı (K-119, EquipmentList; taslak 15'te yok).
+## K-122: kaydırma yok; alanlar iki sütunda, satırlar tek satır (uzun durum metni üzerine gelince).
 
 var _body: VBoxContainer
 var _signature: String = ""
@@ -11,13 +12,9 @@ var _tab: String = "software"
 func _init() -> void:
 	add_theme_constant_override("separation", 10)
 	add_child(UiUtil.heading(tr("MENU_TOOLS")))
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	add_child(scroll)
 	_body = UiUtil.vbox(8)
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(_body)
+	add_child(_body)
 
 
 func refresh() -> void:
@@ -35,12 +32,17 @@ func rebuild() -> void:
 	var sim: Simulation = GameState.sim
 	var s: SimState = sim.state
 	var data: GameData = DataDB.data
-	_body.add_child(UiUtil.segmented([["software", "UI_TOOLS_TAB_SOFTWARE"], ["equipment", "UI_TOOLS_TAB_EQUIPMENT"]], _tab,
+	var tabs: PanelContainer = UiUtil.segmented([["software", "UI_TOOLS_TAB_SOFTWARE"], ["equipment", "UI_TOOLS_TAB_EQUIPMENT"]], _tab,
 		func(id: String) -> void:
 			_tab = id
 			_signature = ""
-			refresh()))
+			refresh())
+	tabs.custom_minimum_size.x = 300.0
 	if _tab == "equipment":
+		var bar: HBoxContainer = UiUtil.hbox()
+		bar.add_child(UiUtil.spacer())
+		bar.add_child(tabs)
+		_body.add_child(bar)
 		_body.add_child(EquipmentList.build(func() -> void:
 			_signature = ""
 			refresh()))
@@ -69,13 +71,23 @@ func rebuild() -> void:
 		head.add_child(buy)
 	var monthly: PanelContainer = Cards.chip(tr("UI_TOOLS_MONTHLY") % UiUtil.money(sim.tools.monthly_cost(s)), CozyTheme.CREAM_LIGHT,
 		CozyTheme.FOREST, tr("UI_TOOLS_HINT"))
-	head.add_child(monthly)
+	monthly.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	hw_col.add_child(monthly)
+	head.add_child(tabs)  # K-122: sekmeler bilgisayar satırının sağında (ayrı satır kaplamasın)
 	_body.add_child(head)
+	var grid: GridContainer = GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_M)
+	grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
+	_body.add_child(grid)
 	for area: Variant in data.bal("tools.areas"):
-		_body.add_child(Cards.section(tr("AREA_" + str(area).to_upper()), "×%.2f" % float(s.tool_mults.get(area, 1.0))))
+		var col: VBoxContainer = UiUtil.vbox(4)
+		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.add_child(Cards.section(tr("AREA_" + str(area).to_upper()), "×%.2f" % float(s.tool_mults.get(area, 1.0))))
 		for id: String in data.tool_ids:
 			if data.tools[id]["area"] == area and (sim.tools.owned(s, id) or sim.tools.available(s).has(id)):
-				_body.add_child(_tool_row(sim, s, id))
+				col.add_child(_tool_row(sim, s, id))
+		grid.add_child(col)
 
 
 func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
@@ -87,9 +99,11 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	row.add_child(UiUtil.icon("tool", 18, CozyTheme.TERRA if owned else CozyTheme.MUTED))
 	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 13, CozyTheme.TEXT)
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
-	name_label.custom_minimum_size.x = 170.0
+	name_label.custom_minimum_size.x = 104.0
+	name_label.clip_text = true
+	name_label.tooltip_text = name_label.text
+	name_label.mouse_filter = Control.MOUSE_FILTER_STOP
 	row.add_child(name_label)
-	row.add_child(VSeparator.new())
 	var status: String = ""
 	var color: Color = UiUtil.TEXT
 	if owned:
@@ -106,9 +120,11 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 		color = UiUtil.MUTED
 	if float(t["ai_penalty"]) > 0.0:
 		status += " · " + tr("UI_TOOL_AI")
-	var st: Label = UiUtil.label(status, 12, color)
+	var st: Label = UiUtil.label(status, 11, color)
 	st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	st.clip_text = true
+	st.tooltip_text = status
+	st.mouse_filter = Control.MOUSE_FILTER_STOP
 	row.add_child(st)
 	if bool(t["starter"]):
 		row.add_child(Cards.chip("✓ " + tr("UI_TOOL_IN_USE")))

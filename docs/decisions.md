@@ -1432,3 +1432,18 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - Tam görsel seti (67 dosya): 35 sektörün ürünü, 8 arka plan, 8 efekt, 14 parça. Taslaklarda arka plan ve efekt
   sektörün ton grubuna göre seçilir (`minigames.art_by_tone`); koyu zeminde slogan açık renk; efektler türüne göre
   yerleşir (rozet köşede, ışın ve sıçrama ürünün arkasında, buhar üstünde).
+
+## K-122 — Menü pencereleri kaydırılmaz, içerik küçülerek sığar (2026-11-14)
+- **İstek (Orgo):** "Ar-Ge ekranı ortalı değil, sağa doğru genişliyor. Panelleri kaydırmak zorunda olmadan boyutları küçülterek sığdıralım."
+- **Neden sağa taşıyordu:** Ar-Ge'deki odak tablosu (K-117) 9 sütunluydu ve pencereden geniş kaldı. Pencere de yalnızca sağa büyüyebiliyordu.
+- **Karar:**
+  - Pencere boyutları taslaktaki gibi sabit kalır (içeriğe göre boy değiştirme daha önce reddedilmişti).
+  - İçerik taşarsa `FitScaler` onu orantılı küçültür. En küçük ölçek `ui_layout.json fit_min_scale` = 0,72; yazı bunun altında okunmaz hale geliyor.
+  - İçerik bu ölçekte de sığmazsa kaydırma son çare olarak kalır.
+  - Pencere iki yana da büyür, yani her durumda ortada durur.
+- **Ölçekle sığmayacak kadar uzun paneller bölündü:**
+  - **Ar-Ge:** üç sekme (Araştırmalar / Sektör uyumu / Odak önemi). Araştırma listesi sayfalı, sayfa başına `research_per_page` = 3 kart; açılışta ilk bitmemiş araştırmanın sayfası gelir. Odak tablosu çevrildi: satırlar odak alanları, sütunlar hedefler.
+  - **Finans:** görünüm sekmeleri (Özet / Banka kredisi / Matbaalar). Dönem sekmeleri yalnızca Özet'te görünür. Kısa açıklama bilgi işaretinin ipucuna taşındı.
+  - **Araçlar:** alanlar iki sütunda, satırlar tek satır (uzun ad ve durum, üzerine gelince ipucu olarak çıkar). Sekmeler bilgisayar satırının sağında.
+  - **Kampanya (emek dağılımı):** önem işareti adın yanına alındı, satır araları sıkılaştı.
+- **Taslaktan sapma:** Ar-Ge ve Finans taslakları (17, 16) tek uzun sayfaydı ve kaydırılıyordu; sekmeler taslakta yok, kaydırmayı kaldırmak için eklendi.

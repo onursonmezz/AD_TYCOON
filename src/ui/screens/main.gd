@@ -21,6 +21,7 @@ var _office: OfficeView
 var _hint: Label
 var _dock: PanelContainer
 var _scroll: ScrollContainer = null
+var _fit: FitScaler = null  # içerik taşarsa küçülterek sığdırır (K-122)
 var _employee_card: EmployeeCard = null
 var _build_bar: BuildToolbar = null
 var _feed: VBoxContainer
@@ -120,8 +121,8 @@ func _layout() -> void:
 
 ## Pencere sabit boyda; içerik sığmazsa içinde kayar.
 func _fit_window() -> void:
-	if _scroll != null and _panel != null:
-		MainHud.fit_scroll(_scroll, _panel, _window_size().y - WINDOW_CHROME)
+	if _scroll != null and _fit != null:
+		MainHud.fit_scroll(_scroll, _fit, _window_size().y - WINDOW_CHROME)
 
 
 ## Dok (menü ekranları): kiremit ikonlar, aralarında ince çizgi; açık olanın ikonu yeşil, zemini açık yeşil.
@@ -152,6 +153,8 @@ func _build_window() -> void:
 	_window = PanelContainer.new()
 	add_child(_window)
 	_window.set_anchors_preset(Control.PRESET_CENTER)
+	_window.grow_horizontal = Control.GROW_DIRECTION_BOTH  # içerik genişse bile ortada kalsın
+	_window.grow_vertical = Control.GROW_DIRECTION_BOTH
 	# UI-2: yeşil başlık bandı (ikon + başlık + kapat), altında içerik.
 	var parts: Array = UiUtil.window_frame(_window)
 	_window_title = parts[0]
@@ -166,6 +169,7 @@ func close_panel() -> void:
 	UiUtil.clear(_content)
 	_panel = null
 	_scroll = null
+	_fit = null
 	_panel_id = ""
 	_refresh_menu_state()
 
@@ -264,9 +268,13 @@ func show_panel(id: String) -> void:
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_scroll.add_child(_panel)
+	_fit = FitScaler.new(float(DataDB.data.raw["ui_layout.json"]["fit_min_scale"]))
+	_fit.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_fit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_fit.add_child(_panel)
+	_scroll.add_child(_fit)
 	_content.add_child(_scroll)
-	_panel.minimum_size_changed.connect(_fit_window)
+	_fit.minimum_size_changed.connect(_fit_window)
 	_panel.call("refresh")
 	_fit_window()
 	UiUtil.adopt_heading(_window_title, _panel, tr("MENU_" + id.to_upper()), MENU_ICONS.get(id, ""))

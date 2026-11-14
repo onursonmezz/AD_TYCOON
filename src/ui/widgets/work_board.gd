@@ -46,7 +46,6 @@ func _ready() -> void:
 	add_child(UiUtil.wrapped(tr("UI_BOARD_HINT"), 12, UiUtil.MUTED, 600.0))
 	for i: int in 3:
 		add_child(_area_row(i))
-		add_child(HSeparator.new())
 	add_child(_load_section())
 	if _phase == 2:
 		add_child(_equipment_section())
@@ -61,7 +60,7 @@ func _area_row(i: int) -> HBoxContainer:
 	var data: GameData = DataDB.data
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	row.add_child(UiUtil.icon(str(AREA_ICONS.get(_areas[i], "info")), 22, CozyTheme.TERRA))
-	var name_box: VBoxContainer = UiUtil.vbox(0)
+	var name_box: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)  # ad ve önem işareti yan yana (K-122)
 	name_box.custom_minimum_size.x = NAME_WIDTH
 	name_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var name_label: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, _areas[i]), 14, CozyTheme.TEXT)
@@ -78,7 +77,7 @@ func _area_row(i: int) -> HBoxContainer:
 	for id: String in _members:
 		var b: Button = Button.new()
 		b.focus_mode = Control.FOCUS_NONE
-		b.custom_minimum_size = Vector2(0.0, 30.0)
+		b.custom_minimum_size = Vector2(0.0, 28.0)
 		b.add_theme_font_size_override("font_size", 12)
 		b.add_theme_font_override("font", CozyTheme.strong_font())
 		b.tooltip_text = tr("UI_BOARD_CHIP_TIP")
