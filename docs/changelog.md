@@ -1,5 +1,22 @@
 # Değişiklik günlüğü
 
+## İnşa modunda duvar ve kapı (2026-11-15)
+- **Duvar çek:** İnşa modu → Duvarlar → Duvar. Ofiste sürükleyerek yatay ya da dikey duvar çekersin; önizleme yeşilse
+  olur, kırmızıysa durum satırı nedenini yazar. Fiyat metre başı (1990'da ₺150/m); durum satırında uzunluk ve tutar.
+- **Kapı:** Duvarlar → Kapı, sonra bir iç duvara tıkla: 1,6 m'lik kapı boşluğu açılır (₺400).
+- **Yık:** "Sat" aracıyla (ya da imleç üstündeyken Del) iç duvara tıkla: duvar yıkılır. Kendi çektiğin duvarın yarı
+  parası geri gelir; ofisle gelen duvarları yıkmak bedava. Açtığın bir kapıya tıklarsan kapı kapanır.
+- **Odalar:** Bir odanın duvarını yıkarsan oda "açık alan" sayılır ve odanın etkisi gider; duvarı geri çekince döner.
+- Dış duvarlara dokunulmaz; kimseyi bir yere kapatan duvar çekilemez.
+- Nasıl test ederim:
+  1. Bir oyun aç, inşa moduna gir, "Duvarlar" sekmesini seç, "Duvar"ı seç ve boş bir yerde sürükle: yeşil önizleme
+     ve "2,5 m · ₺375" gibi bir yazı görmelisin; bırakınca duvar çıkmalı, para azalmalı.
+  2. Masanın üstünden ya da girişin önünü kapatacak şekilde çekmeyi dene: kırmızı olmalı ve çekilmemeli.
+  3. "Kapı"yı seçip bir iç duvara tıkla: duvarda boşluk açılmalı, çalışanlar oradan geçebilmeli.
+  4. "Sat" aracıyla toplantı odasının bir duvarına gel: duvar kırmızımsı yanmalı; tıklayınca yıkılmalı.
+  5. Kaydet, yükle: duvarlar aynı kalmalı.
+  6. Hepsini tek seferde görmek: `godot --path . res://tools/wall_shots.tscn --resolution 1672x941 -- --out=<klasör>`.
+
 ## Müşteri kartı, ödül töreni, taslağı olmayan pencereler (2026-11-15)
 - **Müşteri kartı:** Müşteriler ekranında bir karta (ya da sağdaki oka) basınca açılır: bütçe, beklediği puan, ortalama
   puan, memnuniyet, güven ve o müşteriyle yapılan kampanyalar ("Raporu aç" ile rapor).

@@ -1338,3 +1338,23 @@ yanında büyük defne dalları, konfeti ve ışıltılar, kırmızı halı üst
 olarak kullanılır. Bronz ve kısa liste için ayrı kupa çizimi olmadığından gümüş kupa ve kurdele o derecenin rengiyle
 boyanır (`tint`). Kurdele görseli taslaktakinden kısa olduğu için yatayda gerilir. Rakip ajanslar hücresinde taslaktaki
 tuğla bina yerine paketteki küçük ofis çizimi (`kucuk-ofis`) var.
+
+## K-116 — İnşa modunda duvar çekme, yıkma ve kapı
+Orgo'nun kararı: binanın dış duvarları hariç tüm iç duvarlar (hazır oda duvarları dahil) eklenip silinebilir; duvar
+metre başı ücretli; kapı ayrı araç; her ofiste açık.
+- Veri: `state.build["wall_ops"]` sıralı işlem listesi ({op: add | remove | door, a, b}). `OfficeLayout` hazır iç
+  duvarları üretir, sonra bu işlemleri sırayla uygular (`office_walls.gd`: her iç duvar düz bir çizgide aralık).
+  Sıralı liste sayesinde "yık, sonra yeniden çek" ya da "kapıyı kapat" kendiliğinden doğru çalışır.
+- Oda kapalılığı artık duvarlardan hesaplanır: bina kenarında olmayan her kenar en az biraz duvarla ve en fazla 2 m
+  (`CLOSED_MAX_GAP`, bir kapı + pay) boşlukla çevriliyse oda kapalı. Hazır ofislerde sonuç eskisiyle aynı (testler).
+  Kapalı oda isteyen etkiler, duvarı yıkılan odadan gelmez; duvar geri çekilince geri gelir.
+- Kurallar: duvar düz (yatay/dikey), en az 1 m, 0,5 m ızgaraya oturur, binanın içinde, eşya/masa içinden geçmez,
+  kimseyi kapatmaz. Yol kontrolü artık giriş kapısının ağzından başlar (önceden 0,6 m içeriden başlıyordu; girişin
+  hemen önüne çekilen duvar yakalanmıyordu). Kapı 1,6 m; iki yanı eşyayla tıkalıysa açılmaz; yanında 0,4 m'den kısa
+  parça kalacaksa boşluk duvarın ucuna uzar (direk gibi parça kalmasın).
+- Para (`balance.json build`): duvar `wall_cost_per_m_1990` (150), kapı `door_cost_1990` (400), enflasyonla. Kendi
+  çektiğin duvarı yıkınca güncel metre fiyatının yarısı geri gelir (ödenen tutar değil; basitlik için); hazır duvarı
+  yıkmak bedava, iade yok; kapıyı kapatmak bedava. Taşınınca çekilen duvarların yarısı iade, duvar işlemleri sıfırlanır.
+- Arayüz: inşa modunda "Duvarlar" sekmesi (Duvar, Kapı kartları; ikonlar elle çizilmiş SVG `wall.svg`, `door.svg`);
+  silme aracı ve Del tuşu eşyadan sonra kapıyı, sonra iç duvarı kaldırır.
+- Kapsam dışı: çapraz duvar, duvar rengi/kâğıdı seçimi, duvarı tutup taşıma.
