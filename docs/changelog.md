@@ -1,5 +1,22 @@
 # Değişiklik günlüğü
 
+## KG1–KG3: Kampanya geliştirme — öğrenilen ipuçları, görev panosu, ekipman (2026-11-14)
+- **Öğrenilen ipuçları:** Bir kampanyada bir odak alanını belirgin şekilde öne çıkarır ya da kısarsan, o hedef için o alanın önemini öğrenirsin. Raporda "Satış kampanyalarında Metin Yazarlığı çok önemli (+++)" gibi cümleler çıkar. Sonraki kampanyalarda panoda alan adının altında işaret görünür (+++ … −−−, bilinmiyorsa "?"). Bilgi Defteri'nde yeni "Hedef × odak alanı" tablosu var.
+- **Görev panosu:** Faz başında kaydırıcılar yerine bir pano açılır. Satırlarda ekip, sütunlarda fazın üç alanı var. Hücreye sol tıklamak kişinin zamanının %25'ini o alana verir, sağ tık geri alır. Sağda kişinin yükü görünür:
+  - %100'e kadar normal.
+  - Üstünde kişi daha çok iş çıkarır ama verimi düşer, çabuk yorulur, hata yapar.
+  - Görev verilmeyen ekip üyesi o fazda dinlenir.
+  - Odak dağılımı ekibin emeğinden hesaplanır.
+  - "Otomatik dağıt" herkesi en güçlü alanına koyar.
+- **Ekipman:** Araçlar → Ekipman sekmesinden kamera (VHS'ten 4K'ya), fotoğraf seti, ışık, ses, yeşil perde ve drone alınır. Prodüksiyon alanında üretimi artırır; etkisi kampanyanın kanallarına bağlı (kamera TV ve videoda, fotoğraf basılı işte, ses radyoda işe yarar). Aylık bakımı var. Stüdyo, film ekibi, drone ekibi ve helikopter çekimi prodüksiyon fazının panosunda kampanya başına kiralanır.
+- Nasıl test ederim:
+  1. Yeni oyun başlat, bir brief al. Faz başında görev panosu açılmalı. Hücrelere tıklayınca yüzde artmalı, sağ tıkla azalmalı. Yük göstergesi %100'ü geçince sarıya, %150'yi geçince kırmızıya dönmeli.
+  2. Bir alana %100, diğerlerine %0 vererek kampanyayı bitir. Raporda "✎ … çok önemli / pek önemli değil" cümleleri çıkmalı.
+  3. Aynı hedefle yeni bir kampanya başlat. Panoda o alanın altında "?" yerine işaret görünmeli. Ar-Ge → Bilgi Defteri'nin en altında hedef × odak tablosunda da görünmeli.
+  4. Bir çalışan işe al. İkinci kampanyada çalışanı hiçbir alana koyma: enerjisi o fazda artmalı. İkisini de %200'e çıkar: enerjileri hızla düşmeli.
+  5. Araçlar → Ekipman'dan VHS kamera al, TV kanallı bir kampanya yap. Prodüksiyon fazının panosunda "Ekipman · prodüksiyon ×1.08" yazmalı; bir kiralık seçince sayı artmalı, faz başlarken parası düşülmeli.
+  6. Finans'ta aylık giderlerde ekipman bakımının çıktığını kontrol et.
+
 ## M10-B: Denge ve tempo ölçümü (2026-11-13)
 - **Puanlar daha keskin:** Doğru hedef/kitle/ton/kanal seçimi eskisinden çok daha fazla ödüllendiriliyor, yanlış seçim daha çok cezalandırılıyor. Rastgele oynayan ortalama 4.5, bilen oyuncu 7.1 alıyor (önce 6.3 / 7.5).
 - **Tekrar cezası:** Aynı ana kanalı üst üste üç kampanyada kullanmak yenilik puanını düşürüyor.
