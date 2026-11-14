@@ -5,7 +5,7 @@ extends Control
 
 signal finished(quality: float)
 
-const CANVAS: Vector2 = Vector2(640, 300)
+const CANVAS: Vector2 = Vector2(640, 250)
 
 var ctx: Dictionary = {}
 var _done: bool = false

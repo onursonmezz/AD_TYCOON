@@ -1,5 +1,20 @@
 # Değişiklik günlüğü
 
+## Mini oyunlar ve ekibin taslakları (2026-11-16)
+- **Fazlar arasında mini oyunlar:** 1. ve 2. fazın başında, kampanyanın ana kanalına göre birkaç saniyelik küçük bir oyun çıkar:
+  - **Radyo:** ses dalgasının üç parçasını doğru sırayla tıkla.
+  - **Billboard:** araba ilanın tam önündeyken tıkla (ya da boşluk tuşu).
+  - **Gazete:** ilanı sürükleyip sayfadaki boş kutuya bırak.
+- İyi oynarsan puan en çok %5 artar; atlarsan ya da kaçırırsan hiçbir şey kaybetmezsin. Her oyunda "Atla" düğmesi var; Ayarlar → Oyun'dan tamamen kapatılabilir.
+- **Ekibin 3 taslağı:** Kreatif faz bitince ekip üç ilan taslağı sunar (arka plan, ürün, efekt, slogan). Seçtiğin taslak ofis duvarındaki posterde ve sokaktaki billboard'da görünür.
+- Şimdilik yalnızca Fast Food'un ürün görselleri var; diğer sektörlerde taslakta ürün yerine markanın baş harfi çıkar.
+- Nasıl test ederim:
+  1. Yeni oyun başlat, gazete kanallı bir brief al. 1. faz başında "Mini oyun · Gazete ilanı" çıkmalı: ilanı sürükleyip boş kutuya bırak. Sonuç ("Harika! +%2.5" gibi) görünmeli, ardından emek dağılımı panosu açılmalı.
+  2. 2. faz başında başka bir oyun çıkmalı (gazetede radyo dalgası). Parçaları yanlış sırayla tıklarsan parça kırmızı yanıp sönmeli.
+  3. Billboard kanallı bir kampanyada arabayı ilanın önünde yakalamayı dene.
+  4. 3. faz başında üç taslak çıkmalı (Fast Food'da köfte, hamburger, dürüm). Birini seç. Kampanya bitince sokaktaki billboard'a ve duvar posterine bak: seçtiğin taslak orada olmalı.
+  5. Ayarlar → Oyun → "Fazlar arasında mini oyunlar" kapatılınca faz başında doğrudan pano açılmalı.
+
 ## KG1–KG3: Kampanya geliştirme — öğrenilen ipuçları, görev panosu, ekipman (2026-11-14)
 - **Öğrenilen ipuçları:** Bir kampanyada bir odak alanını belirgin şekilde öne çıkarır ya da kısarsan, o hedef için o alanın önemini öğrenirsin. Raporda "Satış kampanyalarında Metin Yazarlığı çok önemli (+++)" gibi cümleler çıkar. Sonraki kampanyalarda panoda alan adının altında işaret görünür (+++ … −−−, bilinmiyorsa "?"). Bilgi Defteri'nde yeni "Hedef × odak alanı" tablosu var.
 - **Görev panosu:** Faz başında kaydırıcılar yerine bir pano açılır. Satırlarda ekip, sütunlarda fazın üç alanı var. Hücreye sol tıklamak kişinin zamanının %25'ini o alana verir, sağ tık geri alır. Sağda kişinin yükü görünür:

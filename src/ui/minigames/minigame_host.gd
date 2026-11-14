@@ -59,6 +59,8 @@ func _ready() -> void:
 	_skip = UiUtil.button(tr("MG_DRAFT_SKIP") if _id == Minigames.DRAFT else tr("UI_MG_SKIP"), func() -> void: _game.time_up())
 	row.add_child(_skip)
 	add_child(row)
+	# Pencere kaydırılabilir: oyun açılınca görünür alana kaydır (4 saniyelik oyunda kaydırma olmasın).
+	_reveal()
 
 
 static func _make(id: String) -> MinigameGame:
@@ -70,6 +72,19 @@ static func _make(id: String) -> MinigameGame:
 		"newspaper":
 			return MgNewspaper.new()
 	return MgDraft.new()
+
+
+func _reveal() -> void:
+	# Pencere düzeni bir iki karede oturur; ondan sonra kaydır.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not is_inside_tree():
+		return
+	var p: Node = get_parent()
+	while p != null and not p is ScrollContainer:
+		p = p.get_parent()
+	if p != null:
+		(p as ScrollContainer).ensure_control_visible(self)
 
 
 func _process(delta: float) -> void:

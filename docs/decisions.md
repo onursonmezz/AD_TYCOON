@@ -1399,3 +1399,19 @@ Orgo plaza katının nakit şartını ₺15M→₺12M indirmeyi onayladı. 200×
 şart değil; bot taşınmayı taşınma bedeli ve plaza kirasını güvenle karşılayacak nakde ulaşınca yapıyor. Değişiklik
 etkisiz olduğu için şart GDD 12.1'deki ₺15M'ye geri alındı. Plazayı öne çekmek için taşınma bedeli ya da kira
 konuşulmalı.
+
+## K-120 — Fazlar arası mini oyunlar ve ekibin 3 taslağı
+Orgo oyunu karmaşıklaştırmadan eğlendirmek istedi: fazlar arasındaki beklemelerde 3–5 saniyelik, kanala özgü küçük oyunlar.
+Oyuncu bunlarla puan kasmak zorunda kalmamalı.
+- Puana etkisi en çok %5: `ham puan × (1 + 0,05 × kanal oyunlarının ortalama başarısı)`. Kampanya başına 2 kanal oyunu
+  (1. ve 2. fazın başında); atlamak ya da kaçırmak yalnızca bonusu kaybettirir, ceza yok. Botlar oynamaz; denge raporu
+  değişmez.
+- Hangi oyun: 1. fazda ana kanalın oyunu (`by_channel`, yoksa `by_category`, yoksa havuzdan), 2. fazda havuzdaki
+  sonraki oyun. İlk havuz: radyo dalgası (üç parçayı sırayla tıkla), billboard (araba ilanın önündeyken tıkla), gazete
+  (ilanı boş kutuya sürükle). Yeni oyunlar havuza eklenecek.
+- 3. fazın başında (kreatif bitti) ekibin 3 taslağı: `DraftArt` arka plan + ürün + efekt + slogan + marka çizer;
+  görseller `assets/minigame/` (`art/mini_oyun_gorselleri.md`). Seçilen taslak `setup.draft`'a yazılır, ofis
+  duvarındaki poster ve sokaktaki billboard (KeyVisual) onu birebir çizer. Puana etkisi yok; "Ekibe bırak" ilkini seçer.
+- Oyun zamanı faz başında zaten durduğu için mini oyun da zaman durmuşken oynanır; süre çubuğu 5 sn, "Atla" var,
+  Ayarlar → Oyun'dan tamamen kapatılabilir. Sayılar `balance.json minigames`.
+- Önizleme: `godot --path . res://tools/minigame_preview.tscn --resolution 760x470 -- --out=<klasör>`.

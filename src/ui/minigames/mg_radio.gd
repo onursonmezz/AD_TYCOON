@@ -4,7 +4,7 @@ extends MinigameGame
 ## son parça sessizlikle biter; birleşim yerleri ipucu verir. Her yanlış tık başarıdan bir parça götürür.
 
 const SAMPLES: int = 240
-const SLOT: Vector2 = Vector2(180, 90)
+const SLOT: Vector2 = Vector2(180, 88)
 
 var _wave: PackedFloat32Array = PackedFloat32Array()
 var _order: Array[int] = []       # aşağıdaki parçaların sırası (karışık)
@@ -34,11 +34,11 @@ func _process(delta: float) -> void:
 
 
 func _slot_rect(i: int) -> Rect2:
-	return Rect2(Vector2(30 + i * 200, 30), SLOT)
+	return Rect2(Vector2(30 + i * 200, 20), SLOT)
 
 
 func _piece_rect(i: int) -> Rect2:
-	return Rect2(Vector2(30 + i * 200, 180), SLOT)
+	return Rect2(Vector2(30 + i * 200, 140), SLOT)
 
 
 func _gui_input(event: InputEvent) -> void:

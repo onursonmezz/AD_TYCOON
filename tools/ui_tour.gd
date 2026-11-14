@@ -57,8 +57,12 @@ func _run() -> void:
 	for child: Node in screen.get("_modal_layer").get_children():
 		child.queue_free()
 	await get_tree().process_frame
-	await _shot("04_phase_sliders")
+	# Faz başında önce mini oyun (K-120): kare çek, atla, sonuç süresi dolunca pano açılır.
 	var panel: CampaignPanel = screen.get("_panel")
+	await get_tree().create_timer(0.3).timeout
+	await _shot("04_minigame")
+	await _finish_minigame(panel)
+	await _shot("04_phase_sliders")
 	var board: WorkBoard = panel.find_children("*", "WorkBoard", true, false)[0]
 	var plan: Dictionary = board.get("_plan")
 	var who: String = (board.get("_members") as Array)[0]
@@ -82,6 +86,10 @@ func _run() -> void:
 				screen.call("close_panel")
 				screen.call("show_panel", "campaign")
 				await get_tree().process_frame
+				# Kreatiften sonra ekibin 3 taslağı (K-120).
+				if not (screen.get("_panel") as Node).find_children("*", "MinigameHost", true, false).is_empty():
+					await _shot("05a_draft")
+					await _finish_minigame(screen.get("_panel"))
 				var pboards: Array[Node] = (screen.get("_panel") as Node).find_children("*", "WorkBoard", true, false)
 				if not pboards.is_empty():
 					# UI-3: kaydırma kutusu panelin dışında, pencere kabuğunda (main._scroll).
@@ -315,6 +323,15 @@ func _tour_build(screen: Control, sim: Simulation) -> void:
 	await get_tree().create_timer(0.5).timeout
 	await _shot("27c_build_remove")
 	await _tour_tools(screen, sim)
+
+
+## Paneldeki mini oyunu atlar (taslakta ilkini seçer) ve sonuç gösterimi bitene kadar bekler.
+func _finish_minigame(panel: Node) -> void:
+	var hosts: Array[Node] = panel.find_children("*", "MinigameHost", true, false)
+	if hosts.is_empty():
+		return
+	((hosts[0] as MinigameHost).get("_game") as MinigameGame).time_up()
+	await get_tree().create_timer(DataDB.data.balf("minigames.result_hold") + 0.4).timeout
 
 
 ## M7-A: araçlar penceresi ve yeni dönem ekranı.

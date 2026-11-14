@@ -4,7 +4,7 @@ extends MinigameGame
 
 const PAGE_SIZE: Vector2 = Vector2(1024, 1400)
 const SLOT: Rect2 = Rect2(196, 480, 622, 548)      # gazete görselindeki boş ilan kutusu (piksel)
-const PAGE_HEIGHT: float = 290.0
+const PAGE_HEIGHT: float = 240.0
 
 var _slot: Rect2
 var _ad: Control
