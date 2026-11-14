@@ -17,6 +17,216 @@
   5. Araçlar → Ekipman'dan VHS kamera al, TV kanallı bir kampanya yap. Prodüksiyon fazının panosunda "Ekipman · prodüksiyon ×1.08" yazmalı; bir kiralık seçince sayı artmalı, faz başlarken parası düşülmeli.
   6. Finans'ta aylık giderlerde ekipman bakımının çıktığını kontrol et.
 
+## İnşa modunda duvar ve kapı (2026-11-15)
+- **Duvar çek:** İnşa modu → Duvarlar → Duvar. Ofiste sürükleyerek yatay ya da dikey duvar çekersin; önizleme yeşilse
+  olur, kırmızıysa durum satırı nedenini yazar. Fiyat metre başı (1990'da ₺150/m); durum satırında uzunluk ve tutar.
+- **Kapı:** Duvarlar → Kapı, sonra bir iç duvara tıkla: 1,6 m'lik kapı boşluğu açılır (₺400).
+- **Yık:** "Sat" aracıyla (ya da imleç üstündeyken Del) iç duvara tıkla: duvar yıkılır. Kendi çektiğin duvarın yarı
+  parası geri gelir; ofisle gelen duvarları yıkmak bedava. Açtığın bir kapıya tıklarsan kapı kapanır.
+- **Odalar:** Bir odanın duvarını yıkarsan oda "açık alan" sayılır ve odanın etkisi gider; duvarı geri çekince döner.
+- Dış duvarlara dokunulmaz; kimseyi bir yere kapatan duvar çekilemez.
+- Nasıl test ederim:
+  1. Bir oyun aç, inşa moduna gir, "Duvarlar" sekmesini seç, "Duvar"ı seç ve boş bir yerde sürükle: yeşil önizleme
+     ve "2,5 m · ₺375" gibi bir yazı görmelisin; bırakınca duvar çıkmalı, para azalmalı.
+  2. Masanın üstünden ya da girişin önünü kapatacak şekilde çekmeyi dene: kırmızı olmalı ve çekilmemeli.
+  3. "Kapı"yı seçip bir iç duvara tıkla: duvarda boşluk açılmalı, çalışanlar oradan geçebilmeli.
+  4. "Sat" aracıyla toplantı odasının bir duvarına gel: duvar kırmızımsı yanmalı; tıklayınca yıkılmalı.
+  5. Kaydet, yükle: duvarlar aynı kalmalı.
+  6. Hepsini tek seferde görmek: `godot --path . res://tools/wall_shots.tscn --resolution 1672x941 -- --out=<klasör>`.
+
+## Müşteri kartı, ödül töreni, taslağı olmayan pencereler (2026-11-15)
+- **Müşteri kartı:** Müşteriler ekranında bir karta (ya da sağdaki oka) basınca açılır: bütçe, beklediği puan, ortalama
+  puan, memnuniyet, güven ve o müşteriyle yapılan kampanyalar ("Raporu aç" ile rapor).
+- **Ödül töreni:** Taslaktaki gibi perdeler, defne dalları, konfeti, ışıltılar, kırmızı halı, derece kurdelesi; başlıkta
+  ödül amblemi; altta rakipler, Grand Prix ve "ödül sezonu".
+- **Yeni görünüm:** Skandal (üç seçenek kartı), ödül başvurusu, yeni dönem, rakip teklifi, matbaa pazarlığı, ihale daveti,
+  iflas ve "kaydedilmemiş ilerleme" pencereleri taslakların diliyle yeniden düzenlendi.
+- **Düzeltme:** İngilizcede ofis adı ("Spare room / garage") kesilmiyor; uzun kart başlıkları "…" ile biter, üzerine
+  gelince tamamı görünür.
+- Nasıl test ederim:
+  1. Müşteriler ekranını aç, bir müşteri kartına bas: müşteri kartı açılmalı. Kampanya yaptığın bir müşteride
+     "Raporu aç" raporu göstermeli.
+  2. Sektör → bir ödüle "Başvur": amblemli kart, ücret / başvuru ayı / tören ayı ve kampanya kartları görünmeli.
+  3. Bir ödül törenini bekle (ya da ekran turunu çalıştır): sahne taslak 21'e benzemeli; gümüş, altın ve bronzda kurdele
+     rengi değişmeli.
+  4. Ayarlar → Dil → English: pencerelerde kesik ya da taşan yazı olmamalı.
+  5. Pencereleri tek seferde görmek: `godot --path . res://tools/dialog_shots.tscn --resolution 1672x941 -- --out=<klasör>`
+     (İngilizce için `--lang=en`).
+
+## Oda içi ışıklar (2026-11-15)
+- **Masa lambaları:** Her masada yeşil şapkalı küçük bir lamba; masa üstüne sıcak bir ışık havuzu düşürüyor.
+- **Tavan ışığı:** Çalışma, toplantı, mutfak ve dinlenme odalarının ortasında yumuşak, sıcak bir ışık.
+- **Düşük grafik:** Ayarlar → Ekran → Düşük seçilince bu ışıklar kapanır.
+- Görüntüler: `docs/screenshots/29_3d_lamba*.png`.
+- Nasıl test ederim:
+  1. Bir oyuna gir ve bir masaya yakınlaş: masanın arka sağ köşesinde lamba, masa üstünde sıcak ışık görünmeli.
+  2. İşe biri al: yeni masada da lamba çıkmalı.
+  3. Ayarlar → Ekran → Grafik kalitesi Düşük: lambaların ışığı kapanmalı.
+
+## 3D sahne: sıcak minyatür görünümü (2026-11-15)
+- **Işık:** Alçak, sıcak akşamüstü güneşi; uzun ve yumuşak gölgeler; gölgeli yerler hafif serin. Renkler daha uyumlu, daha az doygun.
+- **Kamera:** Açılışta ofis ekranın çoğunu kaplar; kenarlar hafif bulanık (maket etkisi).
+- **Malzemeler:** Zemin koyu ceviz, masalar zeminden ayrılıyor; mutfak karosu kırık beyaz; duvar kapakları ince.
+- **Dekor:** Oda köşelerine saksılar; binanın çevresinde çalı ve ağaçlar. Sahnenin kenarı karanlık boşluk yerine çimle devam edip sise karışıyor.
+- Önce / sonra: `docs/screenshots/28_3d_once.png` → `28_3d_sonra*.png`.
+- Nasıl test ederim:
+  1. Bir oyuna gir: ışık sıcak ve alçak gelmeli, gölgeler uzun ve yumuşak olmalı.
+  2. Tekerlekle en uzağa çık: sahnenin kenarı karanlık bir boşlukla değil, çim ve sisle bitmeli.
+  3. Q / E ile döndür: binanın her yanında çalı ve ağaç olmalı; sokak tarafı açık kalmalı.
+  4. Oda köşelerinde saksılar olmalı; kapı ağızlarında olmamalı. Çalışanlar saksıların içinden geçiyorsa bana yaz.
+  5. Ayarlar → Ekran → Grafik kalitesi Düşük: görüntü sadeleşmeli ama renkler aynı kalmalı.
+
+## Yazı tipleri (2026-11-15)
+- **Başlıklar:** Lora Bold (pencere başlıkları, kart ve bölüm başlıkları, logo, büyük sayılar).
+- **Menü ve açıklamalar:** Source Sans 3 (düğmeler, listeler, tablolar, bildirimler); kalın yerlerde SemiBold.
+- **İtalik:** Alt yazılar, yorum alıntıları ve logo gerçek italik kesimle yazılıyor.
+- Görüntüler: `docs/screenshots/27_font_*`.
+- Nasıl test ederim:
+  1. Ana menüyü aç: logo eğik Lora, düğmeler Source Sans 3 olmalı.
+  2. Bir oyuna gir ve birkaç menü aç: pencere başlıkları Lora Bold, içerik Source Sans 3 olmalı.
+  3. Türkçe karakterleri kontrol et: ı, İ, ş, ğ, ü, ö, ç her yerde doğru görünmeli.
+
+## UI-3 (8. adım): Yankılar, kanal seçici, işe alım (2026-11-14)
+- **Kampanyanın yankıları:** Kampanya bitince önce dört yayının puanı ve yorumu, altında genel değerlendirme. "Raporu incele" ayrıntılı raporu açar.
+- **Kanal seçici:** Yeni kampanyada kanal satırına basınca açılır; kategori etiketleri, arama ve çizimli kanal düğmeleri var.
+- **İşe alım:** Aday kartlarında portre, tam adlı stat rozetleri (pozisyonun ana statları yeşil), özellik etiketleri.
+- Görüntüler: `docs/screenshots/26_pencere_*`.
+- Nasıl test ederim:
+  1. Bir kampanyayı bitir: önce "Kampanyanın yankıları" açılmalı. "Raporu incele"ye bas: rapor açılmalı. "Kapat" raporu açmadan kapatmalı.
+  2. Bir brief kabul et, kanal satırındaki düğmeye bas: kanal seçici açılmalı. Bir kategori etiketine bas, arama kutusuna yaz, bir kanal seç: satırdaki ad ve çizim değişmeli.
+  3. Ekip → "+ İşe al" → "Aday ara": aday kartları portreli olmalı; "İşe al" çalışmalı.
+
+## UI-3 (5.–7. adım): Taslak ölçüleri, görsel paketi, panel ayrıntıları (2026-11-14)
+- **Boyutlar:** Her pencere kendi taslağındaki genişlik ve yükseklikte. Üst kutular ve alt menü Ayarlar taslağının ölçülerinde.
+- **Hız kutusu:** Duraklat ayrı yuvarlak düğme; seçili hız kiremit kutuda, önünde oynat işareti.
+- **İnşa modu:** Alt menü gizlenir; çubuk alçak ve geniş; eşya kartlarında resim; oda çizme "Odalar" sekmesinde.
+- **Görseller:** Simge paketi, marka / rakip / ödül logoları, kanal ve araştırma çizimleri, ofis ve masa resimleri, tören perdesi ve kupaları, sekiz çalışan portresi.
+- **Taşınanlar:** Yükle ve ana menüye dön Ayarlar → Oyun sekmesinde; mesai anahtarı Kampanya penceresinde.
+- **Ayrıntılar:** Ekip, Müşteriler, Finans, Sektör, Ar-Ge ve Araçlar taslaklarıyla karşılaştırılıp düzeltildi.
+- Görüntüler: `docs/screenshots/24_gorsel_*`, `25_panel_*`.
+- Nasıl test ederim:
+  1. Ayarlar taslağını yanına aç: üstteki üç kutu ve alt menü aynı yerde ve boyda olmalı.
+  2. 1× hızda "▶ 1×" kiremit kutuda olmalı; duraklatınca yuvarlak düğme dolmalı.
+  3. Her menüyü taslağıyla karşılaştır: pencere boyutu aynı olmalı.
+  4. Ofis → inşa modu: alt menü kaybolmalı; eşya kartlarında resim olmalı; "Odalar" sekmesinden oda çizebilmelisin.
+  5. Ayarlar → Oyun: "Yükle" ve "Ana menü" orada olmalı. Kampanya penceresinde "Mesai" anahtarı çalışmalı.
+  6. Sektör → Rakip ajanslar: logolar görünmeli. Bir ödül töreninde perde ve elma kupası görünmeli.
+
+## UI-3 (3.–4. adım): İkon paketi, Kampanya, sihirbaz, rapor, inşa modu, tören (2026-11-14)
+- **İkonlar:** Gönderdiğin ikon paketi alt menüde, üst kutularda ve pencerelerde. Logo, altın ve yıldız renkli.
+- **Kampanya:** Müşteri ve ekip başlığı, faz şeridi, dört sayaç kutusu, ikonlu emek kaydırıcıları, yeşil "Fazı başlat".
+- **Yeni kampanya:** İki sütun: solda kampanya bilgileri, sağda medya planı ve ekip; üstte ücret, medya bütçesi, süre.
+- **Kampanya raporu:** Üstte genel puan; dört sekme: Özet, Yorumlar, Gelir ve kazanımlar, Puan dökümü.
+- **İnşa modu:** İki kutu: solda döndür / sat ve durum, sağda Tümü / Bitkiler / Diğer sekmeleri ve eşya kartları.
+- **Ödül töreni:** Kampanya adı, müşteri, derece renginde kupa ve derece şeridi; altında rakipler ve Grand Prix.
+- Görüntüler: `docs/screenshots/22_ui3_*`.
+- Nasıl test ederim:
+  1. Bir brief kabul et: yeni kampanya penceresi iki sütunlu olmalı. Kanal ekle, payı kaydır, kampanyayı başlat.
+  2. Kampanya penceresinde kaydırıcıları oynat: sağdaki yüzdeler değişmeli. "Fazı başlat"a bas.
+  3. Kampanya bitince rapor açılır: dört sekmeye sırayla bas; "Kapat" her sekmede altta görünmeli.
+  4. Ofis → "İnşa moduna geç": bir eşya kartına bas, ofise yerleştir; Bitkiler sekmesine geç; "Sil / sat" ile bir eşyayı sat.
+  5. Alt menüdeki ikonlar paketteki ikonlar olmalı; açık olan yeşil, diğerleri kiremit.
+
+## UI-3 (2. adım): Küçük pencereler, dört panel ve olay penceresi (2026-11-14)
+- **Pencere boyutları:** Menü pencereleri taslaklardaki ölçüye indi. Açılır pencereler artık içerikleri kadar yer kaplıyor; boş alan kalmıyor.
+- **Ar-Ge:** İkonlu kartlar; koşullar etiket hâlinde; sağda AP, para ve süre alt alta; yeşil "Araştır".
+- **Araçlar:** Üstte bilgisayar ve aylık abonelik; alan alan şeritli tablo; kullanılan araçta "Kullanılıyor" etiketi.
+- **Ofis:** Solda mevcut ofis, sağda sonraki ofis ve taşınma koşulları. Masa kademeleri seçim kartı.
+- **Sektör:** Ödül satırları kiremit ikonlu; rakipler tabloda, güçleri çubukla.
+- **Olay penceresi:** Tür etiketi ve oklu seçenek satırları; stat kontrolü sağda yüzdeyle.
+- **Ekip:** Sütunlar daraldı, tablo küçük pencereye sığıyor.
+- Görüntüler: `docs/screenshots/21_ui3_*`.
+- Nasıl test ederim:
+  1. Menülerin hepsini sırayla aç: hiçbiri ekranın üçte ikisinden yüksek olmamalı, bildirimlerin üstüne binmemeli.
+  2. Ar-Ge'de bir araştırma kartına bak: koşul etiketleri (✓ / ✗) ve sağda üç satır maliyet olmalı.
+  3. Araçlar'da bir araç al ya da aboneliği bitir: satır hemen güncellenmeli.
+  4. Ofis'te masa kademesi kartına bas: kullanılan kart turuncu çerçeveli olmalı; "İnşa moduna geç" çalışmalı.
+  5. Sektör → Rakip ajanslar: güce göre sıralı tablo ve çubuklar görünmeli.
+  6. Bir olay çıkınca: pencere küçük olmalı, seçenekler ok işaretli satırlar hâlinde durmalı.
+
+## UI-3 (1. adım): Taslaklara göre kabuk, tema ve üç ekran (2026-11-14)
+- **Kabuk:** Sol üstte ajans kartı ve küçük oyun düğmeleri, üst ortada tarih ve hız, sağ üstte para ve itibar, alt ortada krem menü çubuğu. Pencereler ekranın ortasında açılır.
+- **Tema:** Koyu yeşil başlıklar, yeşil ana düğmeler, serif yazı, kiremit renkli ikonlar.
+- **Ekip:** Tablo hâlinde. Çalışan arama, rol süzgeci ve sıralama var. Satıra tıklayınca altında özellikler, maaş ve eğitim / zam / kovma düğmeleri açılır.
+- **Müşteriler:** Arama ve sektör süzgeci; memnuniyet ve güven çubukları; sağda yıllık bütçe ve kampanya sayısı.
+- **Gelen Kutusu:** Tümü / Briefler / Teklifler sekmeleri; her kartta ücret, medya bütçesi ve süre yan yana.
+- Taslaklar: `docs/reference/ui_mockups/`. Görüntüler: `docs/screenshots/20_ui3_*`.
+- Nasıl test ederim:
+  1. Bir oyuna gir: üstte üç krem kutu, altta ortada krem menü çubuğu olmalı.
+  2. Menü ikonlarına bas: pencere ekranın ortasında açılmalı, açık olanın ikonu yeşil olmalı.
+  3. Ekip'i aç, bir satıra tıkla: altında ayrıntı ve düğmeler açılmalı; tekrar tıklayınca kapanmalı. Arama kutusuna bir ad yaz: liste süzülmeli.
+  4. Müşteriler'de arama kutusuna yaz ve sektör seç: liste süzülmeli.
+  5. Gelen Kutusu'nda sekmeler arasında geç: Briefler yalnızca briefleri, Teklifler yalnızca tedarikçi tekliflerini ve ihale davetlerini göstermeli.
+  6. Hız düğmelerine bas: seçili hız kiremit renginde olmalı.
+
+## C3: Tek dok, pencereler ortada (2026-11-13)
+- **Dok:** Her şey altta tek çubukta. Üst satırda menü ikonları; alt satırda solda mesai/duraklat/hız ve tarih, ortada ajansının adı, sağda para ve itibar.
+- **Pencereler:** Menüye basınca pencere dokun hemen üstünde, ortada açılır. İçeriği kadar yer kaplar; uzun içerik kayar.
+- **Sağ üst:** Yalnızca küçük kaydet/yükle/ayarlar/çıkış düğmeleri ve bildirimler.
+- **İnşa modu:** Çubuk dokun üstünde, ortada açılır.
+- **Daha ince başlıklar:** Pencere başlık bantları küçüldü.
+- Görüntüler: `docs/screenshots/19_dock_*`.
+- Nasıl test ederim:
+  1. Bir oyuna gir. Altta tek çubuk olmalı; sol, sağ ve üst (sağ üst köşe hariç) boş kalmalı.
+  2. Menü ikonlarına sırayla bas: pencere ortada, çubuğun hemen üstünde açılmalı; aynı ikona tekrar basınca kapanmalı.
+  3. Raporlar gibi kısa bir pencere küçük, Ekip gibi uzun bir pencere daha yüksek açılmalı; Ekip'te içerik tekerlekle kaymalı.
+  4. Ofis → "İnşa moduna geç": inşa çubuğu aynı yerde açılmalı.
+  5. Hız düğmelerine ve duraklat'a bas: seçili olan turuncu olmalı, tarih yanında ilerlemeli.
+
+## C2: Yeni kartlar — Ekip, Müşteriler, Gelen Kutusu (2026-11-13)
+- **Ekip:** Her çalışanın portresi var. Statlar tam adıyla rozet hâlinde (üzerine gelince açıklama); enerji yeşil, moral turuncu, tükenmişlik kırmızı çubuk. Özellikler ve uzmanlık küçük etiket.
+- **Çalışan kartı:** Ofiste tıklanan herkesin portresi görünür.
+- **Müşteriler:** İkonlu başlık, renkli memnuniyet çubuğu, kırmızı "RİSKLİ" etiketi.
+- **Gelen Kutusu:** İkonlu başlık, "yeni müşteri" ve süre etiketleri; "Kabul et" turuncu.
+- **Düzeltmeler:** Pencere açıkken kontrol ipucu yazısı gizlenir; uçan "+₺" yazısı tarihin üstüne binmez.
+- Görüntüler: `docs/screenshots/18_cards_*`.
+- Nasıl test ederim:
+  1. Ekip'i aç: her kartta portre, altı stat rozeti ve üç renkli çubuk olmalı. Fareyi bir rozetin üstünde beklet: açıklama çıkmalı.
+  2. "Eğit" yanındaki listede statlar tam adıyla yazmalı (Strateji, Kreatif…).
+  3. Müşteriler'i aç: memnuniyeti düşük müşteride çubuk kırmızı ve "RİSKLİ" etiketi olmalı.
+  4. Gelen Kutusu'nda bir brief kartına bak: "Kabul et" turuncu, süre sağ üstte etiket olmalı.
+  5. Ofiste bir çalışana tıkla: sağ alttaki kartta portresi görünmeli.
+
+## C1: Alt çubuk düzeni (2026-11-13)
+- **Kenarlar boş:** Soldaki dikey ikon çubuğu kalktı. Menü ikonları ekranın altında, ortada tek sıra duruyor.
+- **Alt çubuk:** Solda kaydet/yükle/ayarlar/çıkış, ortada menüler, sağda mesai, duraklat ve hız.
+- **Sağ üst:** Tarih, para ve itibar yan yana; bildirimler altında.
+- **Pencereler küçüldü:** Menü penceresi sol altta, çubuğun üstünde açılıyor ve ekranın yarısını kaplamıyor. İçerik uzunsa kayıyor.
+- Görüntüler: `docs/screenshots/17_bottombar_*`.
+- Nasıl test ederim:
+  1. Bir oyuna gir. Sol ve sağ kenar boş olmalı; ikonlar altta ortada dizili olmalı.
+  2. Alt çubuktaki ikonlara sırayla tıkla: pencere sol altta açılmalı, aynı ikona tekrar basınca kapanmalı.
+  3. Finans'ı aç: pencere ekrandan taşmamalı, içerik fare tekerleğiyle kaymalı.
+  4. Ofis → "İnşa moduna geç": inşa çubuğu alt çubuğun hemen üstünde açılmalı.
+  5. Bir çalışana tıkla: kartı sağ altta, hız düğmelerinin üstünde çıkmalı.
+
+## A1: Yeni açılış ve karakter sayfaları (2026-11-13)
+- **Ana menü:** Oda illüstrasyonu arka planda; sağda eğik logo, kâğıt etiket ve ikonlu büyük düğmeler.
+- **"Sen kimsin?":** Küçük pencere yerine tam sayfa. Dört geçmişin portresi var; başlangıç yılı hap biçimli düğmelerle seçilir.
+- **Stat açıklamaları:** S K T İ H D yerine tam adlar yazıyor (Strateji, Kreatif, Teknik, İletişim, Hız, Dikkat). Üzerine gelince ne işe yaradığı çıkıyor.
+- **"Karakterini oluştur" (yeni):** 11 avatardan birini seç, adını yaz. Solda seçimin büyük hâli görünür.
+- **Oyun içinde:** Ad girdiysen "Sen" yerine adın yazar; ofiste kendi karakterine tıklayınca kartında avatarın görünür.
+- Görüntüler: `docs/screenshots/16_menu_*`.
+- Nasıl test ederim:
+  1. Oyunu aç. Ana menüde oda resmi, eğik "Ajans Tycoon" logosu ve düğmeler görünmeli.
+  2. "Yeni Oyun"a bas. "Sen kimsin?" sayfasında dört portreye sırayla tıkla: alttaki açıklama ve stat sayıları değişmeli.
+  3. Fareyi "Strateji 65" gibi bir rozetin üstünde beklet: kısa açıklama çıkmalı.
+  4. "Devam Et"e bas. Bir avatar seç ve adını yaz: soldaki büyük kartta resim ve ad hemen değişmeli. "Geri" ile dönünce ilk sayfadaki seçimlerin durmalı.
+  5. "Oyuna Başla"ya bas. Ofiste kendi karakterine tıkla: kartta avatarın ve adın görünmeli. Ekip panelinde de adın yazmalı.
+  6. Kaydet, ana menüye dön, "Devam Et": ad ve avatar korunmuş olmalı.
+
+## B1: Daha pürüzsüz 3D görüntü (2026-11-13)
+- **Kenarlar:** Sandalye ayağı, bank, duvar kenarı gibi ince çizgilerdeki tırtıklar giderildi.
+- **Dokular:** Duvar kâğıdı, çim ve halı uzaktan bakınca artık kumlanmıyor.
+- **Işık:** Gölgeler daha açık ve yumuşak, kontrast daha düşük; görüntü daha sıcak ve sakin.
+- **Grafik kalitesi:** Ayarlar → Ekran'da Düşük / Orta / Yüksek seçeneği var (varsayılan Yüksek).
+- Önce/sonra görüntüleri: `docs/screenshots/14_cast_*` ve `15_smooth_*`.
+- Nasıl test ederim:
+  1. Oyunu aç, bir kayda gir. Ofise bak: masa ve sandalye kenarları pürüzsüz olmalı, duvar kâğıdı kamerayı kaydırırken titreşmemeli.
+  2. Tekerlekle yakınlaş ve uzaklaş: zemin tahtaları ve çim her mesafede temiz görünmeli.
+  3. Ayarlar → Ekran → Grafik kalitesi'ni Düşük yap: görüntü hemen biraz kabalaşmalı, gölgelerin köşe kararması kaybolmalı. Yüksek'e geri al.
+  4. Kamera ya da karakterler hâlâ takılıyorsa bana yaz; o ayrı bir konu.
+
 ## M10-B: Denge ve tempo ölçümü (2026-11-13)
 - **Puanlar daha keskin:** Doğru hedef/kitle/ton/kanal seçimi eskisinden çok daha fazla ödüllendiriliyor, yanlış seçim daha çok cezalandırılıyor. Rastgele oynayan ortalama 4.5, bilen oyuncu 7.1 alıyor (önce 6.3 / 7.5).
 - **Tekrar cezası:** Aynı ana kanalı üst üste üç kampanyada kullanmak yenilik puanını düşürüyor.

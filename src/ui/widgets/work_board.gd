@@ -1,33 +1,35 @@
 class_name WorkBoard
 extends VBoxContainer
-## Görev panosu (K-099): fazın başında oyuncu ekipteki herkese üç odak alanından zaman payı verir.
-## Satırlar çalışanlar, sütunlar alanlar; hücreye sol tık +%25, sağ tık −%25. Sağda kişinin yükü,
-## altta ekibin emeğinden çıkan odak dağılımı. Onaylanınca GameState.set_phase_plan.
+## Emek dağılımı / görev panosu (K-118), UI-3 kampanya taslağı (03) dilinde: her odak alanı bir satır (ikon, ad,
+## öğrenilen önem işareti, alanın payı). Satırda kaydırıcı yerine ekip üyelerinin rozetleri durur; rozete sol tık
+## kişinin zamanının %25'ini o alana verir, sağ tık geri alır. Altta kişi başına yük, prodüksiyon fazında ekipman ve
+## kiralıklar (K-119), en altta "Otomatik dağıt" ve "Fazı başlat". Onaylanınca GameState.set_phase_plan.
 
-const COL_PERSON: float = 210.0
-const COL_CELL: float = 132.0
-const COL_LOAD: float = 120.0
-const AREA_COLORS: Array[Color] = [CozyTheme.FOREST, CozyTheme.GOLD, CozyTheme.WOOD]
+## Alan ikonları (IconPack): stratejide alanın kendi ikonu, diğer fazlarda fazın stat ikonu.
+const AREA_ICONS: Dictionary = {"research": "focus-research", "insight": "focus-insight", "positioning": "focus-positioning",
+	"concept": "stat-creative", "copy": "stat-creative", "visual": "stat-creative",
+	"production": "stat-technical", "media_planning": "stat-technical", "measurement": "stat-technical"}
+const NAME_WIDTH: float = 190.0
+const LOAD_WIDTH: float = 150.0
 
 var _camp: Dictionary
 var _phase: int = 0
 var _areas: Array[String] = []
 var _members: Array[String] = []
 var _plan: Dictionary = {}
-var _cells: Dictionary = {}   # emp_id → [Button x3]
-var _loads: Dictionary = {}   # emp_id → [Label, ProgressBar]
-var _focus_bar: HBoxContainer
-var _focus_labels: Array[Label] = []
+var _chips: Dictionary = {}       # emp_id → [Button x3]
+var _share_labels: Array[Label] = []
+var _loads: Dictionary = {}       # emp_id → [Label, ProgressBar]
+var _rentals: Array = []          # prodüksiyon fazında seçilen kiralıklar (K-119)
+var _eq_label: Label
 var _error: Label
 var _on_done: Callable
-var _rentals: Array = []   # prodüksiyon fazında seçilen kiralıklar (K-100)
-var _eq_label: Label
 
 
 func _init(camp: Dictionary, on_done: Callable) -> void:
 	_camp = camp
 	_on_done = on_done
-	add_theme_constant_override("separation", 8)
+	add_theme_constant_override("separation", CozyTheme.SPACE_S)
 
 
 func _ready() -> void:
@@ -40,125 +42,94 @@ func _ready() -> void:
 		if not emp.is_empty() and Employee.is_available(emp, sim.state.clock.week_index):
 			_members.append(str(id))
 	_plan = WorkPlan.auto(data, sim.state, _camp, _phase)
-	# Başlık satırında düğmeler: ekip uzun olsa da "Fazı başlat" kaydırmadan görünür.
-	var top: HBoxContainer = UiUtil.hbox(8)
-	top.add_child(UiUtil.label(tr("UI_BOARD_TITLE") % tr("PHASE_%d" % _phase), 18, UiUtil.TERRACOTTA))
-	top.add_child(UiUtil.spacer())
-	top.add_child(UiUtil.button(tr("UI_BOARD_AUTO"), func() -> void:
-		_plan = WorkPlan.auto(DataDB.data, GameState.sim.state, _camp, _phase)
-		_refresh()))
-	top.add_child(UiUtil.button(tr("UI_BOARD_CLEAR"), func() -> void:
-		for id: String in _members:
-			_plan[id] = [0.0, 0.0, 0.0]
-		_refresh()))
-	top.add_child(UiUtil.button_kind(tr("UI_BOARD_START"), _confirm, "accept"))
-	add_child(top)
-	_error = UiUtil.label("", 13, UiUtil.TERRACOTTA)
-	add_child(_error)
-	add_child(UiUtil.wrapped(tr("UI_BOARD_HINT"), 13, UiUtil.MUTED, 640.0))
-	add_child(_header())
-	for id: String in _members:
-		add_child(_row(id))
-	add_child(_focus_section())
+	add_child(Cards.section(tr("UI_BOARD_TITLE") % tr("PHASE_%d" % _phase), "", "info"))
+	add_child(UiUtil.wrapped(tr("UI_BOARD_HINT"), 12, UiUtil.MUTED, 600.0))
+	for i: int in 3:
+		add_child(_area_row(i))
+		add_child(HSeparator.new())
+	add_child(_load_section())
 	if _phase == 2:
 		add_child(_equipment_section())
+	_error = UiUtil.label("", 13, CozyTheme.NEGATIVE)
+	_error.visible = false
+	add_child(_error)
+	add_child(_foot())
 	_refresh()
 
 
-func _header() -> HBoxContainer:
-	var row: HBoxContainer = UiUtil.hbox(6)
-	var first: Control = Control.new()
-	first.custom_minimum_size.x = COL_PERSON
-	row.add_child(first)
-	var objective: String = str(_camp["setup"]["objective"])
-	for i: int in 3:
-		var cell: VBoxContainer = UiUtil.vbox(0)
-		cell.custom_minimum_size.x = COL_CELL
-		var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.focus_areas, _areas[i]), 13, _ink(i))
-		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		name_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-		cell.add_child(name_label)
-		var badge: Label = FocusHint.badge(objective, _areas[i], 15)
-		badge.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		cell.add_child(badge)
-		row.add_child(cell)
+func _area_row(i: int) -> HBoxContainer:
+	var data: GameData = DataDB.data
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	row.add_child(UiUtil.icon(str(AREA_ICONS.get(_areas[i], "info")), 22, CozyTheme.TERRA))
+	var name_box: VBoxContainer = UiUtil.vbox(0)
+	name_box.custom_minimum_size.x = NAME_WIDTH
+	name_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var name_label: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, _areas[i]), 14, CozyTheme.TEXT)
+	name_label.add_theme_font_override("font", CozyTheme.strong_font())
+	name_box.add_child(name_label)
+	var badge: Label = FocusHint.badge(str(_camp["setup"]["objective"]), _areas[i], 13)
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	badge.custom_minimum_size.x = 0.0
+	name_box.add_child(badge)
+	row.add_child(name_box)
+	var flow: HFlowContainer = Cards.flow_row(6)
+	flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	flow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	for id: String in _members:
+		var b: Button = Button.new()
+		b.focus_mode = Control.FOCUS_NONE
+		b.custom_minimum_size = Vector2(0.0, 30.0)
+		b.add_theme_font_size_override("font_size", 12)
+		b.add_theme_font_override("font", CozyTheme.strong_font())
+		b.tooltip_text = tr("UI_BOARD_CHIP_TIP")
+		b.gui_input.connect(_on_chip_input.bind(id, i))
+		(_chips.get_or_add(id, [null, null, null]) as Array)[i] = b
+		flow.add_child(b)
+	row.add_child(flow)
+	var share: PanelContainer = Cards.chip("", CozyTheme.SAGE_SOFT, CozyTheme.FOREST)
+	share.custom_minimum_size.x = 52.0
+	var share_label: Label = share.get_child(0) as Label
+	share_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	share_label.add_theme_font_size_override("font_size", 14)
+	_share_labels.append(share_label)
+	row.add_child(share)
 	return row
 
 
-func _row(id: String) -> PanelContainer:
-	var emp: Dictionary = GameState.sim.state.staff[id]
-	var panel: PanelContainer = UiUtil.card()
-	var row: HBoxContainer = UiUtil.hbox(6)
-	panel.add_child(row)
-	var who: VBoxContainer = UiUtil.vbox(0)
-	who.custom_minimum_size.x = COL_PERSON - 24.0
-	who.add_child(UiUtil.label(GameState.employee_name(emp), 14, UiUtil.TEXT))
-	var stats: Dictionary = emp["stats"]
-	who.add_child(UiUtil.label("%s · S %d K %d T %d · ⚡%d" % [UiUtil.name_of(DataDB.data.positions, str(emp["role"])),
-		int(stats["strategy"]), int(stats["creative"]), int(stats["technical"]), int(emp["energy"])], 11, UiUtil.MUTED))
-	row.add_child(who)
-	var buttons: Array[Button] = []
-	for i: int in 3:
-		var b: Button = Button.new()
-		b.custom_minimum_size = Vector2(COL_CELL, 34.0)
-		b.focus_mode = Control.FOCUS_NONE
-		b.gui_input.connect(_on_cell_input.bind(id, i))
-		buttons.append(b)
-		row.add_child(b)
-	_cells[id] = buttons
-	var load_box: VBoxContainer = UiUtil.vbox(2)
-	load_box.custom_minimum_size.x = COL_LOAD
-	var load_label: Label = UiUtil.label("", 12, UiUtil.TEXT)
-	load_box.add_child(load_label)
-	var bar: ProgressBar = ProgressBar.new()
-	bar.show_percentage = false
-	bar.max_value = DataDB.data.balf("workload.max_load")
-	bar.custom_minimum_size = Vector2(COL_LOAD, 8.0)
-	load_box.add_child(bar)
-	row.add_child(load_box)
-	_loads[id] = [load_label, bar]
-	return panel
+## Kişi başına yük: %100'e kadar yeşil, sonra altın, %150 üstü kiremit.
+func _load_section() -> HFlowContainer:
+	var flow: HFlowContainer = Cards.flow_row(CozyTheme.SPACE_M)
+	for id: String in _members:
+		var emp: Dictionary = GameState.sim.state.staff[id]
+		var box: VBoxContainer = UiUtil.vbox(2)
+		box.custom_minimum_size.x = LOAD_WIDTH
+		var label: Label = UiUtil.label("", 12, CozyTheme.TEXT)
+		label.tooltip_text = "%s · %s" % [GameState.employee_name(emp), tr("UI_BOARD_ENERGY") % int(emp["energy"])]
+		label.mouse_filter = Control.MOUSE_FILTER_STOP
+		box.add_child(label)
+		var bar: ProgressBar = ProgressBar.new()
+		bar.show_percentage = false
+		bar.max_value = DataDB.data.balf("workload.max_load")
+		bar.custom_minimum_size = Vector2(LOAD_WIDTH, 8.0)
+		box.add_child(bar)
+		_loads[id] = [label, bar]
+		flow.add_child(box)
+	return flow
 
 
-func _focus_section() -> VBoxContainer:
-	var box: VBoxContainer = UiUtil.vbox(4)
-	box.add_child(UiUtil.label(tr("UI_BOARD_FOCUS"), 13, UiUtil.WOOD))
-	_focus_bar = HBoxContainer.new()
-	_focus_bar.add_theme_constant_override("separation", 2)
-	_focus_bar.custom_minimum_size = Vector2(COL_PERSON + COL_CELL * 3.0 + COL_LOAD, 14.0)
-	for i: int in 3:
-		var r: ColorRect = ColorRect.new()
-		r.color = AREA_COLORS[i]
-		r.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_focus_bar.add_child(r)
-	box.add_child(_focus_bar)
-	var legend: HBoxContainer = UiUtil.hbox(18)
-	for i: int in 3:
-		var l: Label = UiUtil.label("", 12, _ink(i))
-		_focus_labels.append(l)
-		legend.add_child(l)
-	box.add_child(legend)
-	return box
-
-
-## Krem zeminde okunur yazı rengi: alan renginin koyusu.
-static func _ink(i: int) -> Color:
-	return AREA_COLORS[i].darkened(0.35)
-
-
-## Prodüksiyon fazı: sahip olunan ekipmanın çarpanı ve bu kampanya için kiralık seçimi (bedel fazı başlatınca ödenir).
+## Prodüksiyon fazı (K-119): ekipman çarpanı ve bu kampanya için kiralıklar (bedeli faz başlarken ödenir).
 func _equipment_section() -> VBoxContainer:
 	var box: VBoxContainer = UiUtil.vbox(4)
-	_eq_label = UiUtil.label("", 13, UiUtil.WOOD)
+	_eq_label = UiUtil.label("", 13, CozyTheme.WOOD)
+	_eq_label.add_theme_font_override("font", CozyTheme.strong_font())
 	box.add_child(_eq_label)
-	var flow: HFlowContainer = HFlowContainer.new()
-	flow.add_theme_constant_override("h_separation", 6)
+	var flow: HFlowContainer = Cards.flow_row(6)
 	var sim: Simulation = GameState.sim
 	for id: String in sim.equipment.available(sim.state, "rental"):
 		var b: Button = UiUtil.button(tr("UI_BOARD_RENT") % [UiUtil.name_of(DataDB.data.equipment, id),
 			UiUtil.money(sim.equipment.price(sim.state, id))], func() -> void: pass)
 		b.toggle_mode = true
-		b.add_theme_font_size_override("font_size", 13)
+		b.add_theme_font_size_override("font_size", 12)
 		b.toggled.connect(func(on: bool) -> void:
 			if on and not _rentals.has(id):
 				_rentals.append(id)
@@ -171,6 +142,24 @@ func _equipment_section() -> VBoxContainer:
 	return box
 
 
+func _foot() -> HBoxContainer:
+	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var hint: Label = UiUtil.wrapped(tr("UI_BOARD_FOOT"), 12, UiUtil.MUTED, 260.0)
+	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	foot.add_child(hint)
+	var auto: Button = UiUtil.button(tr("UI_BOARD_AUTO"), func() -> void:
+		_plan = WorkPlan.auto(DataDB.data, GameState.sim.state, _camp, _phase)
+		_refresh())
+	auto.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	foot.add_child(auto)
+	var start: Button = UiUtil.button(tr("UI_START_PHASE"), _confirm)
+	start.theme_type_variation = "PrimaryButton"
+	start.custom_minimum_size.x = 150.0
+	start.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	foot.add_child(start)
+	return foot
+
+
 func _update_equipment() -> void:
 	if _eq_label == null:
 		return
@@ -181,7 +170,7 @@ func _update_equipment() -> void:
 	_eq_label.text = tr("UI_BOARD_EQUIPMENT") % mult
 
 
-func _on_cell_input(event: InputEvent, id: String, area: int) -> void:
+func _on_chip_input(event: InputEvent, id: String, area: int) -> void:
 	var mb: InputEventMouseButton = event as InputEventMouseButton
 	if mb == null or not mb.pressed:
 		return
@@ -199,38 +188,39 @@ func _on_cell_input(event: InputEvent, id: String, area: int) -> void:
 	_refresh()
 
 
+static func _short_name(emp: Dictionary) -> String:
+	return str(GameState.employee_name(emp)).split(" ")[0]
+
+
 func _refresh() -> void:
 	var data: GameData = DataDB.data
+	var staff: Dictionary = GameState.sim.state.staff
 	for id: String in _members:
 		var alloc: Array = _plan.get(id, [0.0, 0.0, 0.0])
-		var buttons: Array = _cells[id]
 		for i: int in 3:
 			var v: float = float(alloc[i])
-			var b: Button = buttons[i]
-			b.text = "—" if v <= 0.0 else UiUtil.percent(roundf(v * 100.0))
-			var style: StyleBoxFlat = StyleBoxFlat.new()
-			style.bg_color = Color(AREA_COLORS[i], 0.12 + 0.6 * v)
-			style.set_corner_radius_all(10)
+			var b: Button = _chips[id][i]
+			b.text = "%s %s" % [_short_name(staff[id]), "·" if v <= 0.0 else UiUtil.percent(roundf(v * 100.0))]
+			var fill: Color = CozyTheme.CREAM if v <= 0.0 else CozyTheme.SAGE_SOFT.lerp(CozyTheme.FOREST_LIGHT, clampf(v, 0.0, 1.0))
+			var style: StyleBoxFlat = CozyTheme.box(fill, 999, CozyTheme.BORDER, 1, false, Vector2(10, 2))
 			for s: String in ["normal", "hover", "pressed"]:
 				b.add_theme_stylebox_override(s, style)
-			var ink: Color = Color.WHITE if v >= 0.75 else UiUtil.TEXT
+			var ink: Color = CozyTheme.CREAM_LIGHT if v >= 0.75 else (CozyTheme.MUTED if v <= 0.0 else CozyTheme.FOREST)
 			b.add_theme_color_override("font_color", ink)
 			b.add_theme_color_override("font_hover_color", ink)
 		var load: float = WorkPlan.load_of_alloc(alloc)
 		var label: Label = _loads[id][0]
 		var bar: ProgressBar = _loads[id][1]
-		label.text = tr("UI_BOARD_FREE") if load <= 0.0 else tr("UI_BOARD_LOAD") % UiUtil.percent(roundf(load * 100.0))
-		var col: Color = UiUtil.SAGE_DARK if load <= data.balf("workload.warn_load") \
-			else (UiUtil.MUSTARD if load <= data.balf("workload.danger_load") else UiUtil.TERRACOTTA)
-		label.add_theme_color_override("font_color", UiUtil.MUTED if load <= 0.0 else col)
+		label.text = "%s · %s" % [_short_name(staff[id]),
+			tr("UI_BOARD_FREE") if load <= 0.0 else tr("UI_BOARD_LOAD") % UiUtil.percent(roundf(load * 100.0))]
+		var col: Color = CozyTheme.FOREST if load <= data.balf("workload.warn_load") \
+			else (CozyTheme.GOLD if load <= data.balf("workload.danger_load") else CozyTheme.NEGATIVE)
+		label.add_theme_color_override("font_color", CozyTheme.MUTED if load <= 0.0 else col)
 		bar.value = load
 		bar.modulate = col
 	var shares: Array = WorkPlan.shares_of(_plan)
 	for i: int in 3:
-		var r: ColorRect = _focus_bar.get_child(i)
-		r.size_flags_stretch_ratio = maxf(0.001, float(shares[i]))
-		_focus_labels[i].text = "%s %s" % [UiUtil.name_of(data.focus_areas, _areas[i]), UiUtil.percent(roundf(float(shares[i]) * 100.0))]
-	_error.text = ""
+		_share_labels[i].text = UiUtil.percent(roundf(float(shares[i]) * 100.0))
 	_error.visible = false
 
 

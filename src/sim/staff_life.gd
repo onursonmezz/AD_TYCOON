@@ -27,7 +27,7 @@ func daily(state: SimState) -> void:
 	var camp: Dictionary = state.active_campaign
 	var phase: int = CampaignProduction.phase_of(camp) if not camp.is_empty() else 0
 	for emp: Dictionary in state.staff.values():
-		# Görev panosu (K-099): yük kadar yorulur; bu fazda görevsiz ekip üyesi dinlenir.
+		# Görev panosu (K-118): yük kadar yorulur; bu fazda görevsiz ekip üyesi dinlenir.
 		var load: float = WorkPlan.load_of(camp, phase, str(emp["id"])) if team.has(emp["id"]) else 0.0
 		var delta: float = -drain * WorkPlan.energy_mult(data, load) if load > 0.0 \
 			else _r("energy_rest_per_day") * float(state.office_effects.get("energy_rest_mult", 1.0))

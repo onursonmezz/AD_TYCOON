@@ -29,3 +29,20 @@ func test_surface_material_tiles_in_world_space() -> void:
 	assert_not_null(mat.albedo_texture)
 	assert_true(mat.uv1_world_triplanar)
 	assert_almost_eq(mat.uv1_scale.x, 0.5, 0.001, "2 m'de bir tekrar")
+
+
+func test_surface_texture_has_mipmaps() -> void:
+	var mat: StandardMaterial3D = WorldLook.surface_material({"texture": "wall_leaves", "tile": 2.0})
+	assert_true(mat.albedo_texture.get_image().has_mipmaps(), "uzaktan kumlanmasın diye mipmap üretilir")
+
+
+func test_quality_levels_are_complete() -> void:
+	var q: Dictionary = WorldLook.cfg()["quality"]
+	assert_true((q["levels"] as Dictionary).has(str(q["default"])), "varsayılan kademe tanımlı")
+	assert_eq(str(Settings.DEFAULTS[WorldQuality.SETTING]), str(q["default"]))
+	for id: String in WorldQuality.ids():
+		var l: Dictionary = q["levels"][id]
+		for key: String in ["msaa", "screen_aa", "scale", "debanding", "ssao", "ssil", "glow", "dof"]:
+			assert_true(l.has(key), "%s.%s" % [id, key])
+		assert_true(WorldQuality.MSAA.has(int(l["msaa"])), "%s msaa" % id)
+		assert_true(WorldQuality.SCREEN_AA.has(str(l["screen_aa"])), "%s screen_aa" % id)

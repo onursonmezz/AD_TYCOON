@@ -1,5 +1,5 @@
 extends GutTest
-## K-099: görev panosu — çalışan başına alan payları, yük, aşırı yükün verim/enerji/hata etkisi, otomatik dağıtım.
+## K-118: görev panosu — çalışan başına alan payları, yük, aşırı yükün verim/enerji/hata etkisi, otomatik dağıtım.
 
 var data: GameData
 

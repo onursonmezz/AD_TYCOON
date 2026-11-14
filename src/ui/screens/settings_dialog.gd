@@ -7,6 +7,10 @@ extends Control
 var _on_language: Callable
 var _tab: String = "audio"
 var _built: bool = false
+const FOOTER: float = 62.0  # kaydırmanın dışındaki alt satır
+## Oyun içinden açıldıysa ana ekran: "Oyun" sekmesine yükle ve ana menüye dön düğmeleri eklenir (üstte yalnızca
+## kaydet ve ayarlar düğmesi var; taslak 19).
+var game: Control = null
 
 const TABS: Array = [["audio", "UI_SET_AUDIO", "volume"], ["game", "UI_SET_GAME", "device-gamepad-2"],
 	["display", "UI_SET_DISPLAY", "device-desktop"], ["language", "UI_SET_LANGUAGE", "world"], ["tempo", "UI_SET_TEMPO", "clock"]]
@@ -24,7 +28,7 @@ func _ready() -> void:
 ## UI-2d: solda ikonlu sekmeler (Ses, Oynanış, Ekran, Dil), sağda seçili sekmenin ayarları; altta sıfırla / kapat.
 func _build() -> void:
 	UiUtil.clear(self)
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(780.0, 400.0), not _built)
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("settings") - Vector2(0.0, FOOTER), not _built, true)
 	_built = true
 	col.add_child(UiUtil.heading(tr("UI_SETTINGS"), "settings"))
 	var split: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
@@ -40,14 +44,33 @@ func _build() -> void:
 		b.icon = UiUtil.icon_texture(tab[2], 22)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.theme_type_variation = "NavButtonActive" if _tab == tab[0] else "NavButton"
+		if _tab == tab[0]:
+			# Taslak 19: seçili sekmenin solunda koyu yeşil şerit.
+			var active: StyleBoxFlat = CozyTheme.box(CozyTheme.SAGE_SOFT, CozyTheme.RADIUS_CONTROL, Color.TRANSPARENT, 0, false,
+				Vector2(CozyTheme.SPACE_M, 10))
+			active.border_width_left = 3
+			active.border_color = CozyTheme.FOREST
+			for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+				b.add_theme_stylebox_override(st, active)
 		nav.add_child(b)
+	split.add_child(VSeparator.new())  # taslak 19: sol menü ile ayarlar arasında ince dikey çizgi
 	var panel: PanelContainer = PanelContainer.new()
-	panel.theme_type_variation = "QuietPanel"
+	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())  # taslak 19: sağ taraf kutusuz
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.custom_minimum_size.y = 300.0
+	panel.custom_minimum_size.y = 250.0
 	split.add_child(panel)
 	var body: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_M)
 	panel.add_child(body)
+	# Taslak 19: "Ses ayarları" başlığı, sağında aynı satırda ince çizgi.
+	var title_row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var tab_title: Label = UiUtil.label(tr("UI_SET_" + _tab.to_upper() + "_TITLE"), 18, CozyTheme.FOREST)
+	tab_title.add_theme_font_override("font", CozyTheme.title_font(700))
+	title_row.add_child(tab_title)
+	var line: HSeparator = HSeparator.new()
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	title_row.add_child(line)
+	body.add_child(title_row)
 	match _tab:
 		"audio":
 			for key: String in ["volume_master", "volume_music", "volume_sfx", "volume_ambient"]:
@@ -66,21 +89,41 @@ func _build() -> void:
 			tools.add_child(UiUtil.button(tr("UI_SET_LOGS"), func() -> void:
 				OS.shell_open(ProjectSettings.globalize_path("user://logs"))))
 			body.add_child(tools)
+			if game != null:
+				var session: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+				var main: Control = game
+				session.add_child(UiUtil.button(tr("MENU_LOAD"), func() -> void:
+					main.call("open_modal", SaveLoadDialog.new(false, func() -> void: main.get_tree().reload_current_scene()))
+					queue_free()))
+				session.add_child(UiUtil.button(tr("UI_MAIN_MENU"), func() -> void:
+					main.call("_confirm_leave", Callable(main, "_to_menu"))
+					queue_free()))
+				body.add_child(session)
 		"display":
 			body.add_child(_check_row("fullscreen"))
 			var res: Array = Array(Settings.RESOLUTIONS)
 			body.add_child(_option_row("resolution", res, res))
+			var levels: Array = WorldQuality.ids()
+			body.add_child(_option_row("graphics", levels,
+				levels.map(func(id: Variant) -> String: return "UI_SET_GRAPHICS_" + str(id).to_upper())))
+			body.add_child(UiUtil.wrapped(tr("UI_SET_GRAPHICS_HINT"), 13, UiUtil.MUTED, 480.0))
 		"language":
 			body.add_child(_option_row("language", ["tr", "en"], ["UI_LANG_TR", "UI_LANG_EN"]))
 		"tempo":
 			_tempo(body)
 	var buttons: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	buttons.add_child(UiUtil.spacer())
+	var note: Label = UiUtil.label(tr("UI_SET_AUTOSAVED"), 13, UiUtil.MUTED)
+	note.add_theme_font_override("font", MenuArt.italic(CozyTheme.body_font()))
+	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	buttons.add_child(note)
 	buttons.add_child(UiUtil.button(tr("UI_SET_RESET"), func() -> void:
 		Settings.reset()
 		_language_changed()))
 	buttons.add_child(UiUtil.button_kind(tr("UI_CLOSE"), queue_free, "accept"))
-	col.add_child(buttons)
+	# Alt satır kaydırmanın dışında, pencerenin en altında (taslak 19).
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
+	frame.add_child(buttons)
 
 
 ## Tempo ölçümü (K-096): son yılların gerçek süresi; hız kararını bu sayılarla veriyoruz.

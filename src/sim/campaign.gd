@@ -1,11 +1,11 @@
 class_name CampaignProduction
 extends RefCounted
 ## Kampanya kurulumu doğrulama ve günlük puan üretimi (GDD 7.1, 7.4, 7.5).
-## Faz başına görev planı varsa (K-099, WorkPlan) her çalışan kendi zaman paylarıyla üretir; yoksa kaydırıcı paylarıyla.
+## Faz başına görev planı varsa (K-118, WorkPlan) her çalışan kendi zaman paylarıyla üretir; yoksa kaydırıcı paylarıyla.
 
 var data: GameData
 var scoring: Scoring
-## Prodüksiyon ekipmanı (K-100); Simulation bağlar. Yoksa çarpan 1.
+## Prodüksiyon ekipmanı (K-119); Simulation bağlar. Yoksa çarpan 1.
 var equipment: EquipmentSystem
 
 

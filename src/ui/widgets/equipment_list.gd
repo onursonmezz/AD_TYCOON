@@ -1,6 +1,6 @@
 class_name EquipmentList
 extends RefCounted
-## Araçlar penceresinin "Ekipman" sekmesi (K-100): sahip olunan ve alınabilen ekipman, grup başına en iyisi,
+## Araçlar penceresinin "Ekipman" sekmesi (K-119): sahip olunan ve alınabilen ekipman, grup başına en iyisi,
 ## aylık bakım; kiralıkların listesi (seçimi kampanyanın prodüksiyon fazında yapılır).
 
 

@@ -6,7 +6,7 @@ extends RefCounted
 func execute(sim: Simulation) -> String:
 	var err: String = sim.offices.move(sim.state, sim.economy)
 	if err.is_empty():
-		# Mobilya ve çizilen odalar yeni binaya gelmez; mobilya bedelinin yarısı iade (K-062).
+		# Mobilya, çizilen odalar ve duvarlar yeni binaya gelmez; bedellerinin yarısı iade (K-062, K-116).
 		var refund: float = sim.build.on_move(sim.state)
 		if refund > 0.0:
 			sim.staff_note.emit("NOTE_FURNITURE_SOLD", [refund], "info")

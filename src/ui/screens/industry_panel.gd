@@ -7,6 +7,9 @@ const RANK_ROWS: int = 5
 const AWARD_ROWS: int = 8
 const TABS: Array = [["awards", "UI_AWARD_CALENDAR"], ["rankings", "UI_RANKINGS"], ["rivals", "UI_RIVALS"]]
 const AWARD_ICONS: Array[String] = ["star", "speakerphone", "heart", "trophy"]
+const RIVAL_NAME: float = 180.0
+const RIVAL_TYPE: float = 150.0
+const RIVAL_NUM: float = 62.0
 
 var _main: Control
 var _body: VBoxContainer
@@ -48,12 +51,11 @@ func rebuild() -> void:
 			var col: VBoxContainer = UiUtil.vbox(6)
 			won.add_child(col)
 			var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-			head.alignment = BoxContainer.ALIGNMENT_CENTER
-			head.add_child(UiUtil.icon("trophy", 24, CozyTheme.GOLD))
-			var title: Label = UiUtil.label(tr("UI_OUR_AWARDS"), 20, CozyTheme.FOREST)
+			head.alignment = BoxContainer.ALIGNMENT_BEGIN
+			head.add_child(UiUtil.icon("trophy", 22, CozyTheme.TERRA))
+			var title: Label = UiUtil.label(tr("UI_OUR_AWARDS"), 15, CozyTheme.FOREST)
 			title.add_theme_font_override("font", CozyTheme.title_font())
 			head.add_child(title)
-			head.add_child(UiUtil.icon("trophy", 24, CozyTheme.GOLD))
 			col.add_child(head)
 			col.add_child(_our_awards())
 			_body.add_child(won)
@@ -67,6 +69,16 @@ func _awards_block() -> VBoxContainer:
 	var sim: Simulation = GameState.sim
 	var data: GameData = DataDB.data
 	var list: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	var titles: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	for spec: Array in [["UI_COL_AWARD", true], ["UI_COL_FEE", false], ["UI_COL_STATUS", false]]:
+		var h: Label = UiUtil.label(tr(spec[0]), 12, CozyTheme.TEXT)
+		if bool(spec[1]):
+			h.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		else:
+			h.custom_minimum_size.x = 96.0
+			h.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		titles.add_child(h)
+	list.add_child(titles)
 	var i: int = 0
 	for id: String in sim.awards.available(sim.state):
 		var card: PanelContainer = PanelContainer.new()
@@ -76,12 +88,12 @@ func _awards_block() -> VBoxContainer:
 		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 		card.add_child(row)
 		var icon_name: String = str(data.awards[id].get("icon", AWARD_ICONS[i % AWARD_ICONS.size()]))
-		row.add_child(UiUtil.icon(icon_name, 30, [CozyTheme.GOLD, CozyTheme.ACCENT, CozyTheme.NEGATIVE, CozyTheme.FOREST_LIGHT][i % 4]))
+		row.add_child(Cards.art("award_art", id, 34.0, icon_name, Color.TRANSPARENT))
 		i += 1
 		var info: VBoxContainer = UiUtil.vbox(0)
 		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var name: Label = UiUtil.label(UiUtil.name_of(data.awards, id), 16, CozyTheme.TEXT)
-		name.add_theme_font_override("font", CozyTheme.strong_font(800))
+		var name: Label = UiUtil.label(UiUtil.name_of(data.awards, id), 15, CozyTheme.FOREST)
+		name.add_theme_font_override("font", CozyTheme.title_font(700))
 		info.add_child(name)
 		info.add_child(UiUtil.label(tr("UI_AWARD_WHEN") % [tr("MONTH_%d" % sim.awards.entry_month(id)),
 			tr("MONTH_%d" % int(data.awards[id]["month"]))], 13, CozyTheme.MUTED))
@@ -94,9 +106,10 @@ func _awards_block() -> VBoxContainer:
 				_main.call("open_modal", AwardEntryDialog.new(id, rebuild)))
 			enter.icon = UiUtil.icon_texture("chevron-right", 18)
 			enter.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			enter.theme_type_variation = "PrimaryButton"
 			row.add_child(enter)
 		else:
-			row.add_child(UiUtil.label(tr("UI_AWARD_CLOSED"), 13, CozyTheme.MUTED))
+			row.add_child(Cards.chip(tr("UI_AWARD_CLOSED"), CozyTheme.CREAM, CozyTheme.MUTED))
 	return list
 
 
@@ -142,30 +155,58 @@ func _rankings() -> Control:
 	return box
 
 
-func _rivals() -> GridContainer:
+## Rakip tablosu (UI-3, taslak 11): güce göre sıralı; tip etiketi, çalışan, itibar, güç sayısı ve çubuğu.
+func _rivals() -> VBoxContainer:
 	var sim: Simulation = GameState.sim
 	var data: GameData = DataDB.data
-	var grid: GridContainer = GridContainer.new()
-	grid.columns = 5
-	grid.add_theme_constant_override("h_separation", 18)
-	for key: String in ["UI_COL_AGENCY", "UI_COL_TYPE", "UI_COL_STAFF", "UI_COL_REPUTATION", "UI_COL_POWER"]:
-		grid.add_child(UiUtil.label(tr(key), 13, UiUtil.WOOD))
+	var box: VBoxContainer = UiUtil.vbox(2)
+	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	for spec: Array in [["UI_COL_AGENCY", RIVAL_NAME + 26.0], ["UI_COL_TYPE", RIVAL_TYPE], ["UI_COL_STAFF", RIVAL_NUM],
+			["UI_COL_REPUTATION", RIVAL_NUM], ["UI_COL_POWER", 0.0]]:
+		var h: Label = UiUtil.label(tr(spec[0]), 12, CozyTheme.FOREST)
+		h.add_theme_font_override("font", CozyTheme.strong_font())
+		h.custom_minimum_size.x = float(spec[1])
+		head.add_child(h)
+	box.add_child(head)
 	var ids: Array = sim.state.rivals.keys()
 	ids.sort_custom(func(a: String, b: String) -> bool:
 		return sim.rivals.power(sim.state, a) > sim.rivals.power(sim.state, b))
+	var top: float = 1.0
+	for id: String in ids:
+		top = maxf(top, sim.rivals.power(sim.state, id))
 	for id: String in ids:
 		var rv: Dictionary = sim.state.rivals[id]
 		var alive: bool = bool(rv["alive"])
-		var color: Color = UiUtil.TEXT if alive else UiUtil.MUTED
-		var name_label: Label = UiUtil.label(UiUtil.name_of(data.rivals, id), 14, color)
+		var color: Color = CozyTheme.TEXT if alive else CozyTheme.MUTED
+		box.add_child(HSeparator.new())
+		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+		var logo: Control = Cards.art("rival_art", id, 22.0, "building-bank", Color.TRANSPARENT)
+		logo.modulate.a = 1.0 if alive else 0.45
+		row.add_child(logo)
+		var name_label: Label = UiUtil.label(UiUtil.name_of(data.rivals, id), 14, CozyTheme.FOREST if alive else CozyTheme.MUTED)
+		name_label.add_theme_font_override("font", CozyTheme.title_font(700))
+		name_label.custom_minimum_size.x = RIVAL_NAME
+		name_label.clip_text = true
 		var sectors: Array[String] = []
 		for sec: Variant in data.rivals[id]["sectors"]:
 			sectors.append(UiUtil.name_of(data.sectors, str(sec)))
 		name_label.tooltip_text = tr("UI_RIVAL_SECTORS") % ", ".join(sectors)
 		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-		grid.add_child(name_label)
-		grid.add_child(UiUtil.label(tr("PERS_" + str(data.rivals[id]["personality"]).to_upper()), 14, color))
-		grid.add_child(UiUtil.label("%d" % int(roundf(float(rv["staff"]))) if alive else tr("UI_RIVAL_CLOSED") % int(rv["closed_year"]), 14, color))
-		grid.add_child(UiUtil.label("%.0f" % float(rv["reputation"]), 14, color))
-		grid.add_child(UiUtil.label("%.1f" % sim.rivals.power(sim.state, id) if alive else "—", 14, color))
-	return grid
+		row.add_child(name_label)
+		var type_box: HBoxContainer = UiUtil.hbox()
+		type_box.custom_minimum_size.x = RIVAL_TYPE
+		type_box.add_child(Cards.chip(tr("PERS_" + str(data.rivals[id]["personality"]).to_upper()), CozyTheme.CREAM, color))
+		row.add_child(type_box)
+		for text: String in ["%d" % int(roundf(float(rv["staff"]))) if alive else tr("UI_RIVAL_CLOSED") % int(rv["closed_year"]),
+				"%.0f" % float(rv["reputation"])]:
+			var n: Label = UiUtil.label(text, 13, color)
+			n.custom_minimum_size.x = RIVAL_NUM
+			row.add_child(n)
+		var power: float = sim.rivals.power(sim.state, id) if alive else 0.0
+		var meter: HBoxContainer = Cards.meter("%.1f" % power if alive else "—", power / top * 100.0, CozyTheme.FOREST_LIGHT, 110.0)
+		(meter.get_child(0) as Label).add_theme_color_override("font_color", color)
+		(meter.get_child(0) as Label).custom_minimum_size.x = 26.0
+		meter.get_child(2).visible = false
+		row.add_child(meter)
+		box.add_child(row)
+	return box

@@ -1173,7 +1173,193 @@ yalnızca plaza katı (Y17, hedef Y12–16) ve yıl süresi (K-096 ile ölçüle
 düşürmek Orgo'ya soruldu.
 Not: `balance_report` aynı botu içeren birden çok JSON'u birleştirmez (ilkini alır); her bot tek dosyada koşulmalı.
 
-## K-098 — Odak alanı önemini öğrenme (kampanya geliştirme, 1. aşama)
+## K-098 — B1 görüntü: kenar yumuşatma, doku mipmap'i, yumuşak gölge, grafik kalitesi
+Orgo "görüntü kesik kesik" dedi. Sebepler: 3D pencere MSAA 2x'te kalıyordu, zemin/duvar dokularının mipmap'i yoktu
+(`.import` dosyaları depoda tutulmadığı için içe aktarma ayarına güvenilemiyor), gölgeler çok koyu ve kontrast yüksekti.
+Çözüm: dokuların mipmap'i yüklenirken kodla üretiliyor (`WorldQuality.mipmapped`); kenar yumuşatma MSAA 4x + SMAA;
+ışık `look.json`'da yumuşatıldı (ortam 0.38→0.6, güneş 1.7→1.45, gölge opaklığı 0.8, bulanıklık 3.5, kontrast 1.12→1.03,
+SSAO 3.2→2.0, dolgu 0.25→0.35, vinyet 0.28→0.2). Ayarlar → Ekran'a "Grafik kalitesi" (düşük/orta/yüksek) eklendi;
+kademeler `look.json quality` altında, varsayılan yüksek. Düşük kademe ölçülmedi (perf_check ile bakılacak).
+
+## K-099 — A1 açılış: illüstrasyonlu menü, tam sayfa yeni oyun, kurucu adı ve avatarı
+Orgo'nun referans görsellerine göre ana menü oda illüstrasyonunun (`assets/ui/menu_background.webp`) üstüne kuruldu.
+Yeni oyun küçük pencere yerine iki tam sayfa: "Sen kimsin?" (ajans adı, yıl, geçmiş) ve "Karakterini oluştur"
+(avatar + ad). Kurucunun adı ve avatarı çalışan kaydına yazılır (`name`, `avatar`); avatarın cinsiyeti kurucunun
+`gender` alanını, dolayısıyla ofisteki 3D karakterini belirler. Ad girilirse arayüz "Sen" yerine o adı gösterir.
+Avatar listesi `data/avatars.json`, resimler `assets/ui/avatars`; geçmiş portreleri `assets/ui/portraits/<geçmiş>.png`
+(Orgo'nun toplu sayfasından kesildi). Logo şimdilik Fraunces yazı tipi + megafon ikonu; hazır logo PNG'si gelirse değişir.
+Statlar bu sayfada tam adıyla yazılır, üzerine gelince açıklaması çıkar (`STAT_*_DESC`); oyun içi paneller C aşamasında.
+Alt başlık "Reklam Dünyasında Kendi Ajansını Kur" oldu (referanstaki metin).
+
+## K-100 — C1 oyun içi düzen: alt çubuk, boş kenarlar, küçük pencere
+Orgo ekranın sağını solunu doldurmak istemedi, menüleri büyük buldu ve altta dizili bir düzen istedi. Sol dikey ikon
+çubuğu kalktı; altta tek sıra çubuk var: solda oyun düğmeleri, ortada 10 menü ikonu, sağda mesai/duraklat/hız.
+Tarih sağ üste, para ve itibarın yanına taşındı. Menü penceresi artık ekranın yarısı değil: sol altta, çubuğun
+üstünde, 640 px genişlikte, ekranın üst %14'ünü boş bırakır; içerik sığmazsa pencere büyümez, içerik kayar.
+İnşa çubuğu ve çalışan kartı alt çubuğun üstünde durur; ipucu balonu alt çubuktaki düğmenin üstünde açılır.
+Panellerin içi (yoğunluk, kartlar, stat adları) henüz değişmedi; panel panel ele alınacak.
+
+## K-101 — C2 kart dili: ortak parçalar, portreler, tam stat adları
+Panel kartları için ortak parçalar `src/ui/widgets/cards.gd` (`Cards`): portre/ikon + başlık satırı, hap etiket,
+tam adlı stat rozeti (açıklamalı), renkli ince ölçer. Ekip, çalışan kartı, Müşteriler ve Gelen Kutusu bunlarla
+yeniden kuruldu. Çalışan portresi yalnızca görünüş: kurucuda seçtiği avatar, diğerlerinde cinsiyetine uyan
+avatarlardan kimliğine göre sabit biri (simülasyona yazılmaz; avatar az olduğu için aynı yüz tekrar edebilir).
+Kalan paneller (Kampanya, Ofis, Araçlar, Ar-Ge, Finans, Sektör, Raporlar) ve pencereler sırada.
+
+## K-102 — C3 düzen: tek dok, pencereler dokun üstünde ortada (K-100'ün yerine)
+Orgo sol altta açılan pencereyi mantıksız buldu ve referans olarak altta tam genişlik çubuğu olan, pencerelerin
+çubuğun hemen üstünde açıldığı bir düzen gösterdi. K-100'deki "sol altta pencere" kararı kalktı. Yeni düzen:
+altta tek dok (üst satır menü ikonları; alt satır zaman + tarih, ajansın adı, para + itibar); sağ üstte yalnızca
+küçük oyun düğmeleri ve bildirimler. Menü penceresi dokun hemen üstünde, ortada; 720 px genişlik; yüksekliği içerik
+kadar, en çok ekranın yarısı (gerisi kayar). Panellerin kendi dikey kaydırmaları kapatılır, tek kaydırma pencerede.
+İnşa çubuğu aynı yerde açılır. Dokun yüksekliği ölçülüp üstündeki parçalar ona göre dizilir (`main.gd _layout`).
+Tema: `DockButton` (sıkı zaman düğmeleri), pencere başlık bandı inceltildi (başlık 26→21). Yalnızca yerleşim örnek
+alındı; görünüş bizim krem/yeşil/turuncu dilimiz.
+
+## K-103 — UI-3: Orgo'nun taslaklarına göre kabuk ve tema (K-102'nin yerine)
+Orgo 17 ekran taslağı gönderdi (`docs/reference/ui_mockups/`); bundan sonra oyun içi ekranların hedefi bunlar.
+K-102'deki tek dok kalktı. Kabuk: sol üstte ajans kartı + küçük oyun düğmeleri, üst ortada zaman hapı (tarih, mesai,
+duraklat, hızlar), sağ üstte para + itibar hapı ve bildirimler, alt ortada krem dok (kiremit ikonlar, aralarında
+çizgi; açık olan yeşil). Menü penceresi ekranın ortasında, içeriği kadar; 780 px.
+Tema: başlık yeşili koyulaştı (#1F5B37), oyun içi ana düğme turuncudan yeşile döndü (açılış sayfalarında turuncu
+`OrangeButton` kaldı), gövde yazısı Nunito'dan serif Fraunces'e geçti (ağırlık 400, kalın 620), ikon rengi kiremit
+(`TERRA`). Bu taslağa göre kurulanlar: Ekip (aranabilir, süzülebilir tablo; satıra tıklayınca ayrıntı ve eylemler),
+Müşteriler (arama + sektör süzgeci, iki çubuk, sağda bütçe), Gelen Kutusu (sekmeler, üç bilgi sütunu).
+Taslaktan sapmalar: sektöre özel çizim ikonlar yok (hazır ikon seti kiremit renkte); Ekip'te sayfalama yerine
+kaydırma; oyun düğmeleri taslaktaki iki yerine dört (yükle ve çıkış da gerekli).
+Sıradakiler: Kampanya, yeni kampanya sihirbazı, kanal seçici, rapor, yankılar, olay, Sektör, Araçlar, Finans,
+Ar-Ge, Ofis, Ayarlar.
+
+## K-104 — UI-3 (2. adım): pencere boyutları taslaklardan; Ar-Ge, Araçlar, Ofis, Sektör, olay penceresi
+Orgo iki taslak daha gönderdi (inşa modu, ödül töreni; `docs/reference/ui_mockups/20`, `21`) ve pencerelerin
+taslaklardaki kadar küçük olmasını istedi. Menü penceresi 720 px genişlik, en çok ekranın %66'sı yükseklik
+(taslaklardaki ölçüler). Açılır pencereler (`UiUtil.modal_frame`) artık sabit yükseklikte değil: içerik kadar yer
+kaplar, verilen yükseklik üst sınırdır. Taslağa göre kurulanlar: Ar-Ge (ikonlu kartlar, koşul etiketleri, sağda
+maliyet satırları), Araçlar (alan şeritleri, satır tablosu), Ofis (mevcut / sonraki iki sütun, taşınma koşulları),
+Sektör (ödül satırları, rakip tablosu güç çubuğuyla), olay penceresi (tür etiketi, oklu seçenek satırları).
+Sıradakiler: Kampanya, yeni kampanya sihirbazı + kanal seçici, kampanya raporu, yankılar, ödül töreni, inşa modu,
+Finans, Raporlar, işe alım. Ödül töreni ve inşa modundaki çizimler (perde, kupa, eşya resimleri) görsel dosya ister.
+
+## K-105 — UI-3 (3. adım): Kampanya, sihirbaz, rapor; ikon paketi geldi
+Taslağa göre kurulanlar: Kampanya paneli (03), yeni kampanya sihirbazı (05; kanal satırı iki satırlı kart), kampanya raporu
+(02; dört sekme, yorumlar dört kartta). Rapor penceresi kodu yazıldı ve derleniyor ama ekranda henüz görülmedi.
+Orgo ana ekran ikon paketini gönderdi (25 PNG, `assets/ui/icons/`); dosyalar kopyalandı, arayüze henüz bağlanmadı.
+Sıradakiler: ikon paketini dok ve üst haplara bağlamak, kanal seçici, yankılar, ödül töreni, inşa modu, Finans, işe alım.
+
+## K-106 — UI-3 (4. adım): ikon paketi bağlandı; rapor, inşa çubuğu, ödül töreni
+Orgonun ikon paketi (`assets/ui/icons/`, 25 PNG) `IconPack` ile bağlandı: tek renkli ikonlar beyaza çevrilip tema
+rengiyle boyanıyor (dokta kiremit, açık olan yeşil); logo, para ve yıldız renkli çiziliyor. Koddaki ikon adları pakete
+eşleniyor, karşılığı olmayanlar eski SVG setinde kalıyor (müşteriler, sil, döndür, uyarı, onay gibi).
+Kampanya raporu ekranda doğrulandı; alt satır kaydırmanın dışına alındı. İnşa çubuğu iki kutu (taslak 20): solda
+araçlar ve durum, sağda kategori sekmeleri ve eşya kartları (eşya resmi yok, ikon var; kategori `decor` alanından:
+bitkiler / diğer). Ödül töreni sahne kartlı (taslak 21); perde ve elma çizimi yerine kupa ikonu.
+Sıradakiler: kanal seçici (taslak 04), yankılar penceresi (01), Finans ince ayarı, işe alım, eşya ve ofis çizimleri.
+
+## K-107 — UI-3 (5. adım): taslak ölçüleri birebir; görsel paketi
+Orgo: panel boyutları taslaklarla aynı değildi; kabuk "Ayarlar" taslağındaki gibi olmalı (ikon boşlukları, köşeler,
+yazı boyutları); diğer taslaklardan yalnızca ortadaki pencere esas alınacak. Yapılanlar:
+- Ölçüler taslaklardan piksel olarak ölçüldü (1672×941 → 1280×720, ×0,7655). Pencere boyutları `data/ui_layout.json`
+  içinde, her panel ve açılır pencere için ayrı ve SABİT (içerik sığmazsa içinde kayar). K-104teki "içerik kadar
+  yükseklik" kuralı taslağı olan pencereler için kalktı; taslağı olmayan açılır pencerelerde sürüyor.
+- Kabuk ölçüleri `MainHud` sabitlerinde: ajans kartı 223×56, küçük düğmeler 36×27, zaman kutusu 427×38, para kutusu
+  260×38, bildirim 176×38 (ilk kart y=108), dok 58 yüksek ve alttan 26.
+- Zaman kutusu: duraklat ayrı yuvarlak düğme; seçili hız kiremit kutuda ve önünde oynat işareti ("▶ 1×").
+- Üstte yalnızca kaydet ve ayarlar düğmesi (taslaktaki gibi); yükle ve ana menüye dönüş Ayarlar → Oyun sekmesinde.
+  Mesai anahtarı üst çubuktan Kampanya penceresine taşındı (taslaktaki zaman kutusunda yok).
+- İnşa modu: dok gizlenir; çubuk 173 + 539 genişlik, 151 yükseklik, alttan 45; oda çizme "Odalar" sekmesinde.
+- Görsel paketi (129 PNG) `assets/ui/icons/` altında; simgeler `IconPack` eşlemesiyle, eşya resimleri
+  `ui_layout.json furniture_art` ile bağlı. Henüz bağlanmayanlar: marka / rakip / ödül logoları, kanal ikonları,
+  ofis ve masa resimleri, portreler, tören çizimleri.
+- Yazı tipi hâlâ Fraunces; taslaktaki yazı tipinin dosyası pakette yok.
+
+## K-108 — UI-3 (6. adım): görsellerin bağlanması, Ekip araç çubuğu
+Görsel eşlemeleri `data/ui_layout.json` içinde (`*_art` tabloları: kimlik ya da ad → dosya); `Cards.art` görsel varsa
+renkli çizer, yoksa ikon karesine düşer. Bağlananlar: marka (müşteri adıyla; yalnızca üç hazır marka), tedarikçi, rakip
+logoları, ödül amblemleri, araştırma, yorumcu ve kanal görselleri (kanal → kategori → ikon), ofis ve masa resimleri,
+bilgisayar, tören perdeleri ve altın / gümüş kupa. Sekiz portre çalışan havuzuna eklendi (`avatars.json`,
+`staff_only`; oyuncu seçemez). Ekip ve Müşteriler araç çubukları taslaktaki gibi küçük (`Cards.compact`); Ekip
+başlığı iki etiket, stat değerleri hap içinde, altta "gösteriliyor" satırı.
+Eksik görseller: yazı tipi; 3.–5. seviye ofisler; dokuz eşya; sektör ikonları; bronz kupa; dijital ödül amblemi;
+iki geç dönem rakibi (hashtag_lab, viral_fabrika); dijital / sosyal / influencer kanal kategorileri.
+
+## K-109 — UI-3 (7. adım): panel çekim aracı; Finans, Sektör, Müşteriler, Ar-Ge, Araçlar ayrıntıları
+`tools/panel_shots.tscn` on menü penceresini olay penceresi olmadan çeker (taslakla karşılaştırma için).
+Taslak ayrıntıları: Finans kısa başlık + bilgi işareti (uzun açıklama ipucunda), küçük satır yazıları; Sektör ödül
+listesinde sütun başlıkları; Müşteriler kartında sağ ok ve altta "gösteriliyor" satırı; Ar-Ge kısa açıklama, koşul
+etiketleri "2. yıl" biçiminde; Araçlar iki satırlı bilgisayar başlığı, sık satırlar, küçük düğmeler.
+
+## K-110 — UI-3 (8. adım): yankılar, kanal seçici, işe alım
+Kampanya bitince artık önce "Kampanyanın yankıları" (`EchoDialog`, taslak 01; 728×492) açılır: dört yayının puanı ve
+yorumu, altında genel değerlendirme; "Raporu incele" ayrıntılı raporu açar. Sihirbazda kanal açılır listesi yerine
+kanal seçici (`ChannelPickerDialog`, taslak 04; 475×504): kategori etiketleri, arama, kategori kategori iki sütun.
+Eski `OptionButton` gizli durumda seçimi tutmaya devam ediyor (karışım mantığı değişmedi). İşe alım penceresi
+kart diline geçti (taslağı yok): portreli aday kartları, tam adlı stat rozetleri (ana statlar yeşil), yeşil "İşe al".
+
+## K-111 — Yazı tipleri: Lora Bold ve Source Sans 3
+Orgo seçti: başlıklarda Lora Bold, menü ve açıklamalarda Source Sans 3 (ikisi de Türkçe karakterli, OFL). Değişken
+dosyalar `assets/fonts/` altında (Lora, Lora-Italic, SourceSans3, SourceSans3-Italic). `CozyTheme.title_font` artık
+Lora (varsayılan 700; daha yüksek istekler 700e iner), `body_font` Source Sans 3 Regular, `strong_font` SemiBold.
+İtalik yazılar (alt yazı, yorum alıntıları, logo) artık gerçek italik kesimden (`CozyTheme.italic_of`); eğme yalnızca
+yedek. Eski Fraunces / Nunito / Fredoka dosyaları depoda duruyor ama kodda kullanılmıyor.
+
+## K-112 — 3D sahne: "sıcak minyatür" görünümü
+Orgo 3D için "sıcak minyatür" yönünü seçti (arayüz taslakları 3D için referans değil). Yapılanlar, hepsi veriyle:
+- Işık (`look.json` environment/sun/fill): alçak akşamüstü güneşi (1.0/0.82/0.6, 2.0, −36°), ılık ortam, soğuk dolgu;
+  AgX ton eşleme; `grade` ile her kanal için ton eğrisi (gölge hafif soğuk, parlak sıcak); doygunluk 0.95; derinlik sisi
+  (`fog`); kenar kararması sıcak kahve (`vignette.color`).
+- Kamera: açılış yakınlığı `camera.frame_factor` (1.18), eğim 48°, maket bulanıklığı yakın ve uzak (mesafeye oranlı).
+- Malzeme: zemin koyu ceviz tonu (masalar zeminden ayrılsın), mutfak karosu kırık beyaz, duvar kapağı ince ve koyu,
+  duvar kâğıdı sade ton; çim deseni daha seyrek, zemin 90 m pay ile ekranı doldurur.
+- Dekor (`models.json room_decor`, `garden`): oda köşelerine saksı, bina çevresine çalı ve ağaç. Yalnızca görünüş;
+  simülasyona ve yürüme ızgarasına girmez. Konumlar noktanın özetinden (hash) gelir, rastgele sayı üreteci kullanmaz.
+Kare hızı: 60 çalışan, 5. seviye ofis, 3.27 ms ortalama (306 FPS).
+Kapsam dışı: karakter modelleri, gün/gece döngüsü, masa lambası gibi iç mekân ışık kaynakları.
+
+## K-113 — Oda içi ışıklar
+Her masaya kodla çizilen küçük bir masa lambası (taban, kol, yeşil şapka, parlayan ampul) ve gölgesiz sıcak nokta ışığı;
+listelenen odaların ortasına yumuşak tavan ışığı (`look.json interior_lights`, `src/world/office_lights.gd`). Yalnızca
+görünüş. Düşük grafik kalitesinde kapanır (`quality.levels.low.interior_lights`). Masa lambası modeli yok; Tripo ile
+bir model gelirse kodla çizilen lamba yerine o kullanılabilir.
+
+## K-114 — Müşteri kartı ve taslağı olmayan pencereler
+Müşteriler panelindeki ok artık işe yarıyor: kartın tamamı (ok dahil) "Müşteri kartı" penceresini açar
+(`client_dialog.gd`): yıllık bütçe, beklediği puan (`ClientSystem.expectation`), ortalama puan, memnuniyet, güven ve
+kampanya geçmişi (her satır raporunu açar). Müşteri kişiliği GDD 6.1'de "gizli, keşfedilebilir" olduğu için gösterilmez;
+keşif mekaniği gelince buraya eklenir. Taslağı olmayan pencereler (skandal, ödül başvurusu, dönem, rakip teklifi,
+matbaa pazarlığı, ihale daveti, oyun sonu, onay) taslakların ortak dilini kullanır: çizimli başlık kartı, bilgi şeridi
+(`Cards.facts`), bölüm şeridi, seçenek kartları (`Cards.choice`), kaydırmanın dışında ayrı alt satır ve sağda yeşil
+birincil düğme. Pencere boyları `ui_layout.json dialogs`. Sunum mini oyunu, kayıt yuvaları ve Bilgi Defteri zaten bu
+dile yakın olduğu için dokunulmadı.
+
+## K-115 — Ödül töreni taslak 21'e göre
+Tören sahnesi taslaktaki gibi pencere kenarına kadar uzanır: köşelerde perdeler, başlık yanında defne dalları, kupa iki
+yanında büyük defne dalları, konfeti ve ışıltılar, kırmızı halı üstünde kupa, derece kurdelesi, altında dal-yıldız süsü.
+Ölçüler taslaktan (× 0.7655) `ui_layout.json ceremony_stage` içinde. Tek defne çelenginden sol / sağ yarısı ayrı dal
+olarak kullanılır. Bronz ve kısa liste için ayrı kupa çizimi olmadığından gümüş kupa ve kurdele o derecenin rengiyle
+boyanır (`tint`). Kurdele görseli taslaktakinden kısa olduğu için yatayda gerilir. Rakip ajanslar hücresinde taslaktaki
+tuğla bina yerine paketteki küçük ofis çizimi (`kucuk-ofis`) var.
+
+## K-116 — İnşa modunda duvar çekme, yıkma ve kapı
+Orgo'nun kararı: binanın dış duvarları hariç tüm iç duvarlar (hazır oda duvarları dahil) eklenip silinebilir; duvar
+metre başı ücretli; kapı ayrı araç; her ofiste açık.
+- Veri: `state.build["wall_ops"]` sıralı işlem listesi ({op: add | remove | door, a, b}). `OfficeLayout` hazır iç
+  duvarları üretir, sonra bu işlemleri sırayla uygular (`office_walls.gd`: her iç duvar düz bir çizgide aralık).
+  Sıralı liste sayesinde "yık, sonra yeniden çek" ya da "kapıyı kapat" kendiliğinden doğru çalışır.
+- Oda kapalılığı artık duvarlardan hesaplanır: bina kenarında olmayan her kenar en az biraz duvarla ve en fazla 2 m
+  (`CLOSED_MAX_GAP`, bir kapı + pay) boşlukla çevriliyse oda kapalı. Hazır ofislerde sonuç eskisiyle aynı (testler).
+  Kapalı oda isteyen etkiler, duvarı yıkılan odadan gelmez; duvar geri çekilince geri gelir.
+- Kurallar: duvar düz (yatay/dikey), en az 1 m, 0,5 m ızgaraya oturur, binanın içinde, eşya/masa içinden geçmez,
+  kimseyi kapatmaz. Yol kontrolü artık giriş kapısının ağzından başlar (önceden 0,6 m içeriden başlıyordu; girişin
+  hemen önüne çekilen duvar yakalanmıyordu). Kapı 1,6 m; iki yanı eşyayla tıkalıysa açılmaz; yanında 0,4 m'den kısa
+  parça kalacaksa boşluk duvarın ucuna uzar (direk gibi parça kalmasın).
+- Para (`balance.json build`): duvar `wall_cost_per_m_1990` (150), kapı `door_cost_1990` (400), enflasyonla. Kendi
+  çektiğin duvarı yıkınca güncel metre fiyatının yarısı geri gelir (ödenen tutar değil; basitlik için); hazır duvarı
+  yıkmak bedava, iade yok; kapıyı kapatmak bedava. Taşınınca çekilen duvarların yarısı iade, duvar işlemleri sıfırlanır.
+- Arayüz: inşa modunda "Duvarlar" sekmesi (Duvar, Kapı kartları; ikonlar elle çizilmiş SVG `wall.svg`, `door.svg`);
+  silme aracı ve Del tuşu eşyadan sonra kapıyı, sonra iç duvarı kaldırır.
+- Kapsam dışı: çapraz duvar, duvar rengi/kâğıdı seçimi, duvarı tutup taşıma.
+
+## K-117 — Odak alanı önemini öğrenme (kampanya geliştirme, 1. aşama)
 Orgo, Game Dev Tycoon'daki "++ ?" ipuçlarına benzer bir öğrenme istedi; tasarım GDT'yi kopyalamamalı. Hedef × odak alanı
 önemi (`objectives.json focus_importance`) artık Bilgi Defteri'nde ayrı bir tablo (`objective_focus`). Kampanya bitince
 oyuncunun belirgin biçimde öne çıkardığı ya da kıstığı alanlar öğrenilir: kaydırıcı payı faz ortalamasından en az 12 puan
@@ -1181,7 +1367,7 @@ sapan alanlar, en çok sapandan başlayarak en fazla 2 tane. Dengeli dağıtılm
 öğrenilir. Öğrenilenler raporda cümleyle, faz ekranında kaydırıcının yanında işaretle (+++ … −−−; bilinmeyen "?")
 görünür. Sayılar `balance.json research.focus_learn_*`. Puanlamaya etkisi yok; yalnızca bilgi.
 
-## K-099 — Görev panosu: çalışan başına alan payları ve iş yükü (kampanya geliştirme, 2. aşama)
+## K-118 — Görev panosu: çalışan başına alan payları ve iş yükü (kampanya geliştirme, 2. aşama)
 Orgo, çalışanların odak alanlarına atanmasını ve %100'ü aşan yükte verimin düşmesini istedi; tasarım Game Dev
 Tycoon'a benzememeli. GDT'deki "her alana tek kişi" modeli seçilmedi: plaza katında 30 kişilik ekipte çoğu kişi boşta
 kalırdı ve dengenin temeli (ekip büyüdükçe artan puan) bozulurdu.
@@ -1190,13 +1376,13 @@ kalırdı ve dengenin temeli (ekip büyüdükçe artan puan) bozulurdu.
 - Üretim: kişi alan başına `payı × yük^(−0.6)` ile üretir. %100'e kadar aynı; %200 yükte toplam üretim ×1.32,
   kişi başı verim ×0.66. Enerji kaybı `yük^1.5` (%200'de ×2.83), hata riski `yük × (1 + 0.8·(yük−1))`.
   Görevsiz ekip üyesi o fazda dinlenir.
-- Odak payı (GDD 7.4 F puanı ve K-098 öğrenmesi) ekibin alana verdiği toplam emektir; ayrı kaydırıcı yok.
+- Odak payı (GDD 7.4 F puanı ve K-117 öğrenmesi) ekibin alana verdiği toplam emektir; ayrı kaydırıcı yok.
 - Herkes %100 verip paylar kaydırıcılarla aynıysa üretim birebir eskisiyle aynı (test). Botlar ve eski kayıtlar plan
   olmadan eski yoldan çalışır, denge raporu bu yüzden değişmez.
 - Otomatik dağıtım: ekip 3'ten azsa herkes eşit/kaydırıcı paylarıyla; büyük ekipte herkes en güçlü alanına %100, boş
   alan kalmaz. Sayılar `balance.json workload`.
 
-## K-100 — Prodüksiyon ekipmanı ve kiralama (kampanya geliştirme, 3. aşama)
+## K-119 — Prodüksiyon ekipmanı ve kiralama (kampanya geliştirme, 3. aşama)
 Orgo kamera, drone, ışık, stüdyo kiralama gibi kampanya araçları istedi. `data/equipment.json`'da 14 satın alınabilir
 ve 4 kiralık kalem var: kamera kuşakları (VHS 1990 → 4K 2016), fotoğraf, ışık, ses, yeşil perde, drone (2014); stüdyo
 günü, film ekibi, drone ekibi (2012), helikopter çekimi (2013'e kadar).

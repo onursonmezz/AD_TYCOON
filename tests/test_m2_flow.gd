@@ -202,7 +202,7 @@ func test_ui_full_loop_smoke() -> void:
 	await wait_physics_frames(1)
 	var panel: CampaignPanel = screen.get("_panel")
 	var boards: Array[Node] = panel.find_children("*", "WorkBoard", true, false)
-	assert_eq(boards.size(), 1, "faz başında görev panosu açılır (K-099)")
+	assert_eq(boards.size(), 1, "faz başında görev panosu açılır (K-118)")
 	var board: WorkBoard = boards[0]
 	var who: String = (board.get("_members") as Array)[0]
 	var plan: Dictionary = board.get("_plan")

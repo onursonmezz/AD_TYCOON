@@ -13,6 +13,8 @@ const MUSTARD: Color = CozyTheme.GOLD
 const TEXT: Color = CozyTheme.TEXT
 const MUTED: Color = CozyTheme.MUTED
 
+const MODAL_CHROME: float = 92.0  # başlık bandı + iç kenar boşlukları
+
 static var _icon_cache: Dictionary = {}
 static var _head_font: Font = null
 
@@ -44,7 +46,7 @@ static func heading(text: String, icon_name: String = "") -> Label:
 	return l
 
 
-## Başlık fontu (Fredoka; sayılar, rozetler, başlıklar).
+## Rozet ve sayı fontu (Source Sans 3 Bold).
 static func head_font() -> Font:
 	if _head_font == null:
 		_head_font = UiTheme.head_font()
@@ -218,15 +220,21 @@ static func window_frame(panel: PanelContainer) -> Array:
 static func adopt_heading(title: Label, body: Node, fallback: String = "", fallback_icon: String = "") -> void:
 	var text: String = fallback
 	var icon_name: String = fallback_icon
+	var art: Texture2D = null
 	for n: Node in body.find_children("*", "Label", true, false):
 		if n.has_meta("heading"):
 			text = (n as Label).text
 			icon_name = str(n.get_meta("heading_icon", fallback_icon))
+			art = n.get_meta("heading_art") if n.has_meta("heading_art") else null
 			(n as Label).visible = false
 			break
 	title.text = text
 	var ic: TextureRect = title.get_parent().get_node("Icon")
 	ic.texture = icon_texture(icon_name, 26) if not icon_name.is_empty() else null
+	# Renkli çizim (ör. ödül amblemi) varsa boyanmadan onu göster.
+	if art != null:
+		ic.texture = art
+		ic.modulate = Color.WHITE
 	ic.visible = ic.texture != null
 	title.get_parent().get_parent().visible = not text.is_empty()
 
@@ -251,7 +259,7 @@ static func segmented(tabs: Array, current: String, on_pick: Callable) -> PanelC
 
 ## Modal pencere iskeleti: root'un içine karartılmış arka plan + ortada kaydırılabilir kart kurar.
 ## Dönüş: içeriğin ekleneceği kutu.
-static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) -> VBoxContainer:
+static func modal_frame(root: Control, min_size: Vector2, animate: bool = true, fixed: bool = false) -> VBoxContainer:
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var dim: ColorRect = ColorRect.new()
 	dim.color = Color(0.08, 0.14, 0.1, 0.45)
@@ -261,16 +269,31 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true) 
 	root.add_child(center)
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var panel: PanelContainer = PanelContainer.new()
-	panel.custom_minimum_size = min_size
+	# fixed: pencere tam verilen boyda (taslak ölçüsü); değilse yükseklik içerikten gelir, min_size.y üst sınırdır.
+	panel.custom_minimum_size = min_size if fixed else Vector2(min_size.x, 0.0)
 	center.add_child(panel)
 	var parts: Array = window_frame(panel)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, minf(min_size.y, 600.0))
 	(parts[1] as VBoxContainer).add_child(scroll)
 	var content: VBoxContainer = vbox(10)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
+	# UI-3: pencere içeriği kadar yer kaplar; min_size.y en fazla yüksekliktir, aşan kısım kayar.
+	# Kaydırma çubuğu ya hep var ya hiç yok (belirip kaybolurken metin genişliği oynamasın).
+	var cap: float = min_size.y - MODAL_CHROME if fixed else minf(min_size.y, 600.0)
+	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, 0.0)
+	var fit: Callable = func() -> void:
+		var need: float = content.get_combined_minimum_size().y
+		var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need > cap \
+			else ScrollContainer.SCROLL_MODE_DISABLED
+		if scroll.vertical_scroll_mode != mode:
+			scroll.vertical_scroll_mode = mode
+		var h: float = cap if fixed else minf(need, cap)
+		if not is_equal_approx(scroll.custom_minimum_size.y, h):
+			scroll.custom_minimum_size.y = h
+	content.minimum_size_changed.connect(fit)
+	fit.call_deferred()
 	if animate:
 		pop_in(panel)
 	# Esc ile kapanan pencerelerde başlık bandında kapat düğmesi.
@@ -306,6 +329,10 @@ static func icon_texture(name: String, px: int) -> Texture2D:
 	var key: String = "%s@%d" % [name, px]
 	if _icon_cache.has(key):
 		return _icon_cache[key]
+	var packed: Texture2D = IconPack.texture(name, px)  # UI-3: Orgo ikon paketi; yoksa SVG seti
+	if packed != null:
+		_icon_cache[key] = packed
+		return packed
 	var text: String = FileAccess.get_file_as_string("res://assets/icons/ui/%s.svg" % name)
 	var tex: Texture2D = null
 	if not text.is_empty():
@@ -362,3 +389,9 @@ static func pop_in(c: Control) -> void:
 	t.tween_callback(func() -> void: c.pivot_offset = c.size * 0.5)
 	t.tween_property(c, "scale", Vector2.ONE, 0.26).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	t.tween_property(c, "modulate:a", 1.0, 0.14)
+
+
+## Açılır pencerenin taslaktaki boyutu (data/ui_layout.json "dialogs").
+static func dialog_size(id: String) -> Vector2:
+	var a: Array = DataDB.data.raw["ui_layout.json"]["dialogs"][id]
+	return Vector2(float(a[0]), float(a[1]))

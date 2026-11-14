@@ -28,6 +28,8 @@ func _run() -> void:
 	await _shot("01_main_menu")
 	menu.call("_on_new_game")
 	await _shot("01b_background")
+	menu.get_child(menu.get_child_count() - 1).call("show_step", 2)
+	await _shot("01b2_character")
 	menu.queue_free()
 	GameState.new_game(5, "marketing_manager")
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
@@ -74,7 +76,7 @@ func _run() -> void:
 		if GameState.is_waiting():
 			var phase: int = sim.production.current_phase(sim.state.active_campaign)
 			if phase == 2 and not shown_production and EventSystem.pending(sim.state).is_empty():
-				# Prodüksiyon fazı panosu: ekipman çarpanı ve kiralıklar (K-100).
+				# Prodüksiyon fazı panosu: ekipman çarpanı ve kiralıklar (K-119).
 				shown_production = true
 				sim.state.equipment = ["vhs_camcorder", "film_photo_kit"]
 				screen.call("close_panel")
@@ -82,8 +84,10 @@ func _run() -> void:
 				await get_tree().process_frame
 				var pboards: Array[Node] = (screen.get("_panel") as Node).find_children("*", "WorkBoard", true, false)
 				if not pboards.is_empty():
-					var scrolls2: Array[Node] = (screen.get("_panel") as Node).find_children("*", "ScrollContainer", true, false)
-					(scrolls2[0] as ScrollContainer).scroll_vertical = 100000
+					# UI-3: kaydırma kutusu panelin dışında, pencere kabuğunda (main._scroll).
+					var shell_scroll: ScrollContainer = screen.get("_scroll")
+					if shell_scroll != null:
+						shell_scroll.scroll_vertical = 100000
 					await get_tree().process_frame
 					await _shot("05b_production_board")
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
@@ -474,6 +478,6 @@ func _step() -> void:
 func _close_modals(screen: Node) -> void:
 	for i: int in 3:
 		for n: Node in screen.find_children("*", "", true, false):
-			if n is ReportDialog or n is EventDialog:
+			if n is ReportDialog or n is EventDialog or n is EchoDialog:
 				n.queue_free()
 		await get_tree().process_frame

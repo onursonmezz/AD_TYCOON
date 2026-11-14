@@ -1,34 +1,51 @@
 {
 	"build_ghost": { "ok": [0.3, 0.75, 0.4], "bad": [0.85, 0.3, 0.25], "remove": [0.9, 0.35, 0.25],
 		"box_alpha": 0.22, "box_alpha_no_model": 0.45, "model_transparency": 0.3, "tint_alpha": 0.28 },
+	"_quality": "Grafik kalitesi kademeleri (Ayarlar → Ekran). msaa: 0/2/4/8; screen_aa: none/fxaa/smaa; scale: 3D çizim ölçeği.",
+	"quality": { "default": "high", "levels": {
+		"low": { "msaa": 0, "screen_aa": "fxaa", "scale": 0.85, "debanding": false, "ssao": false, "ssil": false, "glow": false, "dof": false, "interior_lights": false },
+		"medium": { "msaa": 2, "screen_aa": "smaa", "scale": 1.0, "debanding": true, "ssao": true, "ssil": false, "glow": true, "dof": true },
+		"high": { "msaa": 4, "screen_aa": "smaa", "scale": 1.0, "debanding": true, "ssao": true, "ssil": true, "glow": true, "dof": true }
+	} },
+	"_environment": "B2 sıcak minyatür: alçak akşamüstü güneşi, ılık ortam, soğuk dolgu; AgX ton eşleme; renk derecelendirme (grade: her kanal için gölge/orta/parlak eğrisi); derinlik sisi (fog) kenarları arka plan rengine karıştırır.",
 	"environment": {
-		"background": [0.25, 0.36, 0.24],
-		"ambient_color": [0.6, 0.72, 0.66], "ambient_energy": 0.38,
-		"tonemap": "aces", "exposure": 0.92, "white": 5.0,
-		"ssao": { "enabled": true, "radius": 1.4, "intensity": 3.2, "power": 2.0, "detail": 0.8 },
-		"ssil": { "enabled": true, "radius": 3.0, "intensity": 0.8 },
-		"glow": { "enabled": true, "intensity": 0.45, "strength": 1.0, "bloom": 0.02, "hdr_threshold": 1.0 },
-		"adjustments": { "brightness": 0.97, "contrast": 1.12, "saturation": 1.05 }
+		"background": [0.33, 0.36, 0.27],
+		"ambient_color": [0.8, 0.76, 0.7], "ambient_energy": 0.42,
+		"tonemap": "agx", "exposure": 1.12, "white": 6.0,
+		"ssao": { "enabled": true, "radius": 1.2, "intensity": 2.2, "power": 1.6, "detail": 0.6 },
+		"ssil": { "enabled": true, "radius": 3.0, "intensity": 0.9 },
+		"glow": { "enabled": true, "intensity": 0.35, "strength": 1.0, "bloom": 0.04, "hdr_threshold": 0.9 },
+		"adjustments": { "brightness": 1.0, "contrast": 1.06, "saturation": 0.95 },
+		"grade": { "shadows": [0.03, 0.04, 0.06], "mids": [0.51, 0.5, 0.47], "highs": [1.0, 0.96, 0.88] },
+		"fog": { "enabled": true, "color": [0.33, 0.36, 0.27], "density": 1.0, "begin": 34.0, "end": 70.0, "curve": 1.6 }
 	},
 	"sun": {
-		"color": [1.0, 0.86, 0.66], "energy": 1.7, "pitch": -44.0, "yaw": 32.0,
-		"shadow_blur": 2.5, "shadow_max_distance": 45.0, "shadow_bias": 0.03
+		"color": [1.0, 0.82, 0.6], "energy": 2.0, "pitch": -36.0, "yaw": 38.0,
+		"shadow_blur": 4.0, "shadow_opacity": 0.72, "shadow_max_distance": 45.0, "shadow_bias": 0.03
 	},
-	"fill": { "color": [0.75, 0.85, 1.0], "energy": 0.25, "pitch": -35.0, "yaw": -140.0 },
-	"camera": { "pitch": -50.0, "fov": 30.0,
-		"dof_far": { "enabled": true, "distance_factor": 1.05, "transition_factor": 0.6, "amount": 0.07 },
-		"dof_near": { "enabled": false, "distance": 2.0, "transition": 1.0 } },
-	"vignette": { "strength": 0.28, "radius": 0.85 },
+	"fill": { "color": [0.62, 0.74, 0.92], "energy": 0.32, "pitch": -40.0, "yaw": -140.0 },
+	"_camera": "frame_factor: açılış yakınlığı = bina köşegeni × bu (küçük = yakın); dof_*: maket (tilt-shift) bulanıklığı, mesafeye oranlı.",
+	"camera": { "pitch": -48.0, "fov": 30.0, "frame_factor": 1.18, "min_frame_distance": 12.0,
+		"dof_far": { "enabled": true, "distance_factor": 1.12, "transition_factor": 0.5, "amount": 0.08 },
+		"dof_near": { "enabled": true, "distance": 2.0, "transition": 1.0, "distance_factor": 0.8, "transition_factor": 0.3 } },
+	"vignette": { "strength": 0.22, "radius": 0.95, "color": [0.24, 0.18, 0.1] },
+	"_interior_lights": "Oda içi ışıklar (B5): masa lambası (inset: masanın sağ ve arka kenarından uzaklık) ve odaların ortasında tavan ışığı. Yalnızca görünüş; gölge yok.",
+	"interior_lights": { "enabled": true,
+		"desk_lamp": { "inset": [0.16, 0.14], "pole_height": 0.38, "body_color": [0.2, 0.33, 0.25], "shade_color": [0.18, 0.36, 0.25],
+			"light_color": [1.0, 0.74, 0.42], "bulb_glow": 7.0, "energy": 2.6, "range": 2.3, "attenuation": 1.6 },
+		"room_light": { "rooms": ["work", "meeting", "kitchen", "lounge", "brainstorm", "award_lobby", "rd_lab", "studio"],
+			"color": [1.0, 0.8, 0.56], "energy": 0.6, "height": 2.3, "range_factor": 0.6, "min_range": 3.5, "max_range": 8.0,
+			"attenuation": 1.2 } },
 	"walls": {
 		"outer_height": 2.6, "partition_height": 1.3, "cut_height": 0.65, "thickness": 0.18,
-		"trim_width": 0.32, "trim_height": 0.1, "corner_radius": 0.5,
-		"color": [0.94, 0.9, 0.82], "trim_color": [0.62, 0.45, 0.28], "outer_color": [0.83, 0.71, 0.55],
+		"trim_width": 0.24, "trim_height": 0.07, "corner_radius": 0.5,
+		"color": [0.9, 0.85, 0.76], "trim_color": [0.5, 0.36, 0.24], "outer_color": [0.78, 0.68, 0.55],
 		"baseboard_height": 0.12, "baseboard_color": [0.55, 0.42, 0.3]
 	},
 	"floors": {
-		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks", "texture": "floor_planks", "tile": 2.4 },
+		"work": { "color": [0.6, 0.43, 0.27], "pattern": "planks", "texture": "floor_planks", "tile": 2.0, "tint": [0.7, 0.58, 0.5] },
 		"meeting": { "color": [0.47, 0.6, 0.5], "pattern": "carpet", "texture": "floor_carpet", "tile": 3.0 },
-		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles", "texture": "floor_tiles", "tile": 2.4 },
+		"kitchen": { "color": [0.72, 0.7, 0.66], "pattern": "tiles", "texture": "floor_tiles", "tile": 1.6, "tint": [0.86, 0.82, 0.74] },
 		"lounge": { "color": [0.55, 0.38, 0.24], "pattern": "planks", "texture": "floor_planks", "tile": 2.4, "tint": [0.78, 0.66, 0.58] },
 		"empty": { "color": [0.62, 0.6, 0.58], "pattern": "concrete", "texture": "floor_concrete", "tile": 4.0 },
 		"brainstorm": { "color": [0.56, 0.66, 0.72], "pattern": "carpet" },
@@ -38,7 +55,7 @@
 	},
 	"_wallpapers": "Dış duvarın iç yüzündeki duvar kâğıdı (odanın türüne göre); tile = bir tekrarın metre boyu. Doku yoksa walls_by_room rengi.",
 	"wallpapers": {
-		"work": { "texture": "wall_leaves", "tile": 2.6 }, "kitchen": { "texture": "wall_dots", "tile": 1.2 },
+		"work": { "texture": "wall_leaves", "tile": 2.2, "tint": [0.92, 0.92, 0.86] }, "kitchen": { "texture": "wall_dots", "tile": 1.2 },
 		"meeting": { "texture": "wall_stripes", "tile": 1.4 }
 	},
 	"street": { "sidewalk": { "texture": "ground_cobble", "tile": 2.0 }, "road": { "texture": "ground_asphalt", "tile": 4.0 } },
@@ -47,5 +64,5 @@
 		"empty": [0.86, 0.84, 0.8], "brainstorm": [0.36, 0.5, 0.62], "award_lobby": [0.85, 0.7, 0.42], "rd_lab": [0.9, 0.92, 0.9],
 		"studio": [0.25, 0.26, 0.3]
 	},
-	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "texture": "ground_grass", "tile": 4.0, "margin": [16.0, 18.0] }
+	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "texture": "ground_grass", "tile": 5.5, "tint": [0.86, 0.88, 0.8], "margin": [90.0, 90.0] }
 }

@@ -45,7 +45,10 @@ func frame(size: Vector2) -> void:
 	_target_pos = Vector3(size.x * 0.5, 0.0, size.y * 0.5)
 	position = _target_pos
 	_max_distance = maxf(MIN_DISTANCE * 3.0, size.length() * 2.0)
-	_target_distance = clampf(size.length() * FRAME_FACTOR, MIN_FRAME_DISTANCE, _max_distance)
+	var cam: Dictionary = WorldLook.cfg()["camera"] if DataDB.is_ok() else {}
+	var factor: float = float(cam.get("frame_factor", FRAME_FACTOR))
+	var min_frame: float = float(cam.get("min_frame_distance", MIN_FRAME_DISTANCE))
+	_target_distance = clampf(size.length() * factor, min_frame, _max_distance)
 	_distance = _target_distance
 	_place_camera()
 

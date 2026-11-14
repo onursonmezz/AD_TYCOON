@@ -6,7 +6,7 @@ extends RefCounted
 ## Araştırmalar data/research.json, sayılar balance.json "research".
 
 const KNOWLEDGE_TABLES: Array[String] = ["sector_objective", "sector_audience", "tone", "channel_objective", "channel_audience"]
-## Hedef × odak alanı önemi (K-098): satır hedef, sütun odak alanı; kampanyalarla öğrenilir.
+## Hedef × odak alanı önemi (K-117): satır hedef, sütun odak alanı; kampanyalarla öğrenilir.
 const FOCUS_TABLE: String = "objective_focus"
 
 var data: GameData
@@ -160,7 +160,7 @@ func learn_from(state: SimState, setup: Dictionary) -> int:
 	return n
 
 
-## Kampanyadan odak önemi öğrenme (K-098): oyuncunun belirgin biçimde öne çıkardığı ya da kıstığı alanlar (faz
+## Kampanyadan odak önemi öğrenme (K-117): oyuncunun belirgin biçimde öne çıkardığı ya da kıstığı alanlar (faz
 ## ortalamasından en az focus_learn_min_deviation puan sapan kaydırıcılar), en çok sapandan başlayarak en fazla
 ## focus_learn_per_campaign tane. Hiçbiri yoksa focus_learn_fallback_chance ile rastgele bir bilinmeyen alan.
 ## Dönüş: öğrenilen odak alanı kimlikleri.

@@ -22,7 +22,14 @@ func _init() -> void:
 	add_theme_constant_override("separation", CozyTheme.SPACE_M)
 	add_child(UiUtil.heading(tr("MENU_FINANCE")))
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	top.add_child(UiUtil.wrapped(tr("UI_FINANCE_HINT"), 13, CozyTheme.MUTED, 240.0))
+	# Taslak 16: kısa başlık ve bilgi işareti; uzun açıklama işaretin üstüne gelince çıkar.
+	var hint: Label = UiUtil.label(tr("UI_FINANCE_SHORT"), 13, CozyTheme.TEXT)
+	top.add_child(hint)
+	var info: TextureRect = UiUtil.icon("info", 16, CozyTheme.FOREST)
+	info.mouse_filter = Control.MOUSE_FILTER_STOP
+	info.tooltip_text = tr("UI_FINANCE_HINT")
+	top.add_child(info)
+	top.add_child(UiUtil.spacer())
 	_tabs = UiUtil.hbox(0)
 	top.add_child(_tabs)
 	add_child(top)
@@ -110,7 +117,7 @@ func _summary_item(icon_name: String, icon_color: Color, name: String, value: St
 	item.add_child(UiUtil.icon(icon_name, 30, icon_color))
 	var col: VBoxContainer = UiUtil.vbox(0)
 	col.add_child(UiUtil.label(name, 13, CozyTheme.MUTED))
-	var v: Label = UiUtil.label(value, 22, value_color)
+	var v: Label = UiUtil.label(value, 18, value_color)
 	v.add_theme_font_override("font", CozyTheme.strong_font(800))
 	col.add_child(v)
 	item.add_child(col)
@@ -122,10 +129,10 @@ func _summary_item(icon_name: String, icon_color: Color, name: String, value: St
 func _row(icon_name: String, name: String, value: String, color: Color = CozyTheme.TEXT) -> void:
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	row.add_child(UiUtil.icon(icon_name, 20, CozyTheme.FOREST_LIGHT))
-	var n: Label = UiUtil.label(name, 15, CozyTheme.TEXT)
+	var n: Label = UiUtil.label(name, 13, CozyTheme.TEXT)
 	n.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(n)
-	var v: Label = UiUtil.label(value, 15, color)
+	var v: Label = UiUtil.label(value, 13, color)
 	v.add_theme_font_override("font", CozyTheme.strong_font(760))
 	row.add_child(v)
 	_rows.add_child(row)

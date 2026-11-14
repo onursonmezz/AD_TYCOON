@@ -21,15 +21,20 @@ func _init(supplier_id: String, list_price: float, on_done: Callable) -> void:
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	GameState.execute(NegotiateCommand.new(_supplier, _list_price))
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(520.0, 340.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("negotiation"))
 	col.add_child(UiUtil.heading(tr("UI_NEGOTIATION_TITLE") % tr(data.suppliers[_supplier]["name_key"]), "receipt"))
-	col.add_child(UiUtil.label(tr("UI_LIST_PRICE") % UiUtil.money(_list_price), 16))
+	col.add_child(Cards.header(Cards.art("supplier_art", _supplier, 52.0, "receipt"), tr(data.suppliers[_supplier]["name_key"]),
+		tr("UI_LIST_PRICE") % UiUtil.money(_list_price)))
 	var h: Array = GameState.sim.suppliers.hint(GameState.sim.state)
+	var hint: Label
 	if not h.is_empty():
-		col.add_child(UiUtil.label(tr("UI_NEGOTIATION_HINT") % [UiUtil.money(h[0]), UiUtil.money(h[1])], 15, UiUtil.SAGE_DARK))
+		hint = UiUtil.label(tr("UI_NEGOTIATION_HINT") % [UiUtil.money(h[0]), UiUtil.money(h[1])], 14, CozyTheme.FOREST)
 	else:
-		col.add_child(UiUtil.wrapped(tr("UI_NEGOTIATION_NO_HINT"), 14, UiUtil.MUTED, 460.0))
-	var row: HBoxContainer = UiUtil.hbox()
+		hint = UiUtil.label(tr("UI_NEGOTIATION_NO_HINT"), 13, CozyTheme.MUTED)
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	col.add_child(hint)
+	col.add_child(Cards.section(tr("UI_NEGOTIATION_YOUR_OFFER"), "", "coins"))
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	_price = SpinBox.new()
 	_price.min_value = 0.0
 	_price.max_value = _list_price
@@ -39,14 +44,21 @@ func _ready() -> void:
 	_price.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(_price)
 	_offer_button = UiUtil.button(tr("UI_MAKE_OFFER"), _on_offer)
+	_offer_button.theme_type_variation = "PrimaryButton"
+	_offer_button.custom_minimum_size.x = 120.0
 	row.add_child(_offer_button)
 	col.add_child(row)
-	_status = UiUtil.wrapped("", 15, UiUtil.TEXT, 460.0)
+	_status = UiUtil.label("", 14, CozyTheme.TEXT)
+	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(_status)
-	var buttons: HBoxContainer = UiUtil.hbox()
-	buttons.add_child(UiUtil.spacer())
-	buttons.add_child(UiUtil.button(tr("UI_CLOSE"), _close))
-	col.add_child(buttons)
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
+	var foot: HBoxContainer = UiUtil.hbox()
+	foot.add_child(UiUtil.spacer())
+	var close: Button = UiUtil.button(tr("UI_CLOSE"), _close)
+	close.custom_minimum_size.x = 120.0
+	foot.add_child(close)
+	frame.add_child(foot)
 
 
 func _on_offer() -> void:
@@ -56,16 +68,16 @@ func _on_offer() -> void:
 		"accepted":
 			_discount = GameState.sim.suppliers.negotiated_discount(GameState.sim.state)
 			_status.text = tr("UI_NEGOTIATION_ACCEPTED") % [UiUtil.money(n["price"]), int(roundf(_discount * 100.0))]
-			_status.add_theme_color_override("font_color", UiUtil.SAGE_DARK)
+			_status.add_theme_color_override("font_color", CozyTheme.FOREST)
 			_offer_button.disabled = true
 		"failed":
 			_status.text = tr("UI_NEGOTIATION_FAILED")
-			_status.add_theme_color_override("font_color", UiUtil.TERRACOTTA)
+			_status.add_theme_color_override("font_color", CozyTheme.NEGATIVE)
 			_offer_button.disabled = true
 		_:
 			_status.text = tr("UI_NEGOTIATION_REJECTED") % [int(n["round"]), rounds] \
 				+ ("\n" + tr("UI_NEGOTIATION_STRAINED") if bool(n.get("last_broken", false)) else "")
-			_status.add_theme_color_override("font_color", UiUtil.WOOD)
+			_status.add_theme_color_override("font_color", CozyTheme.WOOD)
 
 
 func _close() -> void:

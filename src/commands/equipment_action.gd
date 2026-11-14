@@ -1,6 +1,6 @@
 class_name EquipmentActionCommand
 extends RefCounted
-## Oyuncu eylemi (K-100): prodüksiyon ekipmanı satın al ya da sat.
+## Oyuncu eylemi (K-119): prodüksiyon ekipmanı satın al ya da sat.
 
 var action: String
 var id: String

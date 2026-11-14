@@ -81,7 +81,7 @@ var room_quality: float = 50.0
 var office_effects: Dictionary = {}
 ## Araçlar (M7): id → { version, sub }, bilgisayar kuşağı; tool_mults ve ai_penalty onlardan hesaplanır, kaydedilmez.
 var tools: Dictionary = {}
-## Sahip olunan prodüksiyon ekipmanı kimlikleri (K-100).
+## Sahip olunan prodüksiyon ekipmanı kimlikleri (K-119).
 var equipment: Array = []
 var hardware: String = "pc386"
 var tool_mults: Dictionary = {}

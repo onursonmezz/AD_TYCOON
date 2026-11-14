@@ -1,0 +1,59 @@
+{
+	"_doc": "UI-3: pencere boyutları Orgo'nun taslaklarından ölçüldü (docs/reference/ui_mockups, 1672×941 görüntü → 1280×720 mantıksal piksel). [genişlik, yükseklik].",
+	"windows": {
+		"inbox": [677, 475], "clients": [706, 449], "campaign": [674, 491], "team": [713, 425], "office": [703, 423],
+		"tools": [703, 410], "research": [706, 449], "finance": [706, 440], "industry": [706, 452], "history": [706, 449]
+	},
+	"default_window": [706, 449],
+	"dialogs": {
+		"wizard": [708, 475], "report": [681, 504], "event": [527, 292], "ceremony": [619, 525], "settings": [775, 430],
+		"channel_picker": [475, 504], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [540, 400], "game_over": [560, 340], "confirm": [480, 220], "pitch_invite": [660, 500]
+	},
+	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
+	"_art": "Görsel eşlemeleri: kimlik (ya da ad) → assets/ui/icons altındaki dosya adı. Eşleme yoksa arayüz ikon kullanır.",
+	"furniture_art": {
+		"plant_small": "kucuk-bitki", "plant_big": "bitki-rafi", "tea_urn": "semaver", "water_cooler": "su-sebili",
+		"whiteboard": "beyaz-tahta", "mood_board": "mood-board", "bookshelf": "kitaplik", "award_case": "gumus-elma-kupasi"
+	},
+	"office_art": { "1": "ev-garaj-ofisi", "2": "kucuk-ofis" },
+	"desk_art": { "basic": "basit-masa", "ergonomic": "ergonomik-masa", "adjustable": "ayarlanabilir-masa" },
+	"hardware_art": { "default": "imak-bilgisayar" },
+	"rival_art": {
+		"mavi_ok": "mavi-ok", "kivilcim": "kivilcim-kreatif", "ekonomik": "ekonomik-ajans", "anadolu_tanitim": "anadolu-tanitim",
+		"global_grup": "global-grup", "atolye_34": "atolye-34", "piksel": "piksel-medya", "mega_iletisim": "mega-holding",
+		"tik": "tik-ajans", "yeni_nesil": "yeni-nesil"
+	},
+	"award_art": {
+		"golden_apple": "altin-elma-amblem", "effie": "etkin-odulleri", "coastal_lions": "kiyi-aslanlari", "good_cause": "iyilik-odulleri"
+	},
+	"channel_art": {
+		"newspaper": "gazete-ilani", "magazine": "dergi-ilani", "flyer_brochure": "brosur", "catalog": "katalog",
+		"pop_instore": "magaza-ici-pop", "street_furniture": "raket-durak", "radio": "radyo", "cinema": "sinema",
+		"event_launch": "lansman", "trade_fair": "fuar-standi", "concert_sponsorship": "festival-sponsorlugu",
+		"sports_sponsorship": "spor-sponsorlugu", "pr_press": "basin-bulteni", "csr_project": "sosyal-sorumluluk"
+	},
+	"channel_category_art": {
+		"print": "baski-kategorisi", "ooh": "acik-hava-kategorisi", "guerrilla": "gerilla-kategorisi", "broadcast": "yayin-kategorisi",
+		"event": "etkinlik", "sponsorship": "sponsorluk", "pr": "pr"
+	},
+	"reviewer_art": {
+		"REVIEWER_REKLAM_DUNYASI": "reklam-dunyasi", "REVIEWER_PAZARLAMA_GAZETESI": "pazarlama-gazetesi",
+		"REVIEWER_KREATIF_BLOG": "kreatif-blog"
+	},
+	"research_art": {
+		"tone_choice": "ton-secimi", "audience_analysis": "hedef-kitle", "media_planning": "medya-planlama",
+		"market_research": "pazar-arastirma-hizmeti"
+	},
+	"brand_art": { "Lezzetçi Köfte": "lezzetci-kofte", "Çınar Mobilya": "cinar-mobilya", "Altın Tatil": "altin-tatil" },
+	"supplier_art": { "renkli_baski": "renkli-baski" },
+	"trophy_art": { "gold": "altin-elma-kupasi", "grand_prix": "altin-elma-kupasi", "silver": "gumus-elma-kupasi", "bronze": "gumus-elma-kupasi", "shortlist": "gumus-elma-kupasi" },
+	"_ceremony_stage": "Ödül töreni sahnesi (taslak 21, taslak pikseli × 0.7655). Dikdörtgenler [x, y, en, boy], design_width genişliğine göre; sağdaki eşler aynalanır. confetti/sparkles: [x, y, boy]. tint: kupa ve kurdele rengi (gümüş görsel bu renkle çarpılır).",
+	"ceremony_stage": { "design_width": 619, "height": 329, "curtain": [0, 0, 136, 191], "title_y": 8, "client_y": 40,
+		"title_sprig": [163, 13, 32, 52], "branch": [104, 88, 124, 150], "trophy": [222, 66, 175, 180], "carpet": [79, 205, 455, 68],
+		"ribbon": [128, 234, 353, 84], "ribbon_text_y": 248, "ornament": [234, 306, 142, 19],
+		"confetti": [[38, 80, 104], [492, 96, 96]], "sparkles": [[128, 60, 28], [460, 70, 28], [392, 116, 22], [156, 128, 20]],
+		"bottom_art": 62, "footer_sprig": 22, "rivals_ratio": 1.3,
+		"art": { "curtain_left": "perde-sol", "curtain_right": "perde-sag", "laurel": "defne-celengi", "carpet": "toren-halisi", "ribbon": "gumus-kurdele",
+			"confetti": "konfeti", "sparkles": "yildiz-isiltilari", "star": "yildiz", "rivals": "kucuk-ofis", "grand_prix": "altin-elma-kupasi" },
+		"tint": { "gold": "#F2CF6E", "grand_prix": "#F2CF6E", "silver": "#FFFFFF", "bronze": "#D9955C", "shortlist": "#BFD3BC", "": "#D8D2C8" } }
+}

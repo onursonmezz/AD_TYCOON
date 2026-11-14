@@ -50,6 +50,7 @@ var rivals: RivalSystem
 var awards: AwardSystem
 var pitches: PitchSystem
 var build: BuildSystem
+var walls: WallSystem
 var tools: ToolSystem
 var equipment: EquipmentSystem
 var research: ResearchSystem
@@ -88,6 +89,7 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	awards = AwardSystem.new(data, rivals)
 	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
 	build = BuildSystem.new(data)
+	walls = WallSystem.new(data, build)
 	tools = ToolSystem.new(data)
 	equipment = EquipmentSystem.new(data)
 	production.equipment = equipment
@@ -189,7 +191,7 @@ func _needs_phase_input() -> bool:
 	return true
 
 
-## Faz başı girişleri PhaseInput'ta (dosya boyutu, K-099/K-100).
+## Faz başı girişleri PhaseInput'ta (dosya boyutu, K-118/K-119).
 func set_phase_sliders(sliders: Array) -> bool:
 	return PhaseInput.apply_sliders(self, sliders)
 

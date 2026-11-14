@@ -29,9 +29,15 @@ var props: Array[Dictionary] = []
 ## oda tipi → yürünebilir bekleme noktaları
 var spots: Dictionary = {}
 var entrance: Vector2 = Vector2.ZERO
+## Giriş kapısının ağzı (bina kenarına çok yakın): yol kontrolü buradan başlar; girişi kapatan duvar çekilemesin.
+var doorway: Vector2 = Vector2.ZERO
 ## Kapalı odaların kapı ortaları: masalar bunların önüne dizilmez (yol kapanmasın).
 var _doors: Array[Vector2] = []
 const DOOR_KEEP_CLEAR: float = 1.4
+## Bir odanın kenarında kapalı sayılmak için en fazla duvarsız uzunluk (bir kapı boşluğu + pay).
+const CLOSED_MAX_GAP: float = 2.0
+## İç duvarlar çizgi tablosu olarak (OfficeWalls); silme ve kapı araçları buradan bakar.
+var wall_lines: Dictionary = {}
 var _grid: AStarGrid2D = AStarGrid2D.new()
 
 
@@ -55,6 +61,7 @@ static func build(rec: Dictionary, custom: Dictionary = {}, furniture_defs: Dict
 			l._room_walls(room)
 		if not (bool(room["type"] == "empty") or l._covered(room)):
 			l._furnish(room)
+	l._apply_wall_ops(custom.get("wall_ops", []))
 	var i: int = 0
 	for f: Dictionary in custom.get("furniture", []):
 		if furniture_defs.has(f["id"]):
@@ -100,6 +107,7 @@ func _outer_walls(entrance_side: String) -> void:
 		if side == entrance_side:
 			var mid: Vector2 = (seg[0] + seg[1]) * 0.5
 			entrance = mid + _inward(side) * 0.6
+			doorway = mid + _inward(side) * 0.25
 			_add_with_gap(seg[0], seg[1], mid, ENTRANCE_WIDTH, true, side)
 		else:
 			walls.append({"a": seg[0], "b": seg[1], "outer": true, "side": side})
@@ -154,6 +162,39 @@ func _on_perimeter(a: Vector2, b: Vector2) -> bool:
 	return (is_zero_approx(a.x) and is_zero_approx(b.x)) or (is_zero_approx(a.y) and is_zero_approx(b.y)) \
 		or (is_equal_approx(a.x, size.x) and is_equal_approx(b.x, size.x)) \
 		or (is_equal_approx(a.y, size.y) and is_equal_approx(b.y, size.y))
+
+
+## K-116: oyuncunun duvar işlemleri (ekle / sil / kapı) hazır iç duvarların üstüne uygulanır; sonra her odanın
+## kapalı olup olmadığı duvarlardan yeniden hesaplanır (bina kenarında olmayan her kenarı, en çok bir kapılık boşlukla
+## duvarla çevriliyse kapalı).
+func _apply_wall_ops(ops: Array) -> void:
+	var outer: Array[Dictionary] = []
+	var inner: Array[Dictionary] = []
+	for w: Dictionary in walls:
+		(outer if bool(w["outer"]) else inner).append(w)
+	wall_lines = OfficeWalls.lines_from(inner)
+	OfficeWalls.apply(wall_lines, ops)
+	walls = outer
+	walls.append_array(OfficeWalls.to_walls(wall_lines))
+	for room: Dictionary in rooms:
+		room["open"] = not _closed(room["rect"])
+
+
+func _closed(r: Rect2) -> bool:
+	var inner_edges: int = 0
+	for side: String in SIDES:
+		var seg: Array[Vector2] = _edge(r, side)
+		if _on_perimeter(seg[0], seg[1]):
+			continue
+		inner_edges += 1
+		var cov: float = OfficeWalls.covered(wall_lines, seg[0], seg[1])
+		if cov < OfficeWalls.EPS or seg[0].distance_to(seg[1]) - cov > CLOSED_MAX_GAP:
+			return false
+	return inner_edges > 0
+
+
+func is_on_perimeter(a: Vector2, b: Vector2) -> bool:
+	return _on_perimeter(a, b)
 
 
 func _add_with_gap(a: Vector2, b: Vector2, mid: Vector2, width: float, outer: bool, side: String) -> void:
@@ -318,7 +359,9 @@ func is_free(r: Rect2) -> bool:
 ## Girişten ulaşılabilen hücreler (taşkın doldurma). Tüm masa koltukları ve noktalar ulaşılabilir olmalı.
 func all_reachable() -> bool:
 	var seen: Dictionary = {}
-	var queue: Array[Vector2i] = [cell_of(entrance)]
+	var queue: Array[Vector2i] = [cell_of(doorway)]
+	if _grid.is_point_solid(queue[0]):
+		return false
 	seen[queue[0]] = true
 	while not queue.is_empty():
 		var c: Vector2i = queue.pop_back()

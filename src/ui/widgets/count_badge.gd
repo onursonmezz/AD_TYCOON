@@ -5,17 +5,20 @@ extends PanelContainer
 
 const COUNT_SECONDS: float = 0.7
 const CIRCLE: float = 34.0
+const FONT: int = 19
 
 var _label: Label
 var _circle: PanelContainer
+var _icon: TextureRect
 var _fmt: Callable
 var _shown: float = NAN
 var _target: float = NAN
 var _tween: Tween
 
 
-## fmt(değer) -> metin. circle_color: simge dairesi. width: en küçük genişlik.
-func _init(icon_name: String, circle_color: Color, fmt: Callable, width: float = 160.0) -> void:
+## fmt(değer) -> metin. circle_color: simge dairesi. width: en küçük genişlik. circle, font_size: dok için küçük hâli.
+func _init(icon_name: String, circle_color: Color, fmt: Callable, width: float = 160.0, circle: float = CIRCLE,
+		font_size: int = FONT) -> void:
 	_fmt = fmt
 	theme_type_variation = "HudPill"
 	custom_minimum_size.x = width
@@ -24,18 +27,19 @@ func _init(icon_name: String, circle_color: Color, fmt: Callable, width: float =
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(row)
 	_circle = PanelContainer.new()
-	_circle.add_theme_stylebox_override("panel", CozyTheme.box(circle_color, int(CIRCLE * 0.5), Color.TRANSPARENT, 0,
+	_circle.add_theme_stylebox_override("panel", CozyTheme.box(circle_color, int(circle * 0.5), Color.TRANSPARENT, 0,
 		false, Vector2.ZERO))
-	_circle.custom_minimum_size = Vector2(CIRCLE, CIRCLE)
-	_circle.pivot_offset = Vector2(CIRCLE, CIRCLE) * 0.5
+	_circle.custom_minimum_size = Vector2(circle, circle)
+	_circle.pivot_offset = Vector2(circle, circle) * 0.5
 	_circle.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var ic: TextureRect = UiUtil.icon(icon_name, 22, CozyTheme.CREAM_LIGHT)
+	var ic: TextureRect = UiUtil.icon(icon_name, int(circle * 0.65), CozyTheme.CREAM_LIGHT)
 	ic.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	_icon = ic
 	_circle.add_child(ic)
 	row.add_child(_circle)
 	_label = Label.new()
 	_label.add_theme_font_override("font", CozyTheme.strong_font(800))
-	_label.add_theme_font_size_override("font_size", 19)
+	_label.add_theme_font_size_override("font_size", font_size)
 	_label.add_theme_color_override("font_color", CozyTheme.TEXT)
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -72,3 +76,12 @@ func set_value(v: float) -> void:
 func _show(v: float) -> void:
 	_shown = v
 	_label.text = _fmt.call(v)
+
+
+## Renkli dairenin yerine hazır bir çizim koyar (UI-3: altın yığını, yıldız).
+func set_art(tex: Texture2D) -> void:
+	if tex == null:
+		return
+	_circle.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	_icon.texture = tex
+	_icon.modulate = Color.WHITE

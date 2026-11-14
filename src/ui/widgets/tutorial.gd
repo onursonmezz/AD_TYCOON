@@ -104,7 +104,10 @@ func _show_next() -> void:
 		_frame.global_position = r.position
 		_frame.size = r.size
 		var pos: Vector2 = r.position + Vector2(r.size.x + 12.0, 0.0)
-		if pos.x + _bubble.size.x > size.x:
+		if r.position.y > size.y * 0.5:
+			# Hedef alt çubukta: balon düğmenin üstünde durur (çubuğu örtmesin).
+			pos = Vector2(r.get_center().x - _bubble.size.x * 0.5, r.position.y - _bubble.size.y - 12.0)
+		elif pos.x + _bubble.size.x > size.x:
 			pos = Vector2(r.end.x - _bubble.size.x, r.end.y + 12.0)
 		_bubble.global_position = pos.clamp(Vector2.ZERO, size - _bubble.size)
 	else:

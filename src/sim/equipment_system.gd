@@ -1,6 +1,6 @@
 class_name EquipmentSystem
 extends RefCounted
-## Prodüksiyon ekipmanı ve kiralama (K-100, GDD 12.4'e ek): kamera, fotoğraf, ışık, ses, set, drone; kampanya başına
+## Prodüksiyon ekipmanı ve kiralama (K-119, GDD 12.4'e ek): kamera, fotoğraf, ışık, ses, set, drone; kampanya başına
 ## kiralanan stüdyo, film ekibi, drone ekibi, helikopter çekimi. Veriler data/equipment.json, sayılar balance.json
 ## "equipment". Etki: prodüksiyon alanına çarpan; kampanyanın medya karışımında ekipmanın işine yarayan kanalların
 ## payı kadar. Her gruptan yalnızca en iyisi sayılır (yeni kuşak eskisini geçersiz kılar).

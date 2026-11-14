@@ -1,6 +1,6 @@
 keys,tr,en
 GAME_TITLE,Ajans Tycoon,Ajans Tycoon
-BOOT_SUBTITLE,Garajdan reklam holdingine,From garage to advertising holding
+BOOT_SUBTITLE,Reklam Dünyasında Kendi Ajansını Kur,Build Your Own Agency in Advertising
 BOOT_MILESTONE,M0 iskeleti: proje çalışıyor. Oynanış M1–M2 ile gelecek.,M0 skeleton: the project runs. Gameplay arrives with M1–M2.
 COMBO_SALES_CSR_INSINCERE,Samimiyetsiz: satış ve sosyal sorumluluk birlikte,Insincere: sales and CSR together
 OBJ_AWARENESS,Bilinirlik,Awareness
@@ -152,8 +152,8 @@ NOTE_DELIVERED,%s kampanyası teslim edildi ve yayında.,The %s campaign was del
 NOTE_REPORT_READY,%s kampanyasının raporu hazır: %.1f,The %s campaign report is ready: %.1f
 UI_INBOX_EMPTY,Gelen kutusu boş. Zamanı ilerlet; brief'ler haftalık gelir.,The inbox is empty. Let time run; briefs arrive weekly.
 UI_BUSY_HINT,Şu an bir kampanya üretimde. Yeni bir işi kabul etmek için onun bitmesini bekle.,A campaign is in production. Wait for it to finish before accepting a new job.
-UI_NEW_CLIENT,YENİ MÜŞTERİ,NEW CLIENT
-UI_EXPIRES,%d hafta içinde düşer,expires in %d week(s)
+UI_NEW_CLIENT,Yeni müşteri,New client
+UI_EXPIRES,%d hafta kaldı,%d week(s) left
 UI_OBJECTIVE_FREE,Serbest (sen seç),Open (your choice)
 SCALE_0,Mahalle esnafı,Neighborhood shop
 SCALE_1,Yerel,Local
@@ -432,7 +432,7 @@ MENU_TEAM,Ekip,Team
 MENU_OFFICE,Ofis,Office
 UI_YOU,Sen,You
 UI_HIRE,İşe al,Hire
-UI_TEAM_HEADER,%d / %d kişi · aylık maaş + SGK %s,%d / %d people · monthly payroll + taxes %s
+UI_TEAM_HEADER,%d / %d kişi · maaş + SGK %s,%d / %d people · payroll + taxes %s
 UI_LEVEL,Seviye %d,Level %d
 BUSY_TRAINING,Eğitimde (%d hafta),In training (%d weeks)
 BUSY_SICK,Hastalık izninde (%d hafta),On sick leave (%d weeks)
@@ -540,7 +540,7 @@ UI_NEGOTIATION_ACCEPTED,Kabul edildi: %s (%%%d indirim).,Accepted: %s (%d%% off)
 UI_NEGOTIATION_FAILED,Anlaşma olmadı; liste fiyatı geçerli.,No deal; the list price stands.
 UI_NEGOTIATION_REJECTED,Reddedildi (tur %d / %d).,Rejected (round %d / %d).
 UI_NEGOTIATION_STRAINED,Matbaa biraz bozuldu; ilişki zedelendi.,The printer is a little annoyed; the relationship took a hit.
-UI_SUPPLIER_OFFER,TEDARİKÇİ TEKLİFİ,SUPPLIER OFFER
+UI_SUPPLIER_OFFER,Tedarikçi teklifi,Supplier offer
 UI_OFFER_VOLUME,"%d adet ve üzeri baskı işlerinde %%%d indirim, %d hafta geçerli.","Print jobs of %d+ pieces get %d%% off, valid for %d weeks."
 UI_OFFER_ANNUAL,Yıl sonuna kadar %d adet baskı taahhüdü karşılığında %%%d indirim. Taahhüt tutmazsa ceza var.,Commit to %d pieces of printing by year end and get %d%% off. Missing the commitment costs a penalty.
 NOTE_DEAL_SIGNED,%s ile anlaşma imzalandı.,Deal signed with %s.
@@ -628,9 +628,9 @@ UI_SCANDAL_TEXT,Kampanyada çalıştığın %s bir skandala karıştı. Müşter
 UI_SCANDAL_TERMINATE,Sözleşmeyi feshet,Terminate the contract
 UI_SCANDAL_SILENT,Sessiz kal,Stay silent
 UI_SCANDAL_STATEMENT,Açıklama yap,Make a statement
-UI_SCANDAL_TERMINATE_DESC,Feshet: müşteri biraz rahatlar ama kanalın erişimi büyük ölçüde kaybolur.,"Terminate: the client calms down a little, but the channel loses most of its reach."
-UI_SCANDAL_SILENT_DESC,Sessiz kal: erişim korunur ama müşteri ve itibar ciddi zarar görür.,"Stay silent: reach is kept, but the client and your reputation take a hit."
-UI_SCANDAL_STATEMENT_DESC,"Açıklama yap: ekibindeki en iyi iletişimciye bağlı; iyi giderse hasar az, kötü giderse büyük.","Make a statement: depends on your best communicator; done well it limits damage, done badly it makes it worse."
+UI_SCANDAL_TERMINATE_DESC,Müşteri biraz rahatlar ama kanalın erişimi büyük ölçüde kaybolur.,"The client calms down a little, but the channel loses most of its reach."
+UI_SCANDAL_SILENT_DESC,Erişim korunur ama müşteri ve itibar ciddi zarar görür.,"Reach is kept, but the client and your reputation take a hit."
+UI_SCANDAL_STATEMENT_DESC,"Ekibindeki en iyi iletişimciye bağlı; iyi giderse hasar az, kötü giderse büyük.","Depends on your best communicator; done well it limits damage, done badly it makes it worse."
 UI_SCANDAL_RESULT,Müşteri memnuniyetine etkisi: %s.,Effect on client satisfaction: %s.
 UI_SCANDAL_STATEMENT_OK,Açıklama iyi karşılandı.,The statement was well received.
 UI_SCANDAL_STATEMENT_FAIL,Açıklama ters tepti.,The statement backfired.
@@ -851,7 +851,7 @@ UI_NONE,yok,none
 UI_DESK_TIER,Masa ve sandalyeler:,Desks and chairs:
 UI_BUILD_MODE,İnşa moduna geç,Enter build mode
 UI_BUILD_TITLE,İnşa modu,Build mode
-UI_BUILD_KEYS,R / Shift+R: döndür · Del: imlecin altındakini sat · Esc: aracı bırak,R / Shift+R: rotate · Del: sell what is under the cursor · Esc: drop tool
+UI_BUILD_KEYS,R / Shift+R: döndür · Del: imlecin altındakini sat ya da yık · Esc: aracı bırak,R / Shift+R: rotate · Del: sell or remove what is under the cursor · Esc: drop tool
 UI_BUILD_DONE,Bitir,Done
 UI_BUILD_REMOVE,Sil / sat,Delete / sell
 UI_BUILD_ROTATE_LEFT,Sola döndür (Shift+R),Turn left (Shift+R)
@@ -863,7 +863,7 @@ UI_BUILD_ROOMS_LOCKED,Oda çizmek büyütülmüş ofiste açılır.,Drawing room
 UI_BUILD_PICK,Paletten bir mobilya ya da araç seç.,Pick a piece of furniture or a tool.
 UI_BUILD_PICK_FURNITURE,Yerleştirmek için ofiste bir yere tıkla.,Click a spot in the office to place it.
 UI_BUILD_PICK_ROOM,Boş alanda sürükleyerek odayı çiz.,Drag on empty space to draw the room.
-UI_BUILD_PICK_REMOVE,"Satmak için mobilyaya, yıkmak için çizdiğin odaya tıkla.","Click furniture to sell it, or a room you drew to demolish it."
+UI_BUILD_PICK_REMOVE,"Satmak için mobilyaya, yıkmak için iç duvara, kapıya ya da çizdiğin odaya tıkla.","Click furniture to sell it, or an inner wall, door or room you drew to remove it."
 UI_BUILD_OK,Buraya konabilir.,Fits here.
 UI_BUILD_PLACED,Yerleştirildi.,Placed.
 UI_BUILD_ROOM_DONE,Oda yapıldı.,Room built.
@@ -935,7 +935,7 @@ UI_ERA_TITLE,%d: %s başladı,%d: %s begins
 UI_ERA_CHANNELS,Bu dönemde açılan kanallar,Channels opening in this era
 UI_ERA_TOOLS,Yeni araçlar ve bilgisayarlar,New tools and computers
 UI_ERA_GO,Hadi bakalım,Let's go
-UI_START_YEAR,Başlangıç yılı:,Start year:
+UI_START_YEAR,Başlangıç yılı,Start year
 UI_START_YEAR_HINT,"1990 tam oyundur. 2000 ve 2010 hızlı başlangıçtır: o yılın kanalları ve rakipleriyle ev odasında başlarsın.","1990 is the full game. 2000 and 2010 are quick starts: you begin in a spare room with that year's channels and rivals."
 UI_TOOLS_HINT,"Her alanın verimi araçlarına bağlı (çarpan ×0.6–×1.6). Yeni sürüm çıkınca eski sürüm gitgide daha az verir. 2013'ten sonra büyük yazılımlar yalnızca abonelikle güncellenir. AI araçları hızlıdır ama kampanyanın yenilik puanını düşürür.","Each area's output depends on its tools (×0.6–×1.6). When a new version comes out, older versions give less and less. From 2013, big software updates only by subscription. AI tools are fast but lower a campaign's novelty."
 UI_HARDWARE,"Bilgisayarlar: %s (en fazla %d yılı yazılımları çalıştırır)","Computers: %s (runs software up to %d)"
@@ -968,15 +968,15 @@ UI_RESEARCH_HINT,"Araştırma puanı (AP) her kampanyadan gelir: puan × iş bü
 UI_RESEARCH_ACTIVE,Şu an araştırılıyor: %s (%d hafta kaldı),Researching: %s (%d weeks left)
 UI_RESEARCH_COST,%d AP · %s · %d hafta,%d RP · %s · %d weeks
 UI_RESEARCH_START,Araştır,Research
-REQ_YEAR_SHORT,Y%s,Y%s
+REQ_YEAR_SHORT,%s. yıl,year %s
 REQ_CAL_YEAR_SHORT,%s yılı,year %s
 REQ_RESEARCH_SHORT,%s,%s
 REQ_AP_SHORT,%s AP,%s RP
 UI_KNOWLEDGE_BOOK,Bilgi Defteri,Knowledge Book
 UI_KNOWLEDGE_HINT,"Raporlarla öğrendiğin uyumlar: sektör × hedef ve sektör × kitle. Her biten kampanya kullandığı hücreleri açar; ""?"" henüz bilinmiyor.","What reports have taught you: sector × objective and sector × audience. Each finished campaign reveals the cells it used; ""?"" is still unknown."
 UI_BUY_INSIGHT,Pazar araştırması (%s): bir hücre aç,Market research (%s): reveal a cell
-UI_AUTO_AUDIENCE,Otomatik (Hedef Kitle Analizi araştırması gerekli),Automatic (needs Audience Analysis research)
-UI_AUTO_TONE,Otomatik (Ton Seçimi araştırması gerekli),Automatic (needs Tone Choice research)
+UI_AUTO_AUDIENCE,Otomatik · Hedef Kitle Analizi gerekli,Automatic · needs Audience Analysis
+UI_AUTO_TONE,Otomatik · Ton Seçimi gerekli,Automatic · needs Tone Choice
 UI_FOCUS_GROUP,Fokus grup,Focus group
 UI_FOCUS_GOOD,Fokus grup: çok beğendi,Focus group: loved it
 UI_FOCUS_MID,Fokus grup: kararsız,Focus group: lukewarm
@@ -1489,6 +1489,11 @@ UI_SET_AUTOSAVE,Her ay otomatik kaydet,Autosave every month
 UI_SET_TUTORIAL,İpuçlarını göster,Show tips
 UI_SET_FULLSCREEN,Tam ekran,Fullscreen
 UI_SET_RESOLUTION,Pencere boyutu,Window size
+UI_SET_GRAPHICS,Grafik kalitesi,Graphics quality
+UI_SET_GRAPHICS_LOW,Düşük,Low
+UI_SET_GRAPHICS_MEDIUM,Orta,Medium
+UI_SET_GRAPHICS_HIGH,Yüksek,High
+UI_SET_GRAPHICS_HINT,"Oyun takılıyorsa düşür. Yüksek: en pürüzsüz kenarlar ve yumuşak gölgeler.","Lower this if the game stutters. High: smoothest edges and soft shadows."
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
@@ -1533,14 +1538,17 @@ ERR_PLAN,Görev planı geçersiz.,The work plan is not valid.
 ERR_PLAN_MEMBER,Planda ekipte olmayan biri var.,Someone in the plan is not on the team.
 ERR_PLAN_OVERLOAD,Bir kişiye %200'den fazla iş verilemez.,Nobody can take more than 200% of the work.
 ERR_PLAN_EMPTY,Bu faza kimse atanmadı.,Nobody is assigned to this phase.
-UI_BOARD_TITLE,"Görev panosu · %s","Work board · %s"
-UI_BOARD_HINT,"Hücrelere tıkla: her tık kişinin zamanının %25'ini o alana verir (sağ tık geri alır). %100'ü aşan kişi daha çok iş çıkarır ama verimi düşer, çabuk yorulur ve hata yapar.","Click a cell: each click gives 25% of that person's time to the area (right-click takes it back). Above 100% a person gets more done but less efficiently, tires fast and makes mistakes."
+UI_BOARD_TITLE,Emek dağılımı · %s,Effort split · %s
+UI_BOARD_HINT,"Kişi rozetine tıkla: her tık o kişinin zamanının %25'ini bu alana verir, sağ tık geri alır. Sağdaki yüzde alanın iş payıdır.","Click a person's badge: each click gives 25% of their time to this area, right-click takes it back. The percentage on the right is the area's share of the work."
 UI_BOARD_AUTO,Otomatik dağıt,Auto assign
 UI_BOARD_CLEAR,Temizle,Clear
 UI_BOARD_LOAD,"yük %s","load %s"
 UI_BOARD_FOCUS,Odak dağılımı,Focus split
 UI_BOARD_FREE,"Görevsiz: dinlenir","Unassigned: rests"
 UI_BOARD_START,Fazı başlat,Start phase
+UI_BOARD_ENERGY,enerji %d,energy %d
+UI_BOARD_CHIP_TIP,Sol tık +%25 · sağ tık −%25,Left-click +25% · right-click −25%
+UI_BOARD_FOOT,"%100'ü aşan kişi daha çok iş çıkarır ama verimi düşer, çabuk yorulur ve hata yapar.","Above 100% a person gets more done but less efficiently, tires fast and makes mistakes."
 UI_FOCUS_UNKNOWN,"Bu alanın bu hedefteki önemini henüz bilmiyorsun. Kaydırıcıyı belirgin şekilde artırıp azalttığın kampanyalardan öğrenirsin.","You don't know yet how much this area matters for this objective. Campaigns where you clearly raise or lower the slider teach you."
 UI_FOCUS_LEARN_HIGH,"%s kampanyalarında %s çok önemli (%s).","%s campaigns: %s matters a lot (%s)."
 UI_FOCUS_LEARN_MID,"%s kampanyalarında %s biraz katkı veriyor (%s).","%s campaigns: %s helps a little (%s)."
@@ -1586,3 +1594,155 @@ UI_FIN_TAB_QUARTER,Son 3 ay,Last 3 months
 UI_FIN_INCOME,Gelir,Income
 UI_FIN_EXPENSE,Gider,Expenses
 UI_FIN_CHART,Son 6 ay gelir,"Income, last 6 months"
+UI_FOUNDER_TITLE,Karakterini Oluştur,Create Your Character
+UI_FOUNDER_HINT,Bir görünüş seç ve adını yaz. Ekip seni bu adla tanıyacak.,Pick a look and enter your name. Your team will know you by it.
+UI_FOUNDER_NAME,Adın,Your name
+UI_DEFAULT_FOUNDER,Kurucu,Founder
+UI_BACK,Geri,Back
+UI_START_GAME,Oyuna Başla,Start Game
+STAT_STRATEGY_DESC,"Planlama ve doğru karar: brif, hedef, kitle.","Planning and good calls: brief, objective, audience."
+STAT_CREATIVE_DESC,Fikir ve metin gücü.,Strength of ideas and copy.
+STAT_TECHNICAL_DESC,Tasarım ve prodüksiyon becerisi.,Design and production skill.
+STAT_COMMUNICATION_DESC,Müşteri ilişkisi ve sunum.,Client relations and presenting.
+STAT_SPEED_DESC,İşi ne kadar çabuk bitirdiği.,How quickly work gets done.
+STAT_ATTENTION_DESC,Hata yapmama ve ince işçilik.,Avoiding mistakes and fine detail.
+UI_AGENCY_TAGLINE,Yaratıcı Reklam Ajansı,Creative Advertising Agency
+UI_TEAM_SEARCH,Çalışan ara…,Search staff…
+UI_TEAM_ALL_ROLES,Tüm roller,All roles
+UI_SORT_NAME,İsme göre,By name
+UI_SORT_ROLE,Role göre,By role
+UI_SORT_LEVEL,Seviyeye göre,By level
+UI_COL_EMPLOYEE,Çalışan,Employee
+UI_COL_ROLE,Rol,Role
+STAT_STRATEGY_SHORT,Str.,Str
+STAT_CREATIVE_SHORT,Kre.,Cre
+STAT_TECHNICAL_SHORT,Tek.,Tec
+STAT_COMMUNICATION_SHORT,İlt.,Com
+STAT_SPEED_SHORT,Hız,Spd
+STAT_ATTENTION_SHORT,Dik.,Att
+UI_CLIENTS_COUNT,%d müşteri,%d client(s)
+UI_CLIENT_SEARCH,Müşteri ara…,Search clients…
+UI_ALL_SECTORS,Tüm sektörler,All sectors
+UI_ANNUAL_BUDGET,Yıllık reklam bütçesi,Annual ad budget
+UI_CAMPAIGN_COUNT,%d kampanya,%d campaign(s)
+UI_TRUST_NAME,Güven,Trust
+UI_TAB_ALL,Tümü,All
+UI_TAB_BRIEFS,Briefler,Briefs
+UI_TAB_OFFERS,Teklifler,Offers
+UI_FACT_FEE,Ajans ücreti,Agency fee
+UI_FACT_MEDIA,Medya bütçesi,Media budget
+UI_FACT_DURATION,Süre,Duration
+UI_WEEKS,%d hafta,%d week(s)
+UI_FACT_DISCOUNT,İndirim,Discount
+UI_FACT_QUANTITY,Baskı adedi,Print quantity
+UI_FACT_VALID,Geçerlilik,Valid for
+UI_FACT_YEAR_END,Yıl sonuna kadar,Until year end
+UI_TOOL_IN_USE,Kullanılıyor,In use
+UI_OFFICE_CURRENT,Mevcut ofis,Current office
+UI_OFFICE_CURRENT_TAG,Mevcut,Current
+UI_OFFICE_NEXT_TITLE,Sonraki ofis,Next office
+UI_OFFICE_QUALITY,Oda kalitesi,Room quality
+UI_OFFICE_JOBS,Uygun işler,Suitable jobs
+UI_MOVE_REQS,Taşınma koşulları,Moving requirements
+UI_COUNT_ERRORS,Hata,Errors
+UI_NO_AIRING,Henüz yayında kampanya yok.,No campaigns on air yet.
+UI_WIZARD_NEW,Yeni kampanya,New campaign
+UI_CAMPAIGN_INFO,Kampanya bilgileri,Campaign details
+UI_MEDIA_PLAN,Medya planı,Media plan
+UI_CHANNEL_LIMIT,en fazla %d kanal,up to %d channels
+UI_REPORT_HEADING,Kampanya raporu,Campaign report
+UI_REP_SUMMARY,Özet,Summary
+UI_REP_REVIEWS,Yorumlar,Reviews
+UI_REP_INCOME,Gelir ve kazanımlar,Income and gains
+UI_REP_BREAKDOWN,Puan dökümü,Score breakdown
+UI_REP_OVERALL,Genel puan,Overall score
+UI_REP_CHANNELS,Kanal performansı,Channel performance
+UI_REP_AP,+%.0f AP,+%.0f RP
+UI_REP_LEARNED,%d yeni bilgi,%d new insight(s)
+UI_BUILD_CAT_ALL,Tümü,All
+UI_BUILD_CAT_PLANTS,Bitkiler,Plants
+UI_BUILD_CAT_OTHER,Diğer,Other
+UI_CEREMONY_RIVALS_SHORT,Bu törende %d ödül kazandı.,Won %d award(s) here.
+UI_BUILD_CAT_ROOMS,Odalar,Rooms
+UI_BUILD_ROTATE,Döndür,Rotate
+UI_BUILD_SELL,Sat,Sell
+UI_BUILD_QUALITY_SHORT,Kalite %.0f · Üretim ×%.2f,Quality %.0f · Output ×%.2f
+UI_SET_AUTOSAVED,Değişiklikler otomatik kaydedilir.,Changes are saved automatically.
+UI_TEAM_COUNT,%d / %d çalışan,%d / %d staff
+UI_TEAM_PAYROLL,Maaş + SGK %s,Payroll + taxes %s
+UI_TEAM_SHOWN,%d / %d çalışan gösteriliyor,Showing %d of %d staff
+UI_FINANCE_SHORT,Tahsilatlar ve nakit akışı.,Receivables and cash flow.
+UI_COL_AWARD,Ödül,Award
+UI_COL_FEE,Katılım bedeli,Entry fee
+UI_COL_STATUS,Durum,Status
+UI_CLIENTS_SHOWN,%d müşteri gösteriliyor,Showing %d client(s)
+UI_RESEARCH_SHORT,"Kampanyalardan AP kazan, yeni yetenekler aç.","Earn RP from campaigns, unlock new abilities."
+UI_HARDWARE_NAME,Bilgisayarlar: %s,Computers: %s
+UI_HARDWARE_COMPAT,%d yılına kadar çıkan yazılımları çalıştırır,Runs software released up to %d
+UI_ECHO_TITLE,Kampanyanın yankıları,Campaign reactions
+UI_ECHO_OVERALL,Genel değerlendirme,Overall rating
+UI_ECHO_REPORT,Raporu incele,View report
+UI_PICK_CHANNEL,Medya kanalı seç,Choose a media channel
+UI_CHANNEL_SEARCH,Kanal ara…,Search channels…
+UI_CHANNEL_SELECTED,Seçili: %s,Selected: %s
+UI_SET_AUDIO_TITLE,Ses ayarları,Audio settings
+UI_SET_GAME_TITLE,Oyun ayarları,Game settings
+UI_SET_DISPLAY_TITLE,Ekran ayarları,Display settings
+UI_SET_LANGUAGE_TITLE,Dil ayarları,Language settings
+UI_SET_TEMPO_TITLE,Tempo ölçümü,Pace tracking
+UI_CLIENT_TITLE,Müşteri kartı,Client card
+UI_CLIENT_EXPECTATION,Beklediği puan,Expected score
+UI_CLIENT_AVG_SCORE,Ortalama puan,Average score
+UI_CLIENT_HISTORY,Kampanya geçmişi,Campaign history
+UI_CLIENT_NO_HISTORY,Bu müşteriyle henüz kampanya yapılmadı.,No campaigns with this client yet.
+UI_CLIENT_RISK_NOTE,Memnuniyet %d altında: müşteri ihaleye çıkabilir ya da ajansı bırakabilir.,Satisfaction is below %d: the client may call a pitch or leave the agency.
+UI_CLIENT_OPEN,Müşteri kartını aç,Open client card
+UI_RIBBON_GOLD,Altın Ödül,Gold Award
+UI_RIBBON_SILVER,Gümüş Ödül,Silver Award
+UI_RIBBON_BRONZE,Bronz Ödül,Bronze Award
+UI_RIBBON_SHORTLIST,Kısa Liste,Shortlist
+UI_RIBBON_GRAND_PRIX,Grand Prix,Grand Prix
+UI_RIBBON_NONE,Ödül yok,No award
+UI_CEREMONY_SEASON,%d ödül sezonu,%d awards season
+UI_CEREMONY_CONTINUE,Devam et,Continue
+UI_CHOOSE,Seç,Choose
+UI_SCANDAL_HINT,Cevap vermezsen sessiz kalmış sayılırsın.,No answer counts as staying silent.
+UI_AWARD_FEE,Başvuru ücreti,Entry fee
+UI_AWARD_ENTRY_MONTH,Başvuru ayı,Entry month
+UI_AWARD_CEREMONY_MONTH,Tören ayı,Ceremony month
+UI_AWARD_ELIGIBLE,Uygun kampanyalar,Eligible campaigns
+UI_AWARD_JURY,"Son 12 ayda biten kampanyalarından seç. Jüri puanı, yeniliği, viral olmayı ve kategori uyumunu da tartar.","Pick from campaigns finished in the last 12 months. The jury also weighs novelty, going viral and category fit."
+UI_OFFER_NOW,Şu anki maaş,Current salary
+UI_OFFER_THEIRS,Rakibin teklifi,Rival offer
+UI_OFFER_KEEP,Tutmak için,To keep them
+UI_NEGOTIATION_YOUR_OFFER,Teklifin,Your offer
+UI_AWARD_ENTRY_TITLE,Ödüle başvur,Enter an award
+UI_BANKRUPT_DATE,Kapanış,Closed on
+UI_BANKRUPT_CAMPAIGNS,Kampanya,Campaigns
+UI_BANKRUPT_REP,İtibar,Reputation
+UI_PITCH_PREP,Hazırlık,Preparation
+UI_PITCH_RIVALS,Davetli rakip,Invited rivals
+UI_PITCH_PAID_SHORT,Katılım ücreti,Participation fee
+UI_PITCH_COMM,İletişim %d,Communication %d
+UI_PITCH_BUSY,Kampanyada,On a campaign
+UI_BANKRUPT_SUB,Ajans kapandı,The agency has closed
+ERR_WALL_STRAIGHT,Duvar yalnızca yatay ya da dikey çekilebilir.,Walls can only run horizontally or vertically.
+ERR_WALL_SHORT,Duvar en az 1 metre olmalı.,A wall must be at least 1 metre long.
+ERR_WALL_OUTSIDE,Duvar binanın içinde olmalı (dış duvarlara dokunulmaz).,Walls must be inside the building (outer walls can't be changed).
+ERR_WALL_EXISTS,Burada zaten duvar var.,There is already a wall here.
+ERR_WALL_NONE,Burada iç duvar yok.,There is no inner wall here.
+ERR_DOOR_SHORT,Bu duvar parçası kapı için çok kısa.,This wall piece is too short for a door.
+ERR_DOOR_BLOCKED,Kapının önü eşyayla kapalı.,Something is blocking the doorway.
+UI_BUILD_CAT_WALLS,Duvarlar,Walls
+UI_BUILD_WALL,Duvar,Wall
+UI_BUILD_DOOR,Kapı,Door
+UI_BUILD_PER_M,%s/m,%s/m
+UI_BUILD_PICK_WALL,Duvarı sürükleyerek çiz (yatay ya da dikey).,Drag to draw a wall (horizontal or vertical).
+UI_BUILD_PICK_DOOR,Kapı açmak için bir iç duvara tıkla.,Click an inner wall to put a door in it.
+UI_BUILD_WALL_DONE,Duvar çekildi.,Wall built.
+UI_BUILD_DOOR_DONE,Kapı açıldı.,Door added.
+UI_BUILD_WALL_REMOVED,Duvar yıkıldı.,Wall removed.
+UI_BUILD_DOOR_CLOSED,Kapı kapatıldı.,Door closed.
+UI_BUILD_WALL_PREVIEW,%.1f m · %s,%.1f m · %s
+UI_BUILD_DOOR_CLOSE_PREVIEW,Kapıyı kapat,Close the door
+UI_BUILD_WALL_REMOVE_PREVIEW,Yık · %s iade,Remove · %s back

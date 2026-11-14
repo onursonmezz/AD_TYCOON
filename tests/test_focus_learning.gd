@@ -1,5 +1,5 @@
 extends GutTest
-## K-098: kampanyalardan hedef × odak alanı önemini öğrenme.
+## K-117: kampanyalardan hedef × odak alanı önemini öğrenme.
 
 var data: GameData
 

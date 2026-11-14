@@ -1,7 +1,7 @@
 class_name ConfirmDialog
 extends Control
 ## Basit soru penceresi (M9): başlık, metin ve düğmeler [[metin anahtarı, Callable], …]. Her düğme pencereyi kapatır.
-## Esc "vazgeç" sayılır.
+## Esc "vazgeç" sayılır. UI-3 dili: düğmeler ayrı alt satırda, ilki birincil (yeşil).
 
 var _title_key: String
 var _text_key: String
@@ -16,15 +16,21 @@ func _init(title_key: String, text_key: String, choices: Array) -> void:
 
 
 func _ready() -> void:
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(520.0, 200.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("confirm"))
 	col.add_child(UiUtil.heading(tr(_title_key), "alert-triangle"))
-	col.add_child(UiUtil.wrapped(tr(_text_key), 16, UiUtil.TEXT, 460.0))
-	var buttons: HBoxContainer = UiUtil.hbox()
-	buttons.add_child(UiUtil.spacer())
-	for c: Array in _choices:
+	col.add_child(UiUtil.wrapped(tr(_text_key), 15, CozyTheme.TEXT))
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
+	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	foot.add_child(UiUtil.spacer())
+	for i: int in _choices.size():
+		var c: Array = _choices[i]
 		var cb: Callable = c[1]
-		buttons.add_child(UiUtil.button(tr(str(c[0])), func() -> void:
+		var b: Button = UiUtil.button(tr(str(c[0])), func() -> void:
 			queue_free()
 			if cb.is_valid():
-				cb.call()))
-	col.add_child(buttons)
+				cb.call())
+		if i == 0:
+			b.theme_type_variation = "PrimaryButton"
+		foot.add_child(b)
+	frame.add_child(foot)

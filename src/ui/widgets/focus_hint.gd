@@ -1,6 +1,6 @@
 class_name FocusHint
 extends RefCounted
-## Odak alanı önemi ipuçları (K-098): öğrenilmişse +++ … −−− işareti, öğrenilmemişse "?".
+## Odak alanı önemi ipuçları (K-117): öğrenilmişse +++ … −−− işareti, öğrenilmemişse "?".
 ## Faz ekranı, rapor ve Bilgi Defteri aynı işaretleri ve cümleleri kullanır.
 
 const SYMBOLS: Dictionary = {3: "+++", 2: "++", 1: "+", 0: "~", -1: "−", -2: "−−", -3: "−−−"}

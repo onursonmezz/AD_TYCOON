@@ -24,8 +24,9 @@ func _init(brief: Dictionary, limit: int, main_screen: Control) -> void:
 				and GameState.sim.research.channel_unlocked(GameState.sim.state, id):
 			_channel_ids.append(id)
 	var head: HBoxContainer = UiUtil.hbox()
-	head.add_child(UiUtil.label(tr("UI_CHANNEL_MIX") % _limit, 16))
-	head.add_child(UiUtil.spacer())
+	var title: PanelContainer = Cards.section(tr("UI_MEDIA_PLAN"), tr("UI_CHANNEL_LIMIT") % _limit)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(title)
 	_add_button = UiUtil.button(tr("UI_ADD_CHANNEL"), func() -> void: _add_row(0))
 	head.add_child(_add_button)
 	add_child(head)
@@ -67,35 +68,60 @@ func _add_row(channel_index: int) -> void:
 	if _rows.size() >= _limit or _channel_ids.is_empty():
 		return
 	var data: GameData = DataDB.data
+	# UI-3 (taslak 05): her kanal bir kart; üst satırda seçim ve kaldır, alt satırda bütçe önceliği ve payı.
+	var card: PanelContainer = UiUtil.card()
 	var box: VBoxContainer = UiUtil.vbox(4)
+	card.add_child(box)
 	var line: HBoxContainer = UiUtil.hbox(8)
+	var icon_box: HBoxContainer = UiUtil.hbox(0)
+	line.add_child(icon_box)
 	var pick: OptionButton = OptionButton.new()
 	for id: String in _channel_ids:
 		pick.add_item("%s (%s)" % [UiUtil.name_of(data.channels, id), tr("CAT_" + str(data.channels[id]["category"]).to_upper())])
 	pick.selected = channel_index
 	pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pick.fit_to_longest_item = false
+	pick.clip_text = true
 	line.add_child(pick)
+	pick.visible = false  # seçim durumunu tutar; kullanıcı aşağıdaki düğmeyle kanal seçiciyi açar (taslak 04)
+	var open: Button = UiUtil.button("", func() -> void:
+		_main.call("open_modal", ChannelPickerDialog.new(_channel_ids, _channel_ids[pick.selected], func(id: String) -> void:
+			pick.selected = _channel_ids.find(id)
+			pick.item_selected.emit(pick.selected))))
+	open.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	open.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	open.clip_text = true
+	open.icon = UiUtil.icon_texture("chevron-right", 12)
+	open.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	Cards.compact(open)
+	line.add_child(open)
+	var remove: Button = Button.new()
+	remove.icon = UiUtil.icon_texture("x", 16)
+	remove.tooltip_text = tr("UI_REMOVE_CHANNEL")
+	line.add_child(remove)
+	box.add_child(line)
+	var share_line: HBoxContainer = UiUtil.hbox(8)
 	var slider: HSlider = HSlider.new()
 	slider.min_value = 0.0
 	slider.max_value = 100.0
 	slider.step = 1.0
 	slider.value = DataDB.data.balf("focus.slider_default_priority")
-	slider.custom_minimum_size.x = 140.0
-	line.add_child(slider)
-	var share_label: Label = UiUtil.label("", 15)
-	share_label.custom_minimum_size.x = 120.0
-	line.add_child(share_label)
-	var remove: Button = Button.new()
-	remove.text = "✕"
-	remove.tooltip_text = tr("UI_REMOVE_CHANNEL")
-	line.add_child(remove)
-	box.add_child(line)
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	share_line.add_child(slider)
+	var share_label: Label = UiUtil.label("", 13)
+	share_label.custom_minimum_size.x = 112.0
+	share_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	share_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	share_line.add_child(share_label)
+	box.add_child(share_line)
 	var print_box: VBoxContainer = UiUtil.vbox(4)
 	box.add_child(print_box)
-	var row: Dictionary = {"box": box, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box,
+	var row: Dictionary = {"box": card, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box, "icon": icon_box,
+		"open": open,
 		"job": {}, "auto": true, "opts": {}, "influencer": ""}
 	_rows.append(row)
-	_rows_box.add_child(box)
+	_rows_box.add_child(card)
 	pick.item_selected.connect(func(_i: int) -> void:
 		row["job"] = {}
 		row["auto"] = true
@@ -107,7 +133,7 @@ func _add_row(channel_index: int) -> void:
 		if _rows.size() <= 1:
 			return
 		_rows.erase(row)
-		box.queue_free()
+		card.queue_free()
 		_refresh())
 	_refresh()
 
@@ -123,6 +149,9 @@ func _refresh() -> void:
 		var row: Dictionary = _rows[i]
 		var ch: String = mix[i]["channel"]
 		var budget: float = media_budget() * float(mix[i]["share"])
+		(row["open"] as Button).text = UiUtil.name_of(data.channels, ch)
+		UiUtil.clear(row["icon"])
+		(row["icon"] as HBoxContainer).add_child(_channel_art(ch))
 		var label: Label = row["share"]
 		label.text = "%s · %s" % [UiUtil.percent(roundf(float(mix[i]["share"]) * 100.0)), UiUtil.money(budget)]
 		var too_small: bool = budget < float(data.channels[ch]["min_budget"]) * infl
@@ -301,3 +330,11 @@ func _build_influencer_panel(row: Dictionary, channel_id: String, budget: float)
 		box.add_child(UiUtil.label(tr("ERR_INFLUENCER_FEE"), 14, UiUtil.TERRACOTTA))
 	if not see:
 		box.add_child(UiUtil.label(tr("UI_AUTHENTICITY_HIDDEN"), 13, UiUtil.MUTED))
+
+
+## Kanalın görseli: önce kanalın kendi çizimi, yoksa kategorisinin çizimi, o da yoksa megafon ikonu.
+func _channel_art(channel_id: String) -> Control:
+	var layout: Dictionary = DataDB.data.raw["ui_layout.json"]
+	if (layout["channel_art"] as Dictionary).has(channel_id):
+		return Cards.art("channel_art", channel_id, 26.0, "speakerphone", Color.TRANSPARENT)
+	return Cards.art("channel_category_art", str(DataDB.data.channels[channel_id]["category"]), 26.0, "speakerphone", Color.TRANSPARENT)

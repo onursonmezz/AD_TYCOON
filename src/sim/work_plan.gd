@@ -1,6 +1,6 @@
 class_name WorkPlan
 extends RefCounted
-## Görev panosu (K-099): her fazda ekipteki her çalışan zamanını fazın üç odak alanına böler (0..1 paylar).
+## Görev panosu (K-118): her fazda ekipteki her çalışan zamanını fazın üç odak alanına böler (0..1 paylar).
 ## Kişinin yükü = paylarının toplamı; 1'i (%100) geçerse kişi başına verim düşer, enerji ve hata artar.
 ## Alanların odak payı ekibin o alana verdiği toplam emektir (kaydırıcılar bundan hesaplanır).
 ## Plan yoksa (botlar, eski kayıtlar) herkes faz kaydırıcılarının paylarıyla çalışır: eski davranış.

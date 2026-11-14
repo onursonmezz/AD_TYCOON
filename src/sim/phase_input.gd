@@ -1,6 +1,6 @@
 class_name PhaseInput
 extends RefCounted
-## Faz başında oyuncunun girdisi: kaydırıcılar (GDD 7.4, eski yol) ya da görev panosu planı ve kiralıklar (K-099, K-100).
+## Faz başında oyuncunun girdisi: kaydırıcılar (GDD 7.4, eski yol) ya da görev panosu planı ve kiralıklar (K-118, K-119).
 ## Simulation.set_phase_sliders / set_phase_plan buraya yönlendirir.
 
 
@@ -25,8 +25,8 @@ static func apply_sliders(sim: Simulation, sliders: Array) -> bool:
 	return true
 
 
-## Oyuncu fazın görev planını onaylar (K-099): { emp_id: [a0, a1, a2] }. Kaydırıcılar plandan hesaplanır.
-## rentals (K-100): bu kampanya için kiralanan ekipman; bedeli hemen ödenir.
+## Oyuncu fazın görev planını onaylar (K-118): { emp_id: [a0, a1, a2] }. Kaydırıcılar plandan hesaplanır.
+## rentals (K-119): bu kampanya için kiralanan ekipman; bedeli hemen ödenir.
 static func apply_plan(sim: Simulation, plan: Dictionary, rentals: Array = []) -> String:
 	if sim.state.active_campaign.is_empty() or not sim.state.waiting_for_input:
 		return "ERR_PLAN"

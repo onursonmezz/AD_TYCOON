@@ -1,5 +1,5 @@
 extends GutTest
-## K-100: prodüksiyon ekipmanı ve kiralama.
+## K-119: prodüksiyon ekipmanı ve kiralama.
 
 var data: GameData
 

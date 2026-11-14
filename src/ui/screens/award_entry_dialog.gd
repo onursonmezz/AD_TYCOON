@@ -1,6 +1,7 @@
 class_name AwardEntryDialog
 extends Control
 ## Ödül başvurusu (GDD 15): son 12 ayın uygun kampanyaları, her başvuru ayrı ücret.
+## UI-3 dili: amblemli başlık kartı, ücret/başvuru/tören bilgi şeridi, kampanya kartları; alt satır kaydırmanın dışında.
 
 var _award_id: String
 var _on_done: Callable
@@ -16,24 +17,36 @@ func _init(award_id: String, on_done: Callable) -> void:
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	var sim: Simulation = GameState.sim
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(640.0, 460.0))
-	col.add_child(UiUtil.heading(UiUtil.name_of(data.awards, _award_id), "trophy"))
-	col.add_child(UiUtil.wrapped(tr(data.awards[_award_id]["desc_key"]), 14, UiUtil.MUTED, 580.0))
-	col.add_child(UiUtil.wrapped(tr("UI_AWARD_ENTRY_HINT") % UiUtil.money(sim.awards.entry_fee(sim.state, _award_id)), 14,
-		UiUtil.TEXT, 580.0))
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.custom_minimum_size.y = 240.0
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	col.add_child(scroll)
-	_list = UiUtil.vbox(6)
+	var award: Dictionary = data.awards[_award_id]
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("award_entry"))
+	col.add_child(UiUtil.heading(tr("UI_AWARD_ENTRY_TITLE"), "trophy"))
+	var head: HBoxContainer = Cards.header(Cards.art("award_art", _award_id, 56.0, "trophy", Color.TRANSPARENT),
+		UiUtil.name_of(data.awards, _award_id), "")
+	var desc: Label = UiUtil.label(tr(award["desc_key"]), 13, CozyTheme.WOOD)
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	(head.get_child(1) as VBoxContainer).add_child(desc)
+	col.add_child(head)
+	col.add_child(Cards.facts([
+		Cards.fact("coins", tr("UI_AWARD_FEE"), UiUtil.money(sim.awards.entry_fee(sim.state, _award_id))),
+		Cards.fact("calendar", tr("UI_AWARD_ENTRY_MONTH"), tr("MONTH_%d" % sim.awards.entry_month(_award_id))),
+		Cards.fact("trophy", tr("UI_AWARD_CEREMONY_MONTH"), tr("MONTH_%d" % int(award["month"])))]))
+	col.add_child(UiUtil.wrapped(tr("UI_AWARD_JURY"), 13, CozyTheme.MUTED))
+	_list = UiUtil.vbox(CozyTheme.SPACE_S)
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(_list)
-	_status = UiUtil.label("", 14, UiUtil.TERRACOTTA)
-	col.add_child(_status)
-	var buttons: HBoxContainer = UiUtil.hbox()
-	buttons.add_child(UiUtil.spacer())
-	buttons.add_child(UiUtil.button(tr("UI_CLOSE"), _close))
-	col.add_child(buttons)
+	col.add_child(_list)
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
+	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	_status = UiUtil.label("", 13, CozyTheme.MUTED)
+	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	foot.add_child(_status)
+	var close: Button = UiUtil.button(tr("UI_CLOSE"), _close)
+	close.theme_type_variation = "PrimaryButton"
+	close.custom_minimum_size.x = 120.0
+	close.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	foot.add_child(close)
+	frame.add_child(foot)
 	_fill()
 
 
@@ -41,26 +54,36 @@ func _fill() -> void:
 	UiUtil.clear(_list)
 	var data: GameData = DataDB.data
 	var eligible: Array[Dictionary] = GameState.sim.awards.eligible_campaigns(GameState.sim.state, _award_id)
+	_list.add_child(Cards.section(tr("UI_AWARD_ELIGIBLE"), tr("UI_CAMPAIGN_COUNT") % eligible.size(), "speakerphone"))
 	if eligible.is_empty():
 		_list.add_child(UiUtil.label(tr("UI_AWARD_NO_CAMPAIGNS"), 14, UiUtil.MUTED))
 	for h: Dictionary in eligible:
-		var row: HBoxContainer = UiUtil.hbox()
+		var card: PanelContainer = UiUtil.card()
+		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+		card.add_child(row)
 		var score: float = float(h["score"])
-		var score_label: Label = UiUtil.label("%.1f" % score, 18, UiUtil.score_color(score))
+		var score_label: Label = UiUtil.label("%.1f" % score, 22, UiUtil.score_color(score))
+		score_label.add_theme_font_override("font", CozyTheme.title_font(700))
 		score_label.custom_minimum_size.x = 46.0
 		row.add_child(score_label)
 		var title: String = str(h.get("name", "")) if not str(h.get("name", "")).is_empty() else tr("UI_UNTITLED")
-		row.add_child(UiUtil.label("%s · %s · %s" % [title, h.get("client_name", ""), UiUtil.name_of(data.channels, h["main_channel"])], 14))
-		row.add_child(UiUtil.spacer())
+		var info: HBoxContainer = Cards.header(null, title, "%s · %s" % [h.get("client_name", ""),
+			UiUtil.name_of(data.channels, h["main_channel"])])
+		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		((info.get_child(0) as VBoxContainer).get_child(0) as Label).add_theme_font_size_override("font_size", 15)
+		row.add_child(info)
 		var cid: String = h["campaign"]
-		row.add_child(UiUtil.button(tr("UI_AWARD_SEND"), func() -> void: _send(cid)))
-		_list.add_child(row)
+		var send: Button = UiUtil.button(tr("UI_AWARD_SEND"), func() -> void: _send(cid))
+		Cards.compact(send, true)
+		send.custom_minimum_size.x = 84.0
+		row.add_child(send)
+		_list.add_child(card)
 
 
 func _send(campaign_id: String) -> void:
 	var err: String = GameState.execute(EnterAwardCommand.new(_award_id, campaign_id))
 	_status.text = tr(err) if not err.is_empty() else tr("UI_AWARD_SENT")
-	_status.add_theme_color_override("font_color", UiUtil.TERRACOTTA if not err.is_empty() else UiUtil.SAGE_DARK)
+	_status.add_theme_color_override("font_color", CozyTheme.NEGATIVE if not err.is_empty() else CozyTheme.FOREST)
 	_fill()
 
 
