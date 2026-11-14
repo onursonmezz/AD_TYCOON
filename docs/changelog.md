@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## Mini oyunlar: prova pencereleri ve altı yeni oyun (2026-11-16)
+- **Ayrı pencere:** Mini oyunlar artık kendi penceresinde açılıyor: "Ses provası", "Kurgu provası" gibi bir başlık, altında müşteri ve kanal, tek cümlelik görev, ortada oyun, altta "Kalan süre 04,3 sn", süre çubuğu ve Atla. Faz başında kendiliğinden açılır.
+- **Sıra:** 1. fazın başında bir strateji provası (hedef kitle ya da konum), 2. fazın başında kanalın provası, 3. fazın başında taslak seçimi.
+- **Yeni provalar:**
+  - **Kurgu (TV, sinema, video):** üç sahneyi Giriş / Ürün / Çağrı sırasına koy.
+  - **Akış (sosyal medya, dijital, influencer):** kayan telefon akışında kendi gönderini yakala.
+  - **Sponsorluk:** marka rozetini formanın göğüs alanına sürükle.
+  - **Açılış (etkinlik, lansman):** işaret yeşil bölgeye gelince "Kes".
+  - **Hedef kitle:** brief'in kitlesine uyan kişileri seç.
+  - **Konum (gerilla, halkla ilişkiler):** haritada en kalabalık noktayı seç.
+- **Billboard:** yolda yeşil "doğru an" bölgesi ve "Göster" düğmesi var.
+- **Görseller:** 35 sektörün hepsinin ürün görseli geldi; taslaklar sektöre uygun zemin ve efekt seçiyor.
+- Nasıl test ederim:
+  1. TV kanallı bir kampanya başlat. 1. faz başında "Hedef kitle provası" penceresi açılmalı: kitleye uyan kişilere tıkla. 2. faz başında "Kurgu provası" gelmeli.
+  2. Sosyal medya kanallı bir kampanyada "Akış provası": telefon akışında kendi ilanını yakala.
+  3. Billboard kampanyasında 1. fazda "Konum provası", 2. fazda araba yeşil bölgedeyken "Göster".
+  4. Etkinlik kanalında "Açılış provası", sponsorlukta "Sponsorluk provası" gelmeli.
+  5. Banka ya da oyun sektöründe taslak seçimine bak: ürün o sektörün görseli, zemin ve efekt ona uygun olmalı (oyun sektöründe gece zemininde yazı açık renk).
+
 ## Mini oyunlar ve ekibin taslakları (2026-11-16)
 - **Fazlar arasında mini oyunlar:** 1. ve 2. fazın başında, kampanyanın ana kanalına göre birkaç saniyelik küçük bir oyun çıkar:
   - **Radyo:** ses dalgasının üç parçasını doğru sırayla tıkla.

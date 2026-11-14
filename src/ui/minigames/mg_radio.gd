@@ -34,11 +34,11 @@ func _process(delta: float) -> void:
 
 
 func _slot_rect(i: int) -> Rect2:
-	return Rect2(Vector2(30 + i * 200, 20), SLOT)
+	return Rect2(Vector2(20 + i * 200, 40), SLOT)
 
 
 func _piece_rect(i: int) -> Rect2:
-	return Rect2(Vector2(30 + i * 200, 140), SLOT)
+	return Rect2(Vector2(20 + i * 200, 190), SLOT)
 
 
 func _gui_input(event: InputEvent) -> void:

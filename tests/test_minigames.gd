@@ -12,14 +12,17 @@ func _camp(channel: String) -> Dictionary:
 	return {"setup": {"client_id": "cl_x", "mix": [{"channel": channel, "share": 1.0}]}}
 
 
-func test_game_follows_main_channel_and_changes_next_phase() -> void:
-	assert_eq(Minigames.game_for(data, _camp("radio")["setup"], 0), "radio_wave")
-	assert_eq(Minigames.game_for(data, _camp("billboard")["setup"], 0), "billboard")
-	assert_eq(Minigames.game_for(data, _camp("magazine")["setup"], 0), "newspaper", "basılı kategori → gazete")
-	assert_ne(Minigames.game_for(data, _camp("radio")["setup"], 1), "radio_wave", "ikinci fazda başka oyun")
+func test_strategy_game_first_then_channel_game_then_draft() -> void:
+	assert_eq(Minigames.game_for(data, _camp("radio")["setup"], 0), "audience", "strateji fazı: hedef kitle")
+	assert_eq(Minigames.game_for(data, _camp("radio")["setup"], 1), "radio_wave")
+	assert_eq(Minigames.game_for(data, _camp("billboard")["setup"], 0), "map", "açık havada strateji: konum")
+	assert_eq(Minigames.game_for(data, _camp("billboard")["setup"], 1), "billboard")
+	assert_eq(Minigames.game_for(data, _camp("magazine")["setup"], 1), "newspaper", "basılı kategori → gazete")
+	assert_eq(Minigames.game_for(data, _camp("national_tv")["setup"], 1), "film")
+	assert_eq(Minigames.game_for(data, _camp("instafoto")["setup"], 1), "feed")
+	assert_eq(Minigames.game_for(data, _camp("guerrilla")["setup"], 1), "map")
+	assert_eq(Minigames.game_for(data, _camp("guerrilla")["setup"], 0), "audience", "iki oyun aynı çıkmaz")
 	assert_eq(Minigames.game_for(data, _camp("radio")["setup"], 2), Minigames.DRAFT, "kreatiften sonra taslak seçimi")
-	var unknown: String = Minigames.game_for(data, _camp("tiktak")["setup"], 0)
-	assert_true((data.bal("minigames.pool") as Array).has(unknown), "eşlemesi olmayan kanal havuzdan bir oyun alır")
 
 
 func test_bonus_is_at_most_five_percent_and_skipping_costs_nothing() -> void:

@@ -1500,14 +1500,48 @@ UI_SET_RESET,Varsayılanlara dön,Reset to defaults
 UI_SET_MINIGAMES,Fazlar arasında mini oyunlar,Mini games between phases
 UI_MG_TITLE,Mini oyun · %s,Mini game · %s
 UI_MG_SKIP,Atla,Skip
-MG_RADIO_WAVE_NAME,Radyo spotu,Radio spot
+MG_MAP_LEGEND,Kalabalık: insan noktaları,Crowd: people dots
+MG_AUDIENCE_BROAD,Geniş kitle,Broad audience
+MG_AUDIENCE_TARGET,Hedef · %s,Target · %s
+MG_BILLBOARD_SHOW,Göster,Show
+MG_RIBBON_CUT,Kes,Cut
+MG_FEED_WANTED,Aranan gönderi,Wanted post
+MG_FILM_SLOT_3,Çağrı,Call
+MG_FILM_SLOT_2,Ürün,Product
+MG_FILM_SLOT_1,Giriş,Opening
+MG_DRAFT_TITLE,Taslak seçimi,Draft pick
+MG_MAP_HINT,En kalabalık noktayı seç.,Pick the busiest spot.
+MG_MAP_NAME,Konum provası,Location rehearsal
+MG_MAP_TITLE,Konum provası,Location rehearsal
+MG_AUDIENCE_HINT,Hedef kitleye uyan kişileri seç.,Pick the people who fit the target audience.
+MG_AUDIENCE_NAME,Hedef kitle provası,Audience rehearsal
+MG_AUDIENCE_TITLE,Hedef kitle provası,Audience rehearsal
+MG_RIBBON_HINT,İşaret ortaya geldiğinde kurdeleyi kes.,Cut the ribbon when the marker reaches the middle.
+MG_RIBBON_NAME,Açılış provası,Opening rehearsal
+MG_RIBBON_TITLE,Açılış provası,Opening rehearsal
+MG_SPONSOR_HINT,Markayı formanın görünür alanına yerleştir.,Place the brand on the visible area of the jersey.
+MG_SPONSOR_NAME,Sponsorluk provası,Sponsorship rehearsal
+MG_SPONSOR_TITLE,Sponsorluk provası,Sponsorship rehearsal
+MG_FEED_HINT,Kampanya gönderini akışta yakala.,Catch your campaign post in the feed.
+MG_FEED_NAME,Akış provası,Feed rehearsal
+MG_FEED_TITLE,Akış provası,Feed rehearsal
+MG_FILM_HINT,"Üç sahneyi doğru sırayla yerleştir: giriş, ürün, çağrı.","Put the three scenes in order: opening, product, call to action."
+MG_FILM_NAME,Kurgu provası,Edit rehearsal
+MG_FILM_TITLE,Kurgu provası,Edit rehearsal
+MG_NEWSPAPER_TITLE,Gazete provası,Newspaper rehearsal
+MG_BILLBOARD_TITLE,Açık hava provası,Outdoor rehearsal
+MG_RADIO_WAVE_TITLE,Ses provası,Sound rehearsal
+UI_MG_WAITING,Fazın provası açık: önce mini oyunu tamamla.,The phase rehearsal is open: finish the mini game first.
+UI_MG_SECONDS,%s sn,%s s
+UI_MG_LEFT,Kalan süre,Time left
+MG_RADIO_WAVE_NAME,Ses provası,Sound rehearsal
 MG_RADIO_WAVE_HINT,Ses dalgasının üç parçasını doğru sırayla tıkla.,Click the three pieces of the sound wave in the right order.
-MG_BILLBOARD_NAME,Billboard,Billboard
-MG_BILLBOARD_HINT,"Araba ilanın tam önündeyken tıkla (ya da boşluk tuşu).","Click when the car is right in front of the ad (or press space)."
-MG_NEWSPAPER_NAME,Gazete ilanı,Newspaper ad
+MG_BILLBOARD_NAME,Açık hava provası,Outdoor rehearsal
+MG_BILLBOARD_HINT,İlanı sürücüye doğru anda göster: araba yeşil bölgedeyken Göster'e bas.,Show the ad to the driver at the right moment: press Show while the car is in the green zone.
+MG_NEWSPAPER_NAME,Gazete provası,Newspaper rehearsal
 MG_NEWSPAPER_HINT,İlanı sürükleyip sayfadaki boş kutuya bırak.,Drag the ad into the empty box on the page.
-MG_DRAFT_NAME,Ekibin taslakları,The team's drafts
-MG_DRAFT_HINT,"Kreatif ekip üç taslak hazırladı. Birini seç: ofisteki posterde ve sokaktaki billboard'da bu görünecek.","The creative team made three drafts. Pick one: it will appear on the office poster and the street billboard."
+MG_DRAFT_NAME,Taslak seçimi,Draft pick
+MG_DRAFT_HINT,Kreatif ekip üç taslak hazırladı. Birini seç: ofisteki posterde ve sokaktaki billboard'da bu görünecek.,The creative team made three drafts. Pick one: it will appear on the office poster and the street billboard.
 MG_DRAFT_TEAM,Ekibin üç taslağı,The team's three drafts
 MG_DRAFT_PICK,Bu taslağı seç,Pick this draft
 MG_DRAFT_SKIP,Ekibe bırak,Let the team decide

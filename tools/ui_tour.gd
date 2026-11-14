@@ -79,7 +79,18 @@ func _run() -> void:
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():
 			var phase: int = sim.production.current_phase(sim.state.active_campaign)
-			if phase == 2 and not shown_production and EventSystem.pending(sim.state).is_empty():
+			if phase < 2:
+				# 2. fazın provası (K-121): açıksa bitir, pencere kapansın (sonraki fazınki açılabilsin).
+				await _finish_minigame(screen)
+			if phase == 2 and not shown_production:
+				# Faz başındaki olayları cevapla, olay pencerelerini kapat: prova penceresi ancak sonra açılır.
+				while not EventSystem.pending(sim.state).is_empty():
+					var ev_inst: Dictionary = EventSystem.pending(sim.state)
+					sim.events.resolve(sim, ev_inst["uid"], int(ev_inst["options"][0]))
+				for child: Node in screen.get("_modal_layer").get_children():
+					if child is EventDialog:
+						child.queue_free()
+				await get_tree().process_frame
 				# Prodüksiyon fazı panosu: ekipman çarpanı ve kiralıklar (K-119).
 				shown_production = true
 				sim.state.equipment = ["vhs_camcorder", "film_photo_kit"]
@@ -87,7 +98,9 @@ func _run() -> void:
 				screen.call("show_panel", "campaign")
 				await get_tree().process_frame
 				# Kreatiften sonra ekibin 3 taslağı (K-120).
-				if not (screen.get("_panel") as Node).find_children("*", "MinigameHost", true, false).is_empty():
+				screen.call("_refresh")  # faz başı mini oyun penceresi (K-121)
+				await get_tree().create_timer(0.3).timeout
+				if not get_tree().root.find_children("*", "MinigameHost", true, false).is_empty():
 					await _shot("05a_draft")
 					await _finish_minigame(screen.get("_panel"))
 				var pboards: Array[Node] = (screen.get("_panel") as Node).find_children("*", "WorkBoard", true, false)
@@ -327,7 +340,7 @@ func _tour_build(screen: Control, sim: Simulation) -> void:
 
 ## Paneldeki mini oyunu atlar (taslakta ilkini seçer) ve sonuç gösterimi bitene kadar bekler.
 func _finish_minigame(panel: Node) -> void:
-	var hosts: Array[Node] = panel.find_children("*", "MinigameHost", true, false)
+	var hosts: Array[Node] = panel.get_tree().root.find_children("*", "MinigameHost", true, false)
 	if hosts.is_empty():
 		return
 	((hosts[0] as MinigameHost).get("_game") as MinigameGame).time_up()

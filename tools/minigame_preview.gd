@@ -2,7 +2,7 @@ extends Control
 ## Mini oyun önizlemesi (K-120): her mini oyunu oynanırken çeker, PNG kaydeder.
 ## Çalıştırma: godot --path . res://tools/minigame_preview.tscn -- --out=<klasör>
 
-const GAMES: Array[String] = ["radio_wave", "billboard", "newspaper", "draft",
+const GAMES: Array[String] = ["radio_wave", "billboard", "newspaper", "film", "feed", "sponsor", "ribbon", "audience", "map", "draft",
 	"draft:gaming_entertainment", "draft:health_pharma", "draft:automotive", "draft:banking_finance", "draft:crypto_fintech"]
 
 

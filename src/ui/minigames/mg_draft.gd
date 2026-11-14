@@ -3,7 +3,7 @@ extends MinigameGame
 ## Ekibin 3 taslağı (K-120): kreatif faz bitince ekip üç ilan taslağı sunar; birini seç. Seçilen taslak ofis
 ## duvarındaki posterde, sokaktaki billboard'da ve törende görünür. Puana etkisi yok, süre sınırı yok.
 
-const CARD: Vector2 = Vector2(190, 146)
+const CARD: Vector2 = Vector2(184, 142)
 
 signal chosen(draft: Dictionary)
 

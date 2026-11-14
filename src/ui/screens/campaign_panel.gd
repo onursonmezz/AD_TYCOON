@@ -31,6 +31,9 @@ func refresh() -> void:
 	var sig: String = str(camp.get("id", "")) + str(s.waiting_for_input) + str(s.airing.size())
 	if camp.is_empty():
 		sig += "idle"
+	elif s.waiting_for_input:
+		# Mini oyun bitince (K-120) bekleme notu panoya dönsün.
+		sig += str(Minigames.pending(camp, GameState.sim.production.current_phase(camp)))
 	if sig != _signature:
 		_signature = sig
 		_rebuild(s)
@@ -153,8 +156,7 @@ func _build_sliders(camp: Dictionary) -> void:
 	UiUtil.clear(_slider_box)
 	var phase: int = GameState.sim.production.current_phase(camp)
 	if bool(Settings.get_value("minigames")) and Minigames.pending(camp, phase):
-		_slider_box.add_child(MinigameHost.new(camp, phase, func() -> void:
-			if GameState.has_game() and GameState.sim.state.active_campaign == camp:
-				_build_sliders(camp)))
+		# Mini oyun kendi penceresinde açılır (MinigameDialog); bitince bu panel yenilenir.
+		_slider_box.add_child(UiUtil.label(tr("UI_MG_WAITING"), 14, UiUtil.MUTED))
 		return
 	_slider_box.add_child(WorkBoard.new(camp, func() -> void: Clock.set_paused(false)))

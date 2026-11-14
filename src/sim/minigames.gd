@@ -12,22 +12,33 @@ static func _m(data: GameData) -> Dictionary:
 	return data.bal("minigames")
 
 
-## Fazın başında oynanacak oyun: 0 ve 1. fazda kanal oyunu, 2. fazda (kreatif bitti) taslak seçimi.
+## Fazın başında oynanacak oyun: 1. fazda strateji oyunu (hedef kitle ya da konum), 2. fazda ana kanalın oyunu,
+## 3. fazda (kreatif bitti) taslak seçimi. İki oyun aynı çıkmaz.
 static func game_for(data: GameData, setup: Dictionary, phase: int) -> String:
 	if phase >= 2:
 		return DRAFT
+	var channel_game: String = _channel_game(data, setup)
+	if phase == 1:
+		return channel_game
 	var cfg: Dictionary = _m(data)
-	var pool: Array = cfg["pool"]
 	var main: String = Scoring.main_channel(setup.get("mix", []))
-	var first: String = str((cfg["by_channel"] as Dictionary).get(main, ""))
-	if first.is_empty() and data.channels.has(main):
-		first = str((cfg["by_category"] as Dictionary).get(str(data.channels[main]["category"]), ""))
-	if first.is_empty():
-		first = str(pool[absi(hash(str(setup.get("client_id", "")))) % pool.size()])
-	if phase == 0:
-		return first
-	# 1. fazda başka bir oyun: havuzda bir sonraki.
-	return str(pool[(pool.find(first) + 1) % pool.size()])
+	var category: String = str(data.channels[main]["category"]) if data.channels.has(main) else ""
+	var strategy: String = str((cfg["strategy_by_category"] as Dictionary).get(category, cfg["strategy_default"]))
+	if strategy == channel_game:
+		strategy = "audience" if strategy != "audience" else "map"
+	return strategy
+
+
+static func _channel_game(data: GameData, setup: Dictionary) -> String:
+	var cfg: Dictionary = _m(data)
+	var main: String = Scoring.main_channel(setup.get("mix", []))
+	var game: String = str((cfg["by_channel"] as Dictionary).get(main, ""))
+	if game.is_empty() and data.channels.has(main):
+		game = str((cfg["by_category"] as Dictionary).get(str(data.channels[main]["category"]), ""))
+	if game.is_empty():
+		var pool: Array = cfg["pool"]
+		game = str(pool[absi(hash(str(setup.get("client_id", "")))) % pool.size()])
+	return game
 
 
 static func pending(campaign: Dictionary, phase: int) -> bool:

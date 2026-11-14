@@ -298,6 +298,7 @@ func _refresh() -> void:
 	if _panel != null:
 		_panel.call("refresh")
 	_refresh_speed()
+	MinigameDialog.maybe_open.call_deferred(self, _modal_layer)  # faz başı mini oyunu (K-120)
 
 
 func _set_dot(id: String, text: String) -> void:

@@ -1,6 +1,7 @@
 class_name MgBillboard
 extends MinigameGame
-## Billboard (K-120): araba yoldan geçerken ilanın tam önündeyken tıkla (ya da boşluk). Ne kadar ortadaysa o kadar iyi.
+## Açık hava provası (K-120): araba yoldan geçerken ilanın önündeki yeşil bölgedeyken "Göster" (ya da tıkla / boşluk).
+## Ne kadar ortadaysa o kadar iyi.
 
 const STRIP_SIZE: Vector2 = Vector2(1536, 512)
 const PANEL: Rect2 = Rect2(840, 112, 485, 132)     # yol görselindeki boş billboard paneli (piksel)
@@ -45,12 +46,20 @@ func begin() -> void:
 		body.size = _car.size * Vector2(1, 0.6)
 		_car.add_child(body)
 	add_child(_car)
-	var marker: ColorRect = ColorRect.new()
-	marker.color = Color(CozyTheme.FOREST, 0.5)
-	marker.size = Vector2(4, 16)
-	marker.position = Vector2(_target_x - 2, CANVAS.y - 18)
-	marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(marker)
+	# Yolda doğru anın bölgesi (araba merkezi bu aralıktayken gösterilmeli).
+	var window: float = CANVAS.x * DataDB.data.balf("minigames.billboard_window")
+	var zone: ColorRect = ColorRect.new()
+	zone.color = Color(CozyTheme.FOREST_LIGHT, 0.28)
+	zone.position = Vector2(_target_x - window, CANVAS.y - CAR_WIDTH * 0.5 - 2.0)
+	zone.size = Vector2(window * 2.0, CAR_WIDTH * 0.5)
+	zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(zone)
+	move_child(zone, _car.get_index())
+	var show: Button = UiUtil.button(tr("MG_BILLBOARD_SHOW"), _catch)
+	show.theme_type_variation = "PrimaryButton"
+	show.custom_minimum_size = Vector2(120, 34)
+	show.position = Vector2(CANVAS.x - 132, 10)
+	add_child(show)
 
 
 func _process(delta: float) -> void:

@@ -1415,3 +1415,20 @@ Oyuncu bunlarla puan kasmak zorunda kalmamalı.
 - Oyun zamanı faz başında zaten durduğu için mini oyun da zaman durmuşken oynanır; süre çubuğu 5 sn, "Atla" var,
   Ayarlar → Oyun'dan tamamen kapatılabilir. Sayılar `balance.json minigames`.
 - Önizleme: `godot --path . res://tools/minigame_preview.tscn --resolution 760x470 -- --out=<klasör>`.
+
+## K-121 — Mini oyunlar kendi penceresinde; 6 yeni prova, tam görsel seti
+Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ayrı bir "… provası" penceresi.
+- Pencere (`MinigameDialog`, ui_layout `dialogs.minigame` 700×560): başlıkta oyunun adı ve ikonu, altında
+  "Müşteri | Kanal", tek cümlelik görev, oyun alanı (620×320), altta saat, "Kalan süre 04,3 sn", süre çubuğu, Atla.
+  Faz başında ana ekran kendiliğinden açar; olay penceresi varsa önce o kapanır. Kampanya panelindeki gömülü oyun
+  kaldırıldı (kaydırma sorunu kökten çözüldü).
+- Sıra: 1. fazda strateji provası (hedef kitle; açık hava, etkinlik ve sponsorlukta konum), 2. fazda kanalın provası,
+  3. fazda taslak seçimi. İki prova aynı olmaz.
+- Yeni provalar: kurgu (TV/sinema/video: üç sahneyi Giriş-Ürün-Çağrı sırasına koy), akış (sosyal/dijital/influencer:
+  kayan akışta kendi gönderini yakala), sponsorluk (rozeti formanın göğüs alanına sürükle), açılış (etkinlik: işaret
+  yeşil bölgedeyken "Kes"), hedef kitle (brief'in kitlesine uyan kişileri seç), konum (gerilla/PR ve strateji: en
+  kalabalık iğneyi seç). Billboard'a yolda yeşil "doğru an" bölgesi ve "Göster" düğmesi eklendi. Radyo, Orgo'nun
+  isteğiyle üç parçayı sıraya koyma olarak kaldı.
+- Tam görsel seti (67 dosya): 35 sektörün ürünü, 8 arka plan, 8 efekt, 14 parça. Taslaklarda arka plan ve efekt
+  sektörün ton grubuna göre seçilir (`minigames.art_by_tone`); koyu zeminde slogan açık renk; efektler türüne göre
+  yerleşir (rozet köşede, ışın ve sıçrama ürünün arkasında, buhar üstünde).
