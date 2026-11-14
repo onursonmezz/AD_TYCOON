@@ -1301,3 +1301,16 @@ dosyalar `assets/fonts/` altında (Lora, Lora-Italic, SourceSans3, SourceSans3-I
 Lora (varsayılan 700; daha yüksek istekler 700e iner), `body_font` Source Sans 3 Regular, `strong_font` SemiBold.
 İtalik yazılar (alt yazı, yorum alıntıları, logo) artık gerçek italik kesimden (`CozyTheme.italic_of`); eğme yalnızca
 yedek. Eski Fraunces / Nunito / Fredoka dosyaları depoda duruyor ama kodda kullanılmıyor.
+
+## K-112 — 3D sahne: "sıcak minyatür" görünümü
+Orgo 3D için "sıcak minyatür" yönünü seçti (arayüz taslakları 3D için referans değil). Yapılanlar, hepsi veriyle:
+- Işık (`look.json` environment/sun/fill): alçak akşamüstü güneşi (1.0/0.82/0.6, 2.0, −36°), ılık ortam, soğuk dolgu;
+  AgX ton eşleme; `grade` ile her kanal için ton eğrisi (gölge hafif soğuk, parlak sıcak); doygunluk 0.95; derinlik sisi
+  (`fog`); kenar kararması sıcak kahve (`vignette.color`).
+- Kamera: açılış yakınlığı `camera.frame_factor` (1.18), eğim 48°, maket bulanıklığı yakın ve uzak (mesafeye oranlı).
+- Malzeme: zemin koyu ceviz tonu (masalar zeminden ayrılsın), mutfak karosu kırık beyaz, duvar kapağı ince ve koyu,
+  duvar kâğıdı sade ton; çim deseni daha seyrek, zemin 90 m pay ile ekranı doldurur.
+- Dekor (`models.json room_decor`, `garden`): oda köşelerine saksı, bina çevresine çalı ve ağaç. Yalnızca görünüş;
+  simülasyona ve yürüme ızgarasına girmez. Konumlar noktanın özetinden (hash) gelir, rastgele sayı üreteci kullanmaz.
+Kare hızı: 60 çalışan, 5. seviye ofis, 3.27 ms ortalama (306 FPS).
+Kapsam dışı: karakter modelleri, gün/gece döngüsü, masa lambası gibi iç mekân ışık kaynakları.

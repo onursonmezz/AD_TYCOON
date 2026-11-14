@@ -29,6 +29,8 @@
 		"hex_shelf": { "model": "decor/hex_shelf.glb", "size": [1.12, 0.16], "height": 1.12, "color": [0.79, 0.64, 0.4] },
 		"wall_panel": { "model": "decor/wall_panel.glb", "size": [1.24, 0.06], "height": 1.0, "color": [0.79, 0.64, 0.4] }
 	},
+	"_garden": "Bina çevresi (sokak tarafı hariç): inner–outer arası halkada çalılar, trees_from ötesinde ağaçlar; ızgara adımı step, sapma jitter. Yalnızca görünüş.",
+	"garden": { "inner": 0.9, "outer": 13.0, "trees_from": 4.5, "step": 2.8, "jitter": 1.4, "tree_every": 2, "bush_every": 2, "street_keep": 2.0 },
 	"_room_decor": "Oda köşelerine kendiliğinden konan saksılar (yalnızca görünüş; ızgaraya girmez). items: decor anahtarları.",
 	"room_decor": { "rooms": ["work", "meeting", "lounge", "award_lobby", "brainstorm", "rd_lab", "empty"], "items": ["plant_medium", "plant_pot"],
 		"max_per_room": 3, "inset": 0.5, "clearance": 0.2, "door_clearance": 1.6 },

@@ -1,5 +1,18 @@
 # Değişiklik günlüğü
 
+## 3D sahne: sıcak minyatür görünümü (2026-11-15)
+- **Işık:** Alçak, sıcak akşamüstü güneşi; uzun ve yumuşak gölgeler; gölgeli yerler hafif serin. Renkler daha uyumlu, daha az doygun.
+- **Kamera:** Açılışta ofis ekranın çoğunu kaplar; kenarlar hafif bulanık (maket etkisi).
+- **Malzemeler:** Zemin koyu ceviz, masalar zeminden ayrılıyor; mutfak karosu kırık beyaz; duvar kapakları ince.
+- **Dekor:** Oda köşelerine saksılar; binanın çevresinde çalı ve ağaçlar. Sahnenin kenarı karanlık boşluk yerine çimle devam edip sise karışıyor.
+- Önce / sonra: `docs/screenshots/28_3d_once.png` → `28_3d_sonra*.png`.
+- Nasıl test ederim:
+  1. Bir oyuna gir: ışık sıcak ve alçak gelmeli, gölgeler uzun ve yumuşak olmalı.
+  2. Tekerlekle en uzağa çık: sahnenin kenarı karanlık bir boşlukla değil, çim ve sisle bitmeli.
+  3. Q / E ile döndür: binanın her yanında çalı ve ağaç olmalı; sokak tarafı açık kalmalı.
+  4. Oda köşelerinde saksılar olmalı; kapı ağızlarında olmamalı. Çalışanlar saksıların içinden geçiyorsa bana yaz.
+  5. Ayarlar → Ekran → Grafik kalitesi Düşük: görüntü sadeleşmeli ama renkler aynı kalmalı.
+
 ## Yazı tipleri (2026-11-15)
 - **Başlıklar:** Lora Bold (pencere başlıkları, kart ve bölüm başlıkları, logo, büyük sayılar).
 - **Menü ve açıklamalar:** Source Sans 3 (düğmeler, listeler, tablolar, bildirimler); kalın yerlerde SemiBold.

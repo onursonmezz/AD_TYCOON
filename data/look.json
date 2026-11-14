@@ -57,5 +57,5 @@
 		"empty": [0.86, 0.84, 0.8], "brainstorm": [0.36, 0.5, 0.62], "award_lobby": [0.85, 0.7, 0.42], "rd_lab": [0.9, 0.92, 0.9],
 		"studio": [0.25, 0.26, 0.3]
 	},
-	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "texture": "ground_grass", "tile": 4.0, "margin": [16.0, 18.0] }
+	"ground": { "grass": [0.33, 0.47, 0.24], "pattern": "grass", "texture": "ground_grass", "tile": 5.5, "tint": [0.86, 0.88, 0.8], "margin": [90.0, 90.0] }
 }

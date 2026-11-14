@@ -62,6 +62,7 @@ func build(parent: Node3D, layout: OfficeLayout, state: SimState, walls: Array[D
 	_wall_decor(parent)
 	_room_decor(parent)
 	_street(parent, layout)
+	_garden(parent, layout)
 	_visual_root = Node3D.new()
 	_visual_root.name = "KeyVisuals"
 	parent.add_child(_visual_root)
@@ -217,6 +218,50 @@ func _blocked(area: Rect2, above: float) -> bool:
 
 static func _v2(a: Array) -> Vector2:
 	return Vector2(float(a[0]), float(a[1]))
+
+
+## Bahçe (B4): binanın çevresinde, sokak tarafı hariç, iç halkada çalılar, dış halkada ağaçlar. Konumlar ızgaradan ve
+## noktanın kendi özetinden (hash) gelir: her açılışta aynı, rastgele sayı üreteci kullanmaz (yalnızca görünüş).
+## Ayarlar models.json "garden".
+func _garden(parent: Node3D, layout: OfficeLayout) -> void:
+	var cfg: Dictionary = _m().get("garden", {})
+	if cfg.is_empty():
+		return
+	var street: Dictionary = _m()["street"]
+	var sl: Dictionary = _m()["street_layout"]
+	var n: Vector2 = OUTWARD[_entrance_side(layout)]
+	var building: Rect2 = Rect2(Vector2.ZERO, layout.size)
+	var inner: float = float(cfg["inner"])
+	var outer: float = float(cfg["outer"])
+	var trees_from: float = float(cfg["trees_from"])
+	var step: float = float(cfg["step"])
+	var jitter: float = float(cfg["jitter"])
+	var street_band: float = float(sl["sidewalk_width"]) + float(sl["road_width"]) + float(cfg["street_keep"])
+	var front: float = (layout.size * 0.5).dot(n.abs()) + (layout.size * 0.5).dot(n)
+	var x: float = -outer
+	while x <= layout.size.x + outer:
+		var z: float = -outer
+		while z <= layout.size.y + outer:
+			var h: int = absi(hash(Vector2i(roundi(x * 10.0), roundi(z * 10.0))))
+			var p: Vector2 = Vector2(x, z) + Vector2(float(h % 1000) / 1000.0 - 0.5, float((h / 1000) % 1000) / 1000.0 - 0.5) * jitter
+			var dist: float = _rect_distance(building, p)
+			var ahead: float = p.dot(n) - front  # binanın ön yüzünden sokağa doğru uzaklık
+			if dist >= inner and dist <= outer and not (ahead > -1.0 and ahead < street_band):
+				var key: String = "tree" if dist >= trees_from and h % int(cfg["tree_every"]) == 0 else "bush"
+				if key == "tree" or h % int(cfg["bush_every"]) == 0:
+					var def: Dictionary = street[key]
+					var s: float = 0.8 + float((h / 7) % 50) / 100.0
+					thing(parent, str(def["model"]), p, _v2(def["size"]) * s, float(def["height"]) * s, color_of(def["color"]),
+						float(h % 360))
+			z += step
+		x += step
+
+
+## Noktanın dikdörtgene uzaklığı (içindeyse 0).
+static func _rect_distance(r: Rect2, p: Vector2) -> float:
+	var dx: float = maxf(maxf(r.position.x - p.x, 0.0), p.x - r.end.x)
+	var dz: float = maxf(maxf(r.position.y - p.y, 0.0), p.y - r.end.y)
+	return Vector2(dx, dz).length()
 
 
 ## Girişin önünde kaldırım ve yol; kaldırımda ağaçlar, lambalar, bank; köşede billboard (GDD 21.1, 21.4).
