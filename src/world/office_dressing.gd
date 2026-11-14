@@ -60,6 +60,7 @@ func build(parent: Node3D, layout: OfficeLayout, state: SimState, walls: Array[D
 	_walls = walls
 	_props(parent, layout, state)
 	_wall_decor(parent)
+	_room_decor(parent)
 	_street(parent, layout)
 	_visual_root = Node3D.new()
 	_visual_root.name = "KeyVisuals"
@@ -142,6 +143,63 @@ func _wall_decor(parent: Node3D) -> void:
 			rad_to_deg(atan2(inward.x, inward.y)), float(cfg["bottom"]))
 		w["decor"] = t["node"]
 		placed += 1
+
+
+## Oda köşelerine kendiliğinden saksı (B3): odalar boş görünmesin. Yalnızca görünüş; simülasyona ve yürüme ızgarasına
+## girmez. Köşe boşsa (eşya, masa, duvar yoksa) konur; kapı ağzındaki köşeler atlanır. Ayarlar models.json "room_decor".
+func _room_decor(parent: Node3D) -> void:
+	var cfg: Dictionary = _m().get("room_decor", {})
+	if cfg.is_empty():
+		return
+	var items: Array = cfg["items"]
+	var inset: float = float(cfg["inset"])
+	var placed: int = 0
+	for room: Dictionary in _layout.rooms:
+		if not (cfg["rooms"] as Array).has(str(room["type"])):
+			continue
+		var r: Rect2 = room["rect"]
+		var corners: Array[Vector2] = [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
+		var in_room: int = 0
+		for i: int in corners.size():
+			if in_room >= int(cfg["max_per_room"]):
+				break
+			var def: Dictionary = (_m()["decor"] as Dictionary).get(str(items[(placed + i) % items.size()]), {})
+			if def.is_empty():
+				continue
+			var fp: Vector2 = _v2(def["size"])
+			var c: Vector2 = corners[i]
+			var center: Vector2 = c + Vector2(inset if c.x <= r.position.x + 0.01 else -inset, inset if c.y <= r.position.y + 0.01 else -inset)
+			var area: Rect2 = Rect2(center - fp * 0.5, fp)
+			# Yürüme ızgarası duvar diplerini hep dolu sayar; burada yalnızca eşya kutularına ve kapılara bakılır.
+			if _overlaps_prop(area.grow(float(cfg["clearance"]))) or _near_entrance(center, float(cfg["door_clearance"])):
+				continue
+			thing(parent, str(def["model"]), center, fp, float(def["height"]), color_of(def["color"]), 45.0 * float(i))
+			in_room += 1
+			placed += 1
+
+
+func _overlaps_prop(area: Rect2) -> bool:
+	for prop: Dictionary in _layout.props:
+		if (prop["rect"] as Rect2).intersects(area):
+			return true
+	for d: Dictionary in _layout.desks:
+		if Rect2((d["seat"] as Vector2) - Vector2(0.4, 0.4), Vector2(0.8, 0.8)).intersects(area):
+			return true
+	return false
+
+
+## Nokta, binanın girişine ya da bir kapıya fazla yakın mı (köşe saksısı yolu kapatmasın).
+func _near_entrance(p: Vector2, keep: float) -> bool:
+	if p.distance_to(_layout.entrance) < keep:
+		return true
+	for room: Dictionary in _layout.rooms:
+		var r: Rect2 = room["rect"]
+		var doors: Dictionary = {"n": Vector2(r.get_center().x, r.position.y), "s": Vector2(r.get_center().x, r.end.y),
+			"w": Vector2(r.position.x, r.get_center().y), "e": Vector2(r.end.x, r.get_center().y)}
+		var door: Vector2 = doors.get(str(room["door"]), Vector2.INF)
+		if p.distance_to(door) < keep:
+			return true
+	return false
 
 
 ## Alanda, verilen yükseklikten uzun bir eşya var mı (duvar süsü onun içine girmesin).
