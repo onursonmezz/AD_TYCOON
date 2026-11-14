@@ -47,6 +47,7 @@ func rebuild() -> void:
 	_body.add_child(UiUtil.label(tr("UI_KNOWLEDGE_BOOK"), 18, UiUtil.SAGE_DARK))
 	_body.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 13, UiUtil.MUTED, 640.0))
 	_body.add_child(_knowledge_table(sim, s))
+	_body.add_child(_focus_table(sim, s))
 
 
 func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
@@ -78,6 +79,29 @@ func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
 			reqs.append(("✓ " if bool(r["ok"]) else "✗ ") + tr(str(r["key"]) + "_SHORT") % need)
 		col.add_child(UiUtil.label(" · ".join(reqs), 12, UiUtil.TEXT))
 	return card
+
+
+## Hedef × odak alanı önemi (K-098): satırlar hedefler, sütunlar dokuz odak alanı; bilinmeyen "?".
+func _focus_table(sim: Simulation, s: SimState) -> VBoxContainer:
+	var data: GameData = DataDB.data
+	var box: VBoxContainer = UiUtil.vbox(6)
+	box.add_child(UiUtil.label(tr("UI_KNOW_FOCUS_TITLE"), 16, UiUtil.SAGE_DARK))
+	var grid: GridContainer = GridContainer.new()
+	grid.columns = data.focus_ids.size() + 1
+	grid.add_theme_constant_override("h_separation", 8)
+	grid.add_child(Control.new())
+	for f: String in data.focus_ids:
+		var head: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, f), 11, UiUtil.WOOD)
+		head.custom_minimum_size.x = 74.0
+		head.autowrap_mode = TextServer.AUTOWRAP_WORD
+		head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		grid.add_child(head)
+	for obj: String in data.objective_ids:
+		grid.add_child(UiUtil.label(UiUtil.name_of(data.objectives, obj), 12, UiUtil.TEXT))
+		for f: String in data.focus_ids:
+			grid.add_child(FocusHint.badge(obj, f, 14))
+	box.add_child(grid)
+	return box
 
 
 ## Seçilen sektörün hedef ve kitle uyumları; bilinmeyen hücre "?".

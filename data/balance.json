@@ -198,7 +198,8 @@
 	"research": {
 		"ap_per_score": 1.0, "size_mult": { "small": 1.0, "medium": 2.0, "large": 3.0, "mega": 5.0 },
 		"digital_categories": ["digital", "social"], "ai_workshop_mult": 0.5, "market_research_cost_1990": 3000,
-		"social_er_mult": 1.15, "crisis_statement_bonus": 0.2, "focus_good": 1.08, "focus_weak": 0.92
+		"social_er_mult": 1.15, "crisis_statement_bonus": 0.2, "focus_good": 1.08, "focus_weak": 0.92,
+		"focus_learn_per_campaign": 2, "focus_learn_min_deviation": 12, "focus_learn_fallback_chance": 0.5
 	},
 	"events": {
 		"gate": { "weekly": 0.08, "production": 0.10, "airing": 0.06 }, "min_gap_weeks": 3, "cooldown_weeks": 144,

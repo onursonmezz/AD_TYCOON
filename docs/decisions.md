@@ -1172,3 +1172,11 @@ ortalamayı 7.0'ın üstünde tutuyor. Tam rapor (1000×10, 200×30) `docs/balan
 yalnızca plaza katı (Y17, hedef Y12–16) ve yıl süresi (K-096 ile ölçülecek) tutmuyor. Plaza için ₺15M nakit şartını
 düşürmek Orgo'ya soruldu.
 Not: `balance_report` aynı botu içeren birden çok JSON'u birleştirmez (ilkini alır); her bot tek dosyada koşulmalı.
+
+## K-098 — Odak alanı önemini öğrenme (kampanya geliştirme, 1. aşama)
+Orgo, Game Dev Tycoon'daki "++ ?" ipuçlarına benzer bir öğrenme istedi; tasarım GDT'yi kopyalamamalı. Hedef × odak alanı
+önemi (`objectives.json focus_importance`) artık Bilgi Defteri'nde ayrı bir tablo (`objective_focus`). Kampanya bitince
+oyuncunun belirgin biçimde öne çıkardığı ya da kıstığı alanlar öğrenilir: kaydırıcı payı faz ortalamasından en az 12 puan
+sapan alanlar, en çok sapandan başlayarak en fazla 2 tane. Dengeli dağıtılmışsa %50 ihtimalle rastgele bir bilinmeyen alan
+öğrenilir. Öğrenilenler raporda cümleyle, faz ekranında kaydırıcının yanında işaretle (+++ … −−−; bilinmeyen "?")
+görünür. Sayılar `balance.json research.focus_learn_*`. Puanlamaya etkisi yok; yalnızca bilgi.

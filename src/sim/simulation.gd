@@ -327,6 +327,8 @@ func _finish(camp: Dictionary) -> void:
 	_apply_reputation(score, setup["size"])
 	camp["ap"] = research.on_campaign(state, score, setup["size"])
 	camp["learned"] = research.learn_from(state, setup)
+	camp["focus_learned"] = research.learn_focus(state, setup)
+	camp["learned"] = int(camp["learned"]) + (camp["focus_learned"] as Array).size()
 	for emp_name: String in staff_life.campaign_finished(state, setup.get("team", []), camp["report"]):
 		if emp_name.is_empty():
 			staff_note.emit("NOTE_LEVEL_UP_FOUNDER", [], "good")

@@ -6,6 +6,8 @@ extends RefCounted
 ## Araştırmalar data/research.json, sayılar balance.json "research".
 
 const KNOWLEDGE_TABLES: Array[String] = ["sector_objective", "sector_audience", "tone", "channel_objective", "channel_audience"]
+## Hedef × odak alanı önemi (K-098): satır hedef, sütun odak alanı; kampanyalarla öğrenilir.
+const FOCUS_TABLE: String = "objective_focus"
 
 var data: GameData
 
@@ -156,6 +158,48 @@ func learn_from(state: SimState, setup: Dictionary) -> int:
 		n += int(reveal(state, "channel_objective", entry["channel"], setup["objective"]))
 		n += int(reveal(state, "channel_audience", entry["channel"], setup["audience"]))
 	return n
+
+
+## Kampanyadan odak önemi öğrenme (K-098): oyuncunun belirgin biçimde öne çıkardığı ya da kıstığı alanlar (faz
+## ortalamasından en az focus_learn_min_deviation puan sapan kaydırıcılar), en çok sapandan başlayarak en fazla
+## focus_learn_per_campaign tane. Hiçbiri yoksa focus_learn_fallback_chance ile rastgele bir bilinmeyen alan.
+## Dönüş: öğrenilen odak alanı kimlikleri.
+func learn_focus(state: SimState, setup: Dictionary) -> Array[String]:
+	var objective: String = setup["objective"]
+	var sliders: Array = setup.get("sliders", [])
+	var candidates: Array[Array] = []
+	var unknown: Array[String] = []
+	for phase: int in sliders.size():
+		var ids: Array[String] = data.focus_ids_of_phase(phase)
+		var values: Array = sliders[phase]
+		# Kayıtta paylar (toplam 1) durur; yüzdeye çevrilir, böylece öncelik değerleriyle de çalışır.
+		var total: float = 0.0
+		for v: Variant in values:
+			total += float(v)
+		var mean: float = 100.0 / maxf(1.0, float(values.size()))
+		for i: int in mini(ids.size(), values.size()):
+			if is_known(state, FOCUS_TABLE, objective, ids[i]):
+				continue
+			unknown.append(ids[i])
+			var pct: float = mean if total <= 0.0 else float(values[i]) / total * 100.0
+			var dev: float = absf(pct - mean)
+			if dev >= float(_r("focus_learn_min_deviation")):
+				candidates.append([dev, ids[i]])
+	candidates.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) > float(b[0]))
+	var out: Array[String] = []
+	for c: Array in candidates:
+		if out.size() >= int(_r("focus_learn_per_campaign")):
+			break
+		out.append(str(c[1]))
+	if out.is_empty() and not unknown.is_empty() and state.rng.chance("focus_learn", float(_r("focus_learn_fallback_chance"))):
+		out.append(str(state.rng.pick("focus_learn", unknown)))
+	for id: String in out:
+		reveal(state, FOCUS_TABLE, objective, id)
+	return out
+
+
+func focus_known(state: SimState, objective: String, focus_id: String) -> bool:
+	return is_known(state, FOCUS_TABLE, objective, focus_id)
 
 
 func market_research_cost(state: SimState) -> float:

@@ -107,6 +107,7 @@ func _build_sliders(camp: Dictionary) -> void:
 		var name_label: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, ids[i]), 16)
 		name_label.custom_minimum_size.x = 230.0
 		row.add_child(name_label)
+		row.add_child(FocusHint.badge(str(camp["setup"]["objective"]), ids[i]))
 		var slider: HSlider = HSlider.new()
 		slider.min_value = 0.0
 		slider.max_value = 100.0

@@ -147,6 +147,10 @@ func _money_block() -> VBoxContainer:
 		v.add_child(UiUtil.label(tr("UI_LATE_DELIVERY") % late, 15, UiUtil.TERRACOTTA))
 	if _camp.has("ap"):
 		v.add_child(UiUtil.label(tr("UI_REPORT_AP") % [float(_camp["ap"]), int(_camp.get("learned", 0))], 14, UiUtil.WOOD))
+	for focus_id: Variant in _camp.get("focus_learned", []):
+		var obj: String = str(_camp["setup"]["objective"])
+		v.add_child(UiUtil.label("✎ " + FocusHint.sentence(obj, str(focus_id)), 14,
+			FocusHint.color_of(FocusHint.value(obj, str(focus_id)))))
 	var delta: float = float(_camp.get("satisfaction_delta", 0.0))
 	v.add_child(UiUtil.label(tr("UI_SATISFACTION_DELTA") % ("%+.1f" % delta), 15,
 		UiUtil.SAGE_DARK if delta >= 0.0 else UiUtil.TERRACOTTA))
