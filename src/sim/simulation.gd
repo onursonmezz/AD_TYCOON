@@ -51,6 +51,7 @@ var awards: AwardSystem
 var pitches: PitchSystem
 var build: BuildSystem
 var tools: ToolSystem
+var equipment: EquipmentSystem
 var research: ResearchSystem
 var events: EventSystem
 var loans: LoanSystem
@@ -88,6 +89,8 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
 	build = BuildSystem.new(data)
 	tools = ToolSystem.new(data)
+	equipment = EquipmentSystem.new(data)
+	production.equipment = equipment
 	research = ResearchSystem.new(data)
 	events = EventSystem.new(data)
 	events.build = build
@@ -162,7 +165,8 @@ func step_day() -> void:
 		if state.bankrupt:
 			went_bankrupt.emit()
 	if ended["month"]:
-		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state) + tools.monthly_cost(state))
+		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state) + tools.monthly_cost(state)
+			+ equipment.monthly_cost(state))
 		loans.monthly(state)
 		for offer: Dictionary in staff_life.monthly_offers(state):
 			offer["rival"] = rivals.pick_by_power(state)
@@ -185,40 +189,13 @@ func _needs_phase_input() -> bool:
 	return true
 
 
-## Oyuncu fazın slider'larını onaylar (GDD 7.4: üç slider, toplam %100).
+## Faz başı girişleri PhaseInput'ta (dosya boyutu, K-099/K-100).
 func set_phase_sliders(sliders: Array) -> bool:
-	if state.active_campaign.is_empty() or sliders.size() != 3:
-		return false
-	var sum: float = 0.0
-	for v: Variant in sliders:
-		if float(v) < 0.0:
-			return false
-		sum += float(v)
-	if not is_equal_approx(sum, 1.0):
-		return false
-	var camp: Dictionary = state.active_campaign
-	var phase: int = production.current_phase(camp)
-	camp["setup"]["sliders"][phase] = sliders.duplicate()
-	var confirmed: Array = camp.get("confirmed_phases", [])
-	confirmed.append(phase)
-	camp["confirmed_phases"] = confirmed
-	state.waiting_for_input = false
-	return true
+	return PhaseInput.apply_sliders(self, sliders)
 
 
-## Oyuncu fazın görev planını onaylar (K-099): { emp_id: [a0, a1, a2] }. Kaydırıcılar plandan hesaplanır.
-func set_phase_plan(plan: Dictionary) -> String:
-	if state.active_campaign.is_empty() or not state.waiting_for_input:
-		return "ERR_PLAN"
-	var camp: Dictionary = state.active_campaign
-	var err: String = WorkPlan.validate(data, plan, camp["setup"].get("team", []))
-	if not err.is_empty():
-		return err
-	var phase: int = production.current_phase(camp)
-	var plans: Array = camp["setup"].get("plan", [{}, {}, {}])
-	plans[phase] = plan.duplicate(true)
-	camp["setup"]["plan"] = plans
-	return "" if set_phase_sliders(WorkPlan.shares_of(plan)) else "ERR_PLAN"
+func set_phase_plan(plan: Dictionary, rentals: Array = []) -> String:
+	return PhaseInput.apply_plan(self, plan, rentals)
 
 
 func step_week() -> void:

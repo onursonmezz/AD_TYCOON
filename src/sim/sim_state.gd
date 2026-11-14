@@ -81,6 +81,8 @@ var room_quality: float = 50.0
 var office_effects: Dictionary = {}
 ## Araçlar (M7): id → { version, sub }, bilgisayar kuşağı; tool_mults ve ai_penalty onlardan hesaplanır, kaydedilmez.
 var tools: Dictionary = {}
+## Sahip olunan prodüksiyon ekipmanı kimlikleri (K-100).
+var equipment: Array = []
 var hardware: String = "pc386"
 var tool_mults: Dictionary = {}
 var ai_penalty: float = 0.0
@@ -107,7 +109,7 @@ const SAVED_FIELDS: Array[String] = ["agency_name", "cash", "reputation", "offic
 	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "finance_months", "_next_id",
 	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income",
-	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build", "tools", "hardware", "research", "knowledge", "events", "loan"]
+	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build", "tools", "equipment", "hardware", "research", "knowledge", "events", "loan"]
 
 
 func _init(data: GameData, seed_value: int) -> void:
@@ -213,6 +215,7 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.pitch_history.assign(saved.get("pitch_history", []))
 	s.build = saved.get("build", BuildSystem.empty_build())
 	s.tools = saved.get("tools", {})
+	s.equipment = saved.get("equipment", [])
 	s.hardware = str(saved.get("hardware", "pc386"))
 	s.research = saved.get("research", ResearchSystem.empty_research())
 	s.knowledge = saved.get("knowledge", {})

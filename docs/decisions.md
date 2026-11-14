@@ -1195,3 +1195,15 @@ kalırdı ve dengenin temeli (ekip büyüdükçe artan puan) bozulurdu.
   olmadan eski yoldan çalışır, denge raporu bu yüzden değişmez.
 - Otomatik dağıtım: ekip 3'ten azsa herkes eşit/kaydırıcı paylarıyla; büyük ekipte herkes en güçlü alanına %100, boş
   alan kalmaz. Sayılar `balance.json workload`.
+
+## K-100 — Prodüksiyon ekipmanı ve kiralama (kampanya geliştirme, 3. aşama)
+Orgo kamera, drone, ışık, stüdyo kiralama gibi kampanya araçları istedi. `data/equipment.json`'da 14 satın alınabilir
+ve 4 kiralık kalem var: kamera kuşakları (VHS 1990 → 4K 2016), fotoğraf, ışık, ses, yeşil perde, drone (2014); stüdyo
+günü, film ekibi, drone ekibi (2012), helikopter çekimi (2013'e kadar).
+- Etki yalnızca prodüksiyon odak alanında: `1 + Σ (grubun en iyisinin bonusu × kanal uygunluğu)`, üst sınır +%50.
+  Kanal uygunluğu, kampanyanın medya karışımında ekipmanın işine yarayan kanalların payı (`balance.json
+  equipment.needs`: video, photo, audio, visual). Her gruptan yalnızca en iyisi sayılır; eski kuşak "Daha iyisi var".
+- Satın alınanların aylık bakımı var (aylık giderlere eklendi); satış bugünkü fiyatın %30'u.
+- Kiralıklar prodüksiyon fazının panosunda seçilir, bedeli faz başlarken ödenir, yalnızca o kampanyaya sayılır.
+- Botlar ekipman almıyor; denge raporu değişmedi. Ekipmanın gücü (+%5…25, prodüksiyon alanında) playtest'te izlenecek.
+- `simulation.gd` 400 satırı geçtiği için faz girişleri `PhaseInput`'a taşındı.

@@ -1492,6 +1492,43 @@ UI_SET_RESOLUTION,Pencere boyutu,Window size
 UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
+EQ_VHS_CAMCORDER,VHS kamera,VHS camcorder
+EQ_DV_CAMERA,Dijital video kamera,DV camera
+EQ_HD_CAMERA,HD kamera,HD camera
+EQ_DSLR_VIDEO,Video çeken DSLR seti,Video DSLR kit
+EQ_CINEMA_4K,4K sinema kamerası,4K cinema camera
+EQ_FILM_PHOTO_KIT,Film fotoğraf makinesi seti,Film photo kit
+EQ_DIGITAL_SLR,Dijital SLR,Digital SLR
+EQ_MIRRORLESS_KIT,Aynasız fotoğraf seti,Mirrorless kit
+EQ_TUNGSTEN_LIGHTS,Tungsten ışık seti,Tungsten lights
+EQ_LED_PANELS,LED ışık panelleri,LED light panels
+EQ_SOUND_KIT,Ses kayıt seti,Sound recording kit
+EQ_HOME_STUDIO,Ev tipi ses stüdyosu,Home sound studio
+EQ_GREEN_SCREEN,Yeşil perde,Green screen
+EQ_DRONE,Drone,Drone
+EQ_STUDIO_DAY,Stüdyo kiralama (gün),Studio rental (day)
+EQ_FILM_CREW,Film ekibi,Film crew
+EQ_DRONE_CREW,Drone ekibi,Drone crew
+EQ_HELICOPTER_SHOT,Helikopter çekimi,Helicopter shot
+EQ_NEEDS_VIDEO,video,video
+EQ_NEEDS_PHOTO,fotoğraf,photo
+EQ_NEEDS_AUDIO,ses,audio
+EQ_NEEDS_VISUAL,görsel,visual
+ERR_EQUIPMENT_NA,Bu ekipman şu an yok.,This equipment is not available now.
+ERR_EQUIPMENT_OWNED,Bu ekipman zaten sende.,You already own this equipment.
+UI_EQ_TITLE,Prodüksiyon ekipmanı,Production equipment
+UI_EQ_HINT,"Ekipman prodüksiyon alanında üretimi artırır. Etkisi kampanyanın kanallarına bağlı: kamera TV ve video işlerinde, fotoğraf seti basılı ve açık hava işlerinde, ses seti radyo ve videoda işe yarar. Her türden yalnızca en iyisi sayılır. Kiralıkları kampanyanın prodüksiyon fazında seçersin.","Equipment boosts output in the production area. The effect depends on the campaign's channels: cameras help TV and video, photo kits print and outdoor, sound kits radio and video. Only the best of each type counts. Rentals are picked in a campaign's production phase."
+UI_EQ_MONTHLY,"Ekipman bakımı: %s / ay","Equipment upkeep: %s / month"
+UI_EQ_ROW,"+%%%d %s · bakım %s/ay","+%d%% %s · upkeep %s/mo"
+UI_EQ_RENT_ROW,"+%%%d %s · kampanya başı %s","+%d%% %s · per campaign %s"
+UI_EQ_BUY,"Satın al %s","Buy %s"
+UI_EQ_SELL,"Sat (%s)","Sell (%s)"
+UI_EQ_OUTDATED,Daha iyisi var,Superseded
+UI_EQ_RENTALS,Kiralıklar (yalnızca prodüksiyon fazında seçilir),Rentals (picked in the production phase)
+UI_BOARD_EQUIPMENT,"Ekipman · prodüksiyon ×%.2f","Equipment · production ×%.2f"
+UI_BOARD_RENT,"%s (%s)","%s (%s)"
+UI_TOOLS_TAB_SOFTWARE,Yazılım ve donanım,Software and hardware
+UI_TOOLS_TAB_EQUIPMENT,Ekipman,Equipment
 ERR_PLAN,Görev planı geçersiz.,The work plan is not valid.
 ERR_PLAN_MEMBER,Planda ekipte olmayan biri var.,Someone in the plan is not on the team.
 ERR_PLAN_OVERLOAD,Bir kişiye %200'den fazla iş verilemez.,Nobody can take more than 200% of the work.

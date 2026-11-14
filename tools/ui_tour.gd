@@ -69,8 +69,23 @@ func _run() -> void:
 		_step()
 	await _shot("05_phase_running")
 	var before: int = sim.state.finished.size()
+	var shown_production: bool = false
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():
+			var phase: int = sim.production.current_phase(sim.state.active_campaign)
+			if phase == 2 and not shown_production and EventSystem.pending(sim.state).is_empty():
+				# Prodüksiyon fazı panosu: ekipman çarpanı ve kiralıklar (K-100).
+				shown_production = true
+				sim.state.equipment = ["vhs_camcorder", "film_photo_kit"]
+				screen.call("close_panel")
+				screen.call("show_panel", "campaign")
+				await get_tree().process_frame
+				var pboards: Array[Node] = (screen.get("_panel") as Node).find_children("*", "WorkBoard", true, false)
+				if not pboards.is_empty():
+					var scrolls2: Array[Node] = (screen.get("_panel") as Node).find_children("*", "ScrollContainer", true, false)
+					(scrolls2[0] as ScrollContainer).scroll_vertical = 100000
+					await get_tree().process_frame
+					await _shot("05b_production_board")
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
 		_step()
 	await get_tree().create_timer(2.0).timeout
@@ -306,6 +321,11 @@ func _tour_tools(screen: Control, sim: Simulation) -> void:
 		GameState.execute(ToolActionCommand.new("buy", id))
 	screen.call("show_panel", "tools")
 	await _shot("28_tools")
+	var tools_panel: ToolsPanel = screen.get("_panel")
+	tools_panel.set("_tab", "equipment")
+	tools_panel.set("_signature", "")
+	tools_panel.call("refresh")
+	await _shot("28b_tools_equipment")
 	screen.call("close_panel")
 	screen.call("open_modal", EraDialog.new("mobile"))
 	await _shot("29_era")

@@ -1,10 +1,11 @@
 class_name ToolsPanel
 extends VBoxContainer
 ## Araçlar (GDD 12.4–12.5): alan başına araç seti ve çarpanı, sürüm durumu, al / güncelle / aboneliğe geç / iptal;
-## bilgisayar kuşağı ve aylık abonelik gideri.
+## bilgisayar kuşağı ve aylık abonelik gideri. "Ekipman" sekmesi: prodüksiyon ekipmanı (K-100, EquipmentList).
 
 var _body: VBoxContainer
 var _signature: String = ""
+var _tab: String = "software"
 
 
 func _init() -> void:
@@ -21,7 +22,8 @@ func _init() -> void:
 
 func refresh() -> void:
 	var s: SimState = GameState.sim.state
-	var sig: String = "%d|%s|%s|%d|%d" % [s.clock.year(), str(s.tools), s.hardware, int(s.cash / 1000.0), s.staff.size()]
+	var sig: String = "%d|%s|%s|%d|%d|%s|%s" % [s.clock.year(), str(s.tools), s.hardware, int(s.cash / 1000.0), s.staff.size(),
+		str(s.equipment), _tab]
 	if sig == _signature:
 		return
 	_signature = sig
@@ -33,6 +35,16 @@ func rebuild() -> void:
 	var sim: Simulation = GameState.sim
 	var s: SimState = sim.state
 	var data: GameData = DataDB.data
+	_body.add_child(UiUtil.segmented([["software", "UI_TOOLS_TAB_SOFTWARE"], ["equipment", "UI_TOOLS_TAB_EQUIPMENT"]], _tab,
+		func(id: String) -> void:
+			_tab = id
+			_signature = ""
+			refresh()))
+	if _tab == "equipment":
+		_body.add_child(EquipmentList.build(func() -> void:
+			_signature = ""
+			refresh()))
+		return
 	_body.add_child(UiUtil.wrapped(tr("UI_TOOLS_HINT"), 14, UiUtil.MUTED, 640.0))
 	var hw_row: HBoxContainer = UiUtil.hbox()
 	hw_row.add_child(UiUtil.label(tr("UI_HARDWARE") % [tr(data.hardware[s.hardware]["name_key"]),

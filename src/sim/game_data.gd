@@ -51,6 +51,8 @@ var room_types: Dictionary = {}
 var room_type_ids: Array[String] = []
 var tools: Dictionary = {}
 var tool_ids: Array[String] = []
+var equipment: Dictionary = {}
+var equipment_ids: Array[String] = []
 var hardware: Dictionary = {}
 var hardware_ids: Array[String] = []
 var eras: Dictionary = {}
@@ -203,6 +205,7 @@ func _index() -> void:
 	_index_list("furniture.json", furniture, furniture_ids)
 	_index_list("room_types.json", room_types, room_type_ids)
 	_index_list("tools.json", tools, tool_ids)
+	_index_list("equipment.json", equipment, equipment_ids)
 	_index_list("hardware.json", hardware, hardware_ids)
 	_index_list("eras.json", eras, era_ids)
 	_index_list("research.json", research, research_ids)

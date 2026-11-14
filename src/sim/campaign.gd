@@ -5,6 +5,11 @@ extends RefCounted
 
 var data: GameData
 var scoring: Scoring
+## Prodüksiyon ekipmanı (K-100); Simulation bağlar. Yoksa çarpan 1.
+var equipment: EquipmentSystem
+
+
+const EQUIPMENT_AREA: String = "production"
 
 
 func _init(game_data: GameData, scoring_ref: Scoring) -> void:
@@ -102,6 +107,7 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 	# Oda etkisi (12.2): ör. beyin fırtınası odası konsepte +%10.
 	var focus_mult: Dictionary = state.office_effects.get("focus_mult", {})
 	var plan: Dictionary = WorkPlan.phase_plan(campaign, phase)
+	var eq_mult: float = equipment.production_mult(state, setup) if equipment != null else 1.0
 	for id: Variant in setup.get("team", []):
 		var emp: Dictionary = state.staff.get(str(id), {})
 		if emp.is_empty() or not Employee.is_available(emp, state.clock.week_index):
@@ -117,7 +123,8 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 			var share: float = float(alloc[i]) * over if not plan.is_empty() else scoring.effective_share(float(sliders[i]))
 			points[ids[i]] = float(points[ids[i]]) + base * Employee.area_stat(data, emp, ids[i]) / ref \
 				* Employee.specialty_mult(data, emp, ids[i]) * share * float(focus_mult.get(ids[i], 1.0)) \
-				* ToolSystem.focus_mult(data, state, ids[i]) * Employee.cert_mult(data, emp, ids[i])
+				* ToolSystem.focus_mult(data, state, ids[i]) * Employee.cert_mult(data, emp, ids[i]) \
+				* (eq_mult if ids[i] == EQUIPMENT_AREA else 1.0)
 		var p_error: float = data.balf("staff.base_error_rate") * (1.0 - float(emp["stats"]["attention"]) / 100.0) \
 			* Employee.trait_effect(data, emp, "error_mult") * WorkPlan.error_mult(data, load)
 		if rush:

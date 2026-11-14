@@ -112,8 +112,8 @@ func execute(command: RefCounted) -> Variant:
 	return result
 
 
-func set_phase_plan(plan: Dictionary) -> String:
-	var err: String = sim.set_phase_plan(plan)
+func set_phase_plan(plan: Dictionary, rentals: Array = []) -> String:
+	var err: String = sim.set_phase_plan(plan, rentals)
 	EventBus.state_changed.emit()
 	return err
 

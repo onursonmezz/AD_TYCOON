@@ -1,0 +1,20 @@
+[
+	{ "id": "vhs_camcorder", "name_key": "EQ_VHS_CAMCORDER", "kind": "owned", "group": "camera", "needs": "video", "from": 1990, "cost_1990": 12000, "upkeep_1990": 150, "bonus": 0.08 },
+	{ "id": "dv_camera", "name_key": "EQ_DV_CAMERA", "kind": "owned", "group": "camera", "needs": "video", "from": 1998, "cost_1990": 22000, "upkeep_1990": 220, "bonus": 0.12 },
+	{ "id": "hd_camera", "name_key": "EQ_HD_CAMERA", "kind": "owned", "group": "camera", "needs": "video", "from": 2006, "cost_1990": 32000, "upkeep_1990": 300, "bonus": 0.16 },
+	{ "id": "dslr_video", "name_key": "EQ_DSLR_VIDEO", "kind": "owned", "group": "camera", "needs": "video", "from": 2010, "cost_1990": 28000, "upkeep_1990": 260, "bonus": 0.20 },
+	{ "id": "cinema_4k", "name_key": "EQ_CINEMA_4K", "kind": "owned", "group": "camera", "needs": "video", "from": 2016, "cost_1990": 50000, "upkeep_1990": 420, "bonus": 0.25 },
+	{ "id": "film_photo_kit", "name_key": "EQ_FILM_PHOTO_KIT", "kind": "owned", "group": "photo", "needs": "photo", "from": 1990, "cost_1990": 9000, "upkeep_1990": 120, "bonus": 0.07 },
+	{ "id": "digital_slr", "name_key": "EQ_DIGITAL_SLR", "kind": "owned", "group": "photo", "needs": "photo", "from": 2004, "cost_1990": 16000, "upkeep_1990": 140, "bonus": 0.12 },
+	{ "id": "mirrorless_kit", "name_key": "EQ_MIRRORLESS_KIT", "kind": "owned", "group": "photo", "needs": "photo", "from": 2018, "cost_1990": 22000, "upkeep_1990": 160, "bonus": 0.16 },
+	{ "id": "tungsten_lights", "name_key": "EQ_TUNGSTEN_LIGHTS", "kind": "owned", "group": "light", "needs": "visual", "from": 1990, "cost_1990": 7000, "upkeep_1990": 90, "bonus": 0.05 },
+	{ "id": "led_panels", "name_key": "EQ_LED_PANELS", "kind": "owned", "group": "light", "needs": "visual", "from": 2010, "cost_1990": 12000, "upkeep_1990": 70, "bonus": 0.08 },
+	{ "id": "sound_kit", "name_key": "EQ_SOUND_KIT", "kind": "owned", "group": "sound", "needs": "audio", "from": 1990, "cost_1990": 6000, "upkeep_1990": 70, "bonus": 0.05 },
+	{ "id": "home_studio", "name_key": "EQ_HOME_STUDIO", "kind": "owned", "group": "sound", "needs": "audio", "from": 2005, "cost_1990": 15000, "upkeep_1990": 120, "bonus": 0.09 },
+	{ "id": "green_screen", "name_key": "EQ_GREEN_SCREEN", "kind": "owned", "group": "set", "needs": "visual", "from": 1996, "cost_1990": 8000, "upkeep_1990": 60, "bonus": 0.05 },
+	{ "id": "drone", "name_key": "EQ_DRONE", "kind": "owned", "group": "aerial", "needs": "video", "from": 2014, "cost_1990": 14000, "upkeep_1990": 150, "bonus": 0.08 },
+	{ "id": "studio_day", "name_key": "EQ_STUDIO_DAY", "kind": "rental", "group": "set", "needs": "visual", "from": 1990, "cost_1990": 5000, "bonus": 0.10 },
+	{ "id": "film_crew", "name_key": "EQ_FILM_CREW", "kind": "rental", "group": "crew", "needs": "video", "from": 1990, "cost_1990": 20000, "bonus": 0.18 },
+	{ "id": "drone_crew", "name_key": "EQ_DRONE_CREW", "kind": "rental", "group": "aerial", "needs": "video", "from": 2012, "cost_1990": 7000, "bonus": 0.10 },
+	{ "id": "helicopter_shot", "name_key": "EQ_HELICOPTER_SHOT", "kind": "rental", "group": "aerial", "needs": "video", "from": 1990, "cost_1990": 35000, "bonus": 0.14, "until": 2013 }
+]

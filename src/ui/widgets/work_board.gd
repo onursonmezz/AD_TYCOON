@@ -20,6 +20,8 @@ var _focus_bar: HBoxContainer
 var _focus_labels: Array[Label] = []
 var _error: Label
 var _on_done: Callable
+var _rentals: Array = []   # prodüksiyon fazında seçilen kiralıklar (K-100)
+var _eq_label: Label
 
 
 func _init(camp: Dictionary, on_done: Callable) -> void:
@@ -58,6 +60,8 @@ func _ready() -> void:
 	for id: String in _members:
 		add_child(_row(id))
 	add_child(_focus_section())
+	if _phase == 2:
+		add_child(_equipment_section())
 	_refresh()
 
 
@@ -142,6 +146,41 @@ static func _ink(i: int) -> Color:
 	return AREA_COLORS[i].darkened(0.35)
 
 
+## Prodüksiyon fazı: sahip olunan ekipmanın çarpanı ve bu kampanya için kiralık seçimi (bedel fazı başlatınca ödenir).
+func _equipment_section() -> VBoxContainer:
+	var box: VBoxContainer = UiUtil.vbox(4)
+	_eq_label = UiUtil.label("", 13, UiUtil.WOOD)
+	box.add_child(_eq_label)
+	var flow: HFlowContainer = HFlowContainer.new()
+	flow.add_theme_constant_override("h_separation", 6)
+	var sim: Simulation = GameState.sim
+	for id: String in sim.equipment.available(sim.state, "rental"):
+		var b: Button = UiUtil.button(tr("UI_BOARD_RENT") % [UiUtil.name_of(DataDB.data.equipment, id),
+			UiUtil.money(sim.equipment.price(sim.state, id))], func() -> void: pass)
+		b.toggle_mode = true
+		b.add_theme_font_size_override("font_size", 13)
+		b.toggled.connect(func(on: bool) -> void:
+			if on and not _rentals.has(id):
+				_rentals.append(id)
+			elif not on:
+				_rentals.erase(id)
+			_update_equipment())
+		flow.add_child(b)
+	box.add_child(flow)
+	_update_equipment()
+	return box
+
+
+func _update_equipment() -> void:
+	if _eq_label == null:
+		return
+	var setup: Dictionary = _camp["setup"]
+	var rentals: Array = (setup.get("rentals", []) as Array).duplicate()
+	rentals.append_array(_rentals)
+	var mult: float = GameState.sim.equipment.production_mult(GameState.sim.state, {"mix": setup["mix"], "rentals": rentals})
+	_eq_label.text = tr("UI_BOARD_EQUIPMENT") % mult
+
+
 func _on_cell_input(event: InputEvent, id: String, area: int) -> void:
 	var mb: InputEventMouseButton = event as InputEventMouseButton
 	if mb == null or not mb.pressed:
@@ -201,7 +240,7 @@ func _confirm() -> void:
 		var alloc: Array = _plan.get(id, [0.0, 0.0, 0.0])
 		if WorkPlan.load_of_alloc(alloc) > 0.0:
 			clean[id] = alloc
-	var err: String = GameState.set_phase_plan(clean)
+	var err: String = GameState.set_phase_plan(clean, _rentals)
 	if not err.is_empty():
 		_error.text = tr(err)
 		_error.visible = true

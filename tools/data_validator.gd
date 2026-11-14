@@ -31,6 +31,7 @@ const ID_LISTS: Dictionary = {
 	"furniture.json": "furniture",
 	"room_types.json": "room_type",
 	"tools.json": "tool",
+	"equipment.json": "equipment",
 	"hardware.json": "hardware",
 	"eras.json": "era",
 	"research.json": "research",
