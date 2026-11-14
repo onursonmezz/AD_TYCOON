@@ -1180,3 +1180,18 @@ oyuncunun belirgin biçimde öne çıkardığı ya da kıstığı alanlar öğre
 sapan alanlar, en çok sapandan başlayarak en fazla 2 tane. Dengeli dağıtılmışsa %50 ihtimalle rastgele bir bilinmeyen alan
 öğrenilir. Öğrenilenler raporda cümleyle, faz ekranında kaydırıcının yanında işaretle (+++ … −−−; bilinmeyen "?")
 görünür. Sayılar `balance.json research.focus_learn_*`. Puanlamaya etkisi yok; yalnızca bilgi.
+
+## K-099 — Görev panosu: çalışan başına alan payları ve iş yükü (kampanya geliştirme, 2. aşama)
+Orgo, çalışanların odak alanlarına atanmasını ve %100'ü aşan yükte verimin düşmesini istedi; tasarım Game Dev
+Tycoon'a benzememeli. GDT'deki "her alana tek kişi" modeli seçilmedi: plaza katında 30 kişilik ekipte çoğu kişi boşta
+kalırdı ve dengenin temeli (ekip büyüdükçe artan puan) bozulurdu.
+- Faz başında kaydırıcılar yerine görev panosu var: satırlarda ekip, sütunlarda fazın üç alanı. Hücreye sol tık
+  kişinin zamanının %25'ini o alana verir, sağ tık geri alır. Kişinin yükü payların toplamı, en çok %200.
+- Üretim: kişi alan başına `payı × yük^(−0.6)` ile üretir. %100'e kadar aynı; %200 yükte toplam üretim ×1.32,
+  kişi başı verim ×0.66. Enerji kaybı `yük^1.5` (%200'de ×2.83), hata riski `yük × (1 + 0.8·(yük−1))`.
+  Görevsiz ekip üyesi o fazda dinlenir.
+- Odak payı (GDD 7.4 F puanı ve K-098 öğrenmesi) ekibin alana verdiği toplam emektir; ayrı kaydırıcı yok.
+- Herkes %100 verip paylar kaydırıcılarla aynıysa üretim birebir eskisiyle aynı (test). Botlar ve eski kayıtlar plan
+  olmadan eski yoldan çalışır, denge raporu bu yüzden değişmez.
+- Otomatik dağıtım: ekip 3'ten azsa herkes eşit/kaydırıcı paylarıyla; büyük ekipte herkes en güçlü alanına %100, boş
+  alan kalmaz. Sayılar `balance.json workload`.

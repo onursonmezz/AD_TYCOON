@@ -49,14 +49,21 @@ func _run() -> void:
 	wizard.call("_on_start")
 	while not GameState.is_waiting():
 		_step()
+	while not EventSystem.pending(sim.state).is_empty():
+		var inst: Dictionary = EventSystem.pending(sim.state)
+		sim.events.resolve(sim, inst["uid"], int(inst["options"][0]))
+	for child: Node in screen.get("_modal_layer").get_children():
+		child.queue_free()
+	await get_tree().process_frame
 	await _shot("04_phase_sliders")
 	var panel: CampaignPanel = screen.get("_panel")
-	var sliders: Array[HSlider] = panel.get("_sliders")
-	sliders[0].value = 30.0
-	sliders[1].value = 90.0
-	sliders[2].value = 60.0
+	var board: WorkBoard = panel.find_children("*", "WorkBoard", true, false)[0]
+	var plan: Dictionary = board.get("_plan")
+	var who: String = (board.get("_members") as Array)[0]
+	plan[who] = [1.0, 0.5, 0.25]
+	board.call("_refresh")
 	await _shot("04b_phase_sliders_moved")
-	panel.call("_on_confirm")
+	board.call("_confirm")
 	Clock.set_paused(true)
 	for i: int in 10:
 		_step()

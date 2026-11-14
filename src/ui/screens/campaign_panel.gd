@@ -1,14 +1,12 @@
 class_name CampaignPanel
 extends VBoxContainer
-## Faz slider ekranı (GDD 7.4, 20): fazın kalan süresi, canlı S/K/T sayaçları; faz başında üç slider (toplam %100).
+## Kampanya ekranı (GDD 7.4, 20): fazın kalan süresi, canlı S/K/T sayaçları; faz başında görev panosu (K-099).
 
 var _info: VBoxContainer
 var _counters: Label
 var _phase_label: Label
 var _progress: ProgressBar
 var _slider_box: VBoxContainer
-var _sliders: Array[HSlider] = []
-var _value_labels: Array[Label] = []
 var _airing: VBoxContainer
 var _signature: String = ""
 
@@ -16,13 +14,25 @@ var _signature: String = ""
 func _init() -> void:
 	add_theme_constant_override("separation", 10)
 	add_child(UiUtil.heading(tr("MENU_CAMPAIGN")))
+	# Görev panosu ekip büyüdükçe uzar: pencere sabit kalır, içerik kayar.
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(scroll)
+	var pad: MarginContainer = MarginContainer.new()
+	pad.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pad.add_theme_constant_override("margin_right", 16)
+	scroll.add_child(pad)
+	var body: VBoxContainer = UiUtil.vbox(10)
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pad.add_child(body)
 	_info = UiUtil.vbox(6)
-	add_child(_info)
+	body.add_child(_info)
 	_slider_box = UiUtil.vbox(8)
-	add_child(_slider_box)
-	add_child(UiUtil.label(tr("UI_ON_AIR"), 18, UiUtil.SAGE_DARK))
+	body.add_child(_slider_box)
+	body.add_child(UiUtil.label(tr("UI_ON_AIR"), 18, UiUtil.SAGE_DARK))
 	_airing = UiUtil.vbox(4)
-	add_child(_airing)
+	body.add_child(_airing)
 
 
 func refresh() -> void:
@@ -42,8 +52,6 @@ func _rebuild(s: SimState) -> void:
 	UiUtil.clear(_info)
 	UiUtil.clear(_slider_box)
 	UiUtil.clear(_airing)
-	_sliders.clear()
-	_value_labels.clear()
 	_counters = null
 	var camp: Dictionary = s.active_campaign
 	if camp.is_empty():
@@ -96,55 +104,6 @@ func _update_live(camp: Dictionary) -> void:
 		int(camp["errors"])]
 
 
+## Faz başı (K-099): kaydırıcılar yerine görev panosu; odak payları ekibin emeğinden hesaplanır.
 func _build_sliders(camp: Dictionary) -> void:
-	var data: GameData = DataDB.data
-	var phase: int = GameState.sim.production.current_phase(camp)
-	_slider_box.add_child(UiUtil.label(tr("UI_PHASE_SLIDERS") % tr("PHASE_%d" % phase), 18, UiUtil.TERRACOTTA))
-	_slider_box.add_child(UiUtil.wrapped(tr("UI_PHASE_SLIDERS_HINT"), 14, UiUtil.MUTED, 420.0))
-	var ids: Array[String] = data.focus_ids_of_phase(phase)
-	for i: int in 3:
-		var row: HBoxContainer = UiUtil.hbox()
-		var name_label: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, ids[i]), 16)
-		name_label.custom_minimum_size.x = 230.0
-		row.add_child(name_label)
-		row.add_child(FocusHint.badge(str(camp["setup"]["objective"]), ids[i]))
-		var slider: HSlider = HSlider.new()
-		slider.min_value = 0.0
-		slider.max_value = 100.0
-		slider.step = 1.0
-		slider.value = data.balf("focus.slider_default_priority")
-		slider.custom_minimum_size.x = 260.0
-		slider.value_changed.connect(func(_v: float) -> void: _update_value_labels())
-		row.add_child(slider)
-		var value_label: Label = UiUtil.label("", 16)
-		value_label.custom_minimum_size.x = 60.0
-		row.add_child(value_label)
-		_sliders.append(slider)
-		_value_labels.append(value_label)
-		_slider_box.add_child(row)
-	_update_value_labels()
-	_slider_box.add_child(UiUtil.button(tr("UI_START_PHASE"), _on_confirm))
-
-
-## Her slider bağımsız bir öncelik (GDT gibi); iş payı = öncelik / öncelikler toplamı (K-033).
-## Hepsi 0 ise iş eşit dağılır. Paylar her zaman tam %100 eder.
-func shares() -> Array[float]:
-	var total: float = 0.0
-	for slider: HSlider in _sliders:
-		total += slider.value
-	var out: Array[float] = []
-	for i: int in _sliders.size():
-		out.append(1.0 / _sliders.size() if total <= 0.0 else _sliders[i].value / total)
-	out[out.size() - 1] = 1.0 - out[0] - out[1]
-	return out
-
-
-func _update_value_labels() -> void:
-	var s: Array[float] = shares()
-	for i: int in _sliders.size():
-		_value_labels[i].text = UiUtil.percent(roundf(s[i] * 100.0))
-
-
-func _on_confirm() -> void:
-	if GameState.set_phase_sliders(shares()):
-		Clock.set_paused(false)
+	_slider_box.add_child(WorkBoard.new(camp, func() -> void: Clock.set_paused(false)))
