@@ -36,7 +36,7 @@ func refresh() -> void:
 	var cur: Dictionary = sim.offices.current(s)
 	_col.add_child(Cards.section(tr("UI_OFFICE_CURRENT")))
 	_col.add_child(Cards.header(Cards.art("office_art", str(s.office_level), OFFICE_ART, "building"), tr(cur["name_key"]), "",
-		[Cards.chip(tr("UI_OFFICE_CURRENT_TAG"))]))
+		[Cards.chip(tr("UI_OFFICE_CURRENT_TAG"))], true))
 	_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_LINE") % [s.staff.size(), int(cur["capacity"]),
 		UiUtil.money(sim.offices.monthly_rent(s)), int(roundf(s.room_quality))], 13, CozyTheme.TEXT, COLUMN_TEXT))
 	_col.add_child(Cards.meter(tr("UI_OFFICE_QUALITY"), s.room_quality, CozyTheme.FOREST_LIGHT, 150.0))
@@ -57,7 +57,7 @@ func refresh() -> void:
 		_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_MAX"), 14, UiUtil.MUTED, COLUMN_TEXT))
 		return
 	_col.add_child(Cards.header(Cards.art("office_art", str(s.office_level + 1), OFFICE_ART, "building-bank", CozyTheme.SAGE_SOFT),
-		tr(next["name_key"])))
+		tr(next["name_key"]), "", [], true))
 	_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_LINE_NEXT") % [int(next["capacity"]),
 		UiUtil.money(float(next["rent_1990"]) * Economy.inflation(DataDB.data, s.clock.year())), int(next["room_quality"])], 13,
 		CozyTheme.TEXT, COLUMN_TEXT))

@@ -59,7 +59,7 @@ static func avatar(emp: Dictionary, width: float = 56.0) -> PanelContainer:
 
 
 ## Kart başlığı: solda portre / ikon, ortada ad ve alt satır, sağda etiketler.
-static func header(lead: Control, title: String, subtitle: String = "", trailing: Array = []) -> HBoxContainer:
+static func header(lead: Control, title: String, subtitle: String = "", trailing: Array = [], wrap: bool = false) -> HBoxContainer:
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	if lead != null:
 		row.add_child(lead)
@@ -68,7 +68,12 @@ static func header(lead: Control, title: String, subtitle: String = "", trailing
 	col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var name: Label = UiUtil.label(title, 17, CozyTheme.FOREST)
 	name.add_theme_font_override("font", CozyTheme.title_font(760))
-	name.clip_text = true
+	if wrap:
+		name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	else:
+		name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		name.tooltip_text = title
+		name.mouse_filter = Control.MOUSE_FILTER_PASS
 	col.add_child(name)
 	if not subtitle.is_empty():
 		var sub: Label = UiUtil.label(subtitle, 13, CozyTheme.WOOD)

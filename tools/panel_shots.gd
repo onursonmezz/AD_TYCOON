@@ -1,13 +1,14 @@
 extends Node
 ## Panel çekimi (UI-3): sabit tohumlu bir oyunda on menü penceresini tek tek, üstünde olay penceresi olmadan çeker.
 ## Taslaklarla (docs/reference/ui_mockups) yan yana karşılaştırmak için.
-## Çalıştırma: godot --path . res://tools/panel_shots.tscn --resolution 1672x941 -- --out=<klasör> [--only=team,inbox]
+## Çalıştırma: godot --path . res://tools/panel_shots.tscn --resolution 1672x941 -- --out=<klasör> [--only=team,inbox] [--lang=en]
 
 const PANELS: Array[String] = ["inbox", "clients", "campaign", "team", "office", "tools", "research", "finance", "industry", "history"]
 const WARMUP_DAYS: int = 400
 
 var _out: String = "user://panel_shots"
 var _only: PackedStringArray = PackedStringArray()
+var _lang: String = "tr"
 
 
 func _ready() -> void:
@@ -16,6 +17,8 @@ func _ready() -> void:
 			_out = arg.trim_prefix("--out=")
 		elif arg.begins_with("--only="):
 			_only = arg.trim_prefix("--only=").split(",")
+		elif arg.begins_with("--lang="):
+			_lang = arg.trim_prefix("--lang=")
 	DirAccess.make_dir_recursive_absolute(_out)
 	_run.call_deferred()
 
@@ -33,7 +36,7 @@ func _run() -> void:
 	Clock.playtime.persist = false
 	Settings.set_value("tutorial", false)
 	Settings.set_value("autosave", false)
-	TranslationServer.set_locale("tr")
+	TranslationServer.set_locale(_lang)
 	GameState.new_game(7, "marketing_manager", 0, "", {"name": "Defne", "avatar": "kadin_02"})
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
 	add_child(screen)
