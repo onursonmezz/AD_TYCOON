@@ -7,6 +7,7 @@ extends Control
 var _on_language: Callable
 var _tab: String = "audio"
 var _built: bool = false
+const FOOTER: float = 62.0  # kaydırmanın dışındaki alt satır
 ## Oyun içinden açıldıysa ana ekran: "Oyun" sekmesine yükle ve ana menüye dön düğmeleri eklenir (üstte yalnızca
 ## kaydet ve ayarlar düğmesi var; taslak 19).
 var game: Control = null
@@ -27,7 +28,7 @@ func _ready() -> void:
 ## UI-2d: solda ikonlu sekmeler (Ses, Oynanış, Ekran, Dil), sağda seçili sekmenin ayarları; altta sıfırla / kapat.
 func _build() -> void:
 	UiUtil.clear(self)
-	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("settings"), not _built, true)
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("settings") - Vector2(0.0, FOOTER), not _built, true)
 	_built = true
 	col.add_child(UiUtil.heading(tr("UI_SETTINGS"), "settings"))
 	var split: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
@@ -104,7 +105,10 @@ func _build() -> void:
 		Settings.reset()
 		_language_changed()))
 	buttons.add_child(UiUtil.button_kind(tr("UI_CLOSE"), queue_free, "accept"))
-	col.add_child(buttons)
+	# Alt satır kaydırmanın dışında, pencerenin en altında (taslak 19).
+	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	frame.add_child(HSeparator.new())
+	frame.add_child(buttons)
 
 
 ## Tempo ölçümü (K-096): son yılların gerçek süresi; hız kararını bu sayılarla veriyoruz.
