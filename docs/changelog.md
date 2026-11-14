@@ -1,5 +1,24 @@
 # Değişiklik günlüğü
 
+## Müşteri kartı, ödül töreni, taslağı olmayan pencereler (2026-11-15)
+- **Müşteri kartı:** Müşteriler ekranında bir karta (ya da sağdaki oka) basınca açılır: bütçe, beklediği puan, ortalama
+  puan, memnuniyet, güven ve o müşteriyle yapılan kampanyalar ("Raporu aç" ile rapor).
+- **Ödül töreni:** Taslaktaki gibi perdeler, defne dalları, konfeti, ışıltılar, kırmızı halı, derece kurdelesi; başlıkta
+  ödül amblemi; altta rakipler, Grand Prix ve "ödül sezonu".
+- **Yeni görünüm:** Skandal (üç seçenek kartı), ödül başvurusu, yeni dönem, rakip teklifi, matbaa pazarlığı, ihale daveti,
+  iflas ve "kaydedilmemiş ilerleme" pencereleri taslakların diliyle yeniden düzenlendi.
+- **Düzeltme:** İngilizcede ofis adı ("Spare room / garage") kesilmiyor; uzun kart başlıkları "…" ile biter, üzerine
+  gelince tamamı görünür.
+- Nasıl test ederim:
+  1. Müşteriler ekranını aç, bir müşteri kartına bas: müşteri kartı açılmalı. Kampanya yaptığın bir müşteride
+     "Raporu aç" raporu göstermeli.
+  2. Sektör → bir ödüle "Başvur": amblemli kart, ücret / başvuru ayı / tören ayı ve kampanya kartları görünmeli.
+  3. Bir ödül törenini bekle (ya da ekran turunu çalıştır): sahne taslak 21'e benzemeli; gümüş, altın ve bronzda kurdele
+     rengi değişmeli.
+  4. Ayarlar → Dil → English: pencerelerde kesik ya da taşan yazı olmamalı.
+  5. Pencereleri tek seferde görmek: `godot --path . res://tools/dialog_shots.tscn --resolution 1672x941 -- --out=<klasör>`
+     (İngilizce için `--lang=en`).
+
 ## Oda içi ışıklar (2026-11-15)
 - **Masa lambaları:** Her masada yeşil şapkalı küçük bir lamba; masa üstüne sıcak bir ışık havuzu düşürüyor.
 - **Tavan ışığı:** Çalışma, toplantı, mutfak ve dinlenme odalarının ortasında yumuşak, sıcak bir ışık.

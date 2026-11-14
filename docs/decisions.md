@@ -1320,3 +1320,21 @@ Her masaya kodla çizilen küçük bir masa lambası (taban, kol, yeşil şapka,
 listelenen odaların ortasına yumuşak tavan ışığı (`look.json interior_lights`, `src/world/office_lights.gd`). Yalnızca
 görünüş. Düşük grafik kalitesinde kapanır (`quality.levels.low.interior_lights`). Masa lambası modeli yok; Tripo ile
 bir model gelirse kodla çizilen lamba yerine o kullanılabilir.
+
+## K-114 — Müşteri kartı ve taslağı olmayan pencereler
+Müşteriler panelindeki ok artık işe yarıyor: kartın tamamı (ok dahil) "Müşteri kartı" penceresini açar
+(`client_dialog.gd`): yıllık bütçe, beklediği puan (`ClientSystem.expectation`), ortalama puan, memnuniyet, güven ve
+kampanya geçmişi (her satır raporunu açar). Müşteri kişiliği GDD 6.1'de "gizli, keşfedilebilir" olduğu için gösterilmez;
+keşif mekaniği gelince buraya eklenir. Taslağı olmayan pencereler (skandal, ödül başvurusu, dönem, rakip teklifi,
+matbaa pazarlığı, ihale daveti, oyun sonu, onay) taslakların ortak dilini kullanır: çizimli başlık kartı, bilgi şeridi
+(`Cards.facts`), bölüm şeridi, seçenek kartları (`Cards.choice`), kaydırmanın dışında ayrı alt satır ve sağda yeşil
+birincil düğme. Pencere boyları `ui_layout.json dialogs`. Sunum mini oyunu, kayıt yuvaları ve Bilgi Defteri zaten bu
+dile yakın olduğu için dokunulmadı.
+
+## K-115 — Ödül töreni taslak 21'e göre
+Tören sahnesi taslaktaki gibi pencere kenarına kadar uzanır: köşelerde perdeler, başlık yanında defne dalları, kupa iki
+yanında büyük defne dalları, konfeti ve ışıltılar, kırmızı halı üstünde kupa, derece kurdelesi, altında dal-yıldız süsü.
+Ölçüler taslaktan (× 0.7655) `ui_layout.json ceremony_stage` içinde. Tek defne çelenginden sol / sağ yarısı ayrı dal
+olarak kullanılır. Bronz ve kısa liste için ayrı kupa çizimi olmadığından gümüş kupa ve kurdele o derecenin rengiyle
+boyanır (`tint`). Kurdele görseli taslaktakinden kısa olduğu için yatayda gerilir. Rakip ajanslar hücresinde taslaktaki
+tuğla bina yerine paketteki küçük ofis çizimi (`kucuk-ofis`) var.
