@@ -44,7 +44,16 @@ func _build() -> void:
 		b.icon = UiUtil.icon_texture(tab[2], 22)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.theme_type_variation = "NavButtonActive" if _tab == tab[0] else "NavButton"
+		if _tab == tab[0]:
+			# Taslak 19: seçili sekmenin solunda koyu yeşil şerit.
+			var active: StyleBoxFlat = CozyTheme.box(CozyTheme.SAGE_SOFT, CozyTheme.RADIUS_CONTROL, Color.TRANSPARENT, 0, false,
+				Vector2(CozyTheme.SPACE_M, 10))
+			active.border_width_left = 3
+			active.border_color = CozyTheme.FOREST
+			for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+				b.add_theme_stylebox_override(st, active)
 		nav.add_child(b)
+	split.add_child(VSeparator.new())  # taslak 19: sol menü ile ayarlar arasında ince dikey çizgi
 	var panel: PanelContainer = PanelContainer.new()
 	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())  # taslak 19: sağ taraf kutusuz
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -52,10 +61,16 @@ func _build() -> void:
 	split.add_child(panel)
 	var body: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_M)
 	panel.add_child(body)
-	var tab_title: Label = UiUtil.label(tr("UI_SET_" + _tab.to_upper()), 18, CozyTheme.FOREST)
+	# Taslak 19: "Ses ayarları" başlığı, sağında aynı satırda ince çizgi.
+	var title_row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var tab_title: Label = UiUtil.label(tr("UI_SET_" + _tab.to_upper() + "_TITLE"), 18, CozyTheme.FOREST)
 	tab_title.add_theme_font_override("font", CozyTheme.title_font(700))
-	body.add_child(tab_title)
-	body.add_child(HSeparator.new())
+	title_row.add_child(tab_title)
+	var line: HSeparator = HSeparator.new()
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	title_row.add_child(line)
+	body.add_child(title_row)
 	match _tab:
 		"audio":
 			for key: String in ["volume_master", "volume_music", "volume_sfx", "volume_ambient"]:

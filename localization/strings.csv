@@ -1628,3 +1628,8 @@ UI_ECHO_REPORT,Raporu incele,View report
 UI_PICK_CHANNEL,Medya kanalı seç,Choose a media channel
 UI_CHANNEL_SEARCH,Kanal ara…,Search channels…
 UI_CHANNEL_SELECTED,Seçili: %s,Selected: %s
+UI_SET_AUDIO_TITLE,Ses ayarları,Audio settings
+UI_SET_GAME_TITLE,Oyun ayarları,Game settings
+UI_SET_DISPLAY_TITLE,Ekran ayarları,Display settings
+UI_SET_LANGUAGE_TITLE,Dil ayarları,Language settings
+UI_SET_TEMPO_TITLE,Tempo ölçümü,Pace tracking
