@@ -220,15 +220,21 @@ static func window_frame(panel: PanelContainer) -> Array:
 static func adopt_heading(title: Label, body: Node, fallback: String = "", fallback_icon: String = "") -> void:
 	var text: String = fallback
 	var icon_name: String = fallback_icon
+	var art: Texture2D = null
 	for n: Node in body.find_children("*", "Label", true, false):
 		if n.has_meta("heading"):
 			text = (n as Label).text
 			icon_name = str(n.get_meta("heading_icon", fallback_icon))
+			art = n.get_meta("heading_art") if n.has_meta("heading_art") else null
 			(n as Label).visible = false
 			break
 	title.text = text
 	var ic: TextureRect = title.get_parent().get_node("Icon")
 	ic.texture = icon_texture(icon_name, 26) if not icon_name.is_empty() else null
+	# Renkli çizim (ör. ödül amblemi) varsa boyanmadan onu göster.
+	if art != null:
+		ic.texture = art
+		ic.modulate = Color.WHITE
 	ic.visible = ic.texture != null
 	title.get_parent().get_parent().visible = not text.is_empty()
 

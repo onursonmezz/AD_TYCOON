@@ -37,8 +37,13 @@ static func art(file_name: String, px: int) -> Texture2D:
 	return _load(file_name, px, false)
 
 
-static func _load(file_name: String, px: int, whiten: bool) -> Texture2D:
-	var key: String = "%s@%d%s" % [file_name, px, "w" if whiten else ""]
+## Çok renkli çizim, boş kenarı atılmış ama kareye tamamlanmamış (kurdele, halı gibi yatay görseller); genişlik px.
+static func art_wide(file_name: String, px: int) -> Texture2D:
+	return _load(file_name, px, false, false)
+
+
+static func _load(file_name: String, px: int, whiten: bool, square: bool = true) -> Texture2D:
+	var key: String = "%s@%d%s%s" % [file_name, px, "w" if whiten else "", "" if square else "r"]
 	if _cache.has(key):
 		return _cache[key]
 	var tex: Texture2D = null
@@ -50,14 +55,17 @@ static func _load(file_name: String, px: int, whiten: bool) -> Texture2D:
 		img.convert(Image.FORMAT_RGBA8)
 		# Dosyadaki boş kenarı at, kareye tamamla: ikon her boyda kutusunu doldursun.
 		var used: Rect2i = _solid_rect(img)
-		if used.size.x > 0 and used.size.y > 0:
+		if used.size.x > 0 and used.size.y > 0 and not square:
+			img = img.get_region(used)
+		elif used.size.x > 0 and used.size.y > 0:
 			var side: int = maxi(used.size.x, used.size.y)
-			var square: Image = Image.create(side, side, false, Image.FORMAT_RGBA8)
-			square.blit_rect(img, used, Vector2i((side - used.size.x) / 2, (side - used.size.y) / 2))
-			img = square
-		img.resize(px, px, Image.INTERPOLATE_LANCZOS)
+			var boxed: Image = Image.create(side, side, false, Image.FORMAT_RGBA8)
+			boxed.blit_rect(img, used, Vector2i((side - used.size.x) / 2, (side - used.size.y) / 2))
+			img = boxed
+		var h: int = px if square else maxi(1, roundi(float(px) * img.get_height() / img.get_width()))
+		img.resize(px, h, Image.INTERPOLATE_LANCZOS)
 		if whiten:
-			for y: int in px:
+			for y: int in img.get_height():
 				for x: int in px:
 					img.set_pixel(x, y, Color(1.0, 1.0, 1.0, img.get_pixel(x, y).a))
 		tex = ImageTexture.create_from_image(img)

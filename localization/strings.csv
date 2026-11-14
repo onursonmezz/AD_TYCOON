@@ -1640,3 +1640,11 @@ UI_CLIENT_HISTORY,Kampanya geçmişi,Campaign history
 UI_CLIENT_NO_HISTORY,Bu müşteriyle henüz kampanya yapılmadı.,No campaigns with this client yet.
 UI_CLIENT_RISK_NOTE,Memnuniyet %d altında: müşteri ihaleye çıkabilir ya da ajansı bırakabilir.,Satisfaction is below %d: the client may call a pitch or leave the agency.
 UI_CLIENT_OPEN,Müşteri kartını aç,Open client card
+UI_RIBBON_GOLD,Altın Ödül,Gold Award
+UI_RIBBON_SILVER,Gümüş Ödül,Silver Award
+UI_RIBBON_BRONZE,Bronz Ödül,Bronze Award
+UI_RIBBON_SHORTLIST,Kısa Liste,Shortlist
+UI_RIBBON_GRAND_PRIX,Grand Prix,Grand Prix
+UI_RIBBON_NONE,Ödül yok,No award
+UI_CEREMONY_SEASON,%d ödül sezonu,%d awards season
+UI_CEREMONY_CONTINUE,Devam et,Continue
