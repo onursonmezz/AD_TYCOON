@@ -61,6 +61,7 @@ func build(parent: Node3D, layout: OfficeLayout, state: SimState, walls: Array[D
 	_props(parent, layout, state)
 	_wall_decor(parent)
 	_room_decor(parent)
+	OfficeLights.rooms(parent, layout)
 	_street(parent, layout)
 	_garden(parent, layout)
 	_visual_root = Node3D.new()
@@ -100,6 +101,7 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 			if not equip.is_empty():
 				thing(parent, str(equip["model"]), pr.get_center() + Vector2(0, -0.1), _v2(equip["size"]),
 					float(equip["height"]), color_of(equip["color"]), 0.0, h)
+			OfficeLights.desk_lamp(parent, pr, h)
 
 
 ## Mutfak tezgâhı: tezgâh boyunca lavabolu dolap modülleri yan yana dizilir (modelin oranı korunur).

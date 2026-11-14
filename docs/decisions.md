@@ -1314,3 +1314,9 @@ Orgo 3D için "sıcak minyatür" yönünü seçti (arayüz taslakları 3D için 
   simülasyona ve yürüme ızgarasına girmez. Konumlar noktanın özetinden (hash) gelir, rastgele sayı üreteci kullanmaz.
 Kare hızı: 60 çalışan, 5. seviye ofis, 3.27 ms ortalama (306 FPS).
 Kapsam dışı: karakter modelleri, gün/gece döngüsü, masa lambası gibi iç mekân ışık kaynakları.
+
+## K-113 — Oda içi ışıklar
+Her masaya kodla çizilen küçük bir masa lambası (taban, kol, yeşil şapka, parlayan ampul) ve gölgesiz sıcak nokta ışığı;
+listelenen odaların ortasına yumuşak tavan ışığı (`look.json interior_lights`, `src/world/office_lights.gd`). Yalnızca
+görünüş. Düşük grafik kalitesinde kapanır (`quality.levels.low.interior_lights`). Masa lambası modeli yok; Tripo ile
+bir model gelirse kodla çizilen lamba yerine o kullanılabilir.

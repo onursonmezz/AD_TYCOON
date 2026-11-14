@@ -321,3 +321,7 @@ static func _fog(e: Environment, f: Dictionary) -> void:
 	e.fog_depth_end = float(f["end"])
 	e.fog_depth_curve = float(f["curve"])
 	e.fog_sky_affect = 0.0
+
+
+static func v2(a: Array) -> Vector2:
+	return Vector2(float(a[0]), float(a[1]))

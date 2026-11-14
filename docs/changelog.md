@@ -1,5 +1,15 @@
 # Değişiklik günlüğü
 
+## Oda içi ışıklar (2026-11-15)
+- **Masa lambaları:** Her masada yeşil şapkalı küçük bir lamba; masa üstüne sıcak bir ışık havuzu düşürüyor.
+- **Tavan ışığı:** Çalışma, toplantı, mutfak ve dinlenme odalarının ortasında yumuşak, sıcak bir ışık.
+- **Düşük grafik:** Ayarlar → Ekran → Düşük seçilince bu ışıklar kapanır.
+- Görüntüler: `docs/screenshots/29_3d_lamba*.png`.
+- Nasıl test ederim:
+  1. Bir oyuna gir ve bir masaya yakınlaş: masanın arka sağ köşesinde lamba, masa üstünde sıcak ışık görünmeli.
+  2. İşe biri al: yeni masada da lamba çıkmalı.
+  3. Ayarlar → Ekran → Grafik kalitesi Düşük: lambaların ışığı kapanmalı.
+
 ## 3D sahne: sıcak minyatür görünümü (2026-11-15)
 - **Işık:** Alçak, sıcak akşamüstü güneşi; uzun ve yumuşak gölgeler; gölgeli yerler hafif serin. Renkler daha uyumlu, daha az doygun.
 - **Kamera:** Açılışta ofis ekranın çoğunu kaplar; kenarlar hafif bulanık (maket etkisi).
