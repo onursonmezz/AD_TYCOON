@@ -237,7 +237,7 @@ func show_panel(id: String) -> void:
 		"inbox":
 			_panel = InboxPanel.new(self)
 		"clients":
-			_panel = ClientsPanel.new()
+			_panel = ClientsPanel.new(self)
 		"campaign":
 			_panel = CampaignPanel.new()
 		"team":

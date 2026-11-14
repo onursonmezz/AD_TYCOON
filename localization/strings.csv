@@ -1633,3 +1633,10 @@ UI_SET_GAME_TITLE,Oyun ayarları,Game settings
 UI_SET_DISPLAY_TITLE,Ekran ayarları,Display settings
 UI_SET_LANGUAGE_TITLE,Dil ayarları,Language settings
 UI_SET_TEMPO_TITLE,Tempo ölçümü,Pace tracking
+UI_CLIENT_TITLE,Müşteri kartı,Client card
+UI_CLIENT_EXPECTATION,Beklediği puan,Expected score
+UI_CLIENT_AVG_SCORE,Ortalama puan,Average score
+UI_CLIENT_HISTORY,Kampanya geçmişi,Campaign history
+UI_CLIENT_NO_HISTORY,Bu müşteriyle henüz kampanya yapılmadı.,No campaigns with this client yet.
+UI_CLIENT_RISK_NOTE,Memnuniyet %d altında: müşteri ihaleye çıkabilir ya da ajansı bırakabilir.,Satisfaction is below %d: the client may call a pitch or leave the agency.
+UI_CLIENT_OPEN,Müşteri kartını aç,Open client card

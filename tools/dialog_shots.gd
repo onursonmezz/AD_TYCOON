@@ -71,6 +71,7 @@ func _run() -> void:
 			GameState.set_phase_sliders([0.4, 0.4, 0.2])
 		_step()
 		days += 1
+	_screen.call("close_panel")
 	var camp: Dictionary = sim.state.finished[sim.state.finished.size() - 1]
 	await _open(EchoDialog.new(camp, func() -> void: pass))
 	await _shot("echo")
@@ -78,6 +79,13 @@ func _run() -> void:
 	for tab: String in ["summary", "reviews", "income", "breakdown"]:
 		report.call("_show_tab", tab)
 		await _shot("report_" + tab)
+	var client: Dictionary = sim.state.clients.get(str(camp["setup"].get("client_id", "")), {})
+	if client.is_empty():
+		client = sim.state.clients.values()[0]
+	await _open(ClientDialog.new(client, _screen))
+	await _shot("client")
+	await _open(ClientDialog.new(sim.state.clients.values()[sim.state.clients.size() - 1], _screen))
+	await _shot("client_empty")
 	await _clear()
 	_screen.call("show_panel", "industry")
 	var industry: Control = _screen.get("_panel")

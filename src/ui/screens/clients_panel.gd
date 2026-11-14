@@ -12,9 +12,11 @@ var _sector_ids: Array[String] = []
 var _list: VBoxContainer
 var _footer: Label
 var _signature: String = ""
+var _main: Control
 
 
-func _init() -> void:
+func _init(main_screen: Control) -> void:
+	_main = main_screen
 	add_theme_constant_override("separation", CozyTheme.SPACE_S)
 	var top: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	top.add_child(UiUtil.heading(tr("MENU_CLIENTS")))
@@ -121,7 +123,24 @@ func _client_card(client: Dictionary) -> PanelContainer:
 	var arrow: TextureRect = UiUtil.icon("chevron-right", 14, CozyTheme.FOREST)
 	arrow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(arrow)
+	# Kartın tamamı (ok dahil) müşteri kartını açar.
+	card.tooltip_text = tr("UI_CLIENT_OPEN")
+	card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	_pass_clicks(row)
+	card.gui_input.connect(func(e: InputEvent) -> void:
+		var mb: InputEventMouseButton = e as InputEventMouseButton
+		if mb != null and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			_main.call("open_modal", ClientDialog.new(client, _main)))
 	return card
+
+
+## Çubuk gibi tıklamayı yutan alt öğeler tıklamayı karta bıraksın.
+func _pass_clicks(node: Node) -> void:
+	for c: Node in node.get_children():
+		if c is Control and (c as Control).mouse_filter == Control.MOUSE_FILTER_STOP:
+			(c as Control).mouse_filter = Control.MOUSE_FILTER_PASS
+		_pass_clicks(c)
 
 
 func _meter(caption: String, value: float, color: Color) -> HBoxContainer:
