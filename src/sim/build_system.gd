@@ -18,7 +18,7 @@ func _b(key: String) -> Variant:
 
 
 static func empty_build() -> Dictionary:
-	return {"rooms": [], "furniture": [], "desk_tier": "basic", "version": 0, "watered_week": 0}
+	return {"rooms": [], "furniture": [], "desk_tier": "basic", "version": 0, "watered_week": 0, "wall_ops": []}
 
 
 func layout(state: SimState) -> OfficeLayout:
@@ -32,6 +32,11 @@ func layout(state: SimState) -> OfficeLayout:
 func _changed(state: SimState) -> void:
 	state.build["version"] = int(state.build.get("version", 0)) + 1
 	refresh(state)
+
+
+## Başka sistemlerin (duvarlar) yaptığı değişiklik: düzen yeniden kurulur, oda etkileri güncellenir.
+func mark_changed(state: SimState) -> void:
+	_changed(state)
 
 
 # --- mobilya --------------------------------------------------------------------
@@ -207,11 +212,16 @@ func demolish_room(state: SimState, index: int) -> bool:
 	return true
 
 
-## Taşınırken mobilyalar ve çizilen odalar yeni binaya gelmez: mobilya bedelinin yarısı iade (masa kalitesi kalır).
+## Taşınırken mobilyalar, çizilen odalar ve duvarlar yeni binaya gelmez: mobilya ve çekilen duvar bedelinin yarısı iade
+## (masa kalitesi kalır).
 func on_move(state: SimState) -> float:
 	var refund: float = 0.0
 	for f: Dictionary in state.build["furniture"]:
 		refund += float(f.get("paid", 0.0)) * float(_b("move_refund"))
+	var owned: Dictionary = OfficeWalls.owned((state.build.get("wall_ops", []) as Array).filter(func(op: Dictionary) -> bool:
+		return not bool(op.get("free", false))))
+	refund += OfficeWalls.length(owned) * float(_b("wall_cost_per_m_1990")) * Economy.inflation(data, state.clock.year()) \
+		* float(_b("move_refund"))
 	state.cash += refund
 	var tier: String = str(state.build.get("desk_tier", "basic"))
 	state.build = empty_build()

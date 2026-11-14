@@ -50,6 +50,7 @@ var rivals: RivalSystem
 var awards: AwardSystem
 var pitches: PitchSystem
 var build: BuildSystem
+var walls: WallSystem
 var tools: ToolSystem
 var research: ResearchSystem
 var events: EventSystem
@@ -87,6 +88,7 @@ func _init(game_data: GameData, seed_value: int, background: String = "", start_
 	awards = AwardSystem.new(data, rivals)
 	pitches = PitchSystem.new(data, clients, briefs, scoring, rivals)
 	build = BuildSystem.new(data)
+	walls = WallSystem.new(data, build)
 	tools = ToolSystem.new(data)
 	research = ResearchSystem.new(data)
 	events = EventSystem.new(data)

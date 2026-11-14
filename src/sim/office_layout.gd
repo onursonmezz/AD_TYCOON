@@ -29,6 +29,8 @@ var props: Array[Dictionary] = []
 ## oda tipi → yürünebilir bekleme noktaları
 var spots: Dictionary = {}
 var entrance: Vector2 = Vector2.ZERO
+## Giriş kapısının ağzı (bina kenarına çok yakın): yol kontrolü buradan başlar; girişi kapatan duvar çekilemesin.
+var doorway: Vector2 = Vector2.ZERO
 ## Kapalı odaların kapı ortaları: masalar bunların önüne dizilmez (yol kapanmasın).
 var _doors: Array[Vector2] = []
 const DOOR_KEEP_CLEAR: float = 1.4
@@ -105,6 +107,7 @@ func _outer_walls(entrance_side: String) -> void:
 		if side == entrance_side:
 			var mid: Vector2 = (seg[0] + seg[1]) * 0.5
 			entrance = mid + _inward(side) * 0.6
+			doorway = mid + _inward(side) * 0.25
 			_add_with_gap(seg[0], seg[1], mid, ENTRANCE_WIDTH, true, side)
 		else:
 			walls.append({"a": seg[0], "b": seg[1], "outer": true, "side": side})
@@ -356,7 +359,9 @@ func is_free(r: Rect2) -> bool:
 ## Girişten ulaşılabilen hücreler (taşkın doldurma). Tüm masa koltukları ve noktalar ulaşılabilir olmalı.
 func all_reachable() -> bool:
 	var seen: Dictionary = {}
-	var queue: Array[Vector2i] = [cell_of(entrance)]
+	var queue: Array[Vector2i] = [cell_of(doorway)]
+	if _grid.is_point_solid(queue[0]):
+		return false
 	seen[queue[0]] = true
 	while not queue.is_empty():
 		var c: Vector2i = queue.pop_back()

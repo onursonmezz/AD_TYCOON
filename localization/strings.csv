@@ -1669,3 +1669,10 @@ UI_PITCH_PAID_SHORT,Katılım ücreti,Participation fee
 UI_PITCH_COMM,İletişim %d,Communication %d
 UI_PITCH_BUSY,Kampanyada,On a campaign
 UI_BANKRUPT_SUB,Ajans kapandı,The agency has closed
+ERR_WALL_STRAIGHT,Duvar yalnızca yatay ya da dikey çekilebilir.,Walls can only run horizontally or vertically.
+ERR_WALL_SHORT,Duvar en az 1 metre olmalı.,A wall must be at least 1 metre long.
+ERR_WALL_OUTSIDE,Duvar binanın içinde olmalı (dış duvarlara dokunulmaz).,Walls must be inside the building (outer walls can't be changed).
+ERR_WALL_EXISTS,Burada zaten duvar var.,There is already a wall here.
+ERR_WALL_NONE,Burada iç duvar yok.,There is no inner wall here.
+ERR_DOOR_SHORT,Bu duvar parçası kapı için çok kısa.,This wall piece is too short for a door.
+ERR_DOOR_BLOCKED,Kapının önü eşyayla kapalı.,Something is blocking the doorway.
