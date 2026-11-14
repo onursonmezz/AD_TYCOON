@@ -180,7 +180,7 @@
 	"build": {
 		"from_level": 3, "min_room_size": 3, "sell_refund": 0.5, "move_refund": 0.5,
 		"wall_cost_per_m_1990": 150, "door_cost_1990": 400, "min_wall_length": 1.0, "wall_snap": 0.5, "door_width": 1.6,
-		"wall_pick_distance": 0.4, "door_clearance": 0.45,
+		"wall_pick_distance": 0.4, "door_clearance": 0.45, "door_min_piece": 0.4,
 		"comfort_weight": 30.0, "outside_comfort_factor": 0.5, "variety_per_kind": 1.5, "variety_cap": 6,
 		"crowd_density": 0.125, "crowd_penalty": 200.0,
 		"desk_tiers": {

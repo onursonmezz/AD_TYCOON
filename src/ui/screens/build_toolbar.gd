@@ -62,6 +62,10 @@ func _ready() -> void:
 	_view.place_requested.connect(_on_place)
 	_view.room_requested.connect(_on_room)
 	_view.remove_requested.connect(_on_remove)
+	_view.wall_requested.connect(func(a: Vector2, b: Vector2) -> void:
+		_after(GameState.execute(BuildWallCommand.new(a, b)), "UI_BUILD_WALL_DONE"))
+	_view.door_requested.connect(func(p: Vector2) -> void:
+		_after(GameState.execute(BuildDoorCommand.new(p)), "UI_BUILD_DOOR_DONE"))
 	_view.hover_changed.connect(func(key: String) -> void:
 		_show(key if not key.is_empty() else "UI_BUILD_OK", key.is_empty()))
 	_view.remove_hover.connect(_on_remove_hover)
@@ -157,6 +161,7 @@ func _fill_palette(category: String) -> void:
 	UiUtil.clear(_cat_row)
 	var sim: Simulation = GameState.sim
 	var tabs: Array = CATEGORIES.duplicate()
+	tabs.append(["walls", "UI_BUILD_CAT_WALLS"])
 	if sim.build.can_build_rooms(sim.state):
 		tabs.append(["rooms", "UI_BUILD_CAT_ROOMS"])
 	var seg: PanelContainer = UiUtil.segmented(tabs, _category, _fill_palette)
@@ -169,6 +174,13 @@ func _fill_palette(category: String) -> void:
 			_tool_buttons.erase(b)
 	UiUtil.clear(_palette)
 	var current: String = str(_view.build_tool.get("id", ""))
+	if category == "walls":
+		# K-116: iç duvar çek (metre başı) ve duvara kapı aç; silmek için "Sat" aracı.
+		_palette.add_child(_card("wall", "", tr("UI_BUILD_WALL"), tr("UI_BUILD_PER_M") % UiUtil.money(sim.walls.wall_cost_per_m(sim.state)),
+			current, {"kind": "wall", "id": "wall"}, "wall"))
+		_palette.add_child(_card("door", "", tr("UI_BUILD_DOOR"), UiUtil.money(sim.walls.door_cost(sim.state)), current,
+			{"kind": "door", "id": "door"}, "door"))
+		return
 	if category == "rooms":
 		for type: String in DataDB.data.room_type_ids:
 			if bool(DataDB.data.room_types[type]["buildable"]):
@@ -267,10 +279,20 @@ func _sell_at(p: Vector2) -> bool:
 	return true
 
 
-## Önce mobilya, yoksa çizilmiş oda kaldırılır.
+## Duvar / kapı işleminden sonra durum satırı (hata ya da başarı) ve kalite.
+func _after(err: String, done_key: String) -> void:
+	_show(err if not err.is_empty() else done_key, err.is_empty())
+	_refresh_quality()
+
+
+## Önce mobilya, sonra kapı ya da iç duvar, yoksa çizilmiş oda kaldırılır.
 func _on_remove(p: Vector2) -> void:
 	var sim: Simulation = GameState.sim
 	if _sell_at(p):
+		return
+	var was_door: bool = not sim.walls.door_at(sim.state, p).is_empty()
+	if GameState.execute(RemoveWallCommand.new(p)).is_empty():
+		_after("", "UI_BUILD_DOOR_CLOSED" if was_door else "UI_BUILD_WALL_REMOVED")
 		return
 	var rooms: Array = sim.state.build["rooms"]
 	for i: int in rooms.size():
@@ -289,19 +311,39 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	if key.keycode == KEY_DELETE:
 		var p: Vector2 = _view.hover_point()
-		if p == Vector2.INF or not _sell_at(p):
+		if p == Vector2.INF:
 			_show("UI_BUILD_NOTHING", false)
+		elif not _sell_at(p):
+			var was_door: bool = not GameState.sim.walls.door_at(GameState.sim.state, p).is_empty()
+			if GameState.execute(RemoveWallCommand.new(p)).is_empty():
+				_after("", "UI_BUILD_DOOR_CLOSED" if was_door else "UI_BUILD_WALL_REMOVED")
+			else:
+				_show("UI_BUILD_NOTHING", false)
 		_view.refresh_hover()
 		get_viewport().set_input_as_handled()
 
 
 ## Sil aracında imlecin altındaki eşyanın adı ve geri gelecek para.
 func _on_remove_hover(prop: Dictionary) -> void:
+	var kind: String = str(prop.get("kind", ""))
+	if kind == "wall_cost":
+		_status.text = tr("UI_BUILD_WALL_PREVIEW") % [float(prop["length"]), UiUtil.money(float(prop["cost"]))]
+		_status.add_theme_color_override("font_color", UiUtil.SAGE_DARK)
+		return
 	if str(_view.build_tool.get("kind", "")) != "remove":
 		return
 	if prop.is_empty():
 		if _previewing:
 			_show("UI_BUILD_PICK_REMOVE", true)
+		return
+	_previewing = true
+	if kind == "door":
+		_status.text = tr("UI_BUILD_DOOR_CLOSE_PREVIEW")
+		_status.add_theme_color_override("font_color", UiUtil.TERRACOTTA)
+		return
+	if kind == "wall":
+		_status.text = tr("UI_BUILD_WALL_REMOVE_PREVIEW") % UiUtil.money(float(prop["refund"]))
+		_status.add_theme_color_override("font_color", UiUtil.TERRACOTTA)
 		return
 	var sim: Simulation = GameState.sim
 	_status.text = tr("UI_BUILD_SELL_PREVIEW") % [UiUtil.name_of(DataDB.data.furniture, prop["id"]),

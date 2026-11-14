@@ -104,3 +104,14 @@ func test_moving_refunds_drawn_walls() -> void:
 	assert_eq(MoveOfficeCommand.new().execute(sim), "")
 	assert_almost_eq(sim.state.cash, cash0 - move_cost + back, 0.01)
 	assert_true((sim.state.build["wall_ops"] as Array).is_empty())
+
+
+func test_walls_survive_save() -> void:
+	var sim: Simulation = _sim()
+	assert_eq(RemoveWallCommand.new(Vector2(9, 0.8)).execute(sim), "")
+	assert_eq(BuildWallCommand.new(Vector2(13, 0), Vector2(13, 2.5)).execute(sim), "")
+	var errors: Array[String] = []
+	var loaded: Simulation = SaveCodec.decode(data, SaveCodec.encode(sim), errors)
+	assert_eq(errors.size(), 0)
+	assert_false(_layout(loaded).has_closed_room("meeting"), "yıkılan duvar yüklemeden sonra da yok")
+	assert_false(loaded.walls.wall_at(loaded.state, Vector2(13, 1)).is_empty(), "çekilen duvar yüklemeden sonra yerinde")

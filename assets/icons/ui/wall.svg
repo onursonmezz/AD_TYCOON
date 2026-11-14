@@ -1,0 +1,20 @@
+<!-- Ajans Tycoon için elle çizildi (Tabler çizgi stiliyle uyumlu): tuğla duvar -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  stroke-width="2.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 5h16v14h-16z" />
+  <path d="M4 9.7h16" />
+  <path d="M4 14.3h16" />
+  <path d="M12 5v4.7" />
+  <path d="M8 9.7v4.6" />
+  <path d="M16 9.7v4.6" />
+  <path d="M12 14.3v4.7" />
+</svg>

@@ -143,7 +143,14 @@ func door_gap(state: SimState, p: Vector2) -> Dictionary:
 		return {"error": "ERR_DOOR_SHORT"}
 	var snap: float = _b("wall_snap")
 	var t: float = clampf(roundf(float(seg["t"]) / snap) * snap, float(s["t0"]) + width * 0.5, float(s["t1"]) - width * 0.5)
-	var e: Array[Vector2] = OfficeWalls.ends(str(s["key"]), t - width * 0.5, t + width * 0.5)
+	# Kapının yanında direk gibi kısa bir duvar parçası kalacaksa boşluk duvarın ucuna kadar uzar.
+	var g0: float = t - width * 0.5
+	var g1: float = t + width * 0.5
+	if g0 - float(s["t0"]) < _b("door_min_piece"):
+		g0 = float(s["t0"])
+	if float(s["t1"]) - g1 < _b("door_min_piece"):
+		g1 = float(s["t1"])
+	var e: Array[Vector2] = OfficeWalls.ends(str(s["key"]), g0, g1)
 	# Kapının iki yanı eşyayla tıkalı olmasın (ör. mutfak tezgâhının arkasına kapı açılmaz).
 	var mid: Vector2 = (e[0] + e[1]) * 0.5
 	var normal: Vector2 = (e[1] - e[0]).normalized().orthogonal()

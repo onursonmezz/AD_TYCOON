@@ -851,7 +851,7 @@ UI_NONE,yok,none
 UI_DESK_TIER,Masa ve sandalyeler:,Desks and chairs:
 UI_BUILD_MODE,İnşa moduna geç,Enter build mode
 UI_BUILD_TITLE,İnşa modu,Build mode
-UI_BUILD_KEYS,R / Shift+R: döndür · Del: imlecin altındakini sat · Esc: aracı bırak,R / Shift+R: rotate · Del: sell what is under the cursor · Esc: drop tool
+UI_BUILD_KEYS,R / Shift+R: döndür · Del: imlecin altındakini sat ya da yık · Esc: aracı bırak,R / Shift+R: rotate · Del: sell or remove what is under the cursor · Esc: drop tool
 UI_BUILD_DONE,Bitir,Done
 UI_BUILD_REMOVE,Sil / sat,Delete / sell
 UI_BUILD_ROTATE_LEFT,Sola döndür (Shift+R),Turn left (Shift+R)
@@ -863,7 +863,7 @@ UI_BUILD_ROOMS_LOCKED,Oda çizmek büyütülmüş ofiste açılır.,Drawing room
 UI_BUILD_PICK,Paletten bir mobilya ya da araç seç.,Pick a piece of furniture or a tool.
 UI_BUILD_PICK_FURNITURE,Yerleştirmek için ofiste bir yere tıkla.,Click a spot in the office to place it.
 UI_BUILD_PICK_ROOM,Boş alanda sürükleyerek odayı çiz.,Drag on empty space to draw the room.
-UI_BUILD_PICK_REMOVE,"Satmak için mobilyaya, yıkmak için çizdiğin odaya tıkla.","Click furniture to sell it, or a room you drew to demolish it."
+UI_BUILD_PICK_REMOVE,"Satmak için mobilyaya, yıkmak için iç duvara, kapıya ya da çizdiğin odaya tıkla.","Click furniture to sell it, or an inner wall, door or room you drew to remove it."
 UI_BUILD_OK,Buraya konabilir.,Fits here.
 UI_BUILD_PLACED,Yerleştirildi.,Placed.
 UI_BUILD_ROOM_DONE,Oda yapıldı.,Room built.
@@ -1676,3 +1676,16 @@ ERR_WALL_EXISTS,Burada zaten duvar var.,There is already a wall here.
 ERR_WALL_NONE,Burada iç duvar yok.,There is no inner wall here.
 ERR_DOOR_SHORT,Bu duvar parçası kapı için çok kısa.,This wall piece is too short for a door.
 ERR_DOOR_BLOCKED,Kapının önü eşyayla kapalı.,Something is blocking the doorway.
+UI_BUILD_CAT_WALLS,Duvarlar,Walls
+UI_BUILD_WALL,Duvar,Wall
+UI_BUILD_DOOR,Kapı,Door
+UI_BUILD_PER_M,%s/m,%s/m
+UI_BUILD_PICK_WALL,Duvarı sürükleyerek çiz (yatay ya da dikey).,Drag to draw a wall (horizontal or vertical).
+UI_BUILD_PICK_DOOR,Kapı açmak için bir iç duvara tıkla.,Click an inner wall to put a door in it.
+UI_BUILD_WALL_DONE,Duvar çekildi.,Wall built.
+UI_BUILD_DOOR_DONE,Kapı açıldı.,Door added.
+UI_BUILD_WALL_REMOVED,Duvar yıkıldı.,Wall removed.
+UI_BUILD_DOOR_CLOSED,Kapı kapatıldı.,Door closed.
+UI_BUILD_WALL_PREVIEW,%.1f m · %s,%.1f m · %s
+UI_BUILD_DOOR_CLOSE_PREVIEW,Kapıyı kapat,Close the door
+UI_BUILD_WALL_REMOVE_PREVIEW,Yık · %s iade,Remove · %s back

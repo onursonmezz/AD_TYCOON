@@ -8,6 +8,9 @@ signal employee_clicked(employee_id: String)
 signal place_requested(furniture_id: String, pos: Vector2, rot: int)
 signal room_requested(room_type: String, rect: Rect2)
 signal remove_requested(point: Vector2)
+## Duvar aracı (K-116): a–b arasına duvar; kapı aracı: noktadaki duvara kapı.
+signal wall_requested(a: Vector2, b: Vector2)
+signal door_requested(point: Vector2)
 signal hover_changed(text_key: String)
 ## Silme aracında farenin altındaki oyuncu eşyası ({} = yok); araç çubuğu geri gelecek parayı yazar.
 signal remove_hover(prop: Dictionary)
@@ -21,6 +24,7 @@ var world: OfficeWorld
 var _viewport: SubViewport
 var _dragging: bool = false
 ## {} = inşa yok; { "kind": "furniture", "id", "rot" } | { "kind": "room", "type" } | { "kind": "remove" }
+## | { "kind": "wall" } | { "kind": "door" }
 var build_tool: Dictionary = {}
 var _room_start: Vector2 = Vector2.INF
 var _last_mouse: Vector2 = Vector2.INF
@@ -166,6 +170,54 @@ func _room_rect(a: Vector2, b: Vector2) -> Rect2:
 	return Rect2(p0, p1 - p0)
 
 
+## Duvar aracında başlangıç ve fare noktasından ızgaraya oturan düz duvar: uzun eksen boyunca, öbürü sabit.
+func _wall_line(a: Vector2, b: Vector2) -> Array[Vector2]:
+	var step: float = float(DataDB.data.bal("build.wall_snap"))
+	var p0: Vector2 = (a / step).round() * step
+	var p1: Vector2 = (b / step).round() * step
+	if absf(p1.x - p0.x) >= absf(p1.y - p0.y):
+		p1.y = p0.y
+	else:
+		p1.x = p0.x
+	return [p0, p1]
+
+
+## Duvar parçasını yerde ince bir kutu olarak gösterir (önizleme).
+func _wall_ghost(a: Vector2, b: Vector2, mode: String) -> void:
+	var thick: float = float(WorldLook.cfg()["walls"]["thickness"]) + 0.06
+	var r: Rect2 = Rect2(a, Vector2.ZERO).expand(b).grow(thick * 0.5)
+	world.show_ghost(r, float(WorldLook.cfg()["walls"]["partition_height"]) + 0.05, mode)
+
+
+func _wall_hover(p: Vector2) -> void:
+	var sim: Simulation = GameState.sim
+	match str(build_tool["kind"]):
+		"wall":
+			if _room_start == Vector2.INF:
+				var step: float = float(DataDB.data.bal("build.wall_snap"))
+				var c: Vector2 = (p / step).round() * step
+				world.show_ghost(Rect2(c - Vector2.ONE * 0.12, Vector2.ONE * 0.24), 0.3, "ok")
+				hover_changed.emit("")
+				return
+			var line: Array[Vector2] = _wall_line(_room_start, p)
+			var err: String = sim.walls.wall_error(sim.state, line[0], line[1], false)
+			_wall_ghost(line[0], line[1], "ok" if err.is_empty() else "bad")
+			if err.is_empty():
+				hover_changed.emit("")
+				remove_hover.emit({"kind": "wall_cost", "cost": sim.walls.wall_cost(sim.state, line[0], line[1]),
+					"length": line[0].distance_to(line[1])})
+			else:
+				hover_changed.emit(err)
+		"door":
+			var gap: Dictionary = sim.walls.door_gap(sim.state, p)
+			if gap.has("error"):
+				world.show_ghost(Rect2(snap(p, OfficeLayout.CELL), Vector2(OfficeLayout.CELL, OfficeLayout.CELL)), 0.1, "bad")
+				hover_changed.emit(str(gap["error"]))
+			else:
+				_wall_ghost(gap["a"], gap["b"], "ok")
+				hover_changed.emit("")
+
+
 func _build_hover(screen_pos: Vector2) -> void:
 	var p: Vector2 = ground_point(screen_pos)
 	if p == Vector2.INF:
@@ -187,10 +239,24 @@ func _build_hover(screen_pos: Vector2) -> void:
 				var err: String = sim.build.room_error(sim.state, build_tool["type"], rr)
 				world.show_ghost(rr, 0.2, "ok" if err.is_empty() else "bad")
 				hover_changed.emit(err)
+		"wall", "door":
+			_wall_hover(p)
 		"remove":
 			var prop: Dictionary = sim.build.layout(sim.state).furniture_at(p)
 			if prop.is_empty():
-				world.show_ghost(Rect2(snap(p, OfficeLayout.CELL), Vector2(OfficeLayout.CELL, OfficeLayout.CELL)), 0.1, "remove")
+				# Eşya yoksa kapı, sonra iç duvar (K-116).
+				var door: Dictionary = sim.walls.door_at(sim.state, p)
+				var seg: Dictionary = sim.walls.wall_at(sim.state, p) if door.is_empty() else {}
+				if not door.is_empty():
+					_wall_ghost(door["a"], door["b"], "remove")
+					remove_hover.emit({"kind": "door"})
+				elif not seg.is_empty():
+					_wall_ghost(seg["a"], seg["b"], "remove")
+					remove_hover.emit({"kind": "wall", "refund": sim.walls.wall_refund(sim.state, seg)})
+				else:
+					world.show_ghost(Rect2(snap(p, OfficeLayout.CELL), Vector2(OfficeLayout.CELL, OfficeLayout.CELL)), 0.1, "remove")
+					remove_hover.emit({})
+				return
 			else:
 				var def: Dictionary = DataDB.data.furniture[prop["id"]]
 				world.show_ghost((prop["rect"] as Rect2).grow(0.05), float(def["height"]) + 0.05, "remove",
@@ -214,6 +280,18 @@ func _build_click(mb: InputEventMouseButton) -> void:
 				room_requested.emit(build_tool["type"], _room_rect(_room_start, p))
 				_room_start = Vector2.INF
 				world.hide_ghost()
+		"wall":
+			if mb.pressed:
+				_room_start = p
+			elif _room_start != Vector2.INF:
+				var line: Array[Vector2] = _wall_line(_room_start, p)
+				_room_start = Vector2.INF
+				wall_requested.emit(line[0], line[1])
+				refresh_hover()
+		"door":
+			if mb.pressed:
+				door_requested.emit(p)
+				refresh_hover()
 		"remove":
 			if mb.pressed:
 				remove_requested.emit(p)
