@@ -102,8 +102,9 @@ static func apply_camera(camera: Camera3D, distance: float) -> void:
 	attrs.dof_blur_amount = float(far["amount"])
 	var near: Dictionary = c["dof_near"]
 	attrs.dof_blur_near_enabled = bool(near["enabled"]) and WorldQuality.dof()
-	attrs.dof_blur_near_distance = float(near["distance"])
-	attrs.dof_blur_near_transition = float(near["transition"])
+	# Yakın bulanıklık kamera mesafesine göre (maket hissi: ekranın alt kenarı da hafif yumuşar).
+	attrs.dof_blur_near_distance = distance * float(near["distance_factor"]) if near.has("distance_factor") else float(near["distance"])
+	attrs.dof_blur_near_transition = distance * float(near["transition_factor"]) if near.has("transition_factor") else float(near["transition"])
 
 
 ## Kenar kararması (vinyet): 3D görüntünün üstüne yarı saydam radyal katman.
