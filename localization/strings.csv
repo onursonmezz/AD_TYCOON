@@ -1684,7 +1684,6 @@ UI_TAB_OFFERS,Teklifler,Offers
 UI_FACT_FEE,Ajans ücreti,Agency fee
 UI_FACT_MEDIA,Medya bütçesi,Media budget
 UI_FACT_DURATION,Süre,Duration
-UI_WEEKS,%d hafta,%d week(s)
 UI_FACT_DISCOUNT,İndirim,Discount
 UI_FACT_QUANTITY,Baskı adedi,Print quantity
 UI_FACT_VALID,Geçerlilik,Valid for
@@ -1772,7 +1771,7 @@ UI_AWARD_ENTRY_TITLE,Ödüle başvur,Enter an award
 UI_BANKRUPT_DATE,Kapanış,Closed on
 UI_BANKRUPT_CAMPAIGNS,Kampanya,Campaigns
 UI_BANKRUPT_REP,İtibar,Reputation
-UI_PITCH_PREP,Hazırlık,Preparation
+UI_PITCH_PREP_SHORT,Hazırlık,Preparation
 UI_PITCH_RIVALS,Davetli rakip,Invited rivals
 UI_PITCH_PAID_SHORT,Katılım ücreti,Participation fee
 UI_PITCH_COMM,İletişim %d,Communication %d

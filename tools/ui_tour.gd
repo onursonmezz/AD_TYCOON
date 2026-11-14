@@ -381,10 +381,12 @@ func _tour_research(screen: Control, sim: Simulation) -> void:
 	await _shot("30_research")
 	var panel: ResearchPanel = screen.get("_panel")
 	panel.set("_sector", "fast_food")
+	panel.set("_tab", "fit")  # K-122: bilgi defteri ayrı sekmede
 	panel.call("rebuild")
-	var scrolls: Array[Node] = panel.find_children("*", "ScrollContainer", true, false)
-	(scrolls[0] as ScrollContainer).scroll_vertical = 100000
 	await _shot("31_knowledge_book")
+	panel.set("_tab", "focus")
+	panel.call("rebuild")
+	await _shot("31b_focus_table")
 	await _tour_events(screen, sim)
 
 

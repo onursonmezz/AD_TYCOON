@@ -38,7 +38,7 @@ func _ready() -> void:
 		rivals.append(UiUtil.name_of(data.rivals, str(rid)))
 	var fee: float = float(_invite["participation_fee"])
 	col.add_child(Cards.facts([
-		Cards.fact("calendar", tr("UI_PITCH_PREP"), tr("UI_WEEKS") % int(_invite["prep_weeks"])),
+		Cards.fact("calendar", tr("UI_PITCH_PREP_SHORT"), tr("UI_WEEKS") % int(_invite["prep_weeks"])),
 		Cards.fact("users-group", tr("UI_PITCH_RIVALS"), str(rivals.size())),
 		Cards.fact("coins", tr("UI_PITCH_PAID_SHORT"), UiUtil.money(fee) if fee > 0.0 else "—")]))
 	col.add_child(UiUtil.wrapped(", ".join(rivals), 13, CozyTheme.WOOD))
