@@ -50,9 +50,17 @@ static func products(sector: String, year: int) -> Array[String]:
 
 ## Ekibin 3 taslağı: kampanyaya göre belirlenimci; ürün, arka plan, efekt ve düzen birbirinden farklı.
 static func options(data: GameData, setup: Dictionary, year: int, seed_value: int) -> Array[Dictionary]:
-	var prods: Array[String] = products(str(setup.get("sector", "")), year)
-	var bgs: Array[String] = names("backgrounds", "bg_")
-	var fxs: Array[String] = names("effects", "fx_")
+	var sector: String = str(setup.get("sector", ""))
+	var prods: Array[String] = products(sector, year)
+	# Sektörün ton grubuna uygun arka plan ve efektler (balance.json minigames.art_by_tone); dosyası olmayan atlanır.
+	var tone: String = str(data.sectors[sector]["tone_group"]) if data.sectors.has(sector) else ""
+	var art: Dictionary = (data.bal("minigames.art_by_tone") as Dictionary).get(tone, data.bal("minigames.art_default"))
+	var bgs: Array[String] = _existing("backgrounds", art["bg"])
+	var fxs: Array[String] = _existing("effects", art["fx"])
+	if bgs.is_empty():
+		bgs = names("backgrounds", "bg_")
+	if fxs.is_empty():
+		fxs = names("effects", "fx_")
 	var slogans: int = int(data.models["key_visual"]["slogans"])
 	var out: Array[Dictionary] = []
 	for i: int in 3:
@@ -65,6 +73,35 @@ static func options(data: GameData, setup: Dictionary, year: int, seed_value: in
 			"slogan": "KV_SLOGAN_%d" % ((s + i * 3) % slogans + 1),
 		})
 	return out
+
+
+static func _existing(kind: String, wanted: Array) -> Array[String]:
+	var have: Array[String] = names(kind)
+	var out: Array[String] = []
+	for n: Variant in wanted:
+		if have.has(str(n)):
+			out.append(str(n))
+	return out
+
+
+## Arka planın ortalama parlaklığı (önbellekli): koyu zeminde yazı açık renk olur.
+static func luminance(bg_name: String) -> float:
+	var key: String = "lum:" + bg_name
+	if not _cache.has(key):
+		var t: Texture2D = tex("backgrounds", bg_name)
+		var lum: float = 0.8
+		if t != null:
+			var img: Image = t.get_image()
+			if img.is_compressed():
+				img.decompress()
+			img.resize(16, 16, Image.INTERPOLATE_BILINEAR)
+			var sum: float = 0.0
+			for y: int in 16:
+				for x: int in 16:
+					sum += img.get_pixel(x, y).get_luminance()
+			lum = sum / 256.0
+		_cache[key] = lum
+	return float(_cache[key])
 
 
 ## Taslağı parent'ın içine size boyutunda çizer (Control düğümleri; SubViewport'a da eklenebilir).
@@ -91,7 +128,14 @@ static func compose(parent: Node, draft: Dictionary, size: Vector2, brand: Strin
 		_:  # ürün solda, slogan sağda
 			prod_rect = Rect2(size.x * 0.02, size.y * 0.1, size.x * 0.5, size.y * 0.8)
 			text_rect = Rect2(size.x * 0.51, size.y * 0.12, size.x * 0.45, size.y * 0.6)
-	var fx_tex: Texture2D = tex("effects", str(draft.get("fx", "")))
+	var fx_name: String = str(draft.get("fx", ""))
+	var fx_tex: Texture2D = tex("effects", fx_name)
+	# Efektin yeri türüne göre: ışın ve sıçrama ürünün arkasında, buhar ürünün üstünde, rozet köşede,
+	# konfeti / ışıltı / kalp / yaprak bütün kartta.
+	if fx_tex != null and fx_name in ["fx_rays", "fx_splash"]:
+		var behind: Rect2 = prod_rect.grow(unit * 0.12) if fx_name == "fx_rays" \
+			else Rect2(prod_rect.position + Vector2(0, prod_rect.size.y * 0.45), prod_rect.size * Vector2(1, 0.6))
+		parent.add_child(_image(fx_tex, behind, TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
 	var prod_tex: Texture2D = tex("products", str(draft.get("product", "")))
 	if prod_tex != null:
 		parent.add_child(_image(prod_tex, prod_rect, TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
@@ -99,10 +143,21 @@ static func compose(parent: Node, draft: Dictionary, size: Vector2, brand: Strin
 		# Sektörün görseli yoksa: marka baş harfi büyük bir dairede.
 		_text(parent, brand.substr(0, 1).to_upper(), unit * 0.4, accent, prod_rect)
 	if fx_tex != null:
-		var fx: TextureRect = _image(fx_tex, prod_rect.grow(unit * 0.08), TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
-		parent.add_child(fx)
+		match fx_name:
+			"fx_rays", "fx_splash":
+				pass
+			"fx_steam":
+				parent.add_child(_image(fx_tex, Rect2(prod_rect.position - Vector2(0, prod_rect.size.y * 0.25),
+					prod_rect.size * Vector2(1, 0.6)), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
+			"fx_starburst":
+				var badge: float = unit * 0.3
+				parent.add_child(_image(fx_tex, Rect2(prod_rect.end.x - badge, prod_rect.position.y, badge, badge),
+					TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
+			_:
+				parent.add_child(_image(fx_tex, Rect2(Vector2.ZERO, size), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
 	var slogan: String = TranslationServer.translate(str(draft.get("slogan", "KV_SLOGAN_1"))).format({"brand": brand})
-	_text(parent, slogan, unit * (0.085 if layout == 0 else 0.075), CozyTheme.TEXT, text_rect)
+	var dark: bool = luminance(str(draft.get("bg", ""))) < DataDB.data.balf("minigames.dark_bg_luminance")
+	_text(parent, slogan, unit * (0.085 if layout == 0 else 0.075), CozyTheme.CREAM_LIGHT if dark else CozyTheme.TEXT, text_rect)
 	var chip: ColorRect = ColorRect.new()
 	chip.color = accent
 	chip.position = Vector2(size.x * 0.04, size.y * 0.85)
