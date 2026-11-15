@@ -36,3 +36,22 @@ func test_stops_at_min_scale() -> void:
 	assert_almost_eq(fit.current_scale(), 0.7, 0.001)
 	await get_tree().process_frame  # en küçük boy ertelenmiş bildirilir
 	assert_gt(fit.get_combined_minimum_size().y, 300.0, "sığmazsa dıştaki kaydırma devreye girsin")
+
+
+## Satır kırılması genişliğe bağlı içerik: ölçek iki değer arasında gidip gelmemeli (İngilizce pencerelerde çökme).
+func test_wrapping_content_settles() -> void:
+	var fit: FitScaler = FitScaler.new(0.7)
+	var col: VBoxContainer = VBoxContainer.new()
+	for i: int in 12:
+		var l: Label = Label.new()
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD
+		l.text = "Every campaign teaches the team something new about the client and the audience %d" % i
+		col.add_child(l)
+	fit.add_child(col)
+	add_child_autofree(fit)
+	fit.size = Vector2(420.0, 300.0)
+	var scales: Array[float] = []
+	for f: int in 30:
+		await get_tree().process_frame
+		scales.append(fit.current_scale())
+	assert_almost_eq(scales[29], scales[20], 0.0005, "ölçek durulmalı")
