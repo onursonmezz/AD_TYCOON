@@ -104,15 +104,24 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 			OfficeLights.desk_lamp(parent, pr, h)
 
 
-## Mutfak tezgâhı: tezgâh boyunca lavabolu dolap modülleri yan yana dizilir (modelin oranı korunur).
+## Mutfak tezgâhı: tezgâh modüllere bölünür; ortadaki lavabolu dolap, diğerleri düz tezgâh.
 func _counter(parent: Node3D, pr: Rect2, props: Dictionary) -> void:
 	var sink: Dictionary = props["kitchen_sink"]
 	var unit: float = float(sink["size"][0])
 	var n: int = maxi(1, roundi(pr.size.x / unit))
 	var w: float = pr.size.x / n
-	for i: int in n:
-		thing(parent, str(sink["model"]), Vector2(pr.position.x + w * (i + 0.5), pr.get_center().y), Vector2(w, pr.size.y),
-			float(sink["height"]), color_of(sink["color"]))
+	# Tek lavabo ortada; kalan modüller düz tezgâh (aynı renk ve yükseklikte kutu). Önceden her modül lavaboydu.
+	var mid: int = n / 2
+	var h: float = float(sink["height"])
+	thing(parent, str(sink["model"]), Vector2(pr.position.x + w * (mid + 0.5), pr.get_center().y), Vector2(w, pr.size.y), h,
+		color_of(sink["color"]))
+	var top: Color = color_of(sink["counter_color"])
+	for side: Vector2i in [Vector2i(0, mid), Vector2i(mid + 1, n)]:
+		var span: float = w * (side.y - side.x)
+		if span <= 0.0:
+			continue
+		var cx: float = pr.position.x + w * side.x + span * 0.5
+		box(parent, Vector3(cx, h * 0.5, pr.get_center().y), Vector3(span, h, pr.size.y * 0.92), top)
 
 
 ## Duvar süsleri (G3): altıgen raf ve çıtalı panel, uzun dış duvarlarda posterin (duvar ortası) yanına,

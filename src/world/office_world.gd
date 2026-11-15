@@ -187,11 +187,6 @@ func _spawn(emp: Dictionary) -> void:
 	add_child(c)
 	c.teleport(layout.entrance)
 	_chars[emp["id"]] = c
-	var used: Array = _desk_of.values()
-	for i: int in layout.desks.size():
-		if not used.has(i):
-			_desk_of[emp["id"]] = i
-			break
 
 
 ## Nerede olmalı: izinde → görünmez; pitch'te → toplantı odası; yorgun → mutfak; yoksa masası.
@@ -199,6 +194,7 @@ func _assign_places(s: SimState) -> void:
 	var week: int = s.clock.week_index
 	var counters: Dictionary = {}
 	var low_energy: float = DataDB.data.balf("energy.low_threshold")
+	_desk_of = allocate_desks(_desk_of, s.staff.keys(), layout.desks.size())
 	for id: String in _chars:
 		var emp: Dictionary = s.staff[id]
 		var place: String = "desk"
@@ -208,15 +204,40 @@ func _assign_places(s: SimState) -> void:
 			place = "meeting"
 		elif float(emp["energy"]) < low_energy:
 			place = "kitchen"
+		elif not _desk_of.has(id):
+			place = "lounge"  # masası yok: dinlenme alanında bekler (eskiden 0 numaralı masaya yığılıyordu)
 		if place != "desk" and place != "away" and layout.spot_list(place).is_empty():
 			place = "lounge" if not layout.spot_list("lounge").is_empty() else "desk"
 		var slot: int = int(counters.get(place, 0))
 		counters[place] = slot + 1
-		var key: String = "%s:%d" % [place, slot]
+		var key: String = "%s:%d" % [place, slot if place != "desk" else int(_desk_of.get(id, -1))]
 		if _place_of.get(id, "") == key:
 			continue
 		_place_of[id] = key
 		_go(_chars[id], id, place, slot)
+
+
+## Her çalışana ayrı masa: geçerli eski atama korunur, masası olmayana ilk boş masa verilir; masa yoksa atanmaz.
+## (Masa silinince ya da kişi masa sayısını aşınca birden çok kişi aynı masaya gidiyordu.)
+static func allocate_desks(current: Dictionary, staff_ids: Array, desk_count: int) -> Dictionary:
+	var out: Dictionary = {}
+	var used: Dictionary = {}
+	for id: Variant in staff_ids:
+		var i: int = int(current.get(id, -1))
+		if i >= 0 and i < desk_count and not used.has(i):
+			out[id] = i
+			used[i] = true
+	var free: int = 0
+	for id: Variant in staff_ids:
+		if out.has(id):
+			continue
+		while free < desk_count and used.has(free):
+			free += 1
+		if free >= desk_count:
+			break
+		out[id] = free
+		used[free] = true
+	return out
 
 
 func _go(c: OfficeCharacter, id: String, place: String, slot: int) -> void:
@@ -228,8 +249,11 @@ func _go(c: OfficeCharacter, id: String, place: String, slot: int) -> void:
 	var face: Vector2 = Vector2(0, -1)
 	var sit: bool = true
 	if place == "desk":
-		var desk: Dictionary = layout.desks[int(_desk_of.get(id, 0)) % layout.desks.size()]
-		target = desk["seat"]
+		if _desk_of.has(id):
+			target = layout.desks[int(_desk_of[id])]["seat"]
+		else:  # ne masa ne dinlenme alanı var: kapının yanında ayakta bekler
+			target = layout.entrance
+			sit = false
 	else:
 		var spots: Array = layout.spot_list(place)
 		target = spots[slot % spots.size()]
