@@ -194,9 +194,19 @@ static func mini_fact(icon_name: String, text: String) -> HBoxContainer:
 ## yoksa ikonlu kareye düşer. px: kenar uzunluğu.
 static func art(map: String, key: String, px: float, fallback_icon: String, fill: Color = CozyTheme.TERRA_SOFT) -> Control:
 	var file: String = str((DataDB.data.raw["ui_layout.json"].get(map, {}) as Dictionary).get(key, ""))
-	var tex: Texture2D = IconPack.art(file, int(px)) if not file.is_empty() else null
+	# UI-4: müşteri logoları hep aynı açık zeminli kutuda (logosu olan kutusuz, olmayan pembe kutuluydu).
+	var boxed: bool = map == "brand_art"
+	if boxed:
+		fill = CozyTheme.CREAM_LIGHT
+	var tex: Texture2D = IconPack.art(file, int(px * (0.78 if boxed else 1.0))) if not file.is_empty() else null
 	if tex == null:
 		return tile(fallback_icon, px, fill)
+	if boxed:
+		var t: PanelContainer = tile(fallback_icon, px, fill)
+		var ic: TextureRect = t.find_children("*", "TextureRect", true, false)[0] as TextureRect
+		ic.texture = tex
+		ic.modulate = Color.WHITE
+		return t
 	var r: TextureRect = TextureRect.new()
 	r.texture = tex
 	r.custom_minimum_size = Vector2(px, px)

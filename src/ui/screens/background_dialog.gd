@@ -104,6 +104,9 @@ func _build_background() -> void:
 	_stats = UiUtil.hbox(CozyTheme.SPACE_S)
 	_stats.alignment = BoxContainer.ALIGNMENT_CENTER
 	_page.add_child(_stats)
+	var gap: Control = Control.new()
+	gap.custom_minimum_size.y = CozyTheme.SPACE_M  # UI-4: stat etiketleri düğmelere yapışmasın
+	_page.add_child(gap)
 	_page.add_child(_buttons(tr("UI_CANCEL"), queue_free, tr("MENU_CONTINUE"), func() -> void: show_step(2)))
 	_select_background(_background)
 
@@ -154,8 +157,10 @@ func _build_character() -> void:
 		_refresh_preview())
 	_page.add_child(_row(tr("UI_FOUNDER_NAME"), name_edit))
 	var split: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
-	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_page.add_child(split)
+	_page.add_child(split)  # UI-4: dikeyde büyümez; önizleme kartı ızgaranın boyuna uyar
+	var filler: Control = Control.new()
+	filler.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_page.add_child(filler)
 	# Solda seçilen avatarın büyük hâli ve yazılan ad.
 	_preview = UiUtil.vbox(CozyTheme.SPACE_S)
 	_preview.custom_minimum_size.x = PREVIEW_SIZE.x
@@ -188,8 +193,10 @@ func _refresh_preview() -> void:
 	UiUtil.clear(_preview)
 	var card: PanelContainer = PanelContainer.new()
 	card.theme_type_variation = "Card"
+	card.size_flags_vertical = Control.SIZE_EXPAND_FILL  # UI-4: önizleme kartı ızgarayla aynı boyda
 	_preview.add_child(card)
 	var col: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	col.alignment = BoxContainer.ALIGNMENT_CENTER
 	card.add_child(col)
 	col.add_child(MenuArt.picture(MenuArt.avatar_path(_avatar), PREVIEW_SIZE))
 	var shown: String = _founder_name.strip_edges()
@@ -236,10 +243,10 @@ func _pick_card(id: String, image: String, caption: String, picture_size: Vector
 		name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		name.custom_minimum_size.y = 40.0
+		name.custom_minimum_size.y = 48.0  # UI-4: iki satırlık ad ("Eski Pazarlama Müdürü") resmi küçültmesin
 		name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		inner.add_child(name)
-		extra += 46.0
+		extra += 54.0
 	card.custom_minimum_size = Vector2(96.0, picture_size.y + extra)
 	_cards.append(card)
 	return card

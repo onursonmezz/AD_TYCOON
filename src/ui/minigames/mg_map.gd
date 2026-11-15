@@ -22,12 +22,12 @@ func begin() -> void:
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg)
 	var side: float = CANVAS.y - 16.0
-	_map = Rect2(Vector2(CANVAS.x - side - 40.0, 8.0), Vector2(side, side))
+	_map = Rect2(Vector2((CANVAS.x - side) * 0.5 + 60.0, 8.0), Vector2(side, side))  # UI-4: ortaya yakın (sol yarı boş kalmasın)
 	var t: Texture2D = DraftArt.tex("props", "prop_city_map")
 	if t != null:
 		add_child(DraftArt._image(t, _map, TextureRect.STRETCH_SCALE))
 	var legend: PanelContainer = Cards.chip(tr("MG_MAP_LEGEND"), CozyTheme.CREAM_LIGHT, CozyTheme.FOREST)
-	legend.position = Vector2(30, 40)
+	legend.position = Vector2(20, 16)
 	add_child(legend)
 	var n: int = DataDB.data.bali("minigames.map_pins")
 	var spots: Array = SPOTS.duplicate()

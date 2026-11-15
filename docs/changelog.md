@@ -1,5 +1,34 @@
 # Değişiklik günlüğü
 
+## Arayüz gözden geçirmesi (2026-11-15)
+- **İkonlar:** Logoların ve ikonların üstündeki ince çizgiler (komşu ikondan kalan parçalar) temizlendi; bilgi ikonu yeniden çizildi.
+- **Türkçe sayılar:** Puanlar ve çarpanlar artık virgüllü: "7,4 / 10", "×1,30".
+- **İpucu:** İlk ipucu artık hız düğmelerinin üstünü kapatmıyor.
+- **Pencereler:**
+  - Ofis penceresi kaydırmasız sığıyor.
+  - Araçlar'da sütunlar dengeli.
+  - Ekipman sekmesi gruplu ve görselli.
+  - Pitch sunumu yeni görünümde.
+  - Raporlar listesi kartlı.
+  - Boş Raporlar, Gelen Kutusu ve küçük ekipte ortada açıklama var.
+- **Finans:** Gelir grafiğinin altında ay adları var; gelir yokken "Henüz gelir yok" yazıyor.
+- **İnşa modu:** Espresso, filtre kahve, plak çalar, neon tabela, ofis kedisi gibi eşyalar artık kendi resimleriyle görünüyor; uzun adlar kesilmiyor.
+- **Küçük düzeltmeler:**
+  - Yankılar kartlarındaki puanlar aynı hizada.
+  - Para değişimi yazısı kutunun altında.
+  - En fazla 3 bildirim gösteriliyor.
+  - Müşteri logoları tek tip kutuda.
+  - Konum provasında harita ortalandı, sponsorluk rozetinde marka adı dairenin içinde.
+  - Karakter ekranında kartlar hizalı.
+- Nasıl test ederim:
+  1. Yeni oyun aç. Karakter ekranında sol kart ızgarayla aynı boyda olmalı; ilk ipucu üst çubuğun altında çıkmalı.
+  2. Müşteriler'de Lezzetçi Köfte logosunun üstünde çizgi olmamalı; logosu olmayan müşteriler de aynı kutuda görünmeli.
+  3. Bir kampanya bitir. Yankılar'da puanlar "1,4" gibi virgüllü ve aynı hizada olmalı; Raporlar listesi kartlı olmalı.
+  4. Finans'ı aç: grafiğin altında ay adları, gelir yoksa "Henüz gelir yok" yazmalı.
+  5. Araçlar → Ekipman: Kamera, Fotoğraf… grupları iki sütunda görünmeli.
+  6. İnşa modunda espresso ve kedi gibi eşyalar resimleriyle görünmeli, uzun adlar kesilmemeli.
+  7. Bir pitch'e katıl: sunum ve sonuç penceresi kartlı olmalı, sonuçta bizim çubuğumuz turuncu olmalı.
+
 ## Geç oyunda puan düşüşü yumuşadı (2026-11-15)
 - **Ne değişti:** Eski en iyi işin her yıl daha çabuk unutuluyor (%10 yerine %25) ve dönemin beklentisi yılda %6 yerine %5 büyüyor.
 - **Sonuç:** Bilgili oyuncunun ortalaması 3. yıldan 10. yıla eskiden 1,1 puan düşüyordu, şimdi 0,8 düşüyor. İlk ödülü kazanma ihtimali de arttı.

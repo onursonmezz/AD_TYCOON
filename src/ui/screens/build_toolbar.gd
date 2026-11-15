@@ -225,12 +225,17 @@ func _card(id: String, art_file: String, caption: String, price_text: String, cu
 	if picture != null:
 		ic.texture = picture
 		ic.modulate = Color.WHITE
+		# Küçük resim 256 px: kutuya sığdır (yoksa kartı taşırıp boş gösteriyordu).
+		ic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		ic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		ic.custom_minimum_size = Vector2(ART_SIZE, 30.0)  # iki satırlık adda resim küçülür, fiyat görünür kalır
 	ic.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	inner.add_child(ic)
 	var name: Label = UiUtil.label(caption, 10, CozyTheme.TEXT)
 	name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # uzun ad iki satıra iner (kesilmez)
 	name.max_lines_visible = 2
+	name.custom_minimum_size.x = CARD_SIZE.x - 10.0  # genişliksiz satır kırma kartın içeriğini dışarı itiyordu
 	name.add_theme_constant_override("line_spacing", -3)
 	inner.add_child(name)
 	var price: Label = UiUtil.label(price_text, 10, CozyTheme.FOREST)

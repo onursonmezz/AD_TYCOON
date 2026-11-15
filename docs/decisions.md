@@ -1485,3 +1485,28 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   | İlk ödül (bilgili bot) | %53, Y6 | %75, Y6 (hedef Y5–Y8) |
   | Bilgili botun 10 yılda iflası | %7,0 | %7,5 |
 - Düşüş tamamen kalkmadı; oyun hâlâ yıllar içinde zorlaşıyor (tasarım bunu istiyor). Kalan kısım M11'de (bina katı, eşzamanlı kampanyalar).
+
+## K-125 — Arayüz gözden geçirmesi (UI-4, 2026-11-15)
+- **İstek (Orgo):** "UI'ı tekrar gözden geçir, hataları ve kötü duranları kontrol et" → "Hepsini yap".
+- **Hatalar:**
+  - İkon paketindeki 55 görselin üst/sağ kenarında komşu ikondan kalan parçalar vardı (logoların üstündeki çizgiler). Temizleyen araç: `tools/clean_icons.gd`. Alt kenar bilerek taranmıyor; ampulün dibi, satranç atının kaidesi gibi ikona ait ayrık parçalar orada. `bilgi.png` (altı kesik daire) yeniden çizildi; "i" saydam oyuk, böylece renge boyansa da görünüyor.
+  - İlk ipucu balonu anlattığı hız düğmelerini örtüyordu; hedef üst çubuktaysa balon çubuğun altında çıkar.
+  - Ofis penceresi küçülmeye rağmen sığmıyordu. Kalite dökümü çubuğun ipucuna taşındı; "Oda etkileri" satırı yalnızca etki varsa çıkıyor.
+  - Araçlar'da iki sütun dengesizdi; alanlar satır sayısına göre kısa sütuna ekleniyor.
+  - Türkçede ondalık virgül: `UiUtil.num`, `UiUtil.score_text`. Puan, çarpan, süre ve kalite metinleri artık "7,4" biçiminde. Hata ayıklama dökümü (BD_LINE1–4) noktalı kaldı.
+  - Yankılar kartlarında puanlar hizalı (başlık yüksekliği sabit).
+  - Finans grafiğine ay adları ve boşken "Henüz gelir yok" eklendi.
+  - İnşa paletinde çizimi olmayan 8 eşya, 3D modelinden üretilen küçük resimle görünüyor (`tools/furniture_thumbs.gd` → `assets/ui/thumbs/`). Uzun adlar iki satıra iniyor.
+- **Görünüş:**
+  - Boş durumlar (`Cards.empty_state`): Raporlar, Gelen Kutusu, küçük ekip. Rapor listesi kartlara çevrildi.
+  - Pitch penceresi kart dilinde: bilgi şeridi, ipucu etiketleri, seçim kartları; sonuçta bizim çubuğumuz kiremit, kazananınki yeşil.
+  - Ekipman sekmesi: gruplar (Kamera, Fotoğraf…) görselli, iki sütunda. Her grupta sahip olunanlar ve alınabilecek en iyi bir tane gösteriliyor. Kiralıklar etiket olarak.
+  - Olaylarda araştırmayla açılan seçenek köşeli parantez yerine etiketle gösteriliyor.
+  - Karakter ekranı: önizleme kartı ızgarayla aynı boyda. Geçmiş kartlarında iki satırlık ad resmi küçültmüyor. Stat etiketleri düğmelere yapışmıyor.
+  - Bildirimlerde en fazla 3 kart. Para değişim yazısı para kutusunun altında.
+  - Konum provasında harita ortada. Sponsorluk rozeti büyüdü, marka adı dairenin içinde kalıyor.
+  - Müşteri logoları hep aynı açık zeminli kutuda.
+- **Taslaktan sapma:**
+  - Bildirim genişliği taslaktaki gibi kaldı (176 px); yalnızca sayısı azaldı.
+  - Pitch penceresinin taslağı yok; diğer pencerelerin dili uygulandı.
+- `ui_util.gd` 400 satırı aşınca modal iskeleti `ModalFrame`'e taşındı.

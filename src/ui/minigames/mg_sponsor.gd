@@ -4,7 +4,7 @@ extends MinigameGame
 
 const JERSEY: Vector2 = Vector2(1024, 1024)
 const CHEST: Rect2 = Rect2(370, 330, 290, 190)      # forma görselinde göğüs alanı (piksel, yaklaşık)
-const BADGE: float = 96.0
+const BADGE: float = 112.0  # UI-4: marka adı iki satır olsa da dairenin içinde kalsın
 
 var _zone: Rect2
 var _badge: Control
@@ -46,8 +46,9 @@ func _make_badge() -> Control:
 	var draft: Dictionary = DraftArt.options(DataDB.data, ctx["setup"], int(ctx["year"]), int(ctx["seed"]))[0]
 	var p: Texture2D = DraftArt.tex("products", str(draft["product"]))
 	if p != null:
-		c.add_child(DraftArt._image(p, Rect2(Vector2(18, 10), Vector2(BADGE - 36, BADGE * 0.5)), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
-	DraftArt._text(c, str(ctx["brand"]), 11, CozyTheme.FOREST, Rect2(Vector2(8, BADGE * 0.58), Vector2(BADGE - 16, BADGE * 0.3)))
+		c.add_child(DraftArt._image(p, Rect2(Vector2(BADGE * 0.22, BADGE * 0.1), Vector2(BADGE * 0.56, BADGE * 0.42)),
+			TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
+	DraftArt._text(c, str(ctx["brand"]), 11, CozyTheme.FOREST, Rect2(Vector2(BADGE * 0.16, BADGE * 0.54), Vector2(BADGE * 0.68, BADGE * 0.3)))
 	return c
 
 

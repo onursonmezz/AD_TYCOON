@@ -34,7 +34,7 @@ const DOCK_RADIUS: int = 17
 const DOCK_SLOT: Vector2 = Vector2(46.0, 42.0)
 const MENU_ICON: int = 28
 const TIME_ICON: int = 12
-const TOASTS_KEPT: int = 4
+const TOASTS_KEPT: int = 3  # UI-4: dört uzun kart sağ kenarı dolduruyordu
 const TOAST_SECONDS: float = 7.0
 
 

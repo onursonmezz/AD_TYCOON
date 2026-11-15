@@ -22,11 +22,13 @@ static func cash_fly(anchor: Control, delta: float, year: int) -> void:
 	l.add_theme_constant_override("outline_size", 8)
 	l.z_index = 10
 	anchor.add_child(l)
-	# Rozetin solunda başlayıp yukarı süzülür (altındaki bildirimleri örtmesin).
-	l.global_position = anchor.global_position + Vector2(-l.get_minimum_size().x - 6.0, anchor.size.y * 0.25)
+	# UI-4: para kutusunun hemen altında, sağa hizalı başlar ve biraz aşağı süzülür (eskiden kutunun kenarına ve
+	# madeni para resmine biniyordu); bildirimlerin başladığı yere varmadan solar.
+	var below: float = MainHud.TOP + MainHud.BOX_HEIGHT + 2.0
+	l.global_position = Vector2(anchor.global_position.x + anchor.size.x - l.get_minimum_size().x, below)
 	var secs: float = float(_cfg()["cash_fly_seconds"])
 	var t: Tween = l.create_tween().set_parallel(true)
-	t.tween_property(l, "global_position:y", l.global_position.y - 24.0, secs).set_ease(Tween.EASE_OUT)
+	t.tween_property(l, "global_position:y", below + 14.0, secs).set_ease(Tween.EASE_OUT)
 	t.tween_property(l, "modulate:a", 0.0, secs).set_delay(secs * 0.4)
 	t.chain().tween_callback(l.queue_free)
 	if delta > 0.0:
