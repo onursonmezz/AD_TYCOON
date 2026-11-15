@@ -49,7 +49,7 @@ func _ready() -> void:
 		col.add_child(UiUtil.label(tr("UI_CLIENT_NO_HISTORY"), 14, UiUtil.MUTED))
 	for i: int in range(hist.size() - 1, -1, -1):
 		col.add_child(_history_row(hist[i]))
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	foot.add_child(UiUtil.spacer())

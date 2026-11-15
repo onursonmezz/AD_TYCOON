@@ -63,7 +63,7 @@ func _ready() -> void:
 	if tools.get_child_count() > 0:
 		col.add_child(Cards.section(tr("UI_ERA_TOOLS"), "", "tool"))
 		col.add_child(tools)
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox()
 	foot.add_child(UiUtil.spacer())

@@ -276,16 +276,22 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true, 
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	(parts[1] as VBoxContainer).add_child(scroll)
+	# K-122: içerik taşarsa önce küçülür (FitScaler, ui_layout fit_min_scale); o da yetmezse kayar.
+	var scaler: FitScaler = FitScaler.new(float(DataDB.data.raw["ui_layout.json"]["fit_min_scale"]))
+	scaler.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scaler.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.add_child(scaler)
 	var content: VBoxContainer = vbox(10)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(content)
-	# UI-3: pencere içeriği kadar yer kaplar; min_size.y en fazla yüksekliktir, aşan kısım kayar.
+	content.set_meta("frame", parts[1])  # altbilgi düğmeleri için: UiUtil.modal_outer
+	scaler.add_child(content)
+	# UI-3: pencere içeriği kadar yer kaplar; min_size.y en fazla yüksekliktir.
 	# Kaydırma çubuğu ya hep var ya hiç yok (belirip kaybolurken metin genişliği oynamasın).
 	var cap: float = min_size.y - MODAL_CHROME if fixed else minf(min_size.y, 600.0)
 	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, 0.0)
 	var fit: Callable = func() -> void:
 		var need: float = content.get_combined_minimum_size().y
-		var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need > cap \
+		var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need * scaler.min_scale > cap \
 			else ScrollContainer.SCROLL_MODE_DISABLED
 		if scroll.vertical_scroll_mode != mode:
 			scroll.vertical_scroll_mode = mode
@@ -306,6 +312,11 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true, 
 	else:
 		root.ready.connect(adopt, CONNECT_ONE_SHOT)
 	return content
+
+
+## modal_frame'in içerik kutusundan pencere gövdesine (altbilgi düğmeleri buraya, kaymayan kısma eklenir).
+static func modal_outer(content: Control) -> VBoxContainer:
+	return content.get_meta("frame") as VBoxContainer
 
 
 ## Yüzde, dile göre: Türkçe "%55", İngilizce "55%" (M9-C). decimals: ondalık; signed: "+" işareti.

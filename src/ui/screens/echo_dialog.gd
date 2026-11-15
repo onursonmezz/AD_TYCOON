@@ -28,7 +28,7 @@ func _ready() -> void:
 		row.add_child(_review_card(r))
 	col.add_child(row)
 	# Alt satır kaydırmanın dışında: genel puan ve düğmeler hep görünür.
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	var close: Button = UiUtil.button(tr("UI_CLOSE"), queue_free)

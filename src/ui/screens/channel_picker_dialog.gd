@@ -40,7 +40,7 @@ func _ready() -> void:
 	col.add_child(top)
 	_list = UiUtil.vbox(6)
 	col.add_child(_list)
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	_selected = UiUtil.label("", 13, CozyTheme.TEXT)
 	frame.add_child(_selected)

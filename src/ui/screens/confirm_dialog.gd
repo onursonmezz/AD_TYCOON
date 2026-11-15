@@ -19,7 +19,7 @@ func _ready() -> void:
 	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("confirm"))
 	col.add_child(UiUtil.heading(tr(_title_key), "alert-triangle"))
 	col.add_child(UiUtil.wrapped(tr(_text_key), 15, CozyTheme.TEXT))
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	foot.add_child(UiUtil.spacer())

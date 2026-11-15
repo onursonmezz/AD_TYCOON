@@ -51,7 +51,7 @@ func _ready() -> void:
 	_status = UiUtil.label("", 14, CozyTheme.TEXT)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(_status)
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox()
 	foot.add_child(UiUtil.spacer())

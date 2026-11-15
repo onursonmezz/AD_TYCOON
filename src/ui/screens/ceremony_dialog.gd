@@ -30,7 +30,7 @@ func _ready() -> void:
 		head.set_meta("heading_art", _emblem(emblem))
 	col.add_child(head)
 	# Sahne pencere kenarına kadar uzanır: çerçevenin iç boşluğu sıfırlanır, alt kısımlar kendi boşluğunu alır.
-	var body: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var body: VBoxContainer = UiUtil.modal_outer(col)
 	var margin: MarginContainer = body.get_parent() as MarginContainer
 	for side: String in ["left", "right", "top"]:
 		margin.add_theme_constant_override("margin_" + side, 0)

@@ -59,7 +59,7 @@ func _ready() -> void:
 	col.add_child(_body)
 	_show_tab("summary")
 	# Alt satır kaydırmanın dışında: uzun raporda da Kapat hep görünür.
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	frame.add_child(_footer())
 	var tween: Tween = create_tween()

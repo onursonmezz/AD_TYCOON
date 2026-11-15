@@ -122,7 +122,7 @@ func _build() -> void:
 		_language_changed()))
 	buttons.add_child(UiUtil.button_kind(tr("UI_CLOSE"), queue_free, "accept"))
 	# Alt satır kaydırmanın dışında, pencerenin en altında (taslak 19).
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	frame.add_child(buttons)
 

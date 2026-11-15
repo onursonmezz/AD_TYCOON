@@ -29,7 +29,7 @@ func _ready() -> void:
 		Cards.fact("calendar", tr("UI_BANKRUPT_DATE"), UiUtil.date_text(s.clock)),
 		Cards.fact("speakerphone", tr("UI_BANKRUPT_CAMPAIGNS"), str(s.history.size())),
 		Cards.fact("laurel", tr("UI_BANKRUPT_REP"), str(int(s.reputation)))]))
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	foot.add_child(UiUtil.button(tr("UI_MAIN_MENU"), _to_menu))

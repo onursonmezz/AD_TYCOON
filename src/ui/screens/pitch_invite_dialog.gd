@@ -67,7 +67,7 @@ func _ready() -> void:
 	col.add_child(_fee_box)
 	col.add_child(UiUtil.wrapped(tr("UI_PITCH_FEE_HINT"), 13, CozyTheme.MUTED))
 	_set_fee(1.0)
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	_error = UiUtil.label("", 13, CozyTheme.NEGATIVE)

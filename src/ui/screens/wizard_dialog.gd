@@ -100,7 +100,7 @@ func _ready() -> void:
 		row.add_child(who)
 		right.add_child(row)
 	# Alt satır kaydırmanın dışında: düğmeler hep görünür.
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	_error = UiUtil.label("", 14, UiUtil.TERRACOTTA)
 	_error.visible = false

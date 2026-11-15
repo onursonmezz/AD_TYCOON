@@ -34,7 +34,7 @@ func _ready() -> void:
 	_list = UiUtil.vbox(CozyTheme.SPACE_S)
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	col.add_child(_list)
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	_status = UiUtil.label("", 13, CozyTheme.MUTED)

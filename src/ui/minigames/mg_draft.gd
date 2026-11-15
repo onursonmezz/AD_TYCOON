@@ -3,7 +3,7 @@ extends MinigameGame
 ## Ekibin 3 taslağı (K-120): kreatif faz bitince ekip üç ilan taslağı sunar; birini seç. Seçilen taslak ofis
 ## duvarındaki posterde, sokaktaki billboard'da ve törende görünür. Puana etkisi yok, süre sınırı yok.
 
-const CARD: Vector2 = Vector2(184, 142)
+const CARD: Vector2 = Vector2(192, 222)  # üç kart oyun alanını doldurur (eskiden üstte küçük kalıyordu)
 
 signal chosen(draft: Dictionary)
 
@@ -12,8 +12,9 @@ var _drafts: Array[Dictionary] = []
 
 func begin() -> void:
 	_drafts = DraftArt.options(DataDB.data, ctx["setup"], int(ctx["year"]), int(ctx["seed"]))
-	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	row.position = Vector2(8, 40)
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	var row_w: float = 3.0 * (CARD.x + 8.0) + 2.0 * CozyTheme.SPACE_S
+	row.position = Vector2(maxf(0.0, (CANVAS.x - row_w) * 0.5), 40)
 	add_child(row)
 	for i: int in _drafts.size():
 		var b: Button = Button.new()

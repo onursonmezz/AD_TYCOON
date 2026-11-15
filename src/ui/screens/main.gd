@@ -68,10 +68,11 @@ func _build() -> void:
 	add_child(_office)
 	_office.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_office.employee_clicked.connect(_on_employee_clicked)
-	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 13, CozyTheme.CREAM_LIGHT)
+	var hint: Label = UiUtil.label(tr("UI_OFFICE_CONTROLS"), 12, CozyTheme.FOREST)
 	_hint = hint
-	hint.add_theme_color_override("font_outline_color", CozyTheme.FOREST)
-	hint.add_theme_constant_override("outline_size", 4)
+	# Sahnenin üstünde okunsun diye yarı saydam krem zemin (eskiden zeminsiz, kenar çizgili yazıydı).
+	hint.add_theme_stylebox_override("normal", CozyTheme.box(Color(CozyTheme.CREAM_LIGHT, 0.82), 12, CozyTheme.BORDER, 1, false,
+		Vector2(12, 3)))
 	add_child(hint)
 	hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH

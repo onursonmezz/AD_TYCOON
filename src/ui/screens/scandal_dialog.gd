@@ -35,7 +35,7 @@ func _ready() -> void:
 		_choices.add_child(Cards.choice(str(CHOICES[key]), tr("UI_SCANDAL_" + key.to_upper()),
 			tr("UI_SCANDAL_" + key.to_upper() + "_DESC"), tr("UI_CHOOSE"), func() -> void: _resolve(key)))
 	col.add_child(_choices)
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	foot.add_child(UiUtil.label(tr("UI_SCANDAL_HINT"), 13, CozyTheme.MUTED))

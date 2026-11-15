@@ -36,7 +36,7 @@ func _ready() -> void:
 		Cards.fact("coins", tr("UI_OFFER_NOW"), UiUtil.money(emp["salary"])),
 		Cards.fact("arrow-up", tr("UI_OFFER_THEIRS"), UiUtil.money(_offer["offer_salary"])),
 		Cards.fact("check", tr("UI_OFFER_KEEP"), UiUtil.money(keep_salary))]))
-	var frame: VBoxContainer = col.get_parent().get_parent() as VBoxContainer
+	var frame: VBoxContainer = UiUtil.modal_outer(col)
 	frame.add_child(HSeparator.new())
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	foot.add_child(UiUtil.spacer())
