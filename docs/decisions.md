@@ -1447,3 +1447,19 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - **Araçlar:** alanlar iki sütunda, satırlar tek satır (uzun ad ve durum, üzerine gelince ipucu olarak çıkar). Sekmeler bilgisayar satırının sağında.
   - **Kampanya (emek dağılımı):** önem işareti adın yanına alındı, satır araları sıkılaştı.
 - **Taslaktan sapma:** Ar-Ge ve Finans taslakları (17, 16) tek uzun sayfaydı ve kaydırılıyordu; sekmeler taslakta yok, kaydırmayı kaldırmak için eklendi.
+- **Ek (2026-11-15, genel tarama):**
+  - Küçülterek sığdırma açılır pencerelere de uygulandı (`modal_frame`). Altbilgi düğmeleri için `UiUtil.modal_outer`.
+  - İngilizce Kampanya ve Ofis pencerelerinde oyun çöküyordu. Ölçek iki değer arasında gidip geliyordu: küçülünce metin daha az satıra kırılıyor, içerik kısalıyor, büyüyünce yine taşıyordu. Kaydırma çubuğu da belirip kayboluyordu. Çözüm:
+    - Hemen geri alınan büyütme hatırlanır ve tekrar denenmez.
+    - Kaydırma çubuğu ancak 24 piksel boşluk açılınca kalkar.
+    - Ölçek ardışık karelerde 8 kez değişirse artık yalnızca küçülür.
+
+## K-123 — Genel tarama düzeltmeleri (2026-11-15)
+- **Çeviri:** `UI_PITCH_PREP` iki kez tanımlıydı ve kısa "Hazırlık" etiketi, gelen kutusundaki dört değişkenli satırı eziyordu. Kısa olan `UI_PITCH_PREP_SHORT` oldu. Mükerrer `UI_WEEKS` silindi.
+- **3D masa ataması:** `OfficeWorld.allocate_desks` her çalışana ayrı masa verir. Masası olmayan kişi dinlenme alanında, o da yoksa kapının yanında bekler. Eskiden masa sayısı aşılınca ya da masa silinince herkes 0 numaralı masaya gidiyordu.
+- **Mutfak tezgâhı:** Ortada tek lavabolu dolap, yanları düz tezgâh (`models.json kitchen_sink.counter_color`). Eskiden her modül lavaboydu.
+- **Gri beton alan:** Hata değil. Henüz türü seçilmemiş "boş oda" (inşa modunda çevrilir).
+- **Puan dökümü:** Mini oyun çarpanı artık dökümde de görünüyor.
+- **Bilinçli olarak dokunulmadı (Orgo'nun kararı):**
+  - Bilgili botun ortalama puanı Y3'te 7,9, Y10'da 6,8. Hedef puan "en iyi işinin %5 üstü" olduğu için oyun yıllar içinde zorlaşıyor; bu, Game Dev Tycoon tarzı bilinçli bir tasarım. Çözüm M11'e bırakılmıştı.
+  - Botun ekibi yavaş büyüyor (Y10'da 8 kişi). Bu botun işe alma kuralı, oyunun sınırı değil.

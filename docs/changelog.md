@@ -1,5 +1,25 @@
 # Değişiklik günlüğü
 
+## Genel tarama ve düzeltmeler (2026-11-15)
+- **Çökme:** İngilizce dilde Kampanya ya da Ofis penceresi açılınca oyun kapanıyordu. Düzeldi.
+- **Gelen kutusu:** Pitch hazırlığı satırı hata veriyordu (aynı adlı iki çeviri). Düzeldi.
+- **3D ofis:**
+  - Çalışanlar artık aynı masaya yığılmıyor; herkesin kendi masası var. Masa yetmezse kişi dinlenme alanında bekler.
+  - Mutfak tezgâhında artık tek lavabo var.
+- **Pencereler:**
+  - Olay pencerelerinde (Baskı hatası, İntihal suçlaması…) son seçenek artık kesilmiyor. Açılır pencereler de kaydırmak yerine biraz küçülüyor.
+  - Taslak seçimindeki üç kart büyüdü.
+  - Ofisin altındaki yardım yazısının artık okunaklı bir zemini var.
+- **Rapor:** Puan dökümünde mini oyun bonusu da görünüyor.
+- **Kod:** Ofis dışı (bahçe, çit, yol) ayrı bir dosyaya taşındı.
+- Nasıl test ederim:
+  1. Ayarlar → Dil → English. Kampanya, Ofis ve Ar-Ge pencerelerini aç: oyun kapanmamalı, hiçbirinde kaydırma çubuğu olmamalı.
+  2. Türkçeye dön. Bir pitch davetini kabul et ve Gelen Kutusu'na bak: "Pitch hazırlığı: … hafta kaldı · S … · K …" satırı düzgün görünmeli.
+  3. İnşa modunda masa sayısından fazla çalışan işe al ya da birkaç masa sil. Çalışanlar tek masada üst üste durmamalı; masası olmayan dinlenme alanına gitmeli.
+  4. Mutfağı olan bir ofiste tezgâhta tek lavabo görünmeli.
+  5. Bir olay penceresi çıktığında bütün seçenekler kaydırmadan görünmeli.
+  6. Bir kampanya raporunda "Puan dökümü" sekmesinin altında "Mini oyun bonusu ×1,0xx" satırı olmalı.
+
 ## Pencereler kaydırmasız sığıyor (2026-11-14)
 - **Ar-Ge ortada:** Pencere artık sağa taşmıyor.
 - **Kaydırma yok:** Menü pencerelerinde içerik sığmazsa pencere büyümüyor, içerik biraz küçülüyor (en fazla %72'ye kadar).

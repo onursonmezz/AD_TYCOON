@@ -269,5 +269,7 @@ func _breakdown_block(report: Dictionary) -> VBoxContainer:
 		report["synergy"]["synergy"]] + "\n"
 	text += tr("BD_LINE3") % [report["s"], report["k"], report["t"], int(report["errors"])] + "\n"
 	text += tr("BD_LINE4") % [report["raw"], report["target"], report["r"]]
+	text += "
+" + tr("BD_MINIGAME") % float(report.get("minigame", 1.0))  # K-120: mini oyun bonusu (en çok ×1,05)
 	v.add_child(UiUtil.label(text, 13, UiUtil.MUTED))
 	return v

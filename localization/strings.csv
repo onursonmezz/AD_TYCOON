@@ -1802,3 +1802,4 @@ UI_RESEARCH_TAB_FIT,Sektör uyumu,Sector fit
 UI_RESEARCH_TAB_FOCUS,Odak önemi,Focus weight
 UI_PAGE,%d / %d,%d / %d
 UI_FIN_VIEW_SUMMARY,Özet,Summary
+BD_MINIGAME,Mini oyun bonusu ×%.3f,Mini-game bonus ×%.3f
