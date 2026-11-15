@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## Geç oyunda puan düşüşü yumuşadı (2026-11-15)
+- **Ne değişti:** Eski en iyi işin her yıl daha çabuk unutuluyor (%10 yerine %25) ve dönemin beklentisi yılda %6 yerine %5 büyüyor.
+- **Sonuç:** Bilgili oyuncunun ortalaması 3. yıldan 10. yıla eskiden 1,1 puan düşüyordu, şimdi 0,8 düşüyor. İlk ödülü kazanma ihtimali de arttı.
+- Nasıl test ederim:
+  1. Bir oyunu birkaç yıl oyna (4× hız). Aynı kalitede iş çıkardığında puanların eskisi kadar hızlı düşmemeli.
+  2. Rastgele seçimler hâlâ düşük puan almalı: bilgili oyunla fark yaklaşık 3 puan.
+
 ## Genel tarama ve düzeltmeler (2026-11-15)
 - **Çökme:** İngilizce dilde Kampanya ya da Ofis penceresi açılınca oyun kapanıyordu. Düzeldi.
 - **Gelen kutusu:** Pitch hazırlığı satırı hata veriyordu (aynı adlı iki çeviri). Düzeldi.

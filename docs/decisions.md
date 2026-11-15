@@ -1463,3 +1463,25 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **Bilinçli olarak dokunulmadı (Orgo'nun kararı):**
   - Bilgili botun ortalama puanı Y3'te 7,9, Y10'da 6,8. Hedef puan "en iyi işinin %5 üstü" olduğu için oyun yıllar içinde zorlaşıyor; bu, Game Dev Tycoon tarzı bilinçli bir tasarım. Çözüm M11'e bırakılmıştı.
   - Botun ekibi yavaş büyüyor (Y10'da 8 kişi). Bu botun işe alma kuralı, oyunun sınırı değil.
+
+## K-124 — Geç oyun puan düşüşü yumuşatıldı (2026-11-15)
+- **İstek (Orgo):** "Şimdi yumuşat."
+- **Mekanizma:** Hedef puan, iki şeyin büyüğü: dönemin taban beklentisi (`era_base × era_growth^yıl`) ya da "en iyi işin × 1,05". En iyi iş her yıl yalnızca %10 unutuluyordu; ajans büyüdükçe çıta işin kendisinden hızlı yükseliyordu.
+- **Değişiklik (`balance.json score`):**
+  - `best_yearly_decay`: 0,10 → 0,25. Eski rekor daha çabuk unutulur; rastgele oynayanı kayırmaz.
+  - `era_growth`: 1,06 → 1,05.
+- **Denenen diğer seçenekler (60 koşu):**
+  - `beat_best_factor` 1,0: düşüş azalmadı.
+  - Yalnızca `era_growth` 1,04: rastgele oyuncuyu da kayırdı, puan farkı 2,5'e indi.
+  - `best_update_lerp` düşürmek: puanlar genel olarak şişti, düşüş sürdü.
+- **Sonuç (200 koşu, önce → sonra):**
+
+  | Ölçü | Önce | Sonra |
+  |---|---|---|
+  | Bilgili bot Y3 → Y10 | 7,91 → 6,78 (−1,13) | 8,18 → 7,37 (−0,81) |
+  | Ortalama puan | 7,10 | 7,59 |
+  | Puan farkı (M1) | 2,60 | 2,88 ✓ |
+  | Rastgele botun ilk 3 yılda iflası | %24 | %24,5 ✓ |
+  | İlk ödül (bilgili bot) | %53, Y6 | %75, Y6 (hedef Y5–Y8) |
+  | Bilgili botun 10 yılda iflası | %7,0 | %7,5 |
+- Düşüş tamamen kalkmadı; oyun hâlâ yıllar içinde zorlaşıyor (tasarım bunu istiyor). Kalan kısım M11'de (bina katı, eşzamanlı kampanyalar).
