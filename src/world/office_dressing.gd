@@ -63,7 +63,7 @@ func build(parent: Node3D, layout: OfficeLayout, state: SimState, walls: Array[D
 	_room_decor(parent)
 	OfficeLights.rooms(parent, layout)
 	_street(parent, layout)
-	_garden(parent, layout)
+	OfficeOutdoor.garden(parent, layout)
 	_visual_root = Node3D.new()
 	_visual_root.name = "KeyVisuals"
 	parent.add_child(_visual_root)
@@ -231,55 +231,11 @@ static func _v2(a: Array) -> Vector2:
 	return Vector2(float(a[0]), float(a[1]))
 
 
-## Bahçe (B4): binanın çevresinde, sokak tarafı hariç, iç halkada çalılar, dış halkada ağaçlar. Konumlar ızgaradan ve
-## noktanın kendi özetinden (hash) gelir: her açılışta aynı, rastgele sayı üreteci kullanmaz (yalnızca görünüş).
-## Ayarlar models.json "garden".
-func _garden(parent: Node3D, layout: OfficeLayout) -> void:
-	var cfg: Dictionary = _m().get("garden", {})
-	if cfg.is_empty():
-		return
-	var street: Dictionary = _m()["street"]
-	var sl: Dictionary = _m()["street_layout"]
-	var n: Vector2 = OUTWARD[_entrance_side(layout)]
-	var building: Rect2 = Rect2(Vector2.ZERO, layout.size)
-	var inner: float = float(cfg["inner"])
-	var outer: float = float(cfg["outer"])
-	var trees_from: float = float(cfg["trees_from"])
-	var step: float = float(cfg["step"])
-	var jitter: float = float(cfg["jitter"])
-	var street_band: float = float(sl["sidewalk_width"]) + float(sl["road_width"]) + float(cfg["street_keep"])
-	var front: float = (layout.size * 0.5).dot(n.abs()) + (layout.size * 0.5).dot(n)
-	var x: float = -outer
-	while x <= layout.size.x + outer:
-		var z: float = -outer
-		while z <= layout.size.y + outer:
-			var h: int = absi(hash(Vector2i(roundi(x * 10.0), roundi(z * 10.0))))
-			var p: Vector2 = Vector2(x, z) + Vector2(float(h % 1000) / 1000.0 - 0.5, float((h / 1000) % 1000) / 1000.0 - 0.5) * jitter
-			var dist: float = _rect_distance(building, p)
-			var ahead: float = p.dot(n) - front  # binanın ön yüzünden sokağa doğru uzaklık
-			if dist >= inner and dist <= outer and not (ahead > -1.0 and ahead < street_band):
-				var key: String = "tree" if dist >= trees_from and h % int(cfg["tree_every"]) == 0 else "bush"
-				if key == "tree" or h % int(cfg["bush_every"]) == 0:
-					var def: Dictionary = street[key]
-					var s: float = 0.8 + float((h / 7) % 50) / 100.0
-					thing(parent, str(def["model"]), p, _v2(def["size"]) * s, float(def["height"]) * s, color_of(def["color"]),
-						float(h % 360))
-			z += step
-		x += step
-
-
-## Noktanın dikdörtgene uzaklığı (içindeyse 0).
-static func _rect_distance(r: Rect2, p: Vector2) -> float:
-	var dx: float = maxf(maxf(r.position.x - p.x, 0.0), p.x - r.end.x)
-	var dz: float = maxf(maxf(r.position.y - p.y, 0.0), p.y - r.end.y)
-	return Vector2(dx, dz).length()
-
-
 ## Girişin önünde kaldırım ve yol; kaldırımda ağaçlar, lambalar, bank; köşede billboard (GDD 21.1, 21.4).
 func _street(parent: Node3D, layout: OfficeLayout) -> void:
 	var cfg: Dictionary = _m()["street_layout"]
 	var street: Dictionary = _m()["street"]
-	var side: String = _entrance_side(layout)
+	var side: String = OfficeOutdoor.entrance_side(layout)
 	var n: Vector2 = OUTWARD[side]
 	var t: Vector2 = Vector2(-n.y, n.x).abs()
 	var edge_len: float = layout.size.x if t.x > 0.5 else layout.size.y
@@ -288,8 +244,8 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 	var road: float = float(cfg["road_width"])
 	var length: float = edge_len + 12.0
 	var yaw: float = rad_to_deg(atan2(n.x, n.y))
-	_strip(parent, mid + n * (sw * 0.5), t, length, sw, 0.03, color_of(cfg["sidewalk_color"]), "sidewalk")
-	_strip(parent, mid + n * (sw + road * 0.5), t, length, road, 0.01, color_of(cfg["road_color"]), "road")
+	OfficeOutdoor.strip(parent, mid + n * (sw * 0.5), t, length, sw, 0.03, color_of(cfg["sidewalk_color"]), "sidewalk")
+	OfficeOutdoor.strip(parent, mid + n * (sw + road * 0.5), t, length, road, 0.01, color_of(cfg["road_color"]), "road")
 	var step: float = float(cfg["tree_step"])
 	var k: int = 0
 	var x: float = -length * 0.5 + step * 0.5
@@ -304,7 +260,7 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 	var bench: Dictionary = street["bench"]
 	thing(parent, str(bench["model"]), mid - t * 2.5 + n * (sw * 0.5), _v2(bench["size"]), float(bench["height"]),
 		color_of(bench["color"]), yaw)
-	_greenery(parent, layout, mid, n, t, edge_len, yaw)
+	OfficeOutdoor.greenery(parent, layout, mid, n, t, edge_len, yaw)
 	# Billboard: binanın köşesinin ötesinde, kaldırımda, yola bakar.
 	var bb: Dictionary = street["billboard"]
 	var bb_pos: Vector2 = mid + t * (edge_len * 0.5 + BILLBOARD_GAP) + n * (sw * 0.5)
@@ -324,55 +280,6 @@ func _street(parent: Node3D, layout: OfficeLayout) -> void:
 		box(frame, Vector3(0.0, bottom + float(panel[1]) * 0.5, -0.08), Vector3(float(panel[0]) + 0.2, float(panel[1]) + 0.2, 0.12), c)
 	_billboard_anchor = Transform3D(Basis(Vector3.UP, deg_to_rad(yaw)),
 		Vector3(bb_pos.x, bottom + float(panel[1]) * 0.5, bb_pos.y) + Vector3(n.x, 0.0, n.y) * 0.05)
-
-
-## Bina önü: kapının iki yanında duvar boyunca çit çalısı (arada top çalı); bina köşelerinin ötesinde tahta çit.
-func _greenery(parent: Node3D, layout: OfficeLayout, mid: Vector2, n: Vector2, t: Vector2, edge_len: float, yaw: float) -> void:
-	var cfg: Dictionary = _m()["street_layout"]
-	var street: Dictionary = _m()["street"]
-	if not street.has("hedge"):
-		return
-	var off: float = float(cfg["hedge_offset"])
-	var step: float = float(cfg["hedge_step"])
-	var door: float = (layout.entrance - mid).dot(t)
-	var every: int = int(cfg["bush_every"])
-	var k: int = 0
-	var x: float = -edge_len * 0.5 + step * 0.5
-	while x + step * 0.5 <= edge_len * 0.5 + 0.01:
-		if absf(x - door) > float(cfg["door_gap"]) + step * 0.5:
-			var d: Dictionary = street["bush"] if k % every == every - 1 else street["hedge"]
-			thing(parent, str(d["model"]), mid + t * x + n * off, _v2(d["size"]), float(d["height"]), color_of(d["color"]), yaw)
-			k += 1
-		x += step
-	var fence: Dictionary = street["fence"]
-	var fstep: float = float(cfg["fence_step"])
-	for side: float in [-1.0, 1.0]:
-		var fx: float = edge_len * 0.5 + fstep * 0.5
-		while fx < edge_len * 0.5 + float(cfg["fence_reach"]):
-			if side < 0.0 or absf(fx - (edge_len * 0.5 + BILLBOARD_GAP)) > 2.6:
-				thing(parent, str(fence["model"]), mid + t * (side * fx) + n * off, _v2(fence["size"]), float(fence["height"]),
-					color_of(fence["color"]), yaw)
-			fx += fstep
-
-
-## surface: look.json "street" içindeki doku adı (sidewalk, road); dosyası yoksa düz renk.
-func _strip(parent: Node3D, center: Vector2, along: Vector2, length: float, width: float, y: float, color: Color,
-		surface: String = "") -> void:
-	var size: Vector3 = Vector3(length, 0.04, width) if along.x > 0.5 else Vector3(width, 0.04, length)
-	var strip: MeshInstance3D = box(parent, Vector3(center.x, y - 0.02, center.y), size, color)
-	var entry: Dictionary = WorldLook.cfg().get("street", {}).get(surface, {})
-	if WorldLook.has_surface(entry):
-		strip.material_override = WorldLook.surface_material(entry)
-
-
-static func _entrance_side(layout: OfficeLayout) -> String:
-	var e: Vector2 = layout.entrance
-	var d: Dictionary = {"n": e.y, "s": layout.size.y - e.y, "w": e.x, "e": layout.size.x - e.x}
-	var best: String = "s"
-	for k: String in d:
-		if float(d[k]) < float(d[best]):
-			best = k
-	return best
 
 
 # --- kampanya görselleri ----------------------------------------------------------

@@ -306,7 +306,13 @@ func _refresh() -> void:
 	if _panel != null:
 		_panel.call("refresh")
 	_refresh_speed()
-	MinigameDialog.maybe_open.call_deferred(self, _modal_layer)  # faz başı mini oyunu (K-120)
+	_maybe_minigame.call_deferred()  # faz başı mini oyunu (K-120)
+
+
+## Ertelenmiş çağrı ekran kapanmışken çalışırsa (yükleme, menüye dönüş) hiçbir şey yapmaz.
+func _maybe_minigame() -> void:
+	if is_inside_tree() and is_instance_valid(_modal_layer):
+		MinigameDialog.maybe_open(self, _modal_layer)
 
 
 func _set_dot(id: String, text: String) -> void:
