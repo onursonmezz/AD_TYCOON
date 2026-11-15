@@ -27,8 +27,6 @@ func _ready() -> void:
 	for i: Variant in _inst["options"]:
 		var opt: Dictionary = ev["options"][int(i)]
 		var label: String = _text("O%d" % (int(i) + 1))
-		if opt.has("requires_research"):
-			label = "★ %s  [%s]" % [label, tr("UI_EVENT_RESEARCH_TAG")]
 		var idx: int = int(i)
 		var b: Button = UiUtil.button("", func() -> void: _choose(idx))
 		b.custom_minimum_size.y = 42.0
@@ -41,6 +39,8 @@ func _ready() -> void:
 		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		text.clip_text = true
 		row.add_child(text)
+		if opt.has("requires_research"):  # UI-4: araştırmayla açılan seçenek, metin içi köşeli parantez yerine etiket
+			row.add_child(Cards.accent_chip("★ " + tr("UI_EVENT_RESEARCH_TAG")))
 		if opt.has("check"):
 			var check: Dictionary = opt["check"]
 			row.add_child(UiUtil.label(tr("STAT_" + str(check["stat"]).to_upper() + "_NAME"), 13, CozyTheme.MUTED))

@@ -39,13 +39,9 @@ func rebuild() -> void:
 			refresh())
 	tabs.custom_minimum_size.x = 300.0
 	if _tab == "equipment":
-		var bar: HBoxContainer = UiUtil.hbox()
-		bar.add_child(UiUtil.spacer())
-		bar.add_child(tabs)
-		_body.add_child(bar)
 		_body.add_child(EquipmentList.build(func() -> void:
 			_signature = ""
-			refresh()))
+			refresh(), tabs))  # UI-4: sekmeler bakım satırının sağında
 		return
 	# UI-3 (taslak 15): üstte bilgisayar kuşağı ve aylık abonelik; altında alan alan araç tablosu.
 	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)

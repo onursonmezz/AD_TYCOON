@@ -239,3 +239,27 @@ static func choice(icon_name: String, title: String, desc: String, button_text: 
 	b.custom_minimum_size.y = 30.0
 	v.add_child(b)
 	return card
+
+
+## Boş durum (UI-4): pencerenin ortasında soluk büyük ikon, altında mesaj, istenirse bir düğme.
+## Boş pencerede köşede tek satır gri yazı yerine kullanılır.
+static func empty_state(icon_name: String, text: String, button_text: String = "", action: Callable = Callable()) -> CenterContainer:
+	var center: CenterContainer = CenterContainer.new()
+	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center.custom_minimum_size.y = 200.0
+	var col: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_M)
+	col.alignment = BoxContainer.ALIGNMENT_CENTER
+	center.add_child(col)
+	var tile: PanelContainer = Cards.tile(icon_name, 64.0, CozyTheme.CREAM)
+	tile.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	col.add_child(tile)
+	var label: Label = UiUtil.wrapped(text, 15, CozyTheme.MUTED, 360.0)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(label)
+	if not button_text.is_empty():
+		var b: Button = UiUtil.button(button_text, action)
+		b.theme_type_variation = "PrimaryButton"
+		b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		col.add_child(b)
+	return center

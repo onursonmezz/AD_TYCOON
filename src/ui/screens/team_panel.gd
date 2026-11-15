@@ -90,6 +90,10 @@ func refresh() -> void:
 		_list.add_child(_row(emp))
 		if str(emp["id"]) == _open_id:
 			_list.add_child(_detail(emp, sim))
+	# UI-4: ekip çok küçükken liste altı boş kalmasın: ortada kısa yönlendirme ve İşe al.
+	if s.staff.size() <= 2 and _filter_is_default():
+		_list.add_child(Cards.empty_state("users", tr("UI_TEAM_SMALL"), "+ " + tr("UI_HIRE"),
+			func() -> void: _main.call("open_modal", HiringDialog.new())))
 
 
 ## Rol süzgeci: yalnızca ekipte bulunan roller (ilk seçenek "tüm roller").
@@ -294,3 +298,8 @@ func _run(command: RefCounted) -> void:
 		EventBus.notification.emit(str(err), [], "bad")
 	_signature = ""
 	refresh()
+
+
+## Arama ve rol süzgeci boş mu (boş durum yalnızca süzgeçsiz listede gösterilir).
+func _filter_is_default() -> bool:
+	return _search.text.strip_edges().is_empty() and _role.selected <= 0

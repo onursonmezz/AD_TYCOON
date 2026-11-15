@@ -64,7 +64,7 @@ func refresh() -> void:
 			_list.add_child(_brief_card(brief, s))
 			shown += 1
 	if shown == 0:
-		_list.add_child(UiUtil.wrapped(tr("UI_INBOX_EMPTY"), 15, UiUtil.MUTED, 400.0))
+		_list.add_child(Cards.empty_state("inbox", tr("UI_INBOX_EMPTY")))
 
 
 ## Kartın altındaki düğme sırası: solda (varsa) açıklama, sağda ret ve yeşil kabul.

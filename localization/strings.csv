@@ -1804,3 +1804,13 @@ UI_PAGE,%d / %d,%d / %d
 UI_FIN_VIEW_SUMMARY,Özet,Summary
 BD_MINIGAME,Mini oyun bonusu ×%s,Mini-game bonus ×%s
 UI_FIN_CHART_EMPTY,Henüz gelir yok,No income yet
+UI_NO_HISTORY_LONG,"Henüz biten kampanya yok. İlk kampanyan bitince raporu burada durur; puanlarını ve yorumları buradan yeniden açabilirsin.","No finished campaigns yet. When your first campaign wraps, its report lands here; reopen scores and reviews any time."
+UI_TEAM_SMALL,Ekibin henüz küçük. Yeni biri işe alınca kampanyalar hızlanır ve daha büyük işler açılır.,Your team is still small. Hiring speeds up campaigns and unlocks bigger jobs.
+UI_PITCH_PRESENTER,Sunan,Presenter
+EQ_GROUP_CAMERA,Kamera,Camera
+EQ_GROUP_PHOTO,Fotoğraf,Photo
+EQ_GROUP_LIGHT,Işık,Lighting
+EQ_GROUP_SOUND,Ses,Sound
+EQ_GROUP_AERIAL,Hava çekimi,Aerial
+EQ_GROUP_SET,Set ve dekor,Set
+EQ_GROUP_CREW,Ekip,Crew
