@@ -202,6 +202,11 @@ func refresh() -> void:
 	_row("alert-triangle", tr("UI_FIN_RED_WEEKS"), "%d / %d" % [s.red_weeks, data.bali("cashflow.red_weeks_to_bankrupt")],
 		CozyTheme.NEGATIVE if s.red_weeks > 0 else CozyTheme.TEXT)
 	_chart.values = _recent_income(s, CHART_MONTHS)
+	_chart.months.clear()
+	for k: int in CHART_MONTHS:
+		var m: int = posmod(s.clock.month() - 1 - (CHART_MONTHS - 1 - k), 12) + 1
+		_chart.months.append(tr("MONTH_%d" % m).substr(0, 3))
+	_chart.empty_text = tr("UI_FIN_CHART_EMPTY")
 	_chart.queue_redraw()
 	_refresh_suppliers(s)
 	_refresh_loan(s)

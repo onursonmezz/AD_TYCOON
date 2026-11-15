@@ -140,8 +140,8 @@ func _tempo(body: VBoxContainer) -> void:
 	for e: Dictionary in rows:
 		var running: float = maxf(0.001, float(e["running"]))
 		var share: float = float((e["by_speed"] as Dictionary).get("1", 0.0)) / running * 100.0
-		body.add_child(UiUtil.label(tr("UI_SET_TEMPO_ROW") % [int(e["year"]), float(e["total"]) / 60.0,
-			float(e["running"]) / 60.0, share, int(e["campaigns"])], 15))
+		body.add_child(UiUtil.label(tr("UI_SET_TEMPO_ROW") % [int(e["year"]), UiUtil.num(float(e["total"]) / 60.0, 1),
+			UiUtil.num(float(e["running"]) / 60.0, 1), share, int(e["campaigns"])], 15))
 
 
 func _label(key: String) -> Label:

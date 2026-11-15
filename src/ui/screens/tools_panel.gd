@@ -75,19 +75,27 @@ func rebuild() -> void:
 	hw_col.add_child(monthly)
 	head.add_child(tabs)  # K-122: sekmeler bilgisayar satırının sağında (ayrı satır kaplamasın)
 	_body.add_child(head)
-	var grid: GridContainer = GridContainer.new()
-	grid.columns = 2
-	grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_M)
-	grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
-	_body.add_child(grid)
+	# UI-4: iki sütun, alanlar satır sayısına göre kısa olan sütuna eklenir (sıra korunur, sütunlar dengeli).
+	var pair: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	_body.add_child(pair)
+	var columns: Array[VBoxContainer] = []
+	var heights: Array[int] = [0, 0]
+	for i: int in 2:
+		var c: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		pair.add_child(c)
+		columns.append(c)
 	for area: Variant in data.bal("tools.areas"):
 		var col: VBoxContainer = UiUtil.vbox(4)
-		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		col.add_child(Cards.section(tr("AREA_" + str(area).to_upper()), "×%.2f" % float(s.tool_mults.get(area, 1.0))))
+		col.add_child(Cards.section(tr("AREA_" + str(area).to_upper()), "×" + UiUtil.num(float(s.tool_mults.get(area, 1.0)), 2)))
+		var rows: int = 0
 		for id: String in data.tool_ids:
 			if data.tools[id]["area"] == area and (sim.tools.owned(s, id) or sim.tools.available(s).has(id)):
 				col.add_child(_tool_row(sim, s, id))
-		grid.add_child(col)
+				rows += 1
+		var pick: int = 0 if heights[0] <= heights[1] else 1
+		columns[pick].add_child(col)
+		heights[pick] += rows + 1
 
 
 func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:

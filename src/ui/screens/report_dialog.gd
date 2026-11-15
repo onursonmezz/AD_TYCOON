@@ -71,7 +71,7 @@ func _ready() -> void:
 
 func _set_shown_score(v: float) -> void:
 	_shown_score = v
-	_score_label.text = "%.1f" % v
+	_score_label.text = UiUtil.score_text(v)
 
 
 func _show_tab(id: String) -> void:
@@ -118,7 +118,7 @@ func _reviews() -> HBoxContainer:
 		who.add_theme_font_override("font", CozyTheme.strong_font())
 		v.add_child(who)
 		v.add_child(HSeparator.new())
-		var score: Label = UiUtil.label("%.1f" % float(r["score"]), 30, CozyTheme.TERRA)
+		var score: Label = UiUtil.label(UiUtil.score_text(float(r["score"])), 30, CozyTheme.TERRA)
 		score.add_theme_font_override("font", CozyTheme.title_font(700))
 		score.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		v.add_child(score)
@@ -251,7 +251,7 @@ func _satisfaction_parts() -> VBoxContainer:
 			continue
 		var text: String = tr("SAT_" + key.to_upper())
 		if key == "quality":
-			text = tr("SAT_QUALITY") % [score, float(parts.get("expectation", 0.0))]
+			text = tr("SAT_QUALITY") % [UiUtil.score_text(score), UiUtil.score_text(float(parts.get("expectation", 0.0)))]
 		elif key == "kpi":
 			text = tr("SAT_KPI") % int(roundf(100.0 * float(_camp.get("kpi_ratio", 0.0))))
 		elif key == "timing" and value < 0.0:
@@ -270,6 +270,6 @@ func _breakdown_block(report: Dictionary) -> VBoxContainer:
 	text += tr("BD_LINE3") % [report["s"], report["k"], report["t"], int(report["errors"])] + "\n"
 	text += tr("BD_LINE4") % [report["raw"], report["target"], report["r"]]
 	text += "
-" + tr("BD_MINIGAME") % float(report.get("minigame", 1.0))  # K-120: mini oyun bonusu (en çok ×1,05)
+" + tr("BD_MINIGAME") % UiUtil.num(float(report.get("minigame", 1.0)), 3)  # K-120: mini oyun bonusu (en çok ×1,05)
 	v.add_child(UiUtil.label(text, 13, UiUtil.MUTED))
 	return v

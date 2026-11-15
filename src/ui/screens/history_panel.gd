@@ -34,7 +34,7 @@ func refresh() -> void:
 		var setup: Dictionary = camp["setup"]
 		var score: float = float(camp["report"]["score"])
 		var row: HBoxContainer = UiUtil.hbox()
-		var score_label: Label = UiUtil.label("%.1f" % score, 20, UiUtil.score_color(score))
+		var score_label: Label = UiUtil.label(UiUtil.score_text(score), 20, UiUtil.score_color(score))
 		score_label.custom_minimum_size.x = 50.0
 		row.add_child(score_label)
 		row.add_child(UiUtil.label("%s · %s · %s" % [setup.get("client_name", ""),

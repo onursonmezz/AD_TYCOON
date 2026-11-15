@@ -310,7 +310,7 @@ func _build_influencer_panel(row: Dictionary, channel_id: String, budget: float)
 	for inf: Dictionary in pool:
 		ids.append(inf["id"])
 		var text: String = tr("UI_INFLUENCER_ROW") % [inf["name"], tr("TIER_" + str(inf["tier"]).to_upper()),
-			tr("NICHE_" + str(inf["niche"]).to_upper()), UiUtil.big_number(float(inf["followers"])), 100.0 * float(inf["er"]),
+			tr("NICHE_" + str(inf["niche"]).to_upper()), UiUtil.big_number(float(inf["followers"])), UiUtil.num(100.0 * float(inf["er"]), 1),
 			UiUtil.money(sim.influencers.fee(sim.state, inf))]
 		if see:
 			text += " · " + tr("UI_AUTHENTICITY") % int(roundf(100.0 * float(inf["authenticity"])))

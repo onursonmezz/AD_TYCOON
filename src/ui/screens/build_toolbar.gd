@@ -199,6 +199,9 @@ func _fill_palette(category: String) -> void:
 
 
 ## Palet kartı: resim (yoksa ikon), ad, fiyat. Seçilen kart yeşil çerçeveli.
+const THUMBS: String = "res://assets/ui/thumbs"
+
+
 func _card(id: String, art_file: String, caption: String, price_text: String, current: String, tool: Dictionary,
 		fallback_icon: String = "building") -> Button:
 	var b: Button = Button.new()
@@ -214,6 +217,10 @@ func _card(id: String, art_file: String, caption: String, price_text: String, cu
 	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	b.add_child(inner)
 	var picture: Texture2D = IconPack.art(art_file, ART_SIZE) if not art_file.is_empty() else null
+	# UI-4: çizimi olmayan eşyada modelden üretilmiş küçük resim (tools/furniture_thumbs.gd).
+	var thumb: String = THUMBS.path_join(id + ".png")
+	if picture == null and ResourceLoader.exists(thumb):
+		picture = load(thumb)
 	var ic: TextureRect = UiUtil.icon(fallback_icon, 26, CozyTheme.TERRA)
 	if picture != null:
 		ic.texture = picture
@@ -222,7 +229,9 @@ func _card(id: String, art_file: String, caption: String, price_text: String, cu
 	inner.add_child(ic)
 	var name: Label = UiUtil.label(caption, 10, CozyTheme.TEXT)
 	name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name.clip_text = true
+	name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # uzun ad iki satıra iner (kesilmez)
+	name.max_lines_visible = 2
+	name.add_theme_constant_override("line_spacing", -3)
 	inner.add_child(name)
 	var price: Label = UiUtil.label(price_text, 10, CozyTheme.FOREST)
 	price.add_theme_font_override("font", CozyTheme.strong_font())
@@ -252,7 +261,7 @@ func _show(key: String, ok: bool) -> void:
 
 func _refresh_quality() -> void:
 	var s: SimState = GameState.sim.state
-	_quality.text = tr("UI_BUILD_QUALITY_SHORT") % [s.room_quality, Employee.office_mult(DataDB.data, s.room_quality)]
+	_quality.text = tr("UI_BUILD_QUALITY_SHORT") % [s.room_quality, UiUtil.num(Employee.office_mult(DataDB.data, s.room_quality), 2)]
 
 
 func _on_place(id: String, pos: Vector2, rot: int) -> void:
@@ -327,7 +336,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _on_remove_hover(prop: Dictionary) -> void:
 	var kind: String = str(prop.get("kind", ""))
 	if kind == "wall_cost":
-		_status.text = tr("UI_BUILD_WALL_PREVIEW") % [float(prop["length"]), UiUtil.money(float(prop["cost"]))]
+		_status.text = tr("UI_BUILD_WALL_PREVIEW") % [UiUtil.num(float(prop["length"]), 1), UiUtil.money(float(prop["cost"]))]
 		_status.add_theme_color_override("font_color", UiUtil.SAGE_DARK)
 		return
 	if str(_view.build_tool.get("kind", "")) != "remove":

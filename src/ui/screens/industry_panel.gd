@@ -203,7 +203,7 @@ func _rivals() -> VBoxContainer:
 			n.custom_minimum_size.x = RIVAL_NUM
 			row.add_child(n)
 		var power: float = sim.rivals.power(sim.state, id) if alive else 0.0
-		var meter: HBoxContainer = Cards.meter("%.1f" % power if alive else "—", power / top * 100.0, CozyTheme.FOREST_LIGHT, 110.0)
+		var meter: HBoxContainer = Cards.meter(UiUtil.num(power, 1) if alive else "—", power / top * 100.0, CozyTheme.FOREST_LIGHT, 110.0)
 		(meter.get_child(0) as Label).add_theme_color_override("font_color", color)
 		(meter.get_child(0) as Label).custom_minimum_size.x = 26.0
 		meter.get_child(2).visible = false

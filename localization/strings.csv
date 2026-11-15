@@ -149,7 +149,7 @@ NOTE_SAVE_FAILED,Kayıt başarısız oldu.,Saving failed.
 NOTE_NEW_BRIEFS,Gelen kutusuna %d yeni brief düştü.,%d new brief(s) arrived in your inbox.
 NOTE_CLIENT_LOST,%s ajansla çalışmayı bıraktı.,%s stopped working with the agency.
 NOTE_DELIVERED,%s kampanyası teslim edildi ve yayında.,The %s campaign was delivered and is on air.
-NOTE_REPORT_READY,%s kampanyasının raporu hazır: %.1f,The %s campaign report is ready: %.1f
+NOTE_REPORT_READY,%s kampanyasının raporu hazır: %s,The %s campaign report is ready: %s
 UI_INBOX_EMPTY,Gelen kutusu boş. Zamanı ilerlet; brief'ler haftalık gelir.,The inbox is empty. Let time run; briefs arrive weekly.
 UI_BUSY_HINT,Şu an bir kampanya üretimde. Yeni bir işi kabul etmek için onun bitmesini bekle.,A campaign is in production. Wait for it to finish before accepting a new job.
 UI_NEW_CLIENT,Yeni müşteri,New client
@@ -617,7 +617,7 @@ TIER_MICRO,Mikro,Micro
 TIER_MACRO,Makro,Macro
 TIER_MEGA,Mega/Ünlü,Mega/Celebrity
 UI_NO_INFLUENCERS,Bu kademede uygun influencer yok (havuz yılda bir yenilenir).,No suitable influencers at this tier (the pool refreshes yearly).
-UI_INFLUENCER_ROW,%s · %s · %s · %s takipçi · etkileşim %%%.1f · %s,%s · %s · %s · %s followers · engagement %.1f%% · %s
+UI_INFLUENCER_ROW,%s · %s · %s · %s takipçi · etkileşim %%%s · %s,%s · %s · %s · %s followers · engagement %s%% · %s
 UI_AUTHENTICITY,gerçek takipçi %%%d,real followers %d%%
 UI_AUTHENTICITY_HIDDEN,Sahte takipçi oranı gizli. Bir PR & Etkinlik çalışanı bunu görebilir.,The fake-follower ratio is hidden. Someone from PR & Events can see it.
 ERR_NO_INFLUENCER,Bu kanal için havuzda influencer yok.,No influencer available for this channel.
@@ -644,7 +644,7 @@ NOTE_EVENT_WEATHER,%s: açık hava etkinliğini yağmur vurdu.,%s: rain hit the 
 NOTE_EVENT_TROUBLE,%s: etkinlikte aksilik (katılım düşük / teknik arıza / ünlü gelmedi).,%s: trouble at the event (low turnout / technical failure / celebrity no-show).
 RL_VOLUME_LOW,"Fikir ne kadar iyi olursa olsun bu iş için harcanan emek az kaldı: daha büyük bir ekip, uzmanlar ya da daha uzun süreli işler gerekir.","However good the idea, too little work went into this job: you need a bigger team, specialists or longer jobs."
 RL_VOLUME_HIGH,Ekip bu işe bolca emek verdi.,The team put plenty of work into this job.
-SAT_QUALITY,"Puan %.1f, müşterinin beklentisi %.1f",Score %.1f vs the client's expectation of %.1f
+SAT_QUALITY,"Puan %s, müşterinin beklentisi %s",Score %s vs the client's expectation of %s
 SAT_KPI,KPI hedefinin %%%d'i tuttu,KPI target reached %d%%
 SAT_TIMING,Zamanında teslim,Delivered on time
 SAT_LATE,%d hafta gecikme,%d week(s) late
@@ -845,7 +845,7 @@ FURN_ROUND_RUG,Örgü halı,Braided rug
 DESK_BASIC,Basit,Basic
 DESK_ERGONOMIC,Ergonomik,Ergonomic
 DESK_ADJUSTABLE,Ayarlanabilir,Adjustable
-UI_QUALITY_PARTS,"Oda kalitesi: taban %.0f + konfor %.1f + çeşitlilik %.0f %+.1f kalabalık · üretim çarpanı ×%.2f","Room quality: base %.0f + comfort %.1f + variety %.0f %+.1f crowding · output multiplier ×%.2f"
+UI_QUALITY_PARTS,"Oda kalitesi: taban %.0f + konfor %s + çeşitlilik %.0f %s kalabalık · üretim çarpanı ×%s","Room quality: base %.0f + comfort %s + variety %.0f %s crowding · output multiplier ×%s"
 UI_ROOM_EFFECTS,Oda etkileri: %s,Room effects: %s
 UI_NONE,yok,none
 UI_DESK_TIER,Masa ve sandalyeler:,Desks and chairs:
@@ -1582,7 +1582,7 @@ UI_EQ_BUY,"Satın al %s","Buy %s"
 UI_EQ_SELL,"Sat (%s)","Sell (%s)"
 UI_EQ_OUTDATED,Daha iyisi var,Superseded
 UI_EQ_RENTALS,Kiralıklar (yalnızca prodüksiyon fazında seçilir),Rentals (picked in the production phase)
-UI_BOARD_EQUIPMENT,"Ekipman · prodüksiyon ×%.2f","Equipment · production ×%.2f"
+UI_BOARD_EQUIPMENT,"Ekipman · prodüksiyon ×%s","Equipment · production ×%s"
 UI_BOARD_RENT,"%s (%s)","%s (%s)"
 UI_TOOLS_TAB_SOFTWARE,Yazılım ve donanım,Software and hardware
 UI_TOOLS_TAB_EQUIPMENT,Ekipman,Equipment
@@ -1609,7 +1609,7 @@ UI_KNOW_FOCUS_TITLE,Hedef × odak alanı,Objective × focus area
 UI_SET_TEMPO,Tempo,Pace
 UI_SET_TEMPO_HINT,"Her oyun yılının gerçekte ne kadar sürdüğü. Toplam: oyun açıkken geçen süre (duraklamalar dahil, uzun süre dokunmadığın anlar hariç). Akan: zamanın aktığı süre. Kayıt yalnızca bu bilgisayarda durur.","How long each game year really took. Total: time with the game open (pauses included, idle stretches excluded). Running: time the clock was moving. Stored only on this computer."
 UI_SET_TEMPO_EMPTY,Henüz ölçüm yok; biraz oyna ve buraya dön.,No measurements yet; play a while and come back.
-UI_SET_TEMPO_ROW,"%d · toplam %.1f dk · akan %.1f dk · 1x payı %%%.0f · %d kampanya","%d · total %.1f min · running %.1f min · at 1x %.0f%% · %d campaigns"
+UI_SET_TEMPO_ROW,"%d · toplam %s dk · akan %s dk · 1x payı %%%.0f · %d kampanya","%d · total %s min · running %s min · at 1x %.0f%% · %d campaigns"
 UI_TIP,İpucu,Tip
 UI_TIP_OK,Anladım,Got it
 UI_TIP_OFF,İpuçlarını kapat,Turn off tips
@@ -1717,7 +1717,7 @@ UI_CEREMONY_RIVALS_SHORT,Bu törende %d ödül kazandı.,Won %d award(s) here.
 UI_BUILD_CAT_ROOMS,Odalar,Rooms
 UI_BUILD_ROTATE,Döndür,Rotate
 UI_BUILD_SELL,Sat,Sell
-UI_BUILD_QUALITY_SHORT,Kalite %.0f · Üretim ×%.2f,Quality %.0f · Output ×%.2f
+UI_BUILD_QUALITY_SHORT,Kalite %.0f · Üretim ×%s,Quality %.0f · Output ×%s
 UI_SET_AUTOSAVED,Değişiklikler otomatik kaydedilir.,Changes are saved automatically.
 UI_TEAM_COUNT,%d / %d çalışan,%d / %d staff
 UI_TEAM_PAYROLL,Maaş + SGK %s,Payroll + taxes %s
@@ -1794,7 +1794,7 @@ UI_BUILD_WALL_DONE,Duvar çekildi.,Wall built.
 UI_BUILD_DOOR_DONE,Kapı açıldı.,Door added.
 UI_BUILD_WALL_REMOVED,Duvar yıkıldı.,Wall removed.
 UI_BUILD_DOOR_CLOSED,Kapı kapatıldı.,Door closed.
-UI_BUILD_WALL_PREVIEW,%.1f m · %s,%.1f m · %s
+UI_BUILD_WALL_PREVIEW,%s m · %s,%s m · %s
 UI_BUILD_DOOR_CLOSE_PREVIEW,Kapıyı kapat,Close the door
 UI_BUILD_WALL_REMOVE_PREVIEW,Yık · %s iade,Remove · %s back
 UI_RESEARCH_TAB_LIST,Araştırmalar,Research
@@ -1802,4 +1802,5 @@ UI_RESEARCH_TAB_FIT,Sektör uyumu,Sector fit
 UI_RESEARCH_TAB_FOCUS,Odak önemi,Focus weight
 UI_PAGE,%d / %d,%d / %d
 UI_FIN_VIEW_SUMMARY,Özet,Summary
-BD_MINIGAME,Mini oyun bonusu ×%.3f,Mini-game bonus ×%.3f
+BD_MINIGAME,Mini oyun bonusu ×%s,Mini-game bonus ×%s
+UI_FIN_CHART_EMPTY,Henüz gelir yok,No income yet

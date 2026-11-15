@@ -141,9 +141,9 @@ static func money(value: float) -> String:
 
 static func big_number(value: float) -> String:
 	if value >= 1000000.0:
-		return "%.1fM" % (value / 1000000.0)
+		return num(value / 1000000.0, 1) + "M"
 	if value >= 1000.0:
-		return "%.1fK" % (value / 1000.0)
+		return num(value / 1000.0, 1) + "K"
 	return str(int(roundf(value)))
 
 
@@ -319,6 +319,17 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true, 
 ## modal_frame'in içerik kutusundan pencere gövdesine (altbilgi düğmeleri buraya, kaymayan kısma eklenir).
 static func modal_outer(content: Control) -> VBoxContainer:
 	return content.get_meta("frame") as VBoxContainer
+
+
+## Ondalık sayı, dile göre (UI-4): Türkçe "7,4", İngilizce "7.4". Binlik ayırıcı yok (para için money()).
+static func num(value: float, decimals: int = 1, signed: bool = false) -> String:
+	var s: String = (("%+." if signed else "%.") + str(decimals) + "f") % value
+	return s.replace(".", ",") if TranslationServer.get_locale().begins_with("tr") else s
+
+
+## Puan: "7,4" (Türkçe) — tek yerden, tüm puan etiketleri bunu kullanır.
+static func score_text(value: float) -> String:
+	return num(value, 1)
 
 
 ## Yüzde, dile göre: Türkçe "%55", İngilizce "55%" (M9-C). decimals: ondalık; signed: "+" işareti.

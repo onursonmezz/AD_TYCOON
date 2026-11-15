@@ -166,7 +166,7 @@ func _update_equipment() -> void:
 	var rentals: Array = (setup.get("rentals", []) as Array).duplicate()
 	rentals.append_array(_rentals)
 	var mult: float = GameState.sim.equipment.production_mult(GameState.sim.state, {"mix": setup["mix"], "rentals": rentals})
-	_eq_label.text = tr("UI_BOARD_EQUIPMENT") % mult
+	_eq_label.text = tr("UI_BOARD_EQUIPMENT") % UiUtil.num(mult, 2)
 
 
 func _on_chip_input(event: InputEvent, id: String, area: int) -> void:

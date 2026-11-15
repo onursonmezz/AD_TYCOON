@@ -62,7 +62,7 @@ func _fill() -> void:
 		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 		card.add_child(row)
 		var score: float = float(h["score"])
-		var score_label: Label = UiUtil.label("%.1f" % score, 22, UiUtil.score_color(score))
+		var score_label: Label = UiUtil.label(UiUtil.score_text(score), 22, UiUtil.score_color(score))
 		score_label.add_theme_font_override("font", CozyTheme.title_font(700))
 		score_label.custom_minimum_size.x = 46.0
 		row.add_child(score_label)

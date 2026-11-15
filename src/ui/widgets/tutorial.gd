@@ -107,6 +107,9 @@ func _show_next() -> void:
 		if r.position.y > size.y * 0.5:
 			# Hedef alt çubukta: balon düğmenin üstünde durur (çubuğu örtmesin).
 			pos = Vector2(r.get_center().x - _bubble.size.x * 0.5, r.position.y - _bubble.size.y - 12.0)
+		elif r.end.y < size.y * 0.2:
+			# Hedef üst çubukta: balon çubuğun altında durur (anlattığı hız düğmelerini örtmesin).
+			pos = Vector2(r.get_center().x - _bubble.size.x * 0.5, MainHud.TOP + MainHud.BOX_HEIGHT + 14.0)
 		elif pos.x + _bubble.size.x > size.x:
 			pos = Vector2(r.end.x - _bubble.size.x, r.end.y + 12.0)
 		_bubble.global_position = pos.clamp(Vector2.ZERO, size - _bubble.size)

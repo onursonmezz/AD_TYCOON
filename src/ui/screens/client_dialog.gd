@@ -35,10 +35,10 @@ func _ready() -> void:
 		var sum: float = 0.0
 		for h: Dictionary in hist:
 			sum += float(h["score"])
-		avg = "%.1f" % (sum / hist.size())
+		avg = UiUtil.score_text(sum / hist.size())
 	col.add_child(Cards.facts([
 		Cards.fact("coins", tr("UI_ANNUAL_BUDGET"), UiUtil.money(_client["annual_budget"])),
-		Cards.fact("star", tr("UI_CLIENT_EXPECTATION"), "%.1f / 10" % sim.clients.expectation(_client, sim.state.clock.year())),
+		Cards.fact("star", tr("UI_CLIENT_EXPECTATION"), "%s / 10" % UiUtil.score_text(sim.clients.expectation(_client, sim.state.clock.year()))),
 		Cards.fact("chart-bar", tr("UI_CLIENT_AVG_SCORE"), avg)]))
 	col.add_child(_meter(tr("UI_SATISFACTION"), sat, CozyTheme.NEGATIVE if sat < risk_line else CozyTheme.FOREST_LIGHT))
 	col.add_child(_meter(tr("UI_TRUST_NAME"), float(_client["trust"]), CozyTheme.SAGE))
@@ -89,7 +89,7 @@ func _history_row(h: Dictionary) -> PanelContainer:
 	mid.add_child(UiUtil.label(UiUtil.name_of(data.objectives, h["objective"]), 12, CozyTheme.TEXT))
 	row.add_child(mid)
 	var score: float = float(h["score"])
-	var s: Label = UiUtil.label("%.1f" % score, 20, UiUtil.score_color(score))
+	var s: Label = UiUtil.label(UiUtil.score_text(score), 20, UiUtil.score_color(score))
 	s.add_theme_font_override("font", CozyTheme.title_font(700))
 	row.add_child(s)
 	if not camp.is_empty():

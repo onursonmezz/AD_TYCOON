@@ -125,7 +125,7 @@ func _on_finished(quality: float) -> void:
 		GameState.execute(MinigameResultCommand.new(_phase, quality))
 		var bonus: float = quality * data.balf("minigames.max_bonus") / data.balf("minigames.scoring_games") * 100.0
 		var band: String = "GREAT" if quality >= 0.8 else ("OK" if quality >= 0.4 else "MISS")
-		_result.text = tr("MG_RESULT_" + band) % ("%.1f" % bonus)
+		_result.text = tr("MG_RESULT_" + band) % UiUtil.num(bonus, 1)
 		_result.add_theme_color_override("font_color", CozyTheme.FOREST if quality >= 0.4 else CozyTheme.MUTED)
 		if quality >= 0.8:
 			_confetti()

@@ -39,7 +39,6 @@ func refresh() -> void:
 		[Cards.chip(tr("UI_OFFICE_CURRENT_TAG"))], true))
 	_col.add_child(UiUtil.wrapped(tr("UI_OFFICE_LINE") % [s.staff.size(), int(cur["capacity"]),
 		UiUtil.money(sim.offices.monthly_rent(s)), int(roundf(s.room_quality))], 13, CozyTheme.TEXT, COLUMN_TEXT))
-	_col.add_child(Cards.meter(tr("UI_OFFICE_QUALITY"), s.room_quality, CozyTheme.FOREST_LIGHT, 150.0))
 	_quality_block(sim, s)
 	_col.add_child(_sizes_row(cur["allowed_sizes"]))
 	_desk_tiers(sim, s)
@@ -102,15 +101,20 @@ func _sizes_row(sizes: Array) -> HFlowContainer:
 
 ## Oda kalitesi dökümü (12.3) ve etkin oda etkileri (12.2).
 func _quality_block(sim: Simulation, s: SimState) -> void:
+	# UI-4: kalitenin dökümü çubuğun ipucunda (ayrı satır pencereyi taşırıyordu).
 	var q: Dictionary = sim.build.quality_parts(s)
-	_col.add_child(UiUtil.wrapped(tr("UI_QUALITY_PARTS") % [float(q["base"]), float(q["comfort"]), float(q["variety"]),
-		float(q["crowding"]), Employee.office_mult(DataDB.data, s.room_quality)], 12, UiUtil.MUTED, COLUMN_TEXT))
+	var meter: HBoxContainer = Cards.meter(tr("UI_OFFICE_QUALITY"), s.room_quality, CozyTheme.FOREST_LIGHT, 150.0)
+	meter.tooltip_text = tr("UI_QUALITY_PARTS") % [float(q["base"]), UiUtil.num(float(q["comfort"]), 1), float(q["variety"]),
+		UiUtil.num(float(q["crowding"]), 1, true), UiUtil.num(Employee.office_mult(DataDB.data, s.room_quality), 2)]
+	meter.mouse_filter = Control.MOUSE_FILTER_STOP
+	meter.add_child(UiUtil.icon("info", 14, CozyTheme.MUTED))
+	_col.add_child(meter)
 	var effects: PackedStringArray = PackedStringArray()
 	for type: String in DataDB.data.room_type_ids:
 		if not (DataDB.data.room_types[type]["effects"] as Dictionary).is_empty() and sim.build.layout(s).has_closed_room(type):
 			effects.append(tr(DataDB.data.room_types[type]["desc_key"]))
-	_col.add_child(UiUtil.wrapped(tr("UI_ROOM_EFFECTS") % ("; ".join(effects) if not effects.is_empty() else tr("UI_NONE")), 12,
-		UiUtil.TEXT, COLUMN_TEXT))
+	if not effects.is_empty():  # etkisi olan oda yoksa satır hiç çıkmaz ("Oda etkileri: yok" yer kaplıyordu)
+		_col.add_child(UiUtil.wrapped(tr("UI_ROOM_EFFECTS") % "; ".join(effects), 12, UiUtil.TEXT, COLUMN_TEXT))
 
 
 ## Masa ve sandalye kademesi: yan yana seçim kartları; kullanılan işaretli, diğerlerinde fiyat.

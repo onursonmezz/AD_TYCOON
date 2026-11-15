@@ -201,5 +201,5 @@ func _on_finished(camp: Dictionary) -> void:
 		kind = "good"
 	elif score <= DataDB.data.balf("reputation.bad_score"):
 		kind = "bad"
-	EventBus.notification.emit("NOTE_REPORT_READY", [camp["setup"].get("client_name", ""), score], kind)
+	EventBus.notification.emit("NOTE_REPORT_READY", [camp["setup"].get("client_name", ""), UiUtil.score_text(score)], kind)
 	EventBus.campaign_finished.emit(camp)

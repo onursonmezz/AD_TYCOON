@@ -40,7 +40,7 @@ func _ready() -> void:
 	var caption: Label = UiUtil.label(tr("UI_ECHO_OVERALL"), 13, CozyTheme.TEXT)
 	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	total.add_child(caption)
-	var score: Label = UiUtil.label("%.1f / 10" % float(_camp["report"]["score"]), 26, CozyTheme.TERRA)
+	var score: Label = UiUtil.label("%s / 10" % UiUtil.score_text(float(_camp["report"]["score"])), 26, CozyTheme.TERRA)
 	score.add_theme_font_override("font", CozyTheme.title_font(700))
 	score.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	total.add_child(score)
@@ -65,13 +65,14 @@ func _review_card(r: Dictionary) -> PanelContainer:
 	card.add_child(v)
 	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	head.alignment = BoxContainer.ALIGNMENT_CENTER
+	head.custom_minimum_size.y = 40.0  # UI-4: ad iki satıra kırılsa da puanlar aynı hizada
 	head.add_child(Cards.art("reviewer_art", str(r["reviewer_key"]), 30.0, "user", Color.TRANSPARENT))
 	var who: Label = UiUtil.wrapped(tr(r["reviewer_key"]), 13, CozyTheme.TEXT, 70.0)
 	who.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	head.add_child(who)
 	v.add_child(head)
 	v.add_child(HSeparator.new())
-	var score: Label = UiUtil.label("%.1f" % float(r["score"]), 34, CozyTheme.TERRA)
+	var score: Label = UiUtil.label(UiUtil.score_text(float(r["score"])), 34, CozyTheme.TERRA)
 	score.add_theme_font_override("font", CozyTheme.title_font(700))
 	score.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(score)
