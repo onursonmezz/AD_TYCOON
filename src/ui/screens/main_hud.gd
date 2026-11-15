@@ -8,6 +8,7 @@ extends RefCounted
 ##   Alt orta: krem dok (menü ikonları). Pencereler ekranın ortasında açılır (main.gd).
 
 const EDGE: float = 15.0  # kenardan uzaklık (taslakta 20 px)
+const SCROLL_HYSTERESIS: float = 24.0  # kaydırma çubuğu ancak bu kadar boşluk açılınca kalkar (K-122)
 const TOP: float = 14.0
 const BOX_HEIGHT: float = 38.0  # üstteki kutuların yüksekliği (taslakta 50 px)
 const CARD_SIZE: Vector2 = Vector2(223.0, 56.0)
@@ -207,9 +208,13 @@ static func dock_divider() -> ColorRect:
 
 
 ## Pencerenin kaydırması: içerik sığmıyorsa çubuk hep görünür, sığıyorsa hiç yok (belirip kaybolurken metin oynamasın).
+## Çubuk bir kez çıktıysa ancak belirgin boşluk açılınca (SCROLL_HYSTERESIS) kalkar: çubuk metni daraltıp satır kırılmasını
+## değiştirdiği için yoksa durmadan belirip kaybolur (İngilizce Ofis penceresinde oyunu çökertiyordu).
 static func fit_scroll(scroll: ScrollContainer, content: Control, room: float) -> void:
+	var need: float = content.get_combined_minimum_size().y
+	var shown: bool = scroll.vertical_scroll_mode == ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
 	var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS \
-		if content.get_combined_minimum_size().y > room else ScrollContainer.SCROLL_MODE_DISABLED
+		if need > room or (shown and need > room - SCROLL_HYSTERESIS) else ScrollContainer.SCROLL_MODE_DISABLED
 	if scroll.vertical_scroll_mode != mode:
 		scroll.vertical_scroll_mode = mode
 

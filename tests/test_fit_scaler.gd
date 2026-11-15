@@ -34,4 +34,5 @@ func test_shrinks_to_fit() -> void:
 func test_stops_at_min_scale() -> void:
 	var fit: FitScaler = _fit(1000.0, 300.0, 0.7)
 	assert_almost_eq(fit.current_scale(), 0.7, 0.001)
+	await get_tree().process_frame  # en küçük boy ertelenmiş bildirilir
 	assert_gt(fit.get_combined_minimum_size().y, 300.0, "sığmazsa dıştaki kaydırma devreye girsin")

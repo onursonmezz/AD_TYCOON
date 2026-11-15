@@ -291,8 +291,10 @@ static func modal_frame(root: Control, min_size: Vector2, animate: bool = true, 
 	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, 0.0)
 	var fit: Callable = func() -> void:
 		var need: float = content.get_combined_minimum_size().y
-		var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS if need * scaler.min_scale > cap \
-			else ScrollContainer.SCROLL_MODE_DISABLED
+		var shown: bool = scroll.vertical_scroll_mode == ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
+		var low: float = need * scaler.min_scale
+		var mode: ScrollContainer.ScrollMode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS \
+			if low > cap or (shown and low > cap - MainHud.SCROLL_HYSTERESIS) else ScrollContainer.SCROLL_MODE_DISABLED
 		if scroll.vertical_scroll_mode != mode:
 			scroll.vertical_scroll_mode = mode
 		var h: float = cap if fixed else minf(need, cap)
