@@ -21,7 +21,7 @@ var size: Vector2 = Vector2.ZERO
 var rooms: Array[Dictionary] = []
 ## { "a": Vector2, "b": Vector2, "outer": bool, "side": "n"|"s"|"e"|"w" }
 var walls: Array[Dictionary] = []
-## { "pos": Vector2, "seat": Vector2 }
+## { "pos": Vector2, "seat": Vector2, "face": Vector2 (oturanın baktığı yön), "flip": bool (masa 180° dönük) }
 var desks: Array[Dictionary] = []
 ## Engel kutuları: { "kind": "desk"|"counter"|"table"|"sofa"|"furniture", "rect": Rect2, "id" (mobilya), "index", "flat" }
 ## flat (halı): yürüme ızgarasına engel olarak işlenmez.
@@ -210,18 +210,10 @@ func _furnish(room: Dictionary) -> void:
 	var list: Array[Vector2] = []
 	match str(room["type"]):
 		"work":
-			var z: float = r.position.y + DESK_MARGIN
-			while z <= r.end.y - DESK_MARGIN - SEAT_OFFSET + 0.001:
-				var x: float = r.position.x + DESK_MARGIN
-				while x <= r.end.x - DESK_MARGIN + 0.001:
-					var pos: Vector2 = Vector2(x, z)
-					if _near_door(Rect2(pos - DESK_SIZE * 0.5, DESK_SIZE)):
-						x += DESK_STEP.x
-						continue
-					desks.append({"pos": pos, "seat": pos + Vector2(0, SEAT_OFFSET)})
-					props.append({"kind": "desk", "rect": Rect2(pos - DESK_SIZE * 0.5, DESK_SIZE)})
-					x += DESK_STEP.x
-				z += DESK_STEP.y
+			# OF-2: karşılıklı masa adaları (DeskLayout); masa adedi eski dizilişle aynı.
+			for d: Dictionary in DeskLayout.work_desks(r, _near_door):
+				desks.append(d)
+				props.append({"kind": "desk", "rect": Rect2((d["pos"] as Vector2) - DESK_SIZE * 0.5, DESK_SIZE), "flip": d["flip"]})
 		"kitchen":
 			props.append({"kind": "counter", "rect": Rect2(r.position + Vector2(0.3, 0.2), Vector2(r.size.x - 0.6, 0.6))})
 			list = _row(r.position.x + 0.8, r.end.x - 0.8, minf(r.position.y + 1.4, r.end.y - 0.6))

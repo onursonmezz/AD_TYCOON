@@ -44,14 +44,15 @@ static func _cyl(parent: Node3D, top: float, bottom: float, height: float, y: fl
 
 
 ## Masanın arka sağ köşesine lamba ve ışığı. desk: masanın taban dikdörtgeni (metre); top: masa üstü yüksekliği.
-static func desk_lamp(parent: Node3D, desk: Rect2, top: float) -> void:
+## flip: masa ters dönükse (ada kuzey sırası) lamba karşı köşeye, masanın arka kenarına gelir.
+static func desk_lamp(parent: Node3D, desk: Rect2, top: float, flip: bool = false) -> void:
 	if not enabled():
 		return
 	var c: Dictionary = _cfg()["desk_lamp"]
 	var inset: Vector2 = WorldLook.v2(c["inset"])
 	var root: Node3D = Node3D.new()
 	root.name = LAMP_NAME
-	root.position = Vector3(desk.end.x - inset.x, top, desk.position.y + inset.y)
+	root.position = Vector3(desk.position.x + inset.x, top, desk.end.y - inset.y) if flip 		else Vector3(desk.end.x - inset.x, top, desk.position.y + inset.y)
 	parent.add_child(root)
 	var body: StandardMaterial3D = _mat(WorldLook.col(c["body_color"]))
 	var shade: StandardMaterial3D = _mat(WorldLook.col(c["shade_color"]))

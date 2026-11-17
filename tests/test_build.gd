@@ -61,9 +61,20 @@ func test_furniture_cannot_block_paths_or_exceed_limit() -> void:
 	assert_eq(sim.build.place_error(sim.state, "espresso", Vector2(1, 1), 0), "ERR_FURNITURE", "1990'da espresso makinesi yok")
 
 
+## Halı için, üstüne (p + 0,5) bitki de konabilecek bir yer: halının bir köşesi sandalyeye denk gelmesin (OF-2 adaları).
+func _rug_spot(sim: Simulation) -> Vector2:
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	for x: int in int(l.size.x * 2.0):
+		for z: int in int(l.size.y * 2.0):
+			var p: Vector2 = Vector2(x * 0.5, z * 0.5)
+			if sim.build.place_error(sim.state, "round_rug", p, 0) == "" 					and sim.build.place_error(sim.state, "plant_small", p + Vector2(0.5, 0.5), 0) == "":
+				return p
+	return Vector2.INF
+
+
 func test_rug_is_walkable_and_takes_furniture_on_top() -> void:
 	var sim: Simulation = _sim(2)
-	var p: Vector2 = _free_spot(sim, "round_rug")
+	var p: Vector2 = _rug_spot(sim)
 	assert_ne(p, Vector2.INF)
 	assert_eq(PlaceFurnitureCommand.new("round_rug", p, 0).execute(sim), "")
 	var l: OfficeLayout = sim.build.layout(sim.state)
@@ -74,7 +85,7 @@ func test_rug_is_walkable_and_takes_furniture_on_top() -> void:
 
 func test_remove_picks_item_on_top_of_rug_and_shows_refund() -> void:
 	var sim: Simulation = _sim(2)
-	var p: Vector2 = _free_spot(sim, "round_rug")
+	var p: Vector2 = _rug_spot(sim)
 	assert_eq(PlaceFurnitureCommand.new("round_rug", p, 0).execute(sim), "")
 	assert_eq(PlaceFurnitureCommand.new("plant_small", p + Vector2(0.5, 0.5), 0).execute(sim), "")
 	var l: OfficeLayout = sim.build.layout(sim.state)

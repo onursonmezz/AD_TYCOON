@@ -250,7 +250,9 @@ func _go(c: OfficeCharacter, id: String, place: String, slot: int) -> void:
 	var sit: bool = true
 	if place == "desk":
 		if _desk_of.has(id):
-			target = layout.desks[int(_desk_of[id])]["seat"]
+			var desk: Dictionary = layout.desks[int(_desk_of[id])]
+			target = desk["seat"]
+			face = desk.get("face", face)  # karşılıklı adada kuzey sırası güneye bakar
 		else:  # ne masa ne dinlenme alanı var: kapının yanında ayakta bekler
 			target = layout.entrance
 			sit = false
