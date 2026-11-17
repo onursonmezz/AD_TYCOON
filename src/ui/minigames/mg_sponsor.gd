@@ -13,13 +13,9 @@ var _grab: Vector2
 
 
 func begin() -> void:
-	var bg: ColorRect = ColorRect.new()
-	bg.color = CozyTheme.SAGE_SOFT.lightened(0.45)
-	bg.size = CANVAS
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
+	stage("bg_nature")  # MG-2: saha kenarı
 	var s: float = (CANVAS.y - 10.0) / JERSEY.y
-	var pos: Vector2 = Vector2(CANVAS.x - JERSEY.x * s - 40.0, 5.0)
+	var pos: Vector2 = Vector2(CANVAS.x - JERSEY.x * s - 60.0, 5.0)
 	var t: Texture2D = DraftArt.tex("props", "prop_jersey")
 	if t != null:
 		add_child(DraftArt._image(t, Rect2(pos, JERSEY * s), TextureRect.STRETCH_SCALE))
@@ -33,8 +29,9 @@ func begin() -> void:
 	outline.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(outline)
 	_badge = _make_badge()
-	_badge.position = Vector2(70, (CANVAS.y - BADGE) * 0.5)
+	_badge.position = Vector2(90, (CANVAS.y - BADGE) * 0.5 + 10.0)
 	add_child(_badge)
+	tag(tr("MG_SPONSOR_TAG"), Vector2(24, 20), 15)
 
 
 ## Yuvarlak marka rozeti: marka renginde daire, ortada ürün, altta marka adı.

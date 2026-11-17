@@ -16,19 +16,13 @@ var _overlay: Control
 
 func begin() -> void:
 	_rng.seed = int(ctx["seed"])
-	var bg: ColorRect = ColorRect.new()
-	bg.color = CozyTheme.SAGE_SOFT.lightened(0.45)
-	bg.size = CANVAS
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
-	var side: float = CANVAS.y - 16.0
-	_map = Rect2(Vector2((CANVAS.x - side) * 0.5 + 60.0, 8.0), Vector2(side, side))  # UI-4: ortaya yakın (sol yarı boş kalmasın)
+	stage("bg_tabletop")  # MG-2: harita masanın üstünde
+	var side: float = CANVAS.y - 24.0
+	_map = Rect2(Vector2(CANVAS.x - side - 40.0, 12.0), Vector2(side, side))
 	var t: Texture2D = DraftArt.tex("props", "prop_city_map")
 	if t != null:
 		add_child(DraftArt._image(t, _map, TextureRect.STRETCH_SCALE))
-	var legend: PanelContainer = Cards.chip(tr("MG_MAP_LEGEND"), CozyTheme.CREAM_LIGHT, CozyTheme.FOREST)
-	legend.position = Vector2(20, 16)
-	add_child(legend)
+	tag(tr("MG_MAP_LEGEND"), Vector2(24, 24), 16)
 	var n: int = DataDB.data.bali("minigames.map_pins")
 	var spots: Array = SPOTS.duplicate()
 	for i: int in n:
@@ -62,10 +56,12 @@ func _draw_pins() -> void:
 		var p: Vector2 = _pins[i]
 		for k: int in _density[i] * 6:
 			var off: Vector2 = Vector2(crowd.randf_range(-1, 1), crowd.randf_range(-1, 1)) * PIN_RADIUS * 1.1
-			o.draw_circle(p + off, 3.0, CozyTheme.TEXT)
-		o.draw_circle(p + Vector2(0, -14), 9.0, CozyTheme.TERRA)
-		o.draw_circle(p + Vector2(0, -14), 4.0, CozyTheme.CREAM_LIGHT)
-		o.draw_line(p + Vector2(0, -6), p, CozyTheme.TERRA, 3.0)
+			o.draw_circle(p + off, 4.6, CozyTheme.CREAM_LIGHT)
+			o.draw_circle(p + off, 3.4, CozyTheme.FOREST)
+		o.draw_line(p + Vector2(0, -8), p, CozyTheme.TERRA, 3.5)
+		o.draw_circle(p + Vector2(0, -18), 12.0, CozyTheme.CREAM_LIGHT)
+		o.draw_circle(p + Vector2(0, -18), 10.0, CozyTheme.TERRA)
+		o.draw_circle(p + Vector2(0, -18), 4.0, CozyTheme.CREAM_LIGHT)
 
 
 func _gui_input(event: InputEvent) -> void:

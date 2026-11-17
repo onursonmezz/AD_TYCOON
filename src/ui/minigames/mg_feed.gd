@@ -5,7 +5,7 @@ extends MinigameGame
 
 const PHONE: Vector2 = Vector2(600, 1200)        # telefon çerçevesi görseli (piksel)
 const SCREEN: Rect2 = Rect2(70, 110, 460, 980)    # çerçevenin içindeki ekran (yaklaşık, piksel)
-const POST_H: float = 72.0
+const POST_H: float = 84.0
 const POSTS: int = 7
 
 var _feed: Control
@@ -16,22 +16,20 @@ var _screen: Rect2
 
 
 func begin() -> void:
-	var bg: ColorRect = ColorRect.new()
-	bg.color = CozyTheme.SAGE_SOFT.lightened(0.45)
-	bg.size = CANVAS
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
+	stage("bg_pattern")  # MG-2
 	# Solda aranan gönderi.
-	var wanted: Label = UiUtil.label(tr("MG_FEED_WANTED"), 14, CozyTheme.FOREST)
-	wanted.add_theme_font_override("font", CozyTheme.title_font(700))
-	wanted.position = Vector2(60, 70)
-	add_child(wanted)
-	var card: Control = ad_preview(Vector2(170, 120))
-	card.position = Vector2(50, 100)
+	tag(tr("MG_FEED_WANTED"), Vector2(60, 70), 17)
+	var card: Control = ad_preview(Vector2(220, 156))
+	card.position = Vector2(56, 118)
+	card.rotation_degrees = -3.0
 	add_child(card)
+	var arrow: Label = UiUtil.label("→", 54, CozyTheme.TERRA)
+	arrow.add_theme_font_override("font", CozyTheme.title_font(800))
+	arrow.position = Vector2(300, 150)
+	add_child(arrow)
 	# Sağda telefon ve kayan akış.
-	var s: float = (CANVAS.y - 20.0) / PHONE.y
-	var phone_pos: Vector2 = Vector2(CANVAS.x - PHONE.x * s - 70.0, 10.0)
+	var s: float = (CANVAS.y - 16.0) / PHONE.y
+	var phone_pos: Vector2 = Vector2(CANVAS.x - PHONE.x * s - 80.0, 8.0)
 	_screen = Rect2(phone_pos + SCREEN.position * s, SCREEN.size * s)
 	var clip: Control = Control.new()
 	clip.position = _screen.position
@@ -92,10 +90,9 @@ func _on_post(event: InputEvent, i: int) -> void:
 	if _done or mb == null or not mb.pressed or mb.button_index != MOUSE_BUTTON_LEFT:
 		return
 	if i == _ours:
+		flash_ok(_posts[i])
 		Audio.play("click")
 		finish(1.0 - 0.34 * _mistakes)
 	else:
 		_mistakes += 1
-		var tw: Tween = create_tween()
-		tw.tween_property(_posts[i], "modulate", Color(1, 0.6, 0.6), 0.08)
-		tw.tween_property(_posts[i], "modulate", Color.WHITE, 0.2)
+		shake(_posts[i])

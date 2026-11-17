@@ -54,6 +54,8 @@ func _wants(scene: String) -> bool:
 func _run() -> void:
 	await _intro()
 	await _start_game()
+	if not _wants("garage"):
+		await _overlay.fade(0.0, 0.1)  # karartmayı garaj sahnesi kaldırır; o atlandıysa burada kalksın
 	for scene: String in SCENES.slice(1, SCENES.size() - 1):
 		if _wants(scene):
 			await call("_" + scene)
@@ -287,6 +289,9 @@ func _play_minigame(camp: Dictionary, phase: int, play: float, quality: float, s
 	var game: MinigameGame = _game()
 	if game != null:
 		game.finish(quality)
+	if not still.is_empty():
+		await _wait(0.45)
+		await _snap(still + "_result")
 	await _wait(DataDB.data.balf("minigames.result_hold") + 0.3)
 	if is_instance_valid(dialog):
 		dialog.queue_free()

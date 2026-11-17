@@ -116,6 +116,8 @@ static func compose(parent: Node, draft: Dictionary, size: Vector2, brand: Strin
 		parent.add_child(fill)
 	var unit: float = minf(size.x, size.y)
 	var layout: int = int(draft.get("layout", 0))
+	if layout == 0 and size.x > size.y * 1.8:
+		layout = 1  # çok geniş alanda (billboard) üst-alt düzen ürünü küçültür: yan yana çiz
 	var prod_rect: Rect2
 	var text_rect: Rect2
 	match layout:
@@ -157,13 +159,31 @@ static func compose(parent: Node, draft: Dictionary, size: Vector2, brand: Strin
 				parent.add_child(_image(fx_tex, Rect2(Vector2.ZERO, size), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
 	var slogan: String = TranslationServer.translate(str(draft.get("slogan", "KV_SLOGAN_1"))).format({"brand": brand})
 	var dark: bool = luminance(str(draft.get("bg", ""))) < DataDB.data.balf("minigames.dark_bg_luminance")
-	_text(parent, slogan, unit * (0.085 if layout == 0 else 0.075), CozyTheme.CREAM_LIGHT if dark else CozyTheme.TEXT, text_rect)
+	# MG-2: sloganın arkasında yarı saydam zemin (konfeti, yaprak gibi efektler yazıyı okunmaz yapmasın).
+	var plate: Panel = Panel.new()
+	plate.add_theme_stylebox_override("panel", CozyTheme.box(Color(0.12, 0.14, 0.2, 0.42) if dark else Color(1, 0.98, 0.93, 0.62),
+		int(unit * 0.04), Color.TRANSPARENT, 0, false, Vector2.ZERO))
+	plate.position = text_rect.position - Vector2(unit * 0.02, unit * 0.01)
+	plate.size = text_rect.size + Vector2(unit * 0.04, unit * 0.02)
+	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(plate)
+	var wide: bool = size.x > size.y * 1.8
+	var slogan_px: float = unit * (0.085 if layout == 0 else 0.075)
+	if wide:
+		slogan_px = maxf(slogan_px, text_rect.size.y * 0.26)  # geniş panoda yazı yüksekliğe göre okunur kalsın
+	_text(parent, slogan, slogan_px, CozyTheme.CREAM_LIGHT if dark else CozyTheme.TEXT, text_rect)
+	if wide:
+		return  # çok basık alanda marka etiketi okunmaz bir şerit olur; marka zaten sloganda
+	# Marka etiketi: adın uzunluğuna göre genişler, yazı sığacak kadar küçülür ("GÜNEŞ KALKINMA…" diye kesilmesin).
+	var name_text: String = brand.to_upper()
+	var chip_w: float = clampf(unit * 0.05 * name_text.length() * 0.62 + unit * 0.08, unit * 0.4, size.x * 0.92)
 	var chip: ColorRect = ColorRect.new()
 	chip.color = accent
 	chip.position = Vector2(size.x * 0.04, size.y * 0.85)
-	chip.size = Vector2(size.x * 0.5, size.y * 0.11)
+	chip.size = Vector2(chip_w, size.y * 0.11)
 	parent.add_child(chip)
-	_text(parent, brand.to_upper(), unit * 0.05, CozyTheme.CREAM_LIGHT, Rect2(chip.position, chip.size))
+	var chip_font: float = minf(unit * 0.05, (chip_w - unit * 0.04) / maxf(1.0, name_text.length() * 0.62))
+	_text(parent, name_text, chip_font, CozyTheme.CREAM_LIGHT, Rect2(chip.position, chip.size))
 
 
 static func _image(t: Texture2D, rect: Rect2, mode: int) -> TextureRect:

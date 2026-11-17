@@ -118,6 +118,8 @@ static func tilted(child: Control, degrees: float) -> Control:
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	holder.add_child(child)
 	var fit: Callable = func() -> void:
+		if not is_instance_valid(child) or not is_instance_valid(holder):
+			return  # ertelenmiş çağrı geldiğinde parça silinmiş olabilir (ör. kapanan mini oyun penceresi)
 		var s: Vector2 = child.get_combined_minimum_size()
 		holder.custom_minimum_size = s
 		child.size = s

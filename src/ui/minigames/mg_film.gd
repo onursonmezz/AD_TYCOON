@@ -3,7 +3,7 @@ extends MinigameGame
 ## Kurgu provası (K-120; TV, sinema, internet videosu): üç sahneyi Giriş / Ürün / Çağrı yuvalarına sırayla koy.
 ## Giriş = atmosfer (arka plan), Ürün = ürün yakın çekim, Çağrı = slogan ve marka. Yanlış tık başarıdan götürür.
 
-const CARD: Vector2 = Vector2(180, 104)
+const CARD: Vector2 = Vector2(176, 104)
 
 var _order: Array[int] = []
 var _placed: Array[int] = []
@@ -12,22 +12,15 @@ var _cards: Array[Control] = []
 
 
 func begin() -> void:
-	var bg: ColorRect = ColorRect.new()
-	bg.color = CozyTheme.SAGE_SOFT.lightened(0.45)
-	bg.size = CANVAS
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
+	stage("bg_studio")  # MG-2: kurgu masası gibi stüdyo fonu
 	var frame_tex: Texture2D = DraftArt.tex("props", "prop_film_frame")
 	for i: int in 3:
 		var slot: Rect2 = _slot_rect(i)
 		if frame_tex != null:
 			add_child(DraftArt._image(frame_tex, slot.grow(10), TextureRect.STRETCH_SCALE))
-		var cap: Label = UiUtil.label(tr("MG_FILM_SLOT_%d" % (i + 1)), 13, CozyTheme.FOREST)
-		cap.add_theme_font_override("font", CozyTheme.strong_font())
-		cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		cap.position = Vector2(slot.position.x, slot.end.y + 12)
-		cap.size = Vector2(slot.size.x, 20)
-		add_child(cap)
+		var cap: Control = tag("%d · %s" % [i + 1, tr("MG_FILM_SLOT_%d" % (i + 1))], Vector2(slot.position.x + 30, slot.end.y + 14),
+			14)
+		cap.z_index = 2
 	_order = [0, 1, 2]
 	while _order == [0, 1, 2]:
 		_order.shuffle()
@@ -41,11 +34,11 @@ func begin() -> void:
 
 
 func _slot_rect(i: int) -> Rect2:
-	return Rect2(Vector2(20 + i * 200, 22), CARD)
+	return Rect2(Vector2(34 + i * 202, 26), CARD)
 
 
 func _card_pos(i: int) -> Vector2:
-	return Vector2(20 + i * 200, 196)
+	return Vector2(34 + i * 202, 230)
 
 
 ## Sahne kartı: 0 giriş (arka plan), 1 ürün, 2 çağrı (slogan + marka).
@@ -54,27 +47,42 @@ func _scene(kind: int) -> Control:
 	c.size = CARD
 	c.custom_minimum_size = CARD
 	c.clip_contents = true
-	var draft: Dictionary = DraftArt.options(DataDB.data, ctx["setup"], int(ctx["year"]), int(ctx["seed"]))[0]
+	var draft: Dictionary = draft_option()
 	match kind:
 		0:
-			var t: Texture2D = DraftArt.tex("backgrounds", str(draft["bg"]))
+			# Giriş: açılış planı (sokak ya da doğa) ve altta "… sunar" yazısı.
+			var t: Texture2D = DraftArt.tex("backgrounds", "bg_street" if int(ctx["seed"]) % 2 == 0 else "bg_nature")
 			if t != null:
 				c.add_child(DraftArt._image(t, Rect2(Vector2.ZERO, CARD), TextureRect.STRETCH_KEEP_ASPECT_COVERED))
+			var band: ColorRect = ColorRect.new()
+			band.color = Color(0, 0, 0, 0.45)
+			band.position = Vector2(0, CARD.y - 30)
+			band.size = Vector2(CARD.x, 30)
+			band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			c.add_child(band)
+			DraftArt._text(c, tr("MG_FILM_PRESENTS") % str(ctx["brand"]), 12, CozyTheme.CREAM_LIGHT,
+				Rect2(Vector2(6, CARD.y - 28), Vector2(CARD.x - 12, 26)))
 		1:
-			var fill: ColorRect = ColorRect.new()
-			fill.color = CozyTheme.CREAM_LIGHT
-			fill.size = CARD
-			c.add_child(fill)
+			# Ürün: masa üstünde yakın çekim.
+			var tt: Texture2D = DraftArt.tex("backgrounds", "bg_tabletop")
+			if tt != null:
+				c.add_child(DraftArt._image(tt, Rect2(Vector2.ZERO, CARD), TextureRect.STRETCH_KEEP_ASPECT_COVERED))
 			var p: Texture2D = DraftArt.tex("products", str(draft["product"]))
 			if p != null:
-				c.add_child(DraftArt._image(p, Rect2(Vector2(10, 6), CARD - Vector2(20, 12)), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
+				c.add_child(DraftArt._image(p, Rect2(Vector2(30, 8), CARD - Vector2(60, 20)), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
 		_:
+			# Çağrı: marka renginde slogan ve "Hemen dene" düğmesi.
 			var fill2: ColorRect = ColorRect.new()
 			fill2.color = ctx["accent"]
 			fill2.size = CARD
+			fill2.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			c.add_child(fill2)
 			var slogan: String = tr(str(draft["slogan"])).format({"brand": str(ctx["brand"])})
-			DraftArt._text(c, slogan, 15, CozyTheme.CREAM_LIGHT, Rect2(Vector2(8, 4), CARD - Vector2(16, 8)))
+			DraftArt._text(c, slogan, 14, CozyTheme.CREAM_LIGHT, Rect2(Vector2(8, 6), Vector2(CARD.x - 16, 58)))
+			var cta: PanelContainer = Cards.chip(tr("MG_FILM_CTA"), CozyTheme.CREAM_LIGHT, CozyTheme.FOREST)
+			cta.position = Vector2(CARD.x * 0.5 - 44, CARD.y - 34)
+			cta.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			c.add_child(cta)
 	var border: ReferenceRect = ReferenceRect.new()
 	border.border_color = CozyTheme.BORDER
 	border.border_width = 2.0
@@ -94,17 +102,15 @@ func _on_card(event: InputEvent, i: int) -> void:
 		return
 	if scene == _placed.size():
 		var card: Control = _cards[i]
-		create_tween().tween_property(card, "position", _slot_rect(_placed.size()).position, 0.12)
+		create_tween().tween_property(card, "position", _slot_rect(_placed.size()).position, 0.14).set_trans(Tween.TRANS_CUBIC)
+		flash_ok(card)
 		_placed.append(scene)
 		Audio.play("click")
 		if _placed.size() == 3:
 			finish(1.0 - 0.34 * _mistakes)
 	else:
 		_mistakes += 1
-		var card2: Control = _cards[i]
-		var tw: Tween = create_tween()
-		tw.tween_property(card2, "modulate", Color(1, 0.6, 0.6), 0.08)
-		tw.tween_property(card2, "modulate", Color.WHITE, 0.2)
+		shake(_cards[i])
 
 
 func time_up() -> void:

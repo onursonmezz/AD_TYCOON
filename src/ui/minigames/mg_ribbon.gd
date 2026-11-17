@@ -3,7 +3,7 @@ extends MinigameGame
 ## Açılış provası (K-120; etkinlik, lansman): işaret çubukta gidip gelirken yeşil bölgeye geldiğinde kurdeleyi kes
 ## ("Kes", tıklama ya da boşluk). Ortaya ne kadar yakınsa o kadar iyi.
 
-const BAR: Rect2 = Rect2(110, 232, 400, 14)
+const BAR: Rect2 = Rect2(120, 268, 400, 16)
 
 var _t: float = 0.0
 var _marker: ColorRect
@@ -11,20 +11,11 @@ var _ribbon: TextureRect
 
 
 func begin() -> void:
-	var bg: ColorRect = ColorRect.new()
-	bg.color = CozyTheme.CREAM
-	bg.size = CANVAS
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
-	var store: Texture2D = DraftArt.tex("backgrounds", "bg_street")
-	if store != null:
-		var st: TextureRect = DraftArt._image(store, Rect2(0, 0, CANVAS.x, 150), TextureRect.STRETCH_KEEP_ASPECT_COVERED)
-		st.modulate = Color(1, 1, 1, 0.85)
-		add_child(st)
-	DraftArt._text(self, str(ctx["brand"]), 20, CozyTheme.FOREST, Rect2(0, 8, CANVAS.x, 30))
+	stage("bg_street")  # MG-2: dükkânın önü
+	tag(str(ctx["brand"]), Vector2(CANVAS.x * 0.5 - 90, 14), 20)
 	var t: Texture2D = DraftArt.tex("props", "prop_ribbon_scissors")
 	if t != null:
-		_ribbon = DraftArt._image(t, Rect2(60, 70, CANVAS.x - 120, 150), TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
+		_ribbon = DraftArt._image(t, Rect2(40, 70, CANVAS.x - 80, 180), TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
 		add_child(_ribbon)
 	var bar: Panel = Panel.new()
 	bar.position = BAR.position
@@ -48,7 +39,7 @@ func begin() -> void:
 	var cut: Button = UiUtil.button(tr("MG_RIBBON_CUT"), _cut)
 	cut.theme_type_variation = "PrimaryButton"
 	cut.custom_minimum_size = Vector2(140, 36)
-	cut.position = Vector2(CANVAS.x * 0.5 - 70, 266)
+	cut.position = Vector2(CANVAS.x * 0.5 - 70, 302)
 	add_child(cut)
 
 

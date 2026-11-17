@@ -3,18 +3,21 @@ extends MinigameGame
 ## Ekibin 3 taslağı (K-120): kreatif faz bitince ekip üç ilan taslağı sunar; birini seç. Seçilen taslak ofis
 ## duvarındaki posterde, sokaktaki billboard'da ve törende görünür. Puana etkisi yok, süre sınırı yok.
 
-const CARD: Vector2 = Vector2(192, 222)  # üç kart oyun alanını doldurur (eskiden üstte küçük kalıyordu)
+const CARD: Vector2 = Vector2(184, 250)  # MG-2: stüdyo fonunda üç dikey poster
 
 signal chosen(draft: Dictionary)
 
 var _drafts: Array[Dictionary] = []
+var _buttons: Array[Button] = []
 
 
 func begin() -> void:
+	stage("bg_studio")
+	stamp_text = tr("MG_DRAFT_STAMP")
 	_drafts = DraftArt.options(DataDB.data, ctx["setup"], int(ctx["year"]), int(ctx["seed"]))
-	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	var row_w: float = 3.0 * (CARD.x + 8.0) + 2.0 * CozyTheme.SPACE_S
-	row.position = Vector2(maxf(0.0, (CANVAS.x - row_w) * 0.5), 40)
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
+	var row_w: float = 3.0 * (CARD.x + 8.0) + 2.0 * CozyTheme.SPACE_L
+	row.position = Vector2(maxf(0.0, (CANVAS.x - row_w) * 0.5), 74)
 	add_child(row)
 	for i: int in _drafts.size():
 		var b: Button = Button.new()
@@ -30,15 +33,18 @@ func begin() -> void:
 		b.add_child(art)
 		b.pressed.connect(func() -> void: _pick(i))
 		row.add_child(b)
-	var label: Label = UiUtil.label(tr("MG_DRAFT_TEAM"), 13, UiUtil.MUTED)
-	label.position = Vector2(8, 8)
-	add_child(label)
+		_buttons.append(b)
+	tag(tr("MG_DRAFT_TEAM"), Vector2(24, 18), 16)
 
 
 func _pick(i: int) -> void:
 	if _done:
 		return
 	chosen.emit(_drafts[i])
+	flash_ok(_buttons[i])
+	for k: int in _buttons.size():
+		if k != i:
+			_buttons[k].modulate = Color(1, 1, 1, 0.45)
 	finish(1.0)
 
 

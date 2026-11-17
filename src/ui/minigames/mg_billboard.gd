@@ -5,7 +5,8 @@ extends MinigameGame
 
 const STRIP_SIZE: Vector2 = Vector2(1536, 512)
 const PANEL: Rect2 = Rect2(840, 112, 485, 132)     # yol görselindeki boş billboard paneli (piksel)
-const CAR_WIDTH: float = 150.0
+const CAR_WIDTH: float = 170.0
+const STRIP_SCALE: float = 0.72  # yol görselinin ölçeği: panel ortada iken şerit iki kenarı da kaplar
 const CROSS_SECONDS: float = 2.6
 
 var _scale: float
@@ -16,13 +17,10 @@ var _target_x: float
 
 
 func begin() -> void:
-	_scale = CANVAS.x / STRIP_SIZE.x
-	_strip_pos = Vector2(0, CANVAS.y - STRIP_SIZE.y * _scale)
-	var sky: ColorRect = ColorRect.new()
-	sky.color = CozyTheme.SAGE_SOFT.lightened(0.4)
-	sky.size = CANVAS
-	sky.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(sky)
+	_scale = STRIP_SCALE
+	# Panel ekranın ortasına gelsin; şerit yatayda taşar (kenarlar kırpılır).
+	_strip_pos = Vector2(CANVAS.x * 0.5 - (PANEL.position.x + PANEL.size.x * 0.5) * _scale, CANVAS.y - STRIP_SIZE.y * _scale)
+	stage("bg_sky")
 	var strip_tex: Texture2D = DraftArt.tex("props", "prop_road_strip")
 	var panel: Rect2 = Rect2(_strip_pos + PANEL.position * _scale, PANEL.size * _scale)
 	var ad: Control = ad_preview(panel.size)
@@ -38,7 +36,7 @@ func begin() -> void:
 	_car.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_car.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 	_car.size = Vector2(CAR_WIDTH, CAR_WIDTH * 0.5)
-	_car.position = Vector2(-CAR_WIDTH, CANVAS.y - CAR_WIDTH * 0.5 - 6.0)
+	_car.position = Vector2(-CAR_WIDTH, CANVAS.y - CAR_WIDTH * 0.5 - 4.0)
 	_car.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if car_tex == null:
 		var body: ColorRect = ColorRect.new()
@@ -48,17 +46,18 @@ func begin() -> void:
 	add_child(_car)
 	# Yolda doğru anın bölgesi (araba merkezi bu aralıktayken gösterilmeli).
 	var window: float = CANVAS.x * DataDB.data.balf("minigames.billboard_window")
-	var zone: ColorRect = ColorRect.new()
-	zone.color = Color(CozyTheme.FOREST_LIGHT, 0.28)
-	zone.position = Vector2(_target_x - window, CANVAS.y - CAR_WIDTH * 0.5 - 2.0)
-	zone.size = Vector2(window * 2.0, CAR_WIDTH * 0.5)
+	var zone: Panel = Panel.new()
+	zone.add_theme_stylebox_override("panel", CozyTheme.box(Color(CozyTheme.SAGE_SOFT, 0.55), 6, CozyTheme.FOREST_LIGHT, 2, false,
+		Vector2.ZERO))
+	zone.position = Vector2(_target_x - window, CANVAS.y - 26.0)
+	zone.size = Vector2(window * 2.0, 22.0)
 	zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(zone)
 	move_child(zone, _car.get_index())
 	var show: Button = UiUtil.button(tr("MG_BILLBOARD_SHOW"), _catch)
 	show.theme_type_variation = "PrimaryButton"
 	show.custom_minimum_size = Vector2(120, 34)
-	show.position = Vector2(CANVAS.x - 132, 10)
+	show.position = Vector2(CANVAS.x - 136, 14)
 	add_child(show)
 
 

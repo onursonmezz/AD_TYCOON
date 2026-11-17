@@ -4,7 +4,7 @@ extends MinigameGame
 ## yanlış kişi başarıdan götürür. Eşleme balance.json minigames.audience_targets.
 
 const PEOPLE: Array[String] = ["young", "adult", "mature", "business", "kid", "family"]
-const FIG: Vector2 = Vector2(92, 210)
+const FIG: Vector2 = Vector2(98, 236)
 
 var _targets: Array = []
 var _chosen: Array[String] = []
@@ -13,17 +13,12 @@ var _figs: Dictionary = {}
 
 
 func begin() -> void:
-	var bg: ColorRect = ColorRect.new()
-	bg.color = CozyTheme.SAGE_SOFT.lightened(0.45)
-	bg.size = CANVAS
-	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(bg)
+	stage("bg_street", Color(0.98, 0.95, 0.88, 0.18))  # MG-2: kalabalık bir çarşı sokağı
 	var aud: String = str((ctx["setup"] as Dictionary).get("audience", ""))
 	_targets = (DataDB.data.bal("minigames.audience_targets") as Dictionary).get(aud, ["adult", "young"])
 	var name: String = UiUtil.name_of(DataDB.data.audiences, aud) if DataDB.data.audiences.has(aud) else tr("MG_AUDIENCE_BROAD")
-	var tag: PanelContainer = Cards.chip(tr("MG_AUDIENCE_TARGET") % name, CozyTheme.CREAM_LIGHT, CozyTheme.FOREST)
-	tag.position = Vector2(CANVAS.x * 0.5 - 90, 12)
-	add_child(tag)
+	var label: Control = tag(tr("MG_AUDIENCE_TARGET") % name, Vector2(18, 14), 18)
+	label.z_index = 4
 	var order: Array = PEOPLE.duplicate()
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = int(ctx["seed"])
@@ -35,7 +30,7 @@ func begin() -> void:
 	for i: int in order.size():
 		var who: String = str(order[i])
 		var holder: Control = Control.new()
-		holder.position = Vector2(14 + i * (FIG.x + 7), 64)
+		holder.position = Vector2(10 + i * (FIG.x + 8), CANVAS.y - FIG.y - 30)
 		holder.size = FIG + Vector2(0, 24)
 		holder.mouse_filter = Control.MOUSE_FILTER_STOP
 		holder.gui_input.connect(_on_pick.bind(who))
@@ -47,6 +42,14 @@ func begin() -> void:
 		ring.visible = false
 		ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		holder.add_child(ring)
+		# Ayak altında yumuşak gölge: kişiler sokağa bassın (havada durmasın).
+		var shadow: Panel = Panel.new()
+		shadow.add_theme_stylebox_override("panel", CozyTheme.box(Color(0.25, 0.16, 0.08, 0.13), 999, Color.TRANSPARENT, 0, false,
+			Vector2.ZERO))
+		shadow.position = Vector2(24, FIG.y * 0.9 - 8)  # görselin altındaki saydam payın üstünde, ayak hizasında
+		shadow.size = Vector2(FIG.x - 48, 9)
+		shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		holder.add_child(shadow)
 		var t: Texture2D = DraftArt.tex("props", "prop_person_" + who)
 		if t != null:
 			holder.add_child(DraftArt._image(t, Rect2(Vector2.ZERO, FIG), TextureRect.STRETCH_KEEP_ASPECT_CENTERED))
@@ -61,14 +64,13 @@ func _on_pick(event: InputEvent, who: String) -> void:
 	if _targets.has(who):
 		_chosen.append(who)
 		(_figs[who][1] as Panel).visible = true
+		flash_ok(_figs[who][0])
 		Audio.play("click")
 		if _chosen.size() == _targets.size():
 			finish(1.0 - 0.34 * _mistakes)
 	else:
 		_mistakes += 1
-		var tw: Tween = create_tween()
-		tw.tween_property(_figs[who][0], "modulate", Color(1, 0.6, 0.6), 0.08)
-		tw.tween_property(_figs[who][0], "modulate", Color.WHITE, 0.2)
+		shake(_figs[who][0])
 
 
 func time_up() -> void:
