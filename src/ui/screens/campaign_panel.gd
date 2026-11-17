@@ -2,14 +2,14 @@ class_name CampaignPanel
 extends VBoxContainer
 ## Kampanya ekranı (GDD 7.4, 20; UI-3 taslak 03): fazın kalan süresi, canlı S/K/T sayaçları; faz başında emek dağılımı
 ## görev panosu (WorkBoard, K-118): ekip üyeleri alanlara zaman payı verir, öğrenilen önem işaretleri (K-117), ekipman (K-119).
+## CP-2: faz takipçisi ve yukarı sayan büyük sayaçlar (CampaignLive); kampanya yokken ortada boş durum; "Yayında"
+## bölümü yalnızca yayında kampanya varken görünür.
 
 var _info: VBoxContainer
-var _counter_labels: Array[Label] = []
-
-var _phase_label: Label
-var _progress: ProgressBar
+var _live: CampaignLive
 var _slider_box: VBoxContainer
 var _airing: VBoxContainer
+var _airing_head: Control
 var _signature: String = ""
 
 
@@ -20,7 +20,8 @@ func _init() -> void:
 	add_child(_info)
 	_slider_box = UiUtil.vbox(8)
 	add_child(_slider_box)
-	add_child(Cards.section(tr("UI_ON_AIR"), "", "speakerphone"))
+	_airing_head = Cards.section(tr("UI_ON_AIR"), "", "speakerphone")
+	add_child(_airing_head)
 	_airing = UiUtil.vbox(4)
 	add_child(_airing)
 
@@ -45,41 +46,14 @@ func _rebuild(s: SimState) -> void:
 	UiUtil.clear(_info)
 	UiUtil.clear(_slider_box)
 	UiUtil.clear(_airing)
-	_counter_labels.clear()
-	_phase_label = null
+	_live = null
 	var camp: Dictionary = s.active_campaign
 	if camp.is_empty():
-		_info.add_child(UiUtil.wrapped(tr("UI_NO_ACTIVE_CAMPAIGN"), 15, UiUtil.MUTED, 400.0))
+		_info.add_child(Cards.empty_state("speakerphone", tr("UI_NO_ACTIVE_CAMPAIGN")))
 	else:
 		_build_header(s, camp)
-		# Faz şeridi: adı ve kalan gün, altında ilerleme çubuğu.
-		var strip: PanelContainer = Cards.section("")
-		_phase_label = (strip.get_child(0) as HBoxContainer).get_child(0) as Label
-		_info.add_child(strip)
-		_progress = ProgressBar.new()
-		_progress.custom_minimum_size = Vector2(300.0, 10.0)
-		_progress.show_percentage = false
-		_info.add_child(_progress)
-		# Canlı sayaçlar: üç stat ve hata.
-		var counters: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-		for spec: Array in [["stat-strategy", tr("STAT_STRATEGY_NAME")], ["stat-creative", tr("STAT_CREATIVE_NAME")],
-				["stat-technical", tr("STAT_TECHNICAL_NAME")], ["alert-triangle", tr("UI_COUNT_ERRORS")]]:
-			var box: PanelContainer = PanelContainer.new()
-			box.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.CREAM, CozyTheme.RADIUS_CONTROL, CozyTheme.BORDER, 1, false,
-				Vector2(CozyTheme.SPACE_M, 4)))
-			box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-			box.add_child(row)
-			row.add_child(UiUtil.icon(str(spec[0]), 18, CozyTheme.TERRA))
-			var name: Label = UiUtil.label(str(spec[1]), 13, CozyTheme.TEXT)
-			name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			row.add_child(name)
-			var value: Label = UiUtil.label("0", 15, CozyTheme.FOREST)
-			value.add_theme_font_override("font", CozyTheme.strong_font())
-			row.add_child(value)
-			_counter_labels.append(value)
-			counters.add_child(box)
-		_info.add_child(counters)
+		_live = CampaignLive.new()
+		_info.add_child(_live)
 		# Mesai (GDD 11): üst çubuktan buraya taşındı; üretimi hızlandırır, ekibi yorar.
 		var overtime: CheckButton = CheckButton.new()
 		overtime.text = tr("UI_OVERTIME")
@@ -90,11 +64,16 @@ func _rebuild(s: SimState) -> void:
 		_info.add_child(overtime)
 		if s.waiting_for_input:
 			_build_sliders(camp)
+		else:
+			# Faz sürerken: ekip çalışıyor; faz bitince yeni dağılım istenir.
+			var note: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+			note.add_child(UiUtil.icon("clock", 18, CozyTheme.FOREST_LIGHT))
+			note.add_child(UiUtil.label(tr("UI_PHASE_WORKING"), 13, CozyTheme.MUTED))
+			_slider_box.add_child(note)
+	_airing_head.visible = not s.airing.is_empty()
 	for a: Dictionary in s.airing:
 		var weeks: int = int(a["air_end_week"]) - s.clock.week_index
 		_airing.add_child(UiUtil.label(tr("UI_AIRING_ROW") % [a["setup"].get("client_name", ""), weeks], 13))
-	if s.airing.is_empty():
-		_airing.add_child(UiUtil.label(tr("UI_NO_AIRING"), 13, UiUtil.MUTED))
 
 
 ## Başlık (UI-3, taslak 03): müşteri ve kampanya adı, hedef ve ana kanal etiketleri, sağda ekip.
@@ -134,7 +113,7 @@ func _build_header(s: SimState, camp: Dictionary) -> void:
 
 
 func _update_live(camp: Dictionary) -> void:
-	if _phase_label == null:
+	if _live == null:
 		return
 	var prod: CampaignProduction = GameState.sim.production
 	var phase: int = prod.current_phase(camp)
@@ -142,13 +121,11 @@ func _update_live(camp: Dictionary) -> void:
 	var phase_len: float = float(days_total) / 3.0
 	var phase_end: int = int(ceilf(phase_len * (phase + 1)))
 	var days_left: int = maxi(0, phase_end - int(camp["day"]))
-	_phase_label.text = tr("UI_PHASE_STATUS") % [tr("PHASE_%d" % phase), days_left]
-	_progress.max_value = days_total
-	_progress.value = int(camp["day"])
+	var phase_start: float = phase_len * phase
+	var progress: float = (float(camp["day"]) - phase_start) / maxf(1.0, phase_len)
 	var totals: Dictionary = GameState.sim.scoring.stat_totals(camp["points"])
-	var values: Array = [int(totals["strategy"]), int(totals["creative"]), int(totals["technical"]), int(camp["errors"])]
-	for i: int in _counter_labels.size():
-		_counter_labels[i].text = str(values[i])
+	var values: Array[int] = [int(totals["strategy"]), int(totals["creative"]), int(totals["technical"]), int(camp["errors"])]
+	_live.update(phase, progress, days_left, values)
 
 
 ## Faz başı: önce fazın mini oyunu (K-120, Ayarlar'dan kapatılabilir), sonra emek dağılımı panosu.

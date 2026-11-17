@@ -1836,3 +1836,10 @@ MG_BILLBOARD_TAG,Araba yeşil bölgede: Göster!,Car in the green zone: Show!
 MG_SPONSOR_TAG,Rozeti göğüse sürükle,Drag the badge to the chest
 MG_DRAFT_STAMP,Seçildi!,Chosen!
 MG_RADIO_NEXT,Sıradaki parça buraya,Next clip goes here
+UI_STEP_STRATEGY,Strateji,Strategy
+UI_STEP_CREATIVE,Kreatif,Creative
+UI_STEP_PRODUCTION,Prodüksiyon,Production
+UI_PHASE_WORKING,Ekip bu faz üzerinde çalışıyor; faz bitince yeni bir dağılım isteyeceğiz.,The team is working on this phase; you will set a new split when it ends.
+UI_STEP_DAYS,%s · %d gün kaldı,%s · %d days left
+UI_TOOLS_MORE,+ %d seçenek daha,+ %d more options
+UI_TOOLS_LESS,Daha az göster,Show less

@@ -7,6 +7,7 @@ extends VBoxContainer
 var _body: VBoxContainer
 var _signature: String = ""
 var _tab: String = "software"
+var _open_areas: Array[String] = []  # "N seçenek daha" ile açılan alanlar
 
 
 func _init() -> void:
@@ -81,27 +82,65 @@ func rebuild() -> void:
 		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		pair.add_child(c)
 		columns.append(c)
+	var blocks: Array = []
 	for area: Variant in data.bal("tools.areas"):
 		var col: VBoxContainer = UiUtil.vbox(4)
 		col.add_child(Cards.section(tr("AREA_" + str(area).to_upper()), "×" + UiUtil.num(float(s.tool_mults.get(area, 1.0)), 2)))
-		var rows: int = 0
+		# Okunurluk (RD-1): sahip olunanlar ve alınabilecek en yeni bir araç; kalanlar "N seçenek daha" ile açılır.
+		var owned: Array[String] = []
+		var buyable: Array[String] = []
 		for id: String in data.tool_ids:
-			if data.tools[id]["area"] == area and (sim.tools.owned(s, id) or sim.tools.available(s).has(id)):
-				col.add_child(_tool_row(sim, s, id))
-				rows += 1
+			if data.tools[id]["area"] != area:
+				continue
+			if sim.tools.owned(s, id):
+				owned.append(id)
+			elif sim.tools.available(s).has(id):
+				buyable.append(id)
+		var shown: Array[String] = owned.duplicate()
+		var open: bool = _open_areas.has(str(area))
+		if open:
+			shown.append_array(buyable)
+		elif not buyable.is_empty():
+			shown.append(buyable[buyable.size() - 1])  # veri sırasında son gelen en yenisi
+		for id: String in shown:
+			col.add_child(_tool_row(sim, s, id))
+		var hidden: int = buyable.size() - (shown.size() - owned.size())
+		var rows: int = shown.size()
+		if hidden > 0 or open and buyable.size() > 1:
+			var more: Button = UiUtil.button(tr("UI_TOOLS_MORE") % hidden if not open else tr("UI_TOOLS_LESS"),
+				_toggle_area.bind(str(area)))
+			more.flat = true
+			more.add_theme_font_size_override("font_size", 12)
+			more.add_theme_color_override("font_color", CozyTheme.FOREST_LIGHT)
+			more.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			col.add_child(more)
+			rows += 1
+		blocks.append([col, rows + 1])
+	# Uzun alanlar önce yerleşir, her biri kısa olan sütuna (iki sütun dengeli kalır).
+	blocks.sort_custom(func(a: Array, b: Array) -> bool: return int(a[1]) > int(b[1]))
+	for block: Array in blocks:
 		var pick: int = 0 if heights[0] <= heights[1] else 1
-		columns[pick].add_child(col)
-		heights[pick] += rows + 1
+		columns[pick].add_child(block[0])
+		heights[pick] += int(block[1])
+
+
+func _toggle_area(area: String) -> void:
+	if _open_areas.has(area):
+		_open_areas.erase(area)
+	else:
+		_open_areas.append(area)
+	_signature = ""
+	refresh()
 
 
 func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	var t: Dictionary = DataDB.data.tools[id]
 	var year: int = s.clock.year()
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	row.custom_minimum_size.y = 24.0
+	row.custom_minimum_size.y = 28.0
 	var owned: bool = sim.tools.owned(s, id)
 	row.add_child(UiUtil.icon("tool", 18, CozyTheme.TERRA if owned else CozyTheme.MUTED))
-	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 13, CozyTheme.TEXT)
+	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 14, CozyTheme.TEXT)
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
 	name_label.custom_minimum_size.x = 104.0
 	name_label.clip_text = true
@@ -124,7 +163,7 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 		color = UiUtil.MUTED
 	if float(t["ai_penalty"]) > 0.0:
 		status += " · " + tr("UI_TOOL_AI")
-	var st: Label = UiUtil.label(status, 11, color)
+	var st: Label = UiUtil.label(status, 12, color)
 	st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	st.clip_text = true
 	st.tooltip_text = status

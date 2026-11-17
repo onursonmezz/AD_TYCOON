@@ -42,8 +42,11 @@ func _ready() -> void:
 		if not emp.is_empty() and Employee.is_available(emp, sim.state.clock.week_index):
 			_members.append(str(id))
 	_plan = WorkPlan.auto(data, sim.state, _camp, _phase)
-	add_child(Cards.section(tr("UI_BOARD_TITLE") % tr("PHASE_%d" % _phase), "", "info"))
-	add_child(UiUtil.wrapped(tr("UI_BOARD_HINT"), 12, UiUtil.MUTED, 600.0))
+	# CP-2: nasıl kullanılacağı başlığın bilgi işaretinde (uzun satır panoyu kalabalık yapıyordu).
+	var head: PanelContainer = Cards.section(tr("UI_BOARD_TITLE") % tr("PHASE_%d" % _phase), "", "info")
+	head.tooltip_text = tr("UI_BOARD_HINT")
+	head.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(head)
 	for i: int in 3:
 		add_child(_area_row(i))
 	add_child(_load_section())
