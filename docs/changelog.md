@@ -1,5 +1,22 @@
 # Değişiklik günlüğü
 
+## Görsel elden geçirme: mini oyunlar, kampanya, okunurluk, ofis (2026-11-17)
+- **Mini oyunlar:** Her prova gerçek bir sahnede oynanıyor (sokak, masa üstü, stüdyo, gökyüzü, saha).
+  - Bitişte ortada büyük bir "Harika!" mührü çıkıyor; doğru hamle yeşil parlıyor, yanlış hamle sarsılıyor.
+  - Ses provası bir ses düzenleme masası gibi görünüyor.
+  - Billboard'daki ilan okunuyor.
+- **Kampanya penceresi:**
+  - Üstte Strateji → Kreatif → Prodüksiyon adımları var; şimdiki adımda kalan gün yazıyor.
+  - Altındaki büyük sayaçlar puanlar geldikçe yukarı sayıyor ve "+5" gibi yükseliyor.
+- **Ofis:** Masalar karşılıklı adalar halinde; çalışanlar yüz yüze oturuyor. Boş oda ahşap zeminli. Kamera biraz daha yakın.
+- **Araçlar:** Her alanda sahip olduğun araçlar ve alınabilecek en yeni araç görünüyor; diğerleri "+N seçenek daha" ile açılıyor. Yazılar daha büyük.
+- Nasıl test ederim:
+  1. Bir kampanya başlat. Strateji provası sokak sahnesinde açılmalı; bitince ortada büyük bir mühür çıkmalı.
+  2. Radyo, billboard, TV ve sosyal medya kanallı kampanyalarda provaların sahnelerine bak. Billboard'daki ilan okunmalı.
+  3. Kampanya sürerken Kampanya penceresini açık tut; sayaçlar artarken "+n" yükselmeli.
+  4. Ofiste birkaç kişi işe al; masalarına karşılıklı oturmalılar.
+  5. Geç bir yılda Araçlar'ı aç; alan başına kısa liste ve "+N seçenek daha" görünmeli.
+
 ## Steam tanıtım videosu (2026-11-17)
 - **Fragman:** `marketing/trailer/ajans_tycoon_trailer_tr.mp4`. 68 saniye, 1920×1080, 30 kare/sn, Türkçe yazılı, şimdilik müziksiz. Görüntülerin hepsi oyunun içinden.
 - **Steam ekran görüntüleri:** `marketing/steam/` altında 7 adet, 1920×1080, yazısız.

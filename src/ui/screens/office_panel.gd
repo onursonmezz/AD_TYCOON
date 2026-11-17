@@ -113,8 +113,12 @@ func _quality_block(sim: Simulation, s: SimState) -> void:
 	for type: String in DataDB.data.room_type_ids:
 		if not (DataDB.data.room_types[type]["effects"] as Dictionary).is_empty() and sim.build.layout(s).has_closed_room(type):
 			effects.append(tr(DataDB.data.room_types[type]["desc_key"]))
-	if not effects.is_empty():  # etkisi olan oda yoksa satır hiç çıkmaz ("Oda etkileri: yok" yer kaplıyordu)
-		_col.add_child(UiUtil.wrapped(tr("UI_ROOM_EFFECTS") % "; ".join(effects), 12, UiUtil.TEXT, COLUMN_TEXT))
+	if not effects.is_empty():  # etkisi olan oda yoksa hiç çıkmaz; varsa tek etiket, ayrıntısı ipucunda (RD-1)
+		var chip: PanelContainer = Cards.chip(tr("UI_ROOM_EFFECTS_COUNT") % effects.size(), CozyTheme.SAGE_SOFT, CozyTheme.FOREST,
+			"
+".join(effects))
+		chip.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		_col.add_child(chip)
 
 
 ## Masa ve sandalye kademesi: yan yana seçim kartları; kullanılan işaretli, diğerlerinde fiyat.

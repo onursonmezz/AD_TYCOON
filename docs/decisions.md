@@ -1526,3 +1526,34 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Media Encoder'a doğrudan gönderme (encode_file) hata verdi.
 - **Depoya girmeyenler:** MP4 (121 MB, GitHub'ın 100 MB sınırı), ham AVI ve anahtar kareler; hepsi yeniden üretilebilir. Steam için seçilen 7 ekran görüntüsü `marketing/steam/` altında depoda.
 - **Müzik:** yok; Orgo ticari lisanslı bir parça verecek. Gelince kurgu vuruşa göre hizalanacak ve lisans `art/audio_log.csv`'ye yazılacak.
+
+## K-127 — Görsel elden geçirme: mini oyunlar, kampanya penceresi, okunurluk, ofis (2026-11-17)
+- **İstek (Orgo):** "Sırayla başla, yaptıktan sonra eleştirel gözle kontrol et, sonra tekrar düzelt."
+- **Mini oyunlar (MG-2):**
+  - Her oyun kendi sahnesinde. `MinigameGame.stage(bg)`: zemin resmi oyun alanını kaplar, köşeleri yuvarlak; ince çerçeve var.
+    - Hedef kitle: sokak
+    - Harita ve gazete: masa üstü
+    - Billboard: gökyüzü
+    - Kurgu ve taslak: stüdyo
+    - Sponsorluk: çimen saha
+    - Açılış: dükkân önü
+  - Ses provası koyu bir ses düzenleme masası olarak çiziliyor: zaman çizelgesi, renkli klipler, "YAYINDA" ışığı.
+  - Bitişte büyük sonuç mührü: "Harika!", "Fena değil" ya da "Kaçtı!", başarıda ışın patlamasıyla. Doğru hamlede yeşil parlama, yanlışta sarsılma.
+  - Oyun alanı 620×320'den 640×360'a çıktı; pencerenin altındaki boşluk kullanılıyor.
+  - Kurgu sahneleri anlamlı: giriş "… sunar", ürün masada, çağrı "Hemen dene" düğmesiyle.
+  - Billboard: yol şeridi büyütüldü, ilan okunuyor. Geniş alanda taslak yan yana düzende çiziliyor, marka etiketi gizleniyor.
+  - Taslak kartlarında sloganın arkasında yarı saydam zemin var. Marka etiketi adın uzunluğuna göre genişliyor.
+- **Kampanya penceresi (CP-2):**
+  - `PhaseTracker`: üç basamak, biten basamak işaretli, şimdiki basamak ilerleme ve kalan gün gösteriyor.
+  - `CampaignLive`: büyük sayaçlar yukarı sayıyor, "+n" yükseliyor, hata kırmızı.
+  - Kampanya yokken boş durum gösteriliyor. "Yayında" bölümü yalnızca doluyken görünüyor. Emek panosunun açıklaması ipucuna taşındı.
+- **Okunurluk (RD-1):**
+  - Araçlar: alan başına sahip olunanlar ve alınabilecek en yeni bir araç; kalanlar "+N seçenek daha" ile açılıyor. Yazı 1 punto büyük, sütunlar en uzun alandan başlayarak dengeleniyor.
+  - Ofis: oda etkileri tek etikette, ayrıntısı ipucunda.
+  - **Kalan:** Geç oyunda çok sayıda araca sahip olunca Araçlar hâlâ küçülüp kayabiliyor. Asıl çözüm araçları sekmelere bölmek; ayrı bir iş.
+- **Ofis (OF-2):**
+  - `DeskLayout`: karşılıklı masa adaları; eskiden tek yöne bakan sıralar sınıf gibiydi.
+  - Masa adedi eski dizilişle aynı, çünkü oda konforu ve masa kademesi maliyeti masa sayısına bağlı.
+  - Çiftler birlikte doluyor. Adalar odada ortalanıyor; ters masada sandalye, ekran ve lamba aynalı.
+  - Boş oda sıcak ahşap zeminli (eskiden soğuk beton). Açılış kamerası biraz daha yakın (`frame_factor` 1,02).
+  - Not: Eski kayıtlarda yerleştirilmiş eşyalar yeni masa konumlarıyla çakışabilir.

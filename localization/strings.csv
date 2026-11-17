@@ -1843,3 +1843,4 @@ UI_PHASE_WORKING,Ekip bu faz üzerinde çalışıyor; faz bitince yeni bir dağ�
 UI_STEP_DAYS,%s · %d gün kaldı,%s · %d days left
 UI_TOOLS_MORE,+ %d seçenek daha,+ %d more options
 UI_TOOLS_LESS,Daha az göster,Show less
+UI_ROOM_EFFECTS_COUNT,Oda etkileri: %d (üzerine gel),Room effects: %d (hover)
