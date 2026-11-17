@@ -1,5 +1,14 @@
 # Değişiklik günlüğü
 
+## Steam tanıtım videosu (2026-11-17)
+- **Fragman:** `marketing/trailer/ajans_tycoon_trailer_tr.mp4`. 68 saniye, 1920×1080, 30 kare/sn, Türkçe yazılı, şimdilik müziksiz. Görüntülerin hepsi oyunun içinden.
+- **Steam ekran görüntüleri:** `marketing/steam/` altında 7 adet, 1920×1080, yazısız.
+- **Yeniden üretmek:** Oyun değişince fragmanı baştan çekmek için `tools\trailer\record.bat`'a çift tıkla. Ekran görüntüleri için `record.bat stills`.
+- Nasıl test ederim:
+  1. MP4'ü aç ve baştan sona izle. Yazı kartları okunaklı olmalı, sahneler yumuşak geçmeli.
+  2. Billboard sahnesinde, taslak seçiminde seçilen ilan görünmeli.
+  3. `marketing/steam` içindeki görüntüleri Steam'e yükle; boyut uyarısı çıkmamalı.
+
 ## Arayüz gözden geçirmesi (2026-11-15)
 - **İkonlar:** Logoların ve ikonların üstündeki ince çizgiler (komşu ikondan kalan parçalar) temizlendi; bilgi ikonu yeniden çizildi.
 - **Türkçe sayılar:** Puanlar ve çarpanlar artık virgüllü: "7,4 / 10", "×1,30".

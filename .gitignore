@@ -27,3 +27,9 @@ desktop.ini
 # Blender betiklerinin Python önbelleği
 __pycache__/
 art/incoming/
+
+# Fragman: ham kayıt, Premiere projesi, MP4 (GitHub 100 MB sınırı) ve tüm anahtar kareler yerelde kalır;
+# yeniden üretmek için tools/trailer/record.bat. Steam ekran görüntüleri marketing/steam/ altında depoda.
+marketing/trailer/raw/
+marketing/trailer/*.mp4
+marketing/trailer/screenshots/

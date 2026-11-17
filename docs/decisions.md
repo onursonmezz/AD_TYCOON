@@ -1510,3 +1510,19 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Bildirim genişliği taslaktaki gibi kaldı (176 px); yalnızca sayısı azaldı.
   - Pitch penceresinin taslağı yok; diğer pencerelerin dili uygulandı.
 - `ui_util.gd` 400 satırı aşınca modal iskeleti `ModalFrame`'e taşındı.
+
+## K-126 — Steam tanıtım videosu (fragman) (2026-11-17)
+- **İstek (Orgo):** "Steam için tanıtım videosu, oyun içi gerçek görsellerle." Seçimleri: yazılar yalnızca Türkçe; müziği kendisi bulacak; MP4'e dönüştürme Premiere ile.
+- **Yöntem:** Ekran kaydı yok. `tools/trailer/trailer.gd` sabit tohumlu (11) bir oyunu sahne sahne oynatıyor, kamerayı yönetiyor, pencereleri açıyor; Godot Movie Maker kare kare kaydediyor (1920×1080, 30 fps, ~68,6 sn). Yazı kartları ve geçişler `TrailerOverlay`'de, oyunun kendi kâğıt etiket diliyle (MenuArt.tape). Metinler `strings.csv TRAILER_*`.
+- **Sahneler:** açılış logosu → garaj → brief ve sihirbaz → strateji provası → kanal provaları (billboard, TV kurgusu, sosyal akış) ve taslak seçimi → yankılar → 2011 dönem geçişi, büyük ofis, inşa modu → Altın Elma töreni → sokaktaki billboard'da seçilen taslak → kapanış (istek listesi).
+- **Fragman için yapılan sahnelemeler (oyuna etkisi yok, yalnızca bu çalışmada):**
+  - Yankı puanı 8,6'ya yazılıyor.
+  - Ajans 2011'e ve 3. ofise ileri sarılıyor, ekip ve eşyalar ekleniyor.
+  - Tören sahte bir sonuçla açılıyor.
+  - Bildirimler ve para uçuşu gizli, ses kapalı.
+- **Kayıt:** `tools/trailer/record.bat`. Kayıt modu pencere boyutunu kullanıyor. Windows %120 ölçeklemede pencere 1600×900'e düşüp görüntü büyütülüyordu; kayıt süresince `override.cfg` ile pencere 1920×1080, kenarlıksız ve yüksek DPI'a duyarlı yapılıp sonra siliniyor.
+- **Dönüştürme:** Premiere'de ayrı proje (`marketing/trailer/raw/ajans_tycoon_trailer.prproj`), Media Encoder "H.264 – 01 Match Source High bitrate" (gerçek MP4, mp42).
+  - "H264 Match Source" adlı öbür hazır ayar QuickTime kabı üretiyordu, kullanılmadı.
+  - Media Encoder'a doğrudan gönderme (encode_file) hata verdi.
+- **Depoya girmeyenler:** MP4 (121 MB, GitHub'ın 100 MB sınırı), ham AVI ve anahtar kareler; hepsi yeniden üretilebilir. Steam için seçilen 7 ekran görüntüsü `marketing/steam/` altında depoda.
+- **Müzik:** yok; Orgo ticari lisanslı bir parça verecek. Gelince kurgu vuruşa göre hizalanacak ve lisans `art/audio_log.csv`'ye yazılacak.
