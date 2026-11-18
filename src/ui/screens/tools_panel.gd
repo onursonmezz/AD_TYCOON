@@ -133,13 +133,29 @@ func _toggle_area(area: String) -> void:
 	refresh()
 
 
+## Aracın parodi logosu (LG-1); sahip olunmayan soluk. Logosu olmayan (defter, daktilo...) genel alet ikonu alır.
+func _tool_logo(id: String, owned: bool) -> Control:
+	var file: String = str((DataDB.data.raw["ui_layout.json"].get("tool_art", {}) as Dictionary).get(id, ""))
+	var tex: Texture2D = IconPack.art(file, 22) if not file.is_empty() else null
+	if tex == null:
+		return UiUtil.icon("tool", 18, CozyTheme.TERRA if owned else CozyTheme.MUTED)
+	var r: TextureRect = TextureRect.new()
+	r.texture = tex
+	r.custom_minimum_size = Vector2(22, 22)
+	r.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	r.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	r.modulate = Color(1, 1, 1, 1.0 if owned else 0.6)
+	return r
+
+
 func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	var t: Dictionary = DataDB.data.tools[id]
 	var year: int = s.clock.year()
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	row.custom_minimum_size.y = 28.0
 	var owned: bool = sim.tools.owned(s, id)
-	row.add_child(UiUtil.icon("tool", 18, CozyTheme.TERRA if owned else CozyTheme.MUTED))
+	row.add_child(_tool_logo(id, owned))
 	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 14, CozyTheme.TEXT)
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
 	name_label.custom_minimum_size.x = 104.0  # ad kesilmez ("Nitrosoft StrongPoint"); yer daralırsa durum yazısı kısalır

@@ -1614,3 +1614,22 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Kimlikler (id) değişmedi, eski kayıtlar açılır. Eski kayıtta müşteri adı zaten yazılı olduğundan orada "Lezzetçi Köfte" kalabilir.
   - GDD tablolarındaki eski adlar tarihçe olarak bırakıldı; geçerli adlar `localization/strings.csv`'de.
 - **Araçlar penceresi:** Uzun adlar artık kesilmiyor; yer daralırsa durum yazısı kısalıyor.
+
+## K-130 — Parodi logolar (2026-11-18)
+- **İstek (Orgo):** Uygulama ve platform logoları gerçek logoları akla getirsin, ama onlar olmadığı belli olsun.
+- **Nasıl üretiliyor:** Logolar kodla çiziliyor; elle çizilmiş resim yok.
+  - Çizim kodu `tools/logos/`: `LogoCanvas` → `LogoTools` → `LogoSocial`.
+  - `logo_maker.tscn` bunları `assets/ui/icons/logo-*.png` olarak kaydediyor (256 piksel).
+  - Gerekçe: renk ya da şekil tek satırla değişiyor ve hepsi aynı tarzda kalıyor.
+- **Kural:** Gerçek logonun rengi ve genel düzeni korunuyor; adın şakası çizime giriyor. Örnekler:
+  - Abode'da harflerin üstünde ev çatısı.
+  - Nitrosoft'ta dört renkli pencere yerine dört renkli alev.
+  - YourTube'da macun tüpü, Pear'da armut.
+  - tweakker'da İngiliz anahtarı, TickTock'ta çalar saat.
+  - Survey Cappybara'da kapibara, Gooble Abs'te dambıl.
+- **Marka hakkı riski:** Gerçek logo çizimi hiçbir yerde birebir kopyalanmadı.
+- **Nerede görünüyor:**
+  - Araçlar penceresinde her yazılımın satırında (`ui_layout.json tool_art`). Sahip olunmayan logo soluk.
+  - Kampanya kanal seçiminde platform kanallarında (`channel_art`).
+  - Logosu olmayan araçlarda (defter, daktilo vb.) genel alet ikonu kalıyor.
+  - Pear logosu çizildi ama bilgisayar başlığında hâlâ bilgisayar resmi var.

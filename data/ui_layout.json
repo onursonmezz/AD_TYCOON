@@ -28,11 +28,12 @@
 	"award_art": {
 		"golden_apple": "altin-elma-amblem", "effie": "etkin-odulleri", "coastal_lions": "kiyi-aslanlari", "good_cause": "iyilik-odulleri"
 	},
+	"tool_art": { "_note": "Parodi yazılım logoları (LG-1, tools/logos); olmayan araçta genel alet ikonu.", "tablo_pro": "logo-nitrosoft-newcel", "slayt_ustasi": "logo-nitrosoft-strongpoint", "slak": "logo-slak", "kelime_ustasi": "logo-nitrosoft-world", "yazgan_ai": "logo-chattnt", "pixelshop": "logo-abode-photostore", "vektorel": "logo-abode-vectorator", "kanvaz": "logo-kamva", "figmo": "logo-digma", "hayalci_ai": "logo-topjourney", "sayfa_ustasi": "logo-abode-outdesign", "kurgu_pro": "logo-abode-premium-pro", "efekt_sonrasi": "logo-abode-before-effects", "kubik_3d": "logo-theatre-4d", "video_ai": "logo-tricksfield", "anket_pro": "logo-surveycappybara", "gooble_analitik": "logo-gooble-analytics", "sosyal_panel": "logo-tootsuite" },
 	"channel_art": {
 		"newspaper": "gazete-ilani", "magazine": "dergi-ilani", "flyer_brochure": "brosur", "catalog": "katalog",
 		"pop_instore": "magaza-ici-pop", "street_furniture": "raket-durak", "radio": "radyo", "cinema": "sinema",
 		"event_launch": "lansman", "trade_fair": "fuar-standi", "concert_sponsorship": "festival-sponsorlugu",
-		"sports_sponsorship": "spor-sponsorlugu", "pr_press": "basin-bulteni", "csr_project": "sosyal-sorumluluk"
+		"sports_sponsorship": "spor-sponsorlugu", "pr_press": "basin-bulteni", "csr_project": "sosyal-sorumluluk", "search_ads": "logo-gooble-abs", "youtup_video": "logo-yourtube", "facebuk_ads": "logo-facenook", "civil_microblog": "logo-tweakker", "linkedout": "logo-linkedout", "instafoto": "logo-instagraph", "tiktak": "logo-ticktock"
 	},
 	"channel_category_art": {
 		"print": "baski-kategorisi", "ooh": "acik-hava-kategorisi", "guerrilla": "gerilla-kategorisi", "broadcast": "yayin-kategorisi",
