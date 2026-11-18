@@ -1632,4 +1632,4 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Araçlar penceresinde her yazılımın satırında (`ui_layout.json tool_art`). Sahip olunmayan logo soluk.
   - Kampanya kanal seçiminde platform kanallarında (`channel_art`).
   - Logosu olmayan araçlarda (defter, daktilo vb.) genel alet ikonu kalıyor.
-  - Pear logosu çizildi ama bilgisayar başlığında hâlâ bilgisayar resmi var.
+  - Araçlar penceresinin bilgisayar başlığında Pear logosu, monitörün ekranında açılış logosu gibi duruyor (`hardware_art.badge`).

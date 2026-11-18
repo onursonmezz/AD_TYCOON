@@ -46,7 +46,7 @@ func rebuild() -> void:
 		return
 	# UI-3 (taslak 15): üstte bilgisayar kuşağı ve aylık abonelik; altında alan alan araç tablosu.
 	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
-	head.add_child(Cards.art("hardware_art", "default", 52.0, "device-desktop"))
+	head.add_child(_hardware_art())
 	var hw_col: VBoxContainer = UiUtil.vbox(-2)
 	hw_col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hw_col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -131,6 +131,28 @@ func _toggle_area(area: String) -> void:
 		_open_areas.append(area)
 	_signature = ""
 	refresh()
+
+
+## Bilgisayar çizimi; ekranında açılıştaki gibi markanın (Pear) açık renkli logosu (K-130).
+func _hardware_art() -> Control:
+	var art: Control = Cards.art("hardware_art", "default", 52.0, "device-desktop")
+	var file: String = str((DataDB.data.raw["ui_layout.json"].get("hardware_art", {}) as Dictionary).get("badge", ""))
+	var tex: Texture2D = IconPack.art(file, 16) if not file.is_empty() else null
+	if tex == null:
+		return art
+	var box: Control = Control.new()
+	box.custom_minimum_size = Vector2(56, 52)
+	box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(art)
+	var badge: TextureRect = TextureRect.new()
+	badge.texture = tex
+	badge.size = Vector2(16, 16)
+	badge.position = Vector2(18, 9)
+	badge.modulate = Color(1.9, 1.9, 1.9, 0.9)  # gri armut koyu ekranda açık görünsün
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(badge)
+	return box
 
 
 ## Aracın parodi logosu (LG-1); sahip olunmayan soluk. Logosu olmayan (defter, daktilo...) genel alet ikonu alır.

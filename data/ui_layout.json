@@ -19,7 +19,7 @@
 	},
 	"office_art": { "1": "ev-garaj-ofisi", "2": "kucuk-ofis" },
 	"desk_art": { "basic": "basit-masa", "ergonomic": "ergonomik-masa", "adjustable": "ayarlanabilir-masa" },
-	"hardware_art": { "default": "imak-bilgisayar" },
+	"hardware_art": { "default": "imak-bilgisayar", "badge": "logo-pear" },
 	"rival_art": {
 		"mavi_ok": "mavi-ok", "kivilcim": "kivilcim-kreatif", "ekonomik": "ekonomik-ajans", "anadolu_tanitim": "anadolu-tanitim",
 		"global_grup": "global-grup", "atolye_34": "atolye-34", "piksel": "piksel-medya", "mega_iletisim": "mega-holding",
