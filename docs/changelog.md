@@ -1,5 +1,18 @@
 # Değişiklik günlüğü
 
+## İnceleme 1. aşama: ilk açılış (2026-11-19)
+- İlk brief artık oyunun ilk haftasında geliyor ve 8 hafta bekliyor; yeni oyuncu boş odaya bakmıyor, ipuçlarını okurken işi de kaçırmıyor.
+- Açılış kamerası arka duvara biraz daha yakın bakıyor; kurucunun masası üst çubuğun altında kalmıyor.
+- Ajans kurma ekranı:
+  - Ad kutularının yanında rastgele ad öneren düğme var.
+  - Geçmiş açıklamaları oyundaki etkiyi anlatıyor.
+  - Seçili geçmişin en güçlü iki özelliği yeşil.
+- Nasıl test ederim:
+  1. Yeni Oyun'u aç. Ajans adının yanındaki dönen ok düğmesine birkaç kez bas; her seferinde yeni bir ad gelmeli.
+  2. Geçmiş kartlarını sırayla seç. Alttaki açıklama ve yeşil özellikler değişmeli.
+  3. Karakter adımında bir görünüş seç, ad düğmesine bas; görünüşe uygun bir ad ve soyad gelmeli.
+  4. Oyuna başla ve 1× hızda bekle. Yaklaşık 3 saniye içinde yeni brief bildirimi gelmeli; brief'te uzun bir kalan süre (8 hafta civarı) yazmalı.
+
 ## Görsel elden geçirme: mini oyunlar, kampanya, okunurluk, ofis (2026-11-17)
 - **Mini oyunlar:** Her prova gerçek bir sahnede oynanıyor (sokak, masa üstü, stüdyo, gökyüzü, saha).
   - Bitişte ortada büyük bir "Harika!" mührü çıkıyor; doğru hamle yeşil parlıyor, yanlış hamle sarsılıyor.
