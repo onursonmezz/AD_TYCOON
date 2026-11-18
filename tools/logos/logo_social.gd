@@ -33,12 +33,10 @@ func _l_tweakker() -> void:
 	draw_colored_polygon(head, Color.WHITE)
 
 
-## LinkedOut: mavi kare, "out" ve dışarı fırlayan ok.
+## LinkedOut: LinkedIn'deki gibi mavi kare ve kalın beyaz küçük harfler, ama "in" yerine "out".
 func _l_linkedout() -> void:
 	_tile(Color("0a66c2"))
-	_text("out", Vector2(116, 146), 96, Color.WHITE)
-	draw_line(Vector2(168, 96), Vector2(204, 60), Color.WHITE, 12.0, true)
-	draw_colored_polygon(PackedVector2Array([Vector2(218, 46), Vector2(214, 84), Vector2(180, 50)]), Color.WHITE)
+	_text("out", Vector2(128, 122), 112, Color.WHITE, FONT_BOLD, 900)
 
 
 ## Instagraph: sarı-turuncu-pembe-mor çapraz geçişli kare; kamera çerçevesinde objektif yerine çizgi grafik.

@@ -1625,7 +1625,7 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Abode'da harflerin üstünde ev çatısı.
   - Nitrosoft'ta dört renkli pencere yerine dört renkli alev.
   - YourTube'da macun tüpü, Pear'da armut.
-  - tweakker'da İngiliz anahtarı, TickTock'ta çalar saat.
+  - tweakker'da İngiliz anahtarı, TickTock'ta çalar saat, LinkedOut'ta "in" yerine "out".
   - Survey Cappybara'da kapibara, Gooble Abs'te dambıl.
 - **Marka hakkı riski:** Gerçek logo çizimi hiçbir yerde birebir kopyalanmadı.
 - **Nerede görünüyor:**
