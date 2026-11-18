@@ -161,6 +161,15 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 	var ids: Array[String] = mix.get("_channel_ids")
 	mix.call("_add_row", maxi(0, ids.find("flyer_brochure")))
 	await _shot("11_wizard_mix")
+	# S2: açılır menü yerine çizimli seçim paneli (baskı ürünü).
+	var opener: Button = mix.call("_picker", tr("UI_OPT_PRODUCT"), "product", DataDB.data.channels["flyer_brochure"]["print_products"],
+		"flyer_a5", func(id: String) -> String: return tr(DataDB.data.print_products[id]["name_key"]), Callable(),
+		func(_i: String) -> void: pass)
+	opener.pressed.emit()
+	await _shot("11b_option_picker")
+	var layer: Node = screen.get("_modal_layer")
+	layer.get_child(layer.get_child_count() - 1).queue_free()
+	opener.free()
 	var job: Dictionary = mix.get_mix()[1].get("options", {}).get("job", {})
 	if not job.is_empty():
 		var dialog: NegotiationDialog = NegotiationDialog.new(job["supplier"], 20000.0, func(_d: float) -> void: pass)
@@ -168,7 +177,8 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 		await get_tree().process_frame
 		dialog.call("_on_offer")
 		await _shot("12_negotiation")
-		dialog.queue_free()
+		if is_instance_valid(dialog):
+			dialog.queue_free()
 	wizard.call("_on_start")
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before:
@@ -401,7 +411,8 @@ func _tour_events(screen: Control, sim: Simulation) -> void:
 	await _shot("32_event")
 	dialog.call("_choose", 2)
 	await _shot("33_event_result")
-	dialog.queue_free()
+	if is_instance_valid(dialog):
+		dialog.queue_free()
 	sim.state.build["watered_week"] = sim.state.clock.week_index - 6
 	sim.build.refresh(sim.state)
 	screen.call("show_panel", "office")

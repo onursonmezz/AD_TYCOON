@@ -1647,3 +1647,22 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Ajans adı ve kurucu adı kutularının yanında rastgele ad öneren bir düğme var. Öneri listeleri `names_tr.json` / `names_en.json` içinde (`agency_prefixes`, `agency_words`); kurucu adı seçilen görünüşün cinsiyetine uygun.
   - Bu öneri oyun başlamadan yapılan bir kozmetik seçim; simülasyonun tohumlu rastgeleliğini kullanmıyor.
   - Geçmiş açıklamaları oyundaki etkiyi söylüyor; seçili geçmişin en yüksek iki stat'ı yeşil gösteriliyor.
+
+## K-132 — İnceleme 2. aşama: kampanya kurma (2026-11-19)
+- **Görselli seçim paneli:** Kampanya penceresindeki seçenek açılır menüleri kaldırıldı.
+  - Kapsanan seçenekler: baskı ürünü, kalite, dağıtım, matbaa, billboard lokasyonu ve süresi, TV kuşağı ve spot süresi, dijital teklif ve hedefleme, gerilla fikri, etkinlik mekânı, catering, davetliler, influencer.
+  - Her biri bir düğme: küçük çizim, "Başlık: seçili" yazısı ve ok. Basınca `OptionPickerDialog` açılıyor; seçenekler çizimli kartlar, seçince kapanıyor.
+  - Çizimler kodla (`OptionArt`, `OptionArtMedia`; tasarım alanı 120×84). Hepsini görmek için `tools/option_art_sheet.tscn`.
+  - Adet (sayı kutusu) ve prova (onay kutusu) açılır menü olmadığı için aynı kaldı.
+- **Bütçe payı çubuğu:** Birden çok kanal varken bütçeyi kanallar arasında böldüğü için kaldı, ipucuyla açıklandı. Tek kanalda anlamı olmadığı için gizli.
+- **Prova eklenince kayma:** Uzayan maliyet yazısı artık satıra sarılıyor; pencere genişlemiyor.
+- **Pazarlık sahnesi (`NegotiationStage`):**
+  - Solda kurucu, sağda matbaanın temsilcisi (`ui_layout negotiation_stage.reps`), arada pazarlık masası.
+  - Teklifte kurucu öne eğilip konuşuyor.
+  - Retle temsilci başını sallıyor; ilişki zedelenince kızarıyor.
+  - Bozulunca sinirlenip elini çekiyor, ortada çarpı çıkıyor.
+  - Anlaşınca eller ortada buluşup sallanıyor, ikisi de zıplıyor ve ışıltı çıkıyor.
+  - Replikler `UI_NEGO_SAY_*` (her durum için birkaç çeşit).
+- **Brief süresi:** 2 haftadan 4 haftaya çıkarmak denendi (100 koşu); kaldı.
+  - Bilgili botun 10. yıl kasası %50 arttı ve büyük ofise taşınma 10. yıldan 9. yıla indi (hedef 12–16). Ekonomi fazla hızlanıyordu.
+  - Süre 2 hafta kaldı; yeni oyuncu için ilk brief 8 hafta (K-131).

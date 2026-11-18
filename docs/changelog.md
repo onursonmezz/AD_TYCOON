@@ -1,5 +1,17 @@
 # Değişiklik günlüğü
 
+## İnceleme 2. aşama: kampanya kurma (2026-11-19)
+- Kampanya penceresinde açılır menü yok. Ürün, kalite, matbaa, lokasyon, kuşak, mekân gibi her seçenek küçük çizimli bir düğme; basınca seçenekler resimli kartlarla açılıyor, seçince kapanıyor.
+- Tek kanallı planda anlamsız bütçe çubuğu gizli; birden çok kanalda bütçeyi böldüğünü ipucu söylüyor.
+- Prova eklenince pencere artık yana kaymıyor.
+- Pazarlıkta iki karakterli bir sahne var. Kurucu teklifini söylüyor; matbaacı reddederse başını sallıyor ya da kızıyor, anlaşınca masanın üstünden el sıkışıyorlar.
+- Nasıl test ederim:
+  1. Bir brief kabul et ve medya planına basılı bir kanal ekle (broşür, katalog). Ürün düğmesine bas; resimli kartlardan birini seç, panel kapanmalı ve düğmede yeni çizim görünmeli.
+  2. İkinci bir kanal ekle; iki kanalda da bütçe çubuğu görünmeli. Birini kaldırınca çubuk kaybolmalı.
+  3. Prova kutusunu işaretle; pencere yana kaymamalı.
+  4. Pazarlık et'e bas. Önce çok düşük teklif ver (temsilci başını sallamalı), sonra makul bir teklif ver (eller sıkışmalı, ikisi zıplamalı).
+  5. 2015 sonrası bir billboard ve influencer kanalı seç; lokasyon, süre ve influencer düğmeleri üst üste binmemeli.
+
 ## İnceleme 1. aşama: ilk açılış (2026-11-19)
 - İlk brief artık oyunun ilk haftasında geliyor ve 8 hafta bekliyor; yeni oyuncu boş odaya bakmıyor, ipuçlarını okurken işi de kaçırmıyor.
 - Açılış kamerası arka duvara biraz daha yakın bakıyor; kurucunun masası üst çubuğun altında kalmıyor.

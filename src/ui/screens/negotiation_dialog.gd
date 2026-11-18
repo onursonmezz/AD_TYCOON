@@ -10,6 +10,7 @@ var _price: SpinBox
 var _status: Label
 var _offer_button: Button
 var _discount: float = 0.0
+var _stage: NegotiationStage
 
 
 func _init(supplier_id: String, list_price: float, on_done: Callable) -> void:
@@ -25,6 +26,10 @@ func _ready() -> void:
 	col.add_child(UiUtil.heading(tr("UI_NEGOTIATION_TITLE") % tr(data.suppliers[_supplier]["name_key"]), "receipt"))
 	col.add_child(Cards.header(Cards.art("supplier_art", _supplier, 52.0, "receipt"), tr(data.suppliers[_supplier]["name_key"]),
 		tr("UI_LIST_PRICE") % UiUtil.money(_list_price)))
+	# S2: iki karakterli pazarlık sahnesi (kurucu ve matbaanın temsilcisi).
+	var reps: Dictionary = data.raw["ui_layout.json"]["negotiation_stage"]["reps"]
+	_stage = NegotiationStage.new(str(GameState.sim.state.founder().get("avatar", "kadin_02")), str(reps.get(_supplier, "erkek_02")))
+	col.add_child(_stage)
 	var h: Array = GameState.sim.suppliers.hint(GameState.sim.state)
 	var hint: Label
 	if not h.is_empty():
@@ -64,20 +69,26 @@ func _ready() -> void:
 func _on_offer() -> void:
 	var n: Dictionary = GameState.execute(NegotiateCommand.new(_supplier, 0.0, _price.value))
 	var rounds: int = DataDB.data.bali("negotiation.rounds")
+	var r: int = int(n.get("round", 1))
+	_stage.offer(tr("UI_NEGO_SAY_OFFER") % UiUtil.money(_price.value))
 	match str(n["status"]):
 		"accepted":
 			_discount = GameState.sim.suppliers.negotiated_discount(GameState.sim.state)
 			_status.text = tr("UI_NEGOTIATION_ACCEPTED") % [UiUtil.money(n["price"]), int(roundf(_discount * 100.0))]
 			_status.add_theme_color_override("font_color", CozyTheme.FOREST)
 			_offer_button.disabled = true
+			_stage.accept.call_deferred(tr("UI_NEGO_SAY_YES_%d" % (r % 3)))
 		"failed":
 			_status.text = tr("UI_NEGOTIATION_FAILED")
 			_status.add_theme_color_override("font_color", CozyTheme.NEGATIVE)
 			_offer_button.disabled = true
+			_stage.fail.call_deferred(tr("UI_NEGO_SAY_FAIL"))
 		_:
 			_status.text = tr("UI_NEGOTIATION_REJECTED") % [int(n["round"]), rounds] \
 				+ ("\n" + tr("UI_NEGOTIATION_STRAINED") if bool(n.get("last_broken", false)) else "")
 			_status.add_theme_color_override("font_color", CozyTheme.WOOD)
+			var strained: bool = bool(n.get("last_broken", false))
+			_stage.reject.call_deferred(tr("UI_NEGO_SAY_ANGRY") if strained else tr("UI_NEGO_SAY_NO_%d" % (r % 3)), strained)
 
 
 func _close() -> void:

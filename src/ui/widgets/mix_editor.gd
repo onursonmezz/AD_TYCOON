@@ -108,6 +108,7 @@ func _add_row(channel_index: int) -> void:
 	slider.value = DataDB.data.balf("focus.slider_default_priority")
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	slider.tooltip_text = tr("TIP_BUDGET_SHARE")
 	share_line.add_child(slider)
 	var share_label: Label = UiUtil.label("", 13)
 	share_label.custom_minimum_size.x = 112.0
@@ -152,6 +153,8 @@ func _refresh() -> void:
 		(row["open"] as Button).text = UiUtil.name_of(data.channels, ch)
 		UiUtil.clear(row["icon"])
 		(row["icon"] as HBoxContainer).add_child(_channel_art(ch))
+		# Bütçe payı çubuğu yalnızca birden çok kanal varken anlamlı (bütçeyi kanallar arasında böler); tek kanalda gizli (S2).
+		(row["slider"] as HSlider).visible = _rows.size() > 1
 		var label: Label = row["share"]
 		label.text = "%s · %s" % [UiUtil.percent(roundf(float(mix[i]["share"]) * 100.0)), UiUtil.money(budget)]
 		var too_small: bool = budget < float(data.channels[ch]["min_budget"]) * infl
@@ -180,22 +183,26 @@ func _build_print_panel(row: Dictionary, channel_id: String, budget: float) -> v
 	var grid: HFlowContainer = HFlowContainer.new()
 	grid.add_theme_constant_override("h_separation", 8)
 	var product_ids: Array = data.channels[channel_id]["print_products"]
-	grid.add_child(_option(product_ids, job["product"], func(id: String) -> String: return tr(data.print_products[id]["name_key"]),
+	grid.add_child(_picker(tr("UI_OPT_PRODUCT"), "product", product_ids, job["product"],
+		func(id: String) -> String: return tr(data.print_products[id]["name_key"]), Callable(),
 		func(id: String) -> void:
 			job["product"] = id
 			job["distribution"] = str(data.print_products[id]["distributions"][0])
 			_manual(row)))
 	var qualities: Array = (data.bal("print.quality_mult") as Dictionary).keys()
-	grid.add_child(_option(qualities, job["quality"], func(id: String) -> String: return tr("QUALITY_" + id.to_upper()),
+	grid.add_child(_picker(tr("UI_OPT_QUALITY"), "quality", qualities, job["quality"],
+		func(id: String) -> String: return tr("QUALITY_" + id.to_upper()), Callable(),
 		func(id: String) -> void:
 			job["quality"] = id
 			_manual(row)))
-	grid.add_child(_option(data.print_products[job["product"]]["distributions"], job["distribution"],
-		func(id: String) -> String: return tr(data.distributions[id]["name_key"]),
+	grid.add_child(_picker(tr("UI_OPT_DISTRIBUTION"), "distribution", data.print_products[job["product"]]["distributions"],
+		job["distribution"], func(id: String) -> String: return tr(data.distributions[id]["name_key"]), Callable(),
 		func(id: String) -> void:
 			job["distribution"] = id
 			_manual(row)))
-	grid.add_child(_option(data.supplier_ids, job["supplier"], func(id: String) -> String: return tr(data.suppliers[id]["name_key"]),
+	grid.add_child(_picker(tr("UI_OPT_SUPPLIER"), "supplier", data.supplier_ids, job["supplier"],
+		func(id: String) -> String: return tr(data.suppliers[id]["name_key"]),
+		func(id: String) -> String: return tr(str(data.suppliers[id]["name_key"]) + "_DESC"),
 		func(id: String) -> void:
 			job["supplier"] = id
 			job["negotiated_discount"] = 0.0
@@ -231,8 +238,11 @@ func _build_print_panel(row: Dictionary, channel_id: String, budget: float) -> v
 		UiUtil.TERRACOTTA if margin < 0.0 or weeks > window else UiUtil.WOOD)
 	if weeks > window:
 		cost_label.text += " · " + tr("UI_PRINT_LATE_WARNING") % window
+	# Uzayan metin (ör. prova ekleyince) pencereyi genişletmez; satıra sarılır (S2).
+	cost_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	cost_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cost_label.custom_minimum_size.x = 120.0
 	info.add_child(cost_label)
-	info.add_child(UiUtil.spacer())
 	if float(job.get("negotiated_discount", 0.0)) > 0.0:
 		info.add_child(UiUtil.label(tr("UI_NEGOTIATED") % int(roundf(100.0 * float(job["negotiated_discount"]))), 14, UiUtil.SAGE_DARK))
 	info.add_child(UiUtil.button(tr("UI_NEGOTIATE"), func() -> void:
@@ -251,6 +261,17 @@ func _build_print_panel(row: Dictionary, channel_id: String, budget: float) -> v
 func _manual(row: Dictionary) -> void:
 	row["auto"] = false
 	_refresh.call_deferred()
+
+
+## Açılır menü yerine çizimli seçim paneli açan düğme (S2). sub_of: kartın ipucu metni (boş Callable: yok).
+func _picker(title: String, art_kind: String, ids: Array, selected: String, label_of: Callable, sub_of: Callable,
+		on_pick: Callable) -> Button:
+	var items: Array = []
+	for raw: Variant in ids:
+		var i: String = str(raw)
+		items.append({"id": i, "name": str(label_of.call(i)), "sub": str(sub_of.call(i)) if sub_of.is_valid() else "",
+			"art_kind": art_kind, "art_id": i})
+	return OptionPickerDialog.opener(title, items, selected, _main, on_pick)
 
 
 func _option(ids: Array, selected: String, label_of: Callable, on_pick: Callable) -> OptionButton:
@@ -288,10 +309,11 @@ func _build_options_panel(row: Dictionary, channel_id: String) -> void:
 		var names: Dictionary = {}
 		for c: Dictionary in def["choices"]:
 			names[str(c["id"])] = tr(c["name_key"])
-		var label: Label = UiUtil.label(tr(def["name_key"]), 14, UiUtil.WOOD)
-		flow.add_child(label)
-		flow.add_child(_option(ids, str(opts[key]), func(id: String) -> String: return str(names[id]),
-			func(id: String) -> void: opts[key] = id))
+		var kind: String = "%s_%s" % [str(sim.options.category_of(channel_id)), key]
+		flow.add_child(_picker(tr(def["name_key"]), kind, ids, str(opts[key]), func(id: String) -> String: return str(names[id]),
+			Callable(), func(id: String) -> void:
+				opts[key] = id
+				_refresh.call_deferred()))
 	box.add_child(flow)
 
 
@@ -319,12 +341,16 @@ func _build_influencer_panel(row: Dictionary, channel_id: String, budget: float)
 		row["influencer"] = sim.influencers.auto_pick(sim.state, channel_id, budget, {"audience": "adult", "sector": _brief["sector"]})
 		if str(row["influencer"]).is_empty():
 			row["influencer"] = ids[0]
-	var pick: OptionButton = _option(ids, str(row["influencer"]), func(id: String) -> String: return str(texts[id]),
+	var items: Array = []
+	for inf: Dictionary in pool:
+		items.append({"id": inf["id"], "name": "%s · %s" % [inf["name"], tr("TIER_" + str(inf["tier"]).to_upper())],
+			"sub": texts[inf["id"]], "art_kind": "influencer", "art_id": inf["name"]})
+	var pick: Button = OptionPickerDialog.opener(tr("UI_OPT_INFLUENCER"), items, str(row["influencer"]), _main,
 		func(id: String) -> void:
 			row["influencer"] = id
 			_refresh.call_deferred())
-	pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_child(pick)
+	box.add_child(UiUtil.label(str(texts.get(row["influencer"], "")), 12, UiUtil.MUTED))
 	var chosen: Dictionary = sim.influencers.find(sim.state, str(row["influencer"]))
 	if not chosen.is_empty() and sim.influencers.fee(sim.state, chosen) > budget:
 		box.add_child(UiUtil.label(tr("ERR_INFLUENCER_FEE"), 14, UiUtil.TERRACOTTA))

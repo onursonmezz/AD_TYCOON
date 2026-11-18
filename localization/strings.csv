@@ -1845,3 +1845,18 @@ UI_TOOLS_MORE,+ %d seçenek daha,+ %d more options
 UI_TOOLS_LESS,Daha az göster,Show less
 UI_ROOM_EFFECTS_COUNT,Oda etkileri: %d (üzerine gel),Room effects: %d (hover)
 UI_RANDOM_NAME,Rastgele bir ad öner,Suggest a random name
+UI_OPT_PRODUCT,Ürün,Product
+UI_OPT_QUALITY,Kalite,Quality
+UI_OPT_DISTRIBUTION,Dağıtım,Distribution
+UI_OPT_SUPPLIER,Matbaa,Printer
+UI_OPT_INFLUENCER,Influencer,Influencer
+TIP_BUDGET_SHARE,Medya bütçesinin bu kanala ayrılan payı. Çubuklar birbirine göre oranlanır.,The share of the media budget given to this channel. The bars are weighed against each other.
+UI_NEGO_SAY_OFFER,%s olur mu?,How about %s?
+UI_NEGO_SAY_NO_0,Bu fiyata olmaz.,Not at that price.
+UI_NEGO_SAY_NO_1,"Kâğıt pahalı, biraz daha!","Paper is pricey, a bit more!"
+UI_NEGO_SAY_NO_2,Mürekkep bedava mı sanki?,You think ink is free?
+UI_NEGO_SAY_ANGRY,Beni zor durumda bırakıyorsunuz!,You are putting me in a tough spot!
+UI_NEGO_SAY_FAIL,"Yeter! Liste fiyatı, o kadar.","Enough! List price, that is it."
+UI_NEGO_SAY_YES_0,Anlaştık!,Deal!
+UI_NEGO_SAY_YES_1,"Peki, sizin için olsun!","All right, just for you!"
+UI_NEGO_SAY_YES_2,"Tamam, el sıkışalım!","Fine, let us shake on it!"
