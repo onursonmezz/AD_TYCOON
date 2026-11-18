@@ -59,5 +59,33 @@
 		"Wood",
 		"Clarke",
 		"Hughes"
+	],
+	"agency_prefixes": [
+		"Blue",
+		"Golden",
+		"North",
+		"Compass",
+		"Seagull",
+		"Summit",
+		"Curly",
+		"Bright",
+		"Maple",
+		"Atlas",
+		"Rainbow",
+		"Lighthouse",
+		"Harbor",
+		"Daisy",
+		"Paper",
+		"Kite"
+	],
+	"agency_words": [
+		"Advertising",
+		"Agency",
+		"Communications",
+		"Creative",
+		"Media",
+		"Studio",
+		"Works",
+		"Idea House"
 	]
 }

@@ -78,7 +78,7 @@ func _build_background() -> void:
 	_page.add_child(MenuArt.tape(tr("UI_BACKGROUND_TITLE"), "user"))
 	_page.add_child(UiUtil.wrapped(tr("UI_BACKGROUND_HINT"), 15, CozyTheme.TEXT, 400.0))
 	var name_edit: LineEdit = _edit(_agency_name, tr("UI_DEFAULT_AGENCY"), func(t: String) -> void: _agency_name = t)
-	_page.add_child(_row(tr("UI_AGENCY_NAME"), name_edit))
+	_page.add_child(_row(tr("UI_AGENCY_NAME"), _with_dice(name_edit, _random_agency_name)))
 	var years: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	for y: Variant in data.bal("tools.start_years"):
 		var year: int = int(y)
@@ -118,16 +118,24 @@ func _select_background(id: String) -> void:
 	_mark(id)
 	_desc.text = tr(bg["desc_key"])
 	UiUtil.clear(_stats)
-	# Her stat tam adıyla; üzerine gelince ne işe yaradığı yazar.
+	# Her stat tam adıyla; üzerine gelince ne işe yaradığı yazar. En yüksek iki stat yeşil: geçmişler arasındaki fark
+	# tek bakışta görünsün (S1).
+	var ranked: Array = (data.bal("staff_rules.stats") as Array).duplicate()
+	ranked.sort_custom(func(a: Variant, b: Variant) -> bool: return int(bg["stats"][a]) > int(bg["stats"][b]))
+	var top: Array = ranked.slice(0, 2)
 	for stat: Variant in data.bal("staff_rules.stats"):
 		var key: String = "STAT_" + str(stat).to_upper()
 		var chip: PanelContainer = PanelContainer.new()
 		chip.theme_type_variation = "Badge"
+		var strong: bool = top.has(stat)
+		if strong:
+			chip.add_theme_stylebox_override("panel", CozyTheme.box(CozyTheme.SAGE_SOFT, CozyTheme.RADIUS_CONTROL, CozyTheme.FOREST_LIGHT, 1,
+				false, Vector2(10, 4)))
 		chip.tooltip_text = "%s: %s" % [tr(key + "_NAME"), tr(key + "_DESC")]
 		var row: HBoxContainer = UiUtil.hbox(6)
 		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(UiUtil.label(tr(key + "_NAME"), 13, CozyTheme.MUTED))
-		var value: Label = UiUtil.label(str(int(bg["stats"][stat])), 15, CozyTheme.TEXT)
+		row.add_child(UiUtil.label(tr(key + "_NAME"), 13, CozyTheme.FOREST if strong else CozyTheme.MUTED))
+		var value: Label = UiUtil.label(str(int(bg["stats"][stat])), 15, CozyTheme.FOREST if strong else CozyTheme.TEXT)
 		value.add_theme_font_override("font", CozyTheme.strong_font(800))
 		row.add_child(value)
 		chip.add_child(row)
@@ -155,7 +163,7 @@ func _build_character() -> void:
 	var name_edit: LineEdit = _edit(_founder_name, tr("UI_DEFAULT_FOUNDER"), func(t: String) -> void:
 		_founder_name = t
 		_refresh_preview())
-	_page.add_child(_row(tr("UI_FOUNDER_NAME"), name_edit))
+	_page.add_child(_row(tr("UI_FOUNDER_NAME"), _with_dice(name_edit, _random_founder_name)))
 	var split: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_L)
 	_page.add_child(split)  # UI-4: dikeyde büyümez; önizleme kartı ızgaranın boyuna uyar
 	var filler: Control = Control.new()
@@ -260,6 +268,45 @@ func _edit(text: String, placeholder: String, on_change: Callable) -> LineEdit:
 	e.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	e.text_changed.connect(on_change)
 	return e
+
+
+## Ad kutusunun yanında zar: basınca rastgele bir ad önerir (S1). Oyun başlamadan, yalnızca öneri: simülasyonun
+## tohumlu rastgeleliğine dokunmaz.
+func _with_dice(edit: LineEdit, make: Callable) -> HBoxContainer:
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(edit)
+	var dice: Button = UiUtil.button("", func() -> void:
+		edit.text = str(make.call())
+		edit.text_changed.emit(edit.text))
+	dice.icon = UiUtil.icon_texture("refresh", 20)
+	dice.tooltip_text = tr("UI_RANDOM_NAME")
+	dice.custom_minimum_size = Vector2(46.0, 0.0)
+	row.add_child(dice)
+	return row
+
+
+func _names() -> Dictionary:
+	return DataDB.data.names(TranslationServer.get_locale().substr(0, 2))
+
+
+func _random_agency_name() -> String:
+	var n: Dictionary = _names()
+	return "%s %s" % [_pick(n.get("agency_prefixes", [])), _pick(n.get("agency_words", []))]
+
+
+## Seçili görünüşün cinsiyetine uygun ad + soyad.
+func _random_founder_name() -> String:
+	var n: Dictionary = _names()
+	var gender: String = "neutral"
+	for rec: Variant in DataDB.data.raw.get("avatars.json", []):
+		if str(rec["id"]) == _avatar:
+			gender = str(rec.get("gender", "neutral"))
+	return "%s %s" % [_pick(n.get(gender, n.get("neutral", []))), _pick(n.get("surnames", []))]
+
+
+func _pick(list: Array) -> String:
+	return str(list[randi() % list.size()]) if not list.is_empty() else ""
 
 
 func _row(caption: String, control: Control) -> HBoxContainer:

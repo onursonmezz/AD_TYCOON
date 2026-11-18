@@ -48,6 +48,14 @@ func weekly(state: SimState) -> void:
 	state.inbox = kept
 	var year: int = state.clock.year()
 	var month: int = state.clock.month()
+	# Oyunun ilk haftasında ilk brief garanti (S1): eskiden şansa bağlıydı, kötü şansta oyuncu 30 hafta boş odaya bakıyordu.
+	if week == data.bali("briefs.first_brief_week") and state.inbox.is_empty() and state.active_campaign.is_empty() \
+			and state.finished.is_empty() and not state.clients.is_empty():
+		var first: Dictionary = make_brief(state, state.clients.values()[0], {})
+		# İlk brief daha uzun bekler: yeni oyuncu ipuçlarını okurken (1x hızda 2 hafta = 6 saniye) kaçırmasın.
+		first["expires_week"] = week + data.bali("briefs.first_brief_expiry_weeks")
+		state.inbox.append(first)
+		return
 	var chances: Array = data.bal("clients.brief_weekly_chance")
 	for client: Dictionary in state.clients.values():
 		if _has_pending(state, client["id"]):

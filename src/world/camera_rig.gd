@@ -50,6 +50,11 @@ func frame(size: Vector2) -> void:
 	var min_frame: float = float(cam.get("min_frame_distance", MIN_FRAME_DISTANCE))
 	_target_distance = clampf(size.length() * factor, min_frame, _max_distance)
 	_distance = _target_distance
+	# Bakılan nokta binanın uzak tarafına biraz kayar: arka duvardaki masalar üst çubuğun altında kalmasın (ilk açılışta
+	# kurucu orada oturuyor). Pay: bina köşegeni × far_shift.
+	var far: Vector3 = Basis(Vector3.UP, _yaw_node.rotation.y) * Vector3(0.0, 0.0, -1.0)
+	_target_pos += far * size.length() * float(cam.get("far_shift", 0.0))
+	position = _target_pos
 	_place_camera()
 
 

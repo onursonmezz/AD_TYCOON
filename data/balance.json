@@ -154,7 +154,7 @@
 		"bold_risk_min": 70, "conservative_risk_max": 30, "personality_min": 10, "personality_max": 90,
 		"budget_growth_min_satisfaction": 70, "budget_growth_min": 0.10, "budget_growth_max": 0.30,
 		"new_client_base": 0.04, "new_client_reputation_div": 1000 },
-	"briefs": { "expiry_weeks": 2, "free_objective_chance": 0.4,
+	"briefs": { "first_brief_week": 1, "first_brief_expiry_weeks": 8, "expiry_weeks": 2, "free_objective_chance": 0.4,
 		"sizes_by_scale": [["small"], ["small", "medium"], ["medium", "large"], ["medium", "large"]],
 		"fee": { "small": [15000, 36000], "medium": [60000, 150000], "large": [200000, 500000] },
 		"media": { "small": [15000, 60000], "medium": [120000, 400000], "large": [600000, 2000000] },

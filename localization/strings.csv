@@ -421,13 +421,13 @@ OFFICE_3,Büyütülmüş ofis,Expanded office
 OFFICE_4,Plaza katı,Office tower floor
 OFFICE_5,Ajans binası / Holding kampüsü,Agency building / holding campus
 BG_COPYWRITER,Eski Copywriter,Former Copywriter
-BG_COPYWRITER_DESC,Kreatif yüksek.,High creativity.
+BG_COPYWRITER_DESC,"Kreatif 85: fikri ve sloganı güçlü kampanyalar çıkarırsın. Kreatif ağırlıklı işlerde öne geçersin.","Creative 85: your campaigns have strong ideas and slogans. You shine on creative-heavy jobs."
 BG_MARKETING_MANAGER,Eski Pazarlama Müdürü,Former Marketing Manager
-BG_MARKETING_MANAGER_DESC,Strateji yüksek + müşteri ağı (bir başlangıç müşterisi fazla).,High strategy + client network (one extra starting client).
+BG_MARKETING_MANAGER_DESC,"Strateji 85 ve eski müşteri ağın: bir başlangıç müşterisi fazla, ilk aylarda daha çok iş gelir.","Strategy 85 and your old network: one extra starting client, so more work comes in early on."
 BG_GRAPHIC_DESIGNER,Grafik Tasarımcı,Graphic Designer
-BG_GRAPHIC_DESIGNER_DESC,Görsel tasarım ve teknik yüksek.,Strong visual design and technical skills.
+BG_GRAPHIC_DESIGNER_DESC,"Teknik 80, Kreatif 75: afiş, billboard ve video gibi üretimi ağır işlerde hızlı ve temizsin.","Technical 80, Creative 75: quick and clean on production-heavy work like posters, billboards and video."
 BG_SALESPERSON,Satışçı,Salesperson
-BG_SALESPERSON_DESC,İletişim yüksek (müşteri memnuniyeti ve pitch sunumu).,High communication (client satisfaction and pitch presentations).
+BG_SALESPERSON_DESC,"İletişim 90: müşteriler seninle daha memnun kalır ve pitch sunumlarında ikna edicisin.","Communication 90: clients stay happier with you and you are convincing in pitch presentations."
 MENU_TEAM,Ekip,Team
 MENU_OFFICE,Ofis,Office
 UI_YOU,Sen,You
@@ -1844,3 +1844,4 @@ UI_STEP_DAYS,%s · %d gün kaldı,%s · %d days left
 UI_TOOLS_MORE,+ %d seçenek daha,+ %d more options
 UI_TOOLS_LESS,Daha az göster,Show less
 UI_ROOM_EFFECTS_COUNT,Oda etkileri: %d (üzerine gel),Room effects: %d (hover)
+UI_RANDOM_NAME,Rastgele bir ad öner,Suggest a random name

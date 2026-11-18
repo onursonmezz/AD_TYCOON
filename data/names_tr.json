@@ -79,5 +79,34 @@
 		"Bulut",
 		"Tan",
 		"Uysal"
+	],
+	"agency_prefixes": [
+		"Mavi",
+		"Altın",
+		"Kuzey",
+		"Pusula",
+		"Martı",
+		"Zirve",
+		"Kıvırcık",
+		"Fikir",
+		"Işık",
+		"Defne",
+		"Lale",
+		"Atlas",
+		"Gökkuşağı",
+		"Çınar",
+		"Yaprak",
+		"Papatya"
+	],
+	"agency_words": [
+		"Reklam",
+		"Ajans",
+		"İletişim",
+		"Kreatif",
+		"Tanıtım",
+		"Medya",
+		"Stüdyo",
+		"Atölye",
+		"Fikir Evi"
 	]
 }

@@ -24,8 +24,8 @@
 		"shadow_blur": 4.0, "shadow_opacity": 0.72, "shadow_max_distance": 45.0, "shadow_bias": 0.03
 	},
 	"fill": { "color": [0.62, 0.74, 0.92], "energy": 0.32, "pitch": -40.0, "yaw": -140.0 },
-	"_camera": "frame_factor: açılış yakınlığı = bina köşegeni × bu (küçük = yakın); dof_*: maket (tilt-shift) bulanıklığı, mesafeye oranlı.",
-	"camera": { "pitch": -48.0, "fov": 30.0, "frame_factor": 1.02, "min_frame_distance": 12.0,
+	"_camera": "frame_factor: açılış yakınlığı = bina köşegeni × bu (küçük = yakın); far_shift: açılışta bakılan noktanın uzak tarafa kayması (köşegen × bu); dof_*: maket (tilt-shift) bulanıklığı, mesafeye oranlı.",
+	"camera": { "pitch": -48.0, "fov": 30.0, "frame_factor": 1.02, "far_shift": 0.06, "min_frame_distance": 12.0,
 		"dof_far": { "enabled": true, "distance_factor": 1.12, "transition_factor": 0.5, "amount": 0.08 },
 		"dof_near": { "enabled": true, "distance": 2.0, "transition": 1.0, "distance_factor": 0.8, "transition_factor": 0.3 } },
 	"vignette": { "strength": 0.22, "radius": 0.95, "color": [0.24, 0.18, 0.1] },

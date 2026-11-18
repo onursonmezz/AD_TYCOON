@@ -1633,3 +1633,17 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Kampanya kanal seçiminde platform kanallarında (`channel_art`).
   - Logosu olmayan araçlarda (defter, daktilo vb.) genel alet ikonu kalıyor.
   - Araçlar penceresinin bilgisayar başlığında Pear logosu, monitörün ekranında açılış logosu gibi duruyor (`hardware_art.badge`).
+
+## K-131 — İnceleme 1. aşama: ilk açılış ve ilk dakikalar (2026-11-19)
+- **İlk brief garantisi:** İlk brief artık 1. haftanın sonunda geliyor ve 8 hafta geçerli (diğerleri 2 hafta).
+  - Eskiden brief'in gelmesi tamamen şansa bağlıydı. 200 denemede ortanca 5 hafta, en kötü durumlarda 15–30 hafta sürüyordu; 1× hızda bu 45–90 saniye boş oda demek.
+  - 2 hafta, 1× hızda yalnızca 6 saniye; ipucunu okuyan yeni oyuncu ilk işini kaçırabiliyordu.
+  - Ayarlar `balance.json`: `briefs.first_brief_week` ve `first_brief_expiry_weeks`. Garanti, başlangıç müşterilerinin ilkinden geliyor.
+- **Denge etkisi (100 koşu):** Rastgele botun ilk 3 yılda iflas oranı %22'den %15'e düştü; M1 hedefi %20–40.
+  - Yeni oyuncuyu ilk dakikada boşlukta bırakmamak daha önemli görüldü. Hedefe dönmek istenirse ilk brief'in ücreti düşürülebilir.
+  - Bu karar Orgo'nun onayına sunuldu.
+- **Açılış kamerası:** Bakılan nokta binanın uzak tarafına biraz kayıyor (`look.json camera.far_shift` 0,06). Arka duvardaki masalar artık üst çubuğun altında kalmıyor.
+- **Ajans kurma ekranı:**
+  - Ajans adı ve kurucu adı kutularının yanında rastgele ad öneren bir düğme var. Öneri listeleri `names_tr.json` / `names_en.json` içinde (`agency_prefixes`, `agency_words`); kurucu adı seçilen görünüşün cinsiyetine uygun.
+  - Bu öneri oyun başlamadan yapılan bir kozmetik seçim; simülasyonun tohumlu rastgeleliğini kullanmıyor.
+  - Geçmiş açıklamaları oyundaki etkiyi söylüyor; seçili geçmişin en yüksek iki stat'ı yeşil gösteriliyor.

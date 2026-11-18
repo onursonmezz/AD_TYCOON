@@ -31,6 +31,7 @@ func test_phase_start_waits_for_sliders() -> void:
 		sim.step_week()
 	assert_true(sim.start_campaign(sim.state.inbox[0]["id"], _choices())["ok"])
 	var week: int = sim.state.clock.week_index
+	_answer_events(sim)  # bekleyen olay varken gün ilerlemez; faz beklemesini ölçmeden önce yanıtla
 	sim.step_day()
 	assert_true(sim.state.waiting_for_input, "1. faz başında beklemeli")
 	sim.step_week()
