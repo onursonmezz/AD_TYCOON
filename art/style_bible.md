@@ -65,6 +65,6 @@ Eşyalar döneme göre değişir (GDD 5):
 | Dönem | Bilgisayar | Hava |
 |---|---|---|
 | 1990–1999 | Bej tüplü monitör, kalın kasa (PC-386) | Kahverengi ahşap, kâğıt yığınları, faks, kablolu telefon |
-| 2000–2009 | Renkli, yarı saydam tüplü bilgisayar (Elmacık G4) | Açık renkler, CD'ler, ilk düz ekranlar |
-| 2010–2019 | İnce, tek parça beyaz ekran (iMak) | Beyaz masalar, beton, bitkiler bol |
-| 2020+ | Dizüstü + ikinci ekran (M-çip Pro) | Esnek masalar, kulaklıklar, sıcak tonlar |
+| 2000–2009 | Renkli, yarı saydam tüplü bilgisayar (Pear G4) | Açık renkler, CD'ler, ilk düz ekranlar |
+| 2010–2019 | İnce, tek parça beyaz ekran (PMac) | Beyaz masalar, beton, bitkiler bol |
+| 2020+ | Dizüstü + ikinci ekran (P-Chip Pro) | Esnek masalar, kulaklıklar, sıcak tonlar |

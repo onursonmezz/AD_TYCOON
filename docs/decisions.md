@@ -1565,3 +1565,52 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Taslakta yazı yeşildi; Orgo'nun isteğiyle beyaz yapıldı.
   - Ölçüler `ui_layout.json ceremony_stage`: `ribbon_text_y`, `ribbon_text_h`, `ribbon_text_size`, `ribbon_text_radius`.
 - **Perdeler:** Çizimin boş kenarı atılıyor ve perde sahnenin üst köşelerine yapıştırılıyor. Çizimin düz kesik alt ucu aşağı doğru saydamlaşıyor (`curtain_fade`).
+
+## K-129 — Uydurma adlar yenilendi (2026-11-18)
+- **İstek (Orgo):** Parodi adlar, gerçek adlara daha yakın ve daha esprili olanlarla değiştirildi.
+- **Ad değişiklikleri:**
+  - **Bilgisayarlar:**
+    - Elmacık Macintosh → Pear Techintosh
+    - Elmacık G4 → Pear G4
+    - iMak → PMac
+    - M-çip Pro → P-Chip Pro
+  - **Yazılımlar:**
+    - TabloPro → Nitrosoft Newcel
+    - SlaytUstası → Nitrosoft StrongPoint
+    - KelimeUstası → Nitrosoft World
+    - Yazgan AI → ChatTNT
+    - PixelShop → Abode Photostore
+    - Vektörel → Abode Vectorator
+    - Kanvaz → Kamva
+    - Figmo → Digma
+    - Hayalci AI → TopJourney
+    - SayfaUstası / InDizayn → Abode OutDesign
+    - Kurgu Pro → Abode Premium Pro
+    - EfektSonrası → Abode Before Effects
+    - Kübik 3D → Theatre 4D
+    - Video AI → Tricksfield
+    - AnketPro → SurveyCappybara
+    - Gooble Analitik → Gooble Analytics
+    - SosyalPanel → Tootsuite
+    - Slak aynen kaldı.
+  - **Platformlar:**
+    - Gooble Kelime → Gooble Abs
+    - YouTüp → YourTube
+    - FaceBuk → FaceNook
+    - Cıvıl → tweakker
+    - InstaFoto → Instagraph
+    - TikTak → TickTock
+    - LinkedOut aynen kaldı.
+  - **Ödüller:**
+    - Etkin Ödülleri → Elfie
+    - Kıyı Aslanları Festivali → Cammes Cats
+    - Altın Elma aynen kaldı.
+  - **Matbaalar:**
+    - Ucuzcu Ofset → Köşebaşı Ofset
+    - Renkli Baskı → Baskılı Renkler A.Ş.
+  - **Müşteri:** Lezzetçi Köfte → HayalEt Köfte.
+- **Dil:** Marka adları iki dilde de aynı.
+- **Değişmeyenler:**
+  - Kimlikler (id) değişmedi, eski kayıtlar açılır. Eski kayıtta müşteri adı zaten yazılı olduğundan orada "Lezzetçi Köfte" kalabilir.
+  - GDD tablolarındaki eski adlar tarihçe olarak bırakıldı; geçerli adlar `localization/strings.csv`'de.
+- **Araçlar penceresi:** Uzun adlar artık kesilmiyor; yer daralırsa durum yazısı kısalıyor.

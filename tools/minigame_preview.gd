@@ -20,14 +20,14 @@ func _ready() -> void:
 	bg.color = CozyTheme.CREAM
 	bg.size = Vector2(760, 470)
 	add_child(bg)
-	var camp: Dictionary = {"id": "cmp_onizleme", "setup": {"sector": "fast_food", "client_name": "Lezzetçi Köfte",
+	var camp: Dictionary = {"id": "cmp_onizleme", "setup": {"sector": "fast_food", "client_name": "HayalEt Köfte",
 		"client_id": "cl_onizleme", "mix": [{"channel": "newspaper", "share": 1.0}], "objective": "awareness"}}
 	for entry: String in GAMES:
 		var id: String = entry.get_slice(":", 0)
 		var sector: String = entry.get_slice(":", 1) if entry.contains(":") else "fast_food"
 		camp["setup"]["sector"] = sector
 		var game: MinigameGame = MinigameHost._make(id)
-		game.ctx = {"camp": camp, "setup": camp["setup"], "brand": "Lezzetçi Köfte",
+		game.ctx = {"camp": camp, "setup": camp["setup"], "brand": "HayalEt Köfte",
 			"accent": KeyVisual.spec(DataDB.data, camp)["accent"], "year": 1995, "seed": 7}
 		game.position = Vector2(60, 60)
 		add_child(game)

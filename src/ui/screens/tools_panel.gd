@@ -142,8 +142,7 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	row.add_child(UiUtil.icon("tool", 18, CozyTheme.TERRA if owned else CozyTheme.MUTED))
 	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 14, CozyTheme.TEXT)
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
-	name_label.custom_minimum_size.x = 104.0
-	name_label.clip_text = true
+	name_label.custom_minimum_size.x = 104.0  # ad kesilmez ("Nitrosoft StrongPoint"); yer daralırsa durum yazısı kısalır
 	name_label.tooltip_text = name_label.text
 	name_label.mouse_filter = Control.MOUSE_FILTER_STOP
 	row.add_child(name_label)

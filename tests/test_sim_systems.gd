@@ -127,7 +127,7 @@ func test_start_campaign_validation() -> void:
 	var brief_id: String = sim.state.inbox[0]["id"]
 	var bad: Dictionary = _good_choices()
 	bad["mix"] = [{"channel": "tiktak", "share": 1.0}]
-	assert_eq(sim.start_campaign(brief_id, bad)["error"], "ERR_CHANNEL", "TikTak 1990'da yok")
+	assert_eq(sim.start_campaign(brief_id, bad)["error"], "ERR_CHANNEL", "TickTock 1990'da yok")
 	bad = _good_choices()
 	bad["mix"] = [{"channel": "newspaper", "share": 0.5}]
 	assert_eq(sim.start_campaign(brief_id, bad)["error"], "ERR_SHARE")

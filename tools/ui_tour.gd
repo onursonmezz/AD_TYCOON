@@ -229,7 +229,7 @@ func _tour_industry(screen: Control, sim: Simulation) -> void:
 	await _shot("17_award_entry")
 	entry.queue_free()
 	var fake: Dictionary = {"award": "golden_apple", "year": sim.state.clock.year(), "rivals": [{"rival": "mavi_ok", "level": "gold"}],
-		"player": [{"name": "Yaz Kampanyası", "client_name": "Lezzetçi Köfte", "level": "silver"}],
+		"player": [{"name": "Yaz Kampanyası", "client_name": "HayalEt Köfte", "level": "silver"}],
 		"grand_prix": {"who": "kivilcim", "campaign": ""}}
 	screen.call("open_modal", CeremonyDialog.new(fake))
 	await get_tree().create_timer(4.0).timeout

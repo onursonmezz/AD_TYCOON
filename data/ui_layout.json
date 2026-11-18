@@ -46,7 +46,7 @@
 		"tone_choice": "ton-secimi", "audience_analysis": "hedef-kitle", "media_planning": "medya-planlama",
 		"market_research": "pazar-arastirma-hizmeti"
 	},
-	"brand_art": { "Lezzetçi Köfte": "lezzetci-kofte", "Çınar Mobilya": "cinar-mobilya", "Altın Tatil": "altin-tatil" },
+	"brand_art": { "HayalEt Köfte": "lezzetci-kofte", "Çınar Mobilya": "cinar-mobilya", "Altın Tatil": "altin-tatil" },
 	"supplier_art": { "renkli_baski": "renkli-baski" },
 	"trophy_art": { "gold": "altin-elma-kupasi", "grand_prix": "altin-elma-kupasi", "silver": "gumus-elma-kupasi", "bronze": "gumus-elma-kupasi", "shortlist": "gumus-elma-kupasi" },
 	"_ceremony_stage": "Ödül töreni sahnesi (taslak 21, taslak pikseli × 0.7655). Dikdörtgenler [x, y, en, boy], design_width genişliğine göre; sağdaki eşler aynalanır. confetti/sparkles: [x, y, boy]. tint: kupa ve kurdele rengi (gümüş görsel bu renkle çarpılır).",

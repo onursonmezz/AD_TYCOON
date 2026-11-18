@@ -31,7 +31,7 @@ func test_buying_a_license_raises_its_area() -> void:
 	assert_almost_eq(cash0 - sim.state.cash, 4000.0, 0.01)
 	assert_almost_eq(float(sim.state.tool_mults["design"]), 1.15, 0.0001)
 	assert_eq(ToolActionCommand.new("buy", "pixelshop").execute(sim), "ERR_TOOL_OWNED")
-	assert_eq(ToolActionCommand.new("buy", "figmo").execute(sim), "ERR_TOOL_NA", "1990'da Figmo yok")
+	assert_eq(ToolActionCommand.new("buy", "figmo").execute(sim), "ERR_TOOL_NA", "1990'da Digma yok")
 
 
 func test_old_versions_lose_value_and_can_be_updated() -> void:

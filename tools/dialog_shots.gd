@@ -122,7 +122,7 @@ func _run() -> void:
 	await _open(GameOverDialog.new(func() -> void: pass))
 	await _shot("game_over")
 	var fake: Dictionary = {"award": "golden_apple", "year": sim.state.clock.year(), "rivals": [{"rival": "mavi_ok", "level": "gold"}],
-		"player": [{"name": "Yaz Kampanyası", "client_name": "Lezzetçi Köfte", "level": "silver"}],
+		"player": [{"name": "Yaz Kampanyası", "client_name": "HayalEt Köfte", "level": "silver"}],
 		"grand_prix": {"who": "kivilcim", "campaign": ""}}
 	await _open(CeremonyDialog.new(fake))
 	await get_tree().create_timer(3.5).timeout
