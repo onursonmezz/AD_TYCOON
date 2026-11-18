@@ -1557,3 +1557,11 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Çiftler birlikte doluyor. Adalar odada ortalanıyor; ters masada sandalye, ekran ve lamba aynalı.
   - Boş oda sıcak ahşap zeminli (eskiden soğuk beton). Açılış kamerası biraz daha yakın (`frame_factor` 1,02).
   - Not: Eski kayıtlarda yerleştirilmiş eşyalar yeni masa konumlarıyla çakışabilir.
+
+## K-128 — Tören kurdelesi ve perdeler (2026-11-18)
+- **İstek (Orgo):** Kurdeledeki derece yazısı ("Altın Ödül") ortada değildi, kavisli değildi ve yeşildi. Perdeler köşede değil yanlardaydı, üstlerinde beyaz boşluk vardı.
+- **Kurdele yazısı:** Yeni `ArcText` (src/ui/widgets/arc_text.gd), harfleri kurdelenin kavsine uyan bir yaya tek tek dizer.
+  - Yazı beyaz; çevresinde kurdele renginin koyusu ince bir kontur ve yumuşak bir gölge var.
+  - Taslakta yazı yeşildi; Orgo'nun isteğiyle beyaz yapıldı.
+  - Ölçüler `ui_layout.json ceremony_stage`: `ribbon_text_y`, `ribbon_text_h`, `ribbon_text_size`, `ribbon_text_radius`.
+- **Perdeler:** Çizimin boş kenarı atılıyor ve perde sahnenin üst köşelerine yapıştırılıyor. Çizimin düz kesik alt ucu aşağı doğru saydamlaşıyor (`curtain_fade`).

@@ -120,6 +120,21 @@ func _place(stage: Control, tex: Texture2D, r: Rect2, mirror: bool = false, tint
 	return t
 
 
+## Çizimin alt kısmı (frac oranı) aşağı doğru saydamlaşır: perdenin düz kesik ucu görünmesin.
+func _fade_bottom(tex: Texture2D, frac: float) -> Texture2D:
+	var img: Image = tex.get_image()
+	var h: int = img.get_height()
+	var start: int = int(h * (1.0 - frac))
+	for y: int in range(start, h):
+		var k: float = 1.0 - float(y - start) / float(maxi(1, h - start))
+		k = k * k * (3.0 - 2.0 * k)
+		for x: int in img.get_width():
+			var c: Color = img.get_pixel(x, y)
+			c.a *= k
+			img.set_pixel(x, y, c)
+	return ImageTexture.create_from_image(img)
+
+
 ## Defne çelengin sol ya da sağ yarısı: tek dal.
 func _sprig(px: int, right: bool) -> AtlasTexture:
 	var a: AtlasTexture = AtlasTexture.new()
@@ -146,9 +161,13 @@ func _stage(r: Dictionary) -> Control:
 	stage.custom_minimum_size = Vector2(w, float(_cfg["height"]))
 	stage.clip_contents = true
 	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Perdeler sahnenin üst köşelerinden sarkar: boş kenarı atılmış çizim, üstü ve dış kenarı sahneye yapışık.
 	var curtain: Rect2 = _rect("curtain")
-	_place(stage, IconPack.art(_art("curtain_left"), int(curtain.size.y)), curtain)
-	_place(stage, IconPack.art(_art("curtain_right"), int(curtain.size.y)), curtain, true)
+	for right: bool in [false, true]:
+		var ct: Texture2D = _fade_bottom(IconPack.art_wide(_art("curtain_right" if right else "curtain_left"),
+			int(curtain.size.x)), float(_cfg["curtain_fade"]))
+		var ch: float = curtain.size.x * float(ct.get_height()) / float(ct.get_width())
+		_place(stage, ct, Rect2(0.0, 0.0, curtain.size.x, ch), right).stretch_mode = TextureRect.STRETCH_SCALE
 	for c: Array in _cfg["confetti"]:
 		_place(stage, IconPack.art(_art("confetti"), int(c[2])), Rect2(float(c[0]), float(c[1]), float(c[2]), float(c[2])))
 	for s: Array in _cfg["sparkles"]:
@@ -171,8 +190,15 @@ func _stage(r: Dictionary) -> Control:
 	# Kurdele görseli taslaktakinden kısa: yatayda gerilerek taslak boyuna getirilir.
 	_place(stage, IconPack.art_wide(_art("ribbon"), int(ribbon.size.x)), ribbon, false, tint).stretch_mode = \
 		TextureRect.STRETCH_SCALE
-	var band: Label = _centered(tr("UI_RIBBON_" + (level.to_upper() if not level.is_empty() else "NONE")), 30,
-		CozyTheme.FOREST, CozyTheme.title_font(700), w, float(_cfg["ribbon_text_y"]))
+	# Derece yazısı kurdelenin ortasında, kurdelenin kavsine uyan bir yayda; beyaz, kurdele renginin koyusuyla konturlu.
+	var band: ArcText = ArcText.new()
+	band.text = tr("UI_RIBBON_" + (level.to_upper() if not level.is_empty() else "NONE"))
+	band.font = CozyTheme.title_font(700)
+	band.font_size = int(_cfg["ribbon_text_size"])
+	band.radius = float(_cfg["ribbon_text_radius"])
+	band.outline_color = Color(tint.darkened(0.55), 0.9)
+	band.position = Vector2(ribbon.position.x, float(_cfg["ribbon_text_y"]))
+	band.size = Vector2(ribbon.size.x, float(_cfg["ribbon_text_h"]))
 	stage.add_child(band)
 	stage.add_child(_ornament(_rect("ornament")))
 	var title: String = str(r.get("name", "")) if not str(r.get("name", "")).is_empty() else tr("UI_UNTITLED")
