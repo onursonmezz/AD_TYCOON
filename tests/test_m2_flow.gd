@@ -129,7 +129,8 @@ func test_reviews_match_score_band() -> void:
 	var reviews: Array[Dictionary] = w.reviews(9.6, rng)
 	assert_eq(reviews.size(), 4)
 	for r: Dictionary in reviews:
-		assert_true(str(r["text_key"]).begins_with("REV_BAND5") or str(r["text_key"]).begins_with("REV_BAND4"))
+		var k: String = str(r["text_key"])  # S4: yayın havuzları REV_<yayın>_<aralık>_<n>
+		assert_true(k.contains("_5_") or k.contains("_4_") or k.begins_with("REVA_"), k)
 
 
 func test_all_data_text_keys_are_translated() -> void:

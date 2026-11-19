@@ -31,10 +31,10 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
   - Gazeteye görsel ekleme oyunu çok basit (tut-çek). Üç gazete olsun: biri dikey, biri fazla enine, biri doğru boyda; oyuncu doğrusunu bulsun.
 
 ## 4. aşama: Sonuç ve puanlama
-- [ ] "Neden işe yaradı / geri tepti" bölümü düz metin ve yavan; tasarım çalışılsın.
-- [ ] Kanal performansı sıkışık, sağında ölü alan var; alana yayılsın.
-- [ ] Özet ve yorumlar geçerken çubuğun boyu her seferinde değişiyor; sabit kalsın.
-- [ ] Kampanya yankısı metinleri çok tekrar ediyor; farklı gazeteler aynı yorumu yapıyor. Çok daha çeşitli olsun (3–4 ek alternatif değil).
+- [x] "Neden işe yaradı / geri tepti" bölümü düz metin ve yavan; tasarım çalışılsın.
+- [x] Kanal performansı sıkışık, sağında ölü alan var; alana yayılsın.
+- [x] Özet ve yorumlar geçerken çubuğun boyu her seferinde değişiyor; sabit kalsın.
+- [x] Kampanya yankısı metinleri çok tekrar ediyor; farklı gazeteler aynı yorumu yapıyor. Çok daha çeşitli olsun (3–4 ek alternatif değil).
 
 ## 5. aşama: Ekip
 - [ ] İşe alırken hep aynı (tek) erkek karakter geliyor. Ofiste olan bir görünüş, seçenekler bitene kadar tekrar gelmesin.

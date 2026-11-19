@@ -1734,3 +1734,19 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - İlan doğru gazeteye sürüklenince yerine oturuyor; yanlışa bırakılan geri dönüyor.
   - Her yanlış puanı düşürüyor (`minigames.newspaper_mistake_cost`); eski `newspaper_tolerance` kalktı.
 - **Ekipman ekranı:** Taşma eski prodüksiyon fazı panosundaydı; o pano yeni akışta yok, kiralıklar görev planında. "Kiralıklar" başlığı ve ipucu güncellendi; uzun ekipman adları kesilmiyor.
+
+## K-138 — İnceleme 4. aşama: sonuç ve puanlama (2026-11-19)
+- **"Neden bu puan?" (`ScoreFactors`):** Rapordaki düz cümle listesi ve formül dilindeki "Puan dökümü" sekmesi kalktı; yerine kendi sekmesinde 8 etken kartı geldi.
+  - Etkenler: iş miktarı, uyum, odak, strateji–kreatif dengesi, yenilik, kanal uyumu, hatalar, provalar.
+  - Her kartta derece (Güçlü/İyi/Nötr/Zayıf, renkli), dört dilimli ölçek ve bir cümle var. Cümle, o etkene ait rapor cümlesi (RL_*) varsa o, yoksa derecenin genel cümlesi (RF_*).
+  - Üstte en büyük güç ve en büyük zaaf yazıyor. Ham çarpanlar başlığın ve kartların ipucunda (ayar için).
+  - Eşikler `report_lines.json factors`.
+- **Sekmeler:** Özet, Neden bu puan?, Yorumlar, Gelir. İçerik alanı sabit yükseklikte (`ui_layout report_body_height`).
+  - Eskiden uzun sekme sığmayınca bütün pencere küçülüyor, sekme çubuğu ve başlık sekmeden sekmeye zıplıyordu.
+- **Kanal performansı:** Tablo tüm genişliğe yayılıyor. Kanal adı geniş sütunda, sayılar sağa yaslı, her satır açık zeminli.
+- **Yankılar:**
+  - Her yayının kendi sesi ve puan aralığı başına 5 cümlelik havuzu var: sektör dergisi, iş gazetesi, kreatif blog, müşteri. Toplam 100 cümle.
+  - Kampanyanın özelliğine bağlı 20 cümle var (hata, yenilik, öncü kanal, uyum, iş miktarı, KPI aşıldı/kaçtı, viral). Raporda en fazla birini, %40 olasılıkla bir yayın söylüyor.
+  - Aynı raporda bir cümle iki kez çıkmıyor (test var). Cümlelerde müşteri ve kanal adı geçiyor; kanal adına Türkçe ek gerekmeyecek biçimde yazıldı.
+- **Türkçe ondalık:** Yüzde ve işaretli sayılar virgüllü ("+%0,3", "-8,6").
+- **Puanlama adilliği (60 koşu):** Bilinçli oynayan bot ilk yıl ortalama 6,2, rastgele bot 4,4. Ayrım yerinde; formüle dokunulmadı.

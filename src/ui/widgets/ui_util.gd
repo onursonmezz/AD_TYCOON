@@ -283,6 +283,7 @@ static func percent(value_pct: float, decimals: int = 0, signed: bool = false) -
 	var num: String = ("%+." if signed else "%.") + str(decimals) + "f"
 	var s: String = num % value_pct
 	if TranslationServer.get_locale().begins_with("tr"):
+		s = s.replace(".", ",")  # Türkçede ondalık virgül (S4: "+%0.3" görünüyordu)
 		var sign: String = ""
 		if s.begins_with("+") or s.begins_with("-"):
 			sign = s.substr(0, 1)

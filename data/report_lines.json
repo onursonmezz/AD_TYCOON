@@ -175,19 +175,167 @@
 	"reviewers": [
 		{
 			"id": "reklam_dunyasi",
-			"name_key": "REVIEWER_REKLAM_DUNYASI"
+			"name_key": "REVIEWER_REKLAM_DUNYASI",
+			"bands": [
+				[
+					"REV_RD_1_1",
+					"REV_RD_1_2",
+					"REV_RD_1_3",
+					"REV_RD_1_4",
+					"REV_RD_1_5"
+				],
+				[
+					"REV_RD_2_1",
+					"REV_RD_2_2",
+					"REV_RD_2_3",
+					"REV_RD_2_4",
+					"REV_RD_2_5"
+				],
+				[
+					"REV_RD_3_1",
+					"REV_RD_3_2",
+					"REV_RD_3_3",
+					"REV_RD_3_4",
+					"REV_RD_3_5"
+				],
+				[
+					"REV_RD_4_1",
+					"REV_RD_4_2",
+					"REV_RD_4_3",
+					"REV_RD_4_4",
+					"REV_RD_4_5"
+				],
+				[
+					"REV_RD_5_1",
+					"REV_RD_5_2",
+					"REV_RD_5_3",
+					"REV_RD_5_4",
+					"REV_RD_5_5"
+				]
+			]
 		},
 		{
 			"id": "pazarlama_gazetesi",
-			"name_key": "REVIEWER_PAZARLAMA_GAZETESI"
+			"name_key": "REVIEWER_PAZARLAMA_GAZETESI",
+			"bands": [
+				[
+					"REV_PG_1_1",
+					"REV_PG_1_2",
+					"REV_PG_1_3",
+					"REV_PG_1_4",
+					"REV_PG_1_5"
+				],
+				[
+					"REV_PG_2_1",
+					"REV_PG_2_2",
+					"REV_PG_2_3",
+					"REV_PG_2_4",
+					"REV_PG_2_5"
+				],
+				[
+					"REV_PG_3_1",
+					"REV_PG_3_2",
+					"REV_PG_3_3",
+					"REV_PG_3_4",
+					"REV_PG_3_5"
+				],
+				[
+					"REV_PG_4_1",
+					"REV_PG_4_2",
+					"REV_PG_4_3",
+					"REV_PG_4_4",
+					"REV_PG_4_5"
+				],
+				[
+					"REV_PG_5_1",
+					"REV_PG_5_2",
+					"REV_PG_5_3",
+					"REV_PG_5_4",
+					"REV_PG_5_5"
+				]
+			]
 		},
 		{
 			"id": "kreatif_blog",
-			"name_key": "REVIEWER_KREATIF_BLOG"
+			"name_key": "REVIEWER_KREATIF_BLOG",
+			"bands": [
+				[
+					"REV_KB_1_1",
+					"REV_KB_1_2",
+					"REV_KB_1_3",
+					"REV_KB_1_4",
+					"REV_KB_1_5"
+				],
+				[
+					"REV_KB_2_1",
+					"REV_KB_2_2",
+					"REV_KB_2_3",
+					"REV_KB_2_4",
+					"REV_KB_2_5"
+				],
+				[
+					"REV_KB_3_1",
+					"REV_KB_3_2",
+					"REV_KB_3_3",
+					"REV_KB_3_4",
+					"REV_KB_3_5"
+				],
+				[
+					"REV_KB_4_1",
+					"REV_KB_4_2",
+					"REV_KB_4_3",
+					"REV_KB_4_4",
+					"REV_KB_4_5"
+				],
+				[
+					"REV_KB_5_1",
+					"REV_KB_5_2",
+					"REV_KB_5_3",
+					"REV_KB_5_4",
+					"REV_KB_5_5"
+				]
+			]
 		},
 		{
 			"id": "musteri",
-			"name_key": "REVIEWER_MUSTERI"
+			"name_key": "REVIEWER_MUSTERI",
+			"bands": [
+				[
+					"REV_MU_1_1",
+					"REV_MU_1_2",
+					"REV_MU_1_3",
+					"REV_MU_1_4",
+					"REV_MU_1_5"
+				],
+				[
+					"REV_MU_2_1",
+					"REV_MU_2_2",
+					"REV_MU_2_3",
+					"REV_MU_2_4",
+					"REV_MU_2_5"
+				],
+				[
+					"REV_MU_3_1",
+					"REV_MU_3_2",
+					"REV_MU_3_3",
+					"REV_MU_3_4",
+					"REV_MU_3_5"
+				],
+				[
+					"REV_MU_4_1",
+					"REV_MU_4_2",
+					"REV_MU_4_3",
+					"REV_MU_4_4",
+					"REV_MU_4_5"
+				],
+				[
+					"REV_MU_5_1",
+					"REV_MU_5_2",
+					"REV_MU_5_3",
+					"REV_MU_5_4",
+					"REV_MU_5_5"
+				]
+			]
 		}
 	],
 	"review_spread": 0.6,
@@ -227,5 +375,228 @@
 				"REV_BAND5_B"
 			]
 		}
-	]
+	],
+	"_factors": "S4 \"Neden bu puan?\" kartları: metric = ReportWriter.metrics alanı; thresholds = [zayıf altı, nötr altı, iyi altı] (invert: küçük iyi); rules = o etkene ait RL anahtarları.",
+	"factors": [
+		{
+			"id": "volume",
+			"icon": "users-group",
+			"name_key": "FACTOR_VOLUME",
+			"metric": "volume",
+			"thresholds": [
+				0.6,
+				0.85,
+				1.1
+			],
+			"rules": [
+				"RL_VOLUME_LOW",
+				"RL_VOLUME_HIGH"
+			]
+		},
+		{
+			"id": "fit",
+			"icon": "check",
+			"name_key": "FACTOR_FIT",
+			"metric": "m",
+			"thresholds": [
+				0.9,
+				1,
+				1.12
+			],
+			"rules": [
+				"RL_SH_BAD",
+				"RL_SK_BAD",
+				"RL_KN_BAD",
+				"RL_TONE_BAD",
+				"RL_SH_GOOD",
+				"RL_SK_GOOD",
+				"RL_KN_GOOD",
+				"RL_TONE_GOOD"
+			]
+		},
+		{
+			"id": "focus",
+			"icon": "search",
+			"name_key": "FACTOR_FOCUS",
+			"metric": "f",
+			"thresholds": [
+				0.95,
+				1.05,
+				1.15
+			],
+			"rules": [
+				"RL_F_BAD",
+				"RL_F_GOOD"
+			]
+		},
+		{
+			"id": "balance",
+			"icon": "stat-creative",
+			"name_key": "FACTOR_BALANCE",
+			"metric": "b",
+			"thresholds": [
+				0.85,
+				0.92,
+				0.97
+			],
+			"rules": [
+				"RL_B_ANALYTIC",
+				"RL_B_CREATIVE",
+				"RL_B_GOOD"
+			]
+		},
+		{
+			"id": "novelty",
+			"icon": "refresh",
+			"name_key": "FACTOR_NOVELTY",
+			"metric": "n",
+			"thresholds": [
+				0.8,
+				0.95,
+				1.05
+			],
+			"rules": [
+				"RL_N_BAD",
+				"RL_N_PIONEER"
+			]
+		},
+		{
+			"id": "synergy",
+			"icon": "speakerphone",
+			"name_key": "FACTOR_SYNERGY",
+			"metric": "synergy",
+			"thresholds": [
+				0.95,
+				1,
+				1.04
+			],
+			"rules": [
+				"RL_FRAGMENTED",
+				"RL_SYNERGY"
+			]
+		},
+		{
+			"id": "errors",
+			"icon": "alert-triangle",
+			"name_key": "FACTOR_ERRORS",
+			"metric": "errors",
+			"invert": true,
+			"thresholds": [
+				3,
+				1,
+				0
+			],
+			"rules": [
+				"RL_ERRORS"
+			]
+		},
+		{
+			"id": "minigame",
+			"icon": "player-play",
+			"name_key": "FACTOR_MINIGAME",
+			"metric": "minigame",
+			"thresholds": [
+				1.005,
+				1.02,
+				1.035
+			],
+			"rules": []
+		}
+	],
+	"review_aspects": [
+		{
+			"id": "errors_high",
+			"metric": "errors",
+			"op": ">",
+			"value": 3,
+			"keys": [
+				"REVA_ERRORS_HIGH_1",
+				"REVA_ERRORS_HIGH_2",
+				"REVA_ERRORS_HIGH_3"
+			]
+		},
+		{
+			"id": "novelty_bad",
+			"metric": "n",
+			"op": "<=",
+			"value": 0.8,
+			"keys": [
+				"REVA_NOVELTY_BAD_1",
+				"REVA_NOVELTY_BAD_2",
+				"REVA_NOVELTY_BAD_3"
+			]
+		},
+		{
+			"id": "pioneer",
+			"metric": "n",
+			"op": ">=",
+			"value": 1.05,
+			"keys": [
+				"REVA_PIONEER_1",
+				"REVA_PIONEER_2"
+			]
+		},
+		{
+			"id": "fit_bad",
+			"metric": "m",
+			"op": "<=",
+			"value": 0.9,
+			"keys": [
+				"REVA_FIT_BAD_1",
+				"REVA_FIT_BAD_2"
+			]
+		},
+		{
+			"id": "fit_good",
+			"metric": "m",
+			"op": ">=",
+			"value": 1.12,
+			"keys": [
+				"REVA_FIT_GOOD_1",
+				"REVA_FIT_GOOD_2"
+			]
+		},
+		{
+			"id": "volume_low",
+			"metric": "volume",
+			"op": "<=",
+			"value": 0.6,
+			"keys": [
+				"REVA_VOLUME_LOW_1",
+				"REVA_VOLUME_LOW_2"
+			]
+		},
+		{
+			"id": "kpi_beaten",
+			"metric": "kpi_ratio",
+			"op": ">=",
+			"value": 1.2,
+			"keys": [
+				"REVA_KPI_BEATEN_1",
+				"REVA_KPI_BEATEN_2"
+			]
+		},
+		{
+			"id": "kpi_missed",
+			"metric": "kpi_ratio",
+			"op": "<",
+			"value": 0.7,
+			"keys": [
+				"REVA_KPI_MISSED_1",
+				"REVA_KPI_MISSED_2"
+			]
+		},
+		{
+			"id": "viral",
+			"metric": "viral",
+			"op": ">=",
+			"value": 1,
+			"keys": [
+				"REVA_VIRAL_1",
+				"REVA_VIRAL_2"
+			]
+		}
+	],
+	"review_aspect_chance": 0.4,
+	"_reviews": "S4: her yayının kendi sesi (reviewers[].bands, review_bands sırasıyla) ve kampanyaya özgü cümleler (review_aspects). Aynı raporda bir cümle tekrar etmez. Metinlerde {client} ve {channel}."
 }

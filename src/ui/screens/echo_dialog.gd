@@ -79,7 +79,7 @@ func _review_card(r: Dictionary) -> PanelContainer:
 	var of: Label = UiUtil.label("/ 10", 12, CozyTheme.MUTED)
 	of.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(of)
-	var quote: Label = UiUtil.wrapped("“%s”" % tr(r["text_key"]), 14, CozyTheme.TEXT, 110.0)
+	var quote: Label = UiUtil.wrapped("“%s”" % ReportDialog.review_text(_camp, r), 14, CozyTheme.TEXT, 110.0)
 	quote.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	quote.add_theme_font_override("font", MenuArt.italic(CozyTheme.body_font()))
 	v.add_child(quote)

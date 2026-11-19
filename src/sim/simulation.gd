@@ -358,7 +358,7 @@ func _finish(camp: Dictionary) -> void:
 		else:
 			staff_note.emit("NOTE_LEVEL_UP", [emp_name], "good")
 	camp["lines"] = reports.explanation_lines(camp["report"])
-	camp["reviews"] = reports.reviews(score, state.rng.stream("reviews"))
+	camp["reviews"] = reports.reviews(score, state.rng.stream("reviews"), camp)
 	state.finished.append(camp)
 	while state.finished.size() > data.bali("ui.finished_campaigns_kept"):
 		state.finished.pop_front()

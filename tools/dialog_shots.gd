@@ -68,7 +68,7 @@ func _run() -> void:
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before and days < WARMUP_DAYS * 2:
 		if GameState.is_waiting():
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+			GameState.execute(MinigameResultCommand.new(GameState.sim.production.current_phase(GameState.sim.state.active_campaign), 0.6)) if not GameState.sim.state.active_campaign.is_empty() else null
 		_step()
 		days += 1
 	_screen.call("close_panel")
@@ -76,7 +76,7 @@ func _run() -> void:
 	await _open(EchoDialog.new(camp, func() -> void: pass))
 	await _shot("echo")
 	var report: ReportDialog = await _open(ReportDialog.new(camp))
-	for tab: String in ["summary", "reviews", "income", "breakdown"]:
+	for tab: String in ["summary", "why", "reviews", "income"]:
 		report.call("_show_tab", tab)
 		await _shot("report_" + tab)
 	var client: Dictionary = sim.state.clients.get(str(camp["setup"].get("client_id", "")), {})

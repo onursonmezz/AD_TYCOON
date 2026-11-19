@@ -75,7 +75,7 @@ func test_percent_follows_language() -> void:
 	TranslationServer.set_locale("tr")
 	assert_eq(UiUtil.percent(55.0), "%55")
 	assert_eq(UiUtil.percent(-12.0), "-%12")
-	assert_eq(UiUtil.percent(0.3, 1, true), "+%0.3")
+	assert_eq(UiUtil.percent(0.3, 1, true), "+%0,3")  # S4: Türkçede ondalık virgül
 	TranslationServer.set_locale("en")
 	assert_eq(UiUtil.percent(55.0), "55%")
 	assert_eq(UiUtil.percent(0.3, 1, true), "+0.3%")

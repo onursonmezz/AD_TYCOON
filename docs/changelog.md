@@ -1,5 +1,18 @@
 # Değişiklik günlüğü
 
+## İnceleme 4. aşama: sonuç ve puanlama (2026-11-19)
+- Raporda yeni "Neden bu puan?" sekmesi var. Puanı etkileyen 8 etken renkli kartlarda; her birinde Güçlü/İyi/Nötr/Zayıf derecesi ve ne yapman gerektiğini söyleyen bir cümle var. Formül dilindeki puan dökümü kalktı (sayılar ipucunda).
+- Kanal performans tablosu pencerenin tamamına yayılıyor.
+- Sekmeler arasında geçerken pencere ve sekme çubuğu artık zıplamıyor.
+- Yankılarda her yayının kendi sesi ve kendi cümleleri var (120 yeni cümle). Aynı raporda bir cümle tekrar etmiyor; cümlelerde müşterinin ve kanalın adı geçiyor.
+- Türkçede ondalıklar virgüllü.
+- Nasıl test ederim:
+  1. Bir kampanyayı bitir. Yankılar penceresinde dört yorum birbirinden farklı olmalı; bazılarında müşterinin adı geçmeli.
+  2. Raporu incele. Sekmeler arasında gezin; başlık ve sekme çubuğu yerinden oynamamalı.
+  3. Neden bu puan? sekmesinde 8 kart görmelisin. Üstte en büyük güç ve zaaf yazmalı; bir karta gelince ham sayı çıkmalı.
+  4. Özet sekmesinde kanal tablosu pencerenin tamamına yayılmalı.
+  5. Birkaç kampanya daha bitir; yorumlar her seferinde farklı olmalı.
+
 ## İnceleme 3. aşama: kampanya sistemi (2026-11-19)
 - **Görev planı:** "Kampanyayı başlat" önce bir görev planı açıyor.
   - Üç fazın görevlerine ağırlık çubuklarıyla önem veriyorsun.

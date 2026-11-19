@@ -1,11 +1,10 @@
 class_name ReportDialog
 extends Control
 ## Kampanya raporu (GDD 7.10, 7.12, 20; UI-3 taslakları 01/02): üstte müşteri ve sayarak yükselen genel puan;
-## dört sekme: Özet (KPI kartları, kanal tablosu, açıklama cümleleri), Yorumlar (dört yayın), Gelir ve kazanımlar,
-## Puan dökümü (çarpanlar; ayar için, A-005).
+## dört sekme: Özet (KPI kartları, kanal tablosu), Neden bu puan? (etken kartları, S4), Yorumlar (dört yayın),
+## Gelir ve kazanımlar. İçerik alanı sabit yükseklikte: sekme değişince pencere ve sekme çubuğu zıplamaz (S4).
 
-const TABS: Array = [["summary", "UI_REP_SUMMARY"], ["reviews", "UI_REP_REVIEWS"], ["income", "UI_REP_INCOME"],
-	["breakdown", "UI_REP_BREAKDOWN"]]
+const TABS: Array = [["summary", "UI_REP_SUMMARY"], ["why", "UI_WHY"], ["reviews", "UI_REP_REVIEWS"], ["income", "UI_REP_INCOME"]]
 const KPI_ICONS: Array[String] = ["users-group", "star", "check", "speakerphone", "coins", "chart-bar"]
 
 var _camp: Dictionary
@@ -56,6 +55,7 @@ func _ready() -> void:
 	_tabs_row = UiUtil.hbox()
 	col.add_child(_tabs_row)
 	_body = UiUtil.vbox(CozyTheme.SPACE_S)
+	_body.custom_minimum_size.y = float(data.raw["ui_layout.json"]["report_body_height"])
 	col.add_child(_body)
 	_show_tab("summary")
 	# Alt satır kaydırmanın dışında: uzun raporda da Kapat hep görünür.
@@ -86,20 +86,14 @@ func _show_tab(id: String) -> void:
 			_body.add_child(_kpi_cards())
 			_body.add_child(Cards.section(tr("UI_REP_CHANNELS"), "", "chart-bar"))
 			_body.add_child(_channel_table())
-			_body.add_child(Cards.section(tr("UI_WHY")))
-			var lines: Array = _camp.get("lines", [])
-			if lines.is_empty():
-				_body.add_child(UiUtil.label(tr("RL_NOTHING_SPECIAL"), 14, UiUtil.MUTED))
-			for line: Dictionary in lines:
-				var good: bool = int(line["sign"]) > 0
-				_body.add_child(UiUtil.wrapped(("＋ " if good else "－ ") + tr(line["key"]), 14,
-					CozyTheme.TEXT if good else UiUtil.TERRACOTTA, 600.0))
+		"why":
+			var factors: ScoreFactors = ScoreFactors.new(_camp)
+			factors.raw_tip = _raw_text(_camp["report"])  # ham sayılar ipucunda (ayar için, A-005)
+			_body.add_child(factors)
 		"reviews":
 			_body.add_child(_reviews())
 		"income":
 			_body.add_child(_money_block())
-		"breakdown":
-			_body.add_child(_breakdown_block(_camp["report"]))
 
 
 ## Dört yayının puanı ve yorumu yan yana kartlarda (taslak 01).
@@ -125,7 +119,7 @@ func _reviews() -> HBoxContainer:
 		var of: Label = UiUtil.label("/ 10", 12, CozyTheme.MUTED)
 		of.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		v.add_child(of)
-		var quote: Label = UiUtil.wrapped("“%s”" % tr(r["text_key"]), 13, CozyTheme.TEXT, 100.0)
+		var quote: Label = UiUtil.wrapped("“%s”" % review_text(_camp, r), 13, CozyTheme.TEXT, 100.0)
 		quote.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		quote.add_theme_font_override("font", MenuArt.italic(CozyTheme.body_font()))
 		v.add_child(quote)
@@ -133,12 +127,19 @@ func _reviews() -> HBoxContainer:
 	return row
 
 
+## Yorum cümlesi: {client} ve {channel} kampanyanın müşterisi ve ana kanalıyla dolar (S4).
+static func review_text(camp: Dictionary, r: Dictionary) -> String:
+	var setup: Dictionary = camp.get("setup", {})
+	return TranslationServer.translate(str(r["text_key"])).format({"client": str(setup.get("client_name", "")),
+		"channel": UiUtil.name_of(DataDB.data.channels, Scoring.main_channel(setup.get("mix", [])))})
+
+
 ## Alt satır: müşteri memnuniyeti değişimi, kazanılan AP ve bilgi etiketleri, Tamam.
 func _footer() -> HBoxContainer:
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	row.add_child(UiUtil.icon("users-group", 18, CozyTheme.TERRA))
 	var delta: float = float(_camp.get("satisfaction_delta", 0.0))
-	var sat: Label = UiUtil.label(tr("UI_SATISFACTION_DELTA") % ("%+.1f" % delta), 14,
+	var sat: Label = UiUtil.label(tr("UI_SATISFACTION_DELTA") % UiUtil.num(delta, 1, true), 14,
 		CozyTheme.FOREST if delta >= 0.0 else UiUtil.TERRACOTTA)
 	sat.add_theme_font_override("font", CozyTheme.strong_font())
 	row.add_child(sat)
@@ -182,23 +183,41 @@ func _kpi_cards() -> GridContainer:
 	return grid
 
 
-## Kanal bazında KPI (GDD 7.10, M4).
-func _channel_table() -> GridContainer:
-	var grid: GridContainer = GridContainer.new()
-	grid.columns = 6
-	grid.add_theme_constant_override("h_separation", 18)
-	for key: String in ["UI_COL_CHANNEL", "UI_COL_SPEND", "UI_COL_IMPRESSIONS", "KPI_REACH", "KPI_ENGAGEMENTS", "KPI_CONVERSIONS"]:
-		grid.add_child(UiUtil.label(tr(key), 13, UiUtil.WOOD))
+## Kanal bazında KPI (GDD 7.10, M4): tablo tüm genişliğe yayılır (S4: eskiden solda sıkışıktı); kanal adı geniş
+## sütun, sayılar sağa yaslı; her kanal satırı açık zeminli.
+func _channel_table() -> VBoxContainer:
+	var box: VBoxContainer = UiUtil.vbox(4)
+	box.add_child(_table_row([tr("UI_COL_CHANNEL"), tr("UI_COL_SPEND"), tr("UI_COL_IMPRESSIONS"), tr("KPI_REACH"),
+		tr("KPI_ENGAGEMENTS"), tr("KPI_CONVERSIONS")], true, ""))
 	var budget: float = float(_camp["setup"]["media_budget"])
 	var shares: Dictionary = {}
 	for entry: Dictionary in _camp["setup"]["mix"]:
 		shares[entry["channel"]] = float(entry["share"])
 	for row: Dictionary in _camp.get("kpi", {}).get("per_channel", []):
-		grid.add_child(UiUtil.label(UiUtil.name_of(DataDB.data.channels, row["channel"]), 14))
-		grid.add_child(UiUtil.label(UiUtil.money(budget * float(shares.get(row["channel"], 0.0))), 14))
+		var cells: Array = [UiUtil.name_of(DataDB.data.channels, row["channel"]),
+			UiUtil.money(budget * float(shares.get(row["channel"], 0.0)))]
 		for key: String in ["impressions", "reach", "engagements", "conversions"]:
-			grid.add_child(UiUtil.label(UiUtil.big_number(float(row[key])), 14))
-	return grid
+			cells.append(UiUtil.big_number(float(row[key])))
+		box.add_child(_table_row(cells, false, str(row["channel"])))
+	return box
+
+
+func _table_row(cells: Array, head: bool, channel: String) -> PanelContainer:
+	var panel: PanelContainer = PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", CozyTheme.box(Color.TRANSPARENT if head else CozyTheme.CREAM_LIGHT,
+		CozyTheme.RADIUS_CONTROL, Color.TRANSPARENT if head else CozyTheme.BORDER, 0 if head else 1, false, Vector2(10, 4)))
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	panel.add_child(row)
+	for i: int in cells.size():
+		var l: Label = UiUtil.label(str(cells[i]), 12 if head else 14, UiUtil.WOOD if head else CozyTheme.TEXT)
+		if i == 0 and not head:
+			l.add_theme_font_override("font", CozyTheme.strong_font())
+		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		l.size_flags_stretch_ratio = 1.6 if i == 0 else 1.0
+		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if i == 0 else HORIZONTAL_ALIGNMENT_RIGHT
+		l.clip_text = true
+		row.add_child(l)
+	return panel
 
 
 func _money_block() -> VBoxContainer:
@@ -232,7 +251,7 @@ func _money_block() -> VBoxContainer:
 		v.add_child(UiUtil.label("✎ " + FocusHint.sentence(obj, str(focus_id)), 14,
 			FocusHint.color_of(FocusHint.value(obj, str(focus_id)))))
 	var delta: float = float(_camp.get("satisfaction_delta", 0.0))
-	v.add_child(UiUtil.label(tr("UI_SATISFACTION_DELTA") % ("%+.1f" % delta), 15,
+	v.add_child(UiUtil.label(tr("UI_SATISFACTION_DELTA") % UiUtil.num(delta, 1, true), 15,
 		UiUtil.SAGE_DARK if delta >= 0.0 else UiUtil.TERRACOTTA))
 	v.add_child(_satisfaction_parts())
 	return v
@@ -256,20 +275,19 @@ func _satisfaction_parts() -> VBoxContainer:
 			text = tr("SAT_KPI") % int(roundf(100.0 * float(_camp.get("kpi_ratio", 0.0))))
 		elif key == "timing" and value < 0.0:
 			text = tr("SAT_LATE") % int(_camp["setup"].get("late_weeks", 0))
-		box.add_child(UiUtil.label("    %+.1f  %s" % [value, text], 13, UiUtil.SAGE_DARK if value >= 0.0 else UiUtil.TERRACOTTA))
+		box.add_child(UiUtil.label("    %s  %s" % [UiUtil.num(value, 1, true), text], 13, UiUtil.SAGE_DARK if value >= 0.0 else UiUtil.TERRACOTTA))
 	return box
 
 
-func _breakdown_block(report: Dictionary) -> VBoxContainer:
-	var v: VBoxContainer = UiUtil.vbox(2)
+## Ham sayılar (ayar için, A-005): "Neden bu puan?" sekmesinde başlığın ipucu.
+func _raw_text(report: Dictionary) -> String:
 	var comb: Dictionary = report["combination"]
 	var bal: Dictionary = report["balance"]
-	var text: String = tr("BD_LINE1") % [comb["m"], comb["sh"], comb["sk"], comb["kn"], comb["tone"]] + "\n"
-	text += tr("BD_LINE2") % [report["focus"]["f"], bal["b"], bal["ratio"], bal["ideal"], report["novelty"]["n"],
-		report["synergy"]["synergy"]] + "\n"
-	text += tr("BD_LINE3") % [report["s"], report["k"], report["t"], int(report["errors"])] + "\n"
-	text += tr("BD_LINE4") % [report["raw"], report["target"], report["r"]]
-	text += "
-" + tr("BD_MINIGAME") % UiUtil.num(float(report.get("minigame", 1.0)), 3)  # K-120: mini oyun bonusu (en çok ×1,05)
-	v.add_child(UiUtil.label(text, 13, UiUtil.MUTED))
-	return v
+	var lines: PackedStringArray = PackedStringArray([
+		tr("BD_LINE1") % [comb["m"], comb["sh"], comb["sk"], comb["kn"], comb["tone"]],
+		tr("BD_LINE2") % [report["focus"]["f"], bal["b"], bal["ratio"], bal["ideal"], report["novelty"]["n"],
+			report["synergy"]["synergy"]],
+		tr("BD_LINE3") % [report["s"], report["k"], report["t"], int(report["errors"])],
+		tr("BD_LINE4") % [report["raw"], report["target"], report["r"]],
+		tr("BD_MINIGAME") % UiUtil.num(float(report.get("minigame", 1.0)), 3)])
+	return "\n".join(lines)

@@ -164,10 +164,10 @@ func _echo() -> void:
 	var sim: Simulation = GameState.sim
 	_close_modals()
 	var before: int = sim.state.finished.size()
-	GameState.set_phase_sliders([0.4, 0.4, 0.2])
+	GameState.execute(MinigameResultCommand.new(GameState.sim.production.current_phase(GameState.sim.state.active_campaign), 0.6)) if not GameState.sim.state.active_campaign.is_empty() else null
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+			GameState.execute(MinigameResultCommand.new(GameState.sim.production.current_phase(GameState.sim.state.active_campaign), 0.6)) if not GameState.sim.state.active_campaign.is_empty() else null
 		_step()
 	await _wait(0.2)
 	_close_modals()

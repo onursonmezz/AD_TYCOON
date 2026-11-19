@@ -1877,3 +1877,170 @@ UI_DELIVER_NOW,Kampanyayı teslim et,Deliver the campaign
 UI_STRIP_POLISH,Rötuş · %d gün,Polish · %d days
 ERR_NOT_READY,Üretim henüz bitmedi.,Production is not finished yet.
 UI_PHASE_WORKING_PLANNED,"Ekip planladığın görevler üzerinde çalışıyor; ilerlemeyi üstteki şeritten de izleyebilirsin.","The team is working on the tasks you planned; you can also follow progress on the strip at the top."
+FACTOR_VOLUME,İş miktarı,Amount of work
+FACTOR_FIT,Uyum,Fit
+FACTOR_FOCUS,Odak,Focus
+FACTOR_BALANCE,Strateji–kreatif dengesi,Strategy–creative balance
+FACTOR_NOVELTY,Yenilik,Novelty
+FACTOR_SYNERGY,Kanal uyumu,Channel synergy
+FACTOR_ERRORS,Hatalar,Errors
+FACTOR_MINIGAME,Provalar,Rehearsals
+UI_WHY_STRONG,Güçlü,Strong
+UI_WHY_GOOD,İyi,Good
+UI_WHY_NEUTRAL,Nötr,Neutral
+UI_WHY_WEAK,Zayıf,Weak
+UI_WHY_BEST,En büyük güç: %s,Biggest strength: %s
+UI_WHY_WORST,En büyük zaaf: %s,Biggest weakness: %s
+UI_WHY_RAW,Çarpan: %s,Multiplier: %s
+RF_VOLUME_STRONG,Ekip bu işe beklenenden çok emek verdi.,The team put in more work than expected.
+RF_VOLUME_GOOD,Emek bu iş için yeterliydi.,The work put in was enough for this job.
+RF_VOLUME_NEUTRAL,"Emek biraz az kaldı; daha uzun süre ya da güçlü ekip.","A little short on work; more time or a stronger team."
+RF_VOLUME_WEAK,Bu iş için harcanan emek çok az kaldı.,Far too little work went into this job.
+RF_FIT_STRONG,"Hedef, kitle, kanal ve ton birbirine çok yakıştı.","Objective, audience, channel and tone fit together beautifully."
+RF_FIT_GOOD,Seçimler birbirine uygundu.,The choices suited each other.
+RF_FIT_NEUTRAL,Seçimler ne iyi ne kötü; daha uyumlu bir kanal ya da ton denenebilir.,The choices were so-so; try a better-suited channel or tone.
+RF_FIT_WEAK,"Hedef, kitle ya da kanal bu işe uymadı.","The objective, audience or channel did not suit this job."
+RF_FOCUS_STRONG,Ağırlığı tam önemli görevlere verdin.,You put the weight exactly on the important tasks.
+RF_FOCUS_GOOD,Görev ağırlıkları hedefe uygundu.,The task weights suited the objective.
+RF_FOCUS_NEUTRAL,Ağırlıklar hedefle tam örtüşmedi; Bilgi Defteri'ndeki işaretlere bak.,The weights did not quite match the objective; check the hints in the Knowledge Book.
+RF_FOCUS_WEAK,Ağırlık bu hedef için önemsiz görevlere gitti.,The weight went to tasks that matter little for this objective.
+RF_BALANCE_STRONG,Strateji ve kreatif tam kıvamındaydı.,Strategy and creative were perfectly balanced.
+RF_BALANCE_GOOD,Strateji ve kreatif dengeliydi.,Strategy and creative were balanced.
+RF_BALANCE_NEUTRAL,Biri öbürüne biraz ağır bastı.,One side outweighed the other a little.
+RF_BALANCE_WEAK,Strateji ile kreatif arasında büyük bir dengesizlik vardı.,Strategy and creative were badly out of balance.
+RF_NOVELTY_STRONG,Taze bir fikir; kimse bunu daha önce görmemişti.,A fresh idea; nobody had seen this before.
+RF_NOVELTY_GOOD,Fikir yeterince yeni.,The idea felt new enough.
+RF_NOVELTY_NEUTRAL,Benzerini son zamanlarda yapmışsın; biraz tekrar gibi geldi.,You did something similar recently; it felt a bit repetitive.
+RF_NOVELTY_WEAK,"Aynı sektör, hedef ve kanalı üst üste kullandın; fikir eskidi.","Same sector, objective and channel back to back; the idea felt stale."
+RF_SYNERGY_STRONG,Kanallar birbirini güçlendirdi.,The channels boosted each other.
+RF_SYNERGY_GOOD,Kanallar birbirine engel olmadı.,The channels did not get in each other's way.
+RF_SYNERGY_NEUTRAL,Kanallar arasında bir bağ kurulmadı.,No real link formed between the channels.
+RF_SYNERGY_WEAK,Bütçe çok fazla kanala bölündü.,The budget was split across too many channels.
+RF_ERRORS_STRONG,Tek bir hata bile yok.,Not a single error.
+RF_ERRORS_GOOD,"Bir iki küçük hata, kimse fark etmedi.",A small slip or two that nobody noticed.
+RF_ERRORS_NEUTRAL,Birkaç hata gözden kaçtı; rötuşa zaman ayırmak işe yarar.,A few errors slipped through; time for polish helps.
+RF_ERRORS_WEAK,Çok fazla hata vardı; rötuş yapmadan teslim etmek pahalıya patladı.,Lots of errors; delivering without polish cost dearly.
+RF_MINIGAME_STRONG,"Provalar harika geçti, kampanyaya ek güç kattı.",The rehearsals went great and gave the campaign a boost.
+RF_MINIGAME_GOOD,Provalar iyi geçti.,The rehearsals went well.
+RF_MINIGAME_NEUTRAL,Provalardan küçük bir katkı geldi.,The rehearsals added a little.
+RF_MINIGAME_WEAK,Provalardan katkı gelmedi.,The rehearsals added nothing.
+REV_RD_1_1,"{client} için çıkan iş, sektörün yıllık ""kaçırılan fırsatlar"" listesine aday.","This {client} work is a candidate for the industry's yearly ""missed chances"" list."
+REV_RD_1_2,Brief'le kampanya arasında bir yerde fikir kaybolmuş.,"Somewhere between the brief and the campaign, the idea got lost."
+REV_RD_1_3,Ajansın vitrinine koymayacağı türden bir iş.,Not the kind of work this agency will put in its showcase.
+REV_RD_1_4,{channel} doğru mecra olabilirdi; ama söyleyecek bir şey yoktu.,"{channel} might have been the right medium, but there was nothing to say."
+REV_RD_1_5,Meslektaşlar bu işi sessizce geçiştirmeyi tercih ediyor.,Colleagues prefer to pass over this one in silence.
+REV_RD_2_1,"Doğru sorular sorulmuş, ama cevaplar yarım kalmış.","The right questions were asked, but the answers stop halfway."
+REV_RD_2_2,"{client} kampanyası teknik olarak temiz, ruhen eksik.",The {client} campaign is technically clean but lacks a soul.
+REV_RD_2_3,Bir taslak gibi duruyor; bitmiş hâlini görmek isterdik.,It reads like a draft; we'd love to see the finished version.
+REV_RD_2_4,"Ajans güvenli oynamış, sonuç da öyle: unutulabilir.","The agency played it safe, and the result shows it: forgettable."
+REV_RD_2_5,"{channel} planı makul, fikir ise sıradan.",The {channel} plan is sensible; the idea is ordinary.
+REV_RD_3_1,Sağlam bir zanaat işi; sektör ortalamasının üstünde.,"Solid craftsmanship, above the industry average."
+REV_RD_3_2,"{client} için düzgün, profesyonel bir kampanya.","A neat, professional campaign for {client}."
+REV_RD_3_3,Büyük bir risk yok ama hata da yok.,"No big risks, but no mistakes either."
+REV_RD_3_4,{channel} kullanımı ders kitabı gibi.,Textbook use of {channel}.
+REV_RD_3_5,Ajansın istikrarlı çizgisini koruyan bir iş.,Work that keeps the agency on a steady line.
+REV_RD_4_1,Sektörde konuşulacak işlerden biri.,One of the pieces the industry will be talking about.
+REV_RD_4_2,{client} doğru ajansı seçmiş görünüyor.,{client} seems to have picked the right agency.
+REV_RD_4_3,Strateji ile kreatif aynı yöne koşmuş.,Strategy and creative ran in the same direction.
+REV_RD_4_4,{channel} hiç bu kadar akıllıca kullanılmamıştı.,{channel} has rarely been used this smartly.
+REV_RD_4_5,Ödül sezonunda bu ismi tekrar duyacağız.,We'll hear this name again come awards season.
+REV_RD_5_1,Yılın işi demek için erken ama aday olduğu kesin.,"Too early to call it work of the year, but it is surely a contender."
+REV_RD_5_2,{client} kampanyası sektörde çıtayı yükseltti.,The {client} campaign raised the bar for the industry.
+REV_RD_5_3,Ders olarak okutulacak türden bir kampanya.,The kind of campaign that will be taught in classes.
+REV_RD_5_4,Rakip ajansların toplantı odalarında bu iş konuşuluyor.,This work is being discussed in rival agencies' meeting rooms.
+REV_RD_5_5,"Fikir, zanaat ve zamanlama aynı anda kusursuz.","Idea, craft and timing, all flawless at once."
+REV_PG_1_1,"Bütçe harcandı, sonuç ortada yok.",The budget was spent; the results are nowhere to be seen.
+REV_PG_1_2,{client} hissedarlarına bu kampanyayı anlatmak zor olacak.,{client} will have a hard time explaining this campaign to shareholders.
+REV_PG_1_3,Yatırımın geri dönüşü hayal kırıklığı.,A disappointing return on investment.
+REV_PG_1_4,{channel} için ayrılan para başka yerde daha iyi çalışırdı.,The money set aside for {channel} would have worked better elsewhere.
+REV_PG_1_5,Satış ekipleri bu kampanyadan bir şey beklemiyor.,Sales teams aren't expecting much from this campaign.
+REV_PG_2_1,Rakamlar kıpırdadı ama yerinden oynamadı.,The numbers twitched but didn't really move.
+REV_PG_2_2,{client} için ortalamanın altında bir çeyrek kampanyası.,A below-average quarter campaign for {client}.
+REV_PG_2_3,Harcamaya göre görünürlük zayıf.,Weak visibility for the money spent.
+REV_PG_2_4,"Hedefe yaklaşıldı, ulaşılamadı.",It came close to the target but fell short.
+REV_PG_2_5,{channel} planı daha keskin olabilirdi.,The {channel} plan could have been sharper.
+REV_PG_3_1,"Bütçe yerinde harcanmış, sonuçlar beklenen düzeyde.",Money well spent; the results are as expected.
+REV_PG_3_2,{client} için kârlı ama gösterişsiz bir dönem.,A profitable if unflashy period for {client}.
+REV_PG_3_3,"Ölçülebilir, öngörülebilir, güvenilir.","Measurable, predictable, reliable."
+REV_PG_3_4,{channel} yatırımı kendini çıkardı.,The {channel} spend paid for itself.
+REV_PG_3_5,Yönetim kurulu bu rakamlardan memnun kalacak.,The board will be happy with these numbers.
+REV_PG_4_1,Satış grafiğinde net bir sıçrama var.,There is a clear jump in the sales chart.
+REV_PG_4_2,{client} hisseleri kampanya haftasında hareketlendi.,{client} shares picked up during the campaign week.
+REV_PG_4_3,Her lira çalışmış görünüyor.,Every lira seems to have done its job.
+REV_PG_4_4,{channel} bu kampanyayla yeniden değerlendi.,{channel} gained new value through this campaign.
+REV_PG_4_5,Pazar payı rakamlarında belirgin bir artış bekleniyor.,A clear rise in market share is expected.
+REV_PG_5_1,Yılın en verimli reklam yatırımlarından biri.,One of the most efficient ad investments of the year.
+REV_PG_5_2,{client} bu kampanyayla pazarda konum değiştirdi.,"With this campaign, {client} shifted its market position."
+REV_PG_5_3,Rakamlar ajansın faturasını fazlasıyla haklı çıkarıyor.,The numbers more than justify the agency's fee.
+REV_PG_5_4,Analistler bu kampanyayı örnek vaka olarak inceliyor.,Analysts are studying this campaign as a case study.
+REV_PG_5_5,{channel} yatırımı beklentinin katlarca üstünde döndü.,The {channel} spend returned several times the expectation.
+REV_KB_1_1,"Bu reklamı görünce kahvemi döktüm. Hayır, iyi anlamda değil.","I spilled my coffee when I saw this ad. No, not in a good way."
+REV_KB_1_2,"{client} reklamı mı, yanlışlıkla yayınlanmış bir taslak mı?",Is this a {client} ad or a draft published by mistake?
+REV_KB_1_3,Yaratıcılık bu kampanyaya uğramadan geçmiş.,Creativity walked right past this campaign.
+REV_KB_1_4,Görür görmez kanal değiştirdim. ({channel}),"Saw it on {channel}, changed the channel."
+REV_KB_1_5,Fikir toplantısı beş dakika sürmüş olmalı.,The brainstorm must have lasted five minutes.
+REV_KB_2_1,"Bir yerlerde iyi bir fikir saklanıyor, bulamadık.",There's a good idea hiding in here somewhere; we couldn't find it.
+REV_KB_2_2,{client} için daha cesur olunabilirdi.,It could have been braver for {client}.
+REV_KB_2_3,"Renkler güzel, hikâye yok.","Nice colors, no story."
+REV_KB_2_4,Ekip yorgun muydu? İş biraz uykulu.,Was the team tired? The work feels a bit sleepy.
+REV_KB_2_5,{channel} için fazla sıradan.,Too ordinary for {channel}.
+REV_KB_3_1,"Tatlı bir iş, ama yarın hatırlar mıyız bilmem.","A sweet piece, though I'm not sure we'll remember it tomorrow."
+REV_KB_3_2,{client} kampanyasında güzel küçük dokunuşlar var.,There are nice little touches in the {client} campaign.
+REV_KB_3_3,"İzlerken gülümsedim, paylaşmadım.",I smiled while watching; I didn't share it.
+REV_KB_3_4,"Mecrasına ({channel}) yakışan, derli toplu bir fikir.",A tidy idea that suits {channel}.
+REV_KB_3_5,Biraz daha delilik iyi olurdu ama fena değil.,"A bit more madness would help, but not bad."
+REV_KB_4_1,"Bunu herkese attım, grup sohbeti çıldırdı.",Sent it to everyone; the group chat went wild.
+REV_KB_4_2,{client} reklamı bu hafta favorim.,The {client} ad is my favourite this week.
+REV_KB_4_3,"Fikir basit, etkisi büyük. İşte reklam bu.","Simple idea, big impact. That's advertising."
+REV_KB_4_4,{channel} denince artık bu iş akla gelecek.,Work that makes you love {channel} again.
+REV_KB_4_5,"Ekip bu işte gerçekten eğlenmiş, belli oluyor.",You can tell the team really had fun with this one.
+REV_KB_5_1,Bu kampanyayı duvarıma asacağım. Ciddiyim.,I'm putting this campaign on my wall. Seriously.
+REV_KB_5_2,{client} reklamı internetin yeni gözdesi.,The {client} ad is the internet's new darling.
+REV_KB_5_3,Kıskandım. Keşke bizim fikrimiz olsaydı.,I'm jealous. I wish it had been our idea.
+REV_KB_5_4,{channel} bu kadar eğlenceli olabiliyormuş demek.,Who knew {channel} could be this much fun.
+REV_KB_5_5,Ajanstaki herkese bir pasta borçluyuz.,We owe everyone at the agency a cake.
+REV_MU_1_1,Açıkçası bu kampanyadan hiç memnun değiliz.,"Frankly, we are not at all happy with this campaign."
+REV_MU_1_2,{client} olarak beklediğimiz bu değildi.,This is not what we at {client} expected.
+REV_MU_1_3,Bir sonraki işte başka bir ajansla görüşebiliriz.,We may talk to another agency for the next job.
+REV_MU_1_4,Yönetim toplantısında zor sorular geldi.,Our board meeting brought some hard questions.
+REV_MU_1_5,Brief'imiz yeterince açık değil miydi?,Wasn't our brief clear enough?
+REV_MU_2_1,Beklentimizin biraz altında kaldı.,It fell a little short of our expectations.
+REV_MU_2_2,"{client} ekibi ikiye bölündü: bir yarısı beğendi, öbürü hiç.","The {client} team is split: half liked it, half didn't at all."
+REV_MU_2_3,Bir dahaki sefere daha fazla emek bekliyoruz.,Next time we expect more effort.
+REV_MU_2_4,Fikir güzel ama uygulama aceleye gelmiş.,"Nice idea, but the execution feels rushed."
+REV_MU_2_5,{channel} seçimi hakkında konuşmamız lazım.,We need to talk about the choice of {channel}.
+REV_MU_3_1,"İşimizi gördü, teşekkürler.",It did the job; thank you.
+REV_MU_3_2,"{client} olarak memnunuz, çalışmaya devam edelim.",We at {client} are pleased; let's keep working together.
+REV_MU_3_3,"Tam istediğimiz gibi, sürpriz yok.","Just as we asked, no surprises."
+REV_MU_3_4,Müşterilerimizden olumlu dönüşler aldık.,We got positive feedback from our customers.
+REV_MU_3_5,{channel} kampanyası planlandığı gibi ilerledi.,The {channel} campaign went as planned.
+REV_MU_4_1,Ekibimiz kampanyaya bayıldı.,Our team loved the campaign.
+REV_MU_4_2,{client} olarak bu iş birliğinden çok mutluyuz.,We at {client} are very happy with this partnership.
+REV_MU_4_3,Mağazalarımızda fark hemen hissedildi.,We felt the difference in our stores right away.
+REV_MU_4_4,Yeni işleri de sizinle yapmak istiyoruz.,We want to do our next jobs with you too.
+REV_MU_4_5,Yeni reklamımız ({channel}) dilden dile dolaşıyor.,Everyone is talking about the ad on {channel}.
+REV_MU_5_1,Markamızın tarihindeki en iyi kampanya bu olabilir.,This may be the best campaign in our brand's history.
+REV_MU_5_2,{client} yönetim kurulu ajansa ayakta alkış gönderiyor.,The {client} board is giving the agency a standing ovation.
+REV_MU_5_3,Bütçeyi gelecek yıl artırmayı düşünüyoruz.,We are thinking of raising the budget next year.
+REV_MU_5_4,"Rakiplerimiz bizi kıskanıyor, sağ olun!","Our rivals are envious, thank you!"
+REV_MU_5_5,Bu kampanyayı ödüllere aday göstermelisiniz.,You should enter this campaign for awards.
+REVA_ERRORS_HIGH_1,"Afişte yazım hatası var, kimse fark etmemiş mi?",There's a typo on the poster; did nobody notice?
+REVA_ERRORS_HIGH_2,Hatalar fikrin önüne geçmiş.,The mistakes got in front of the idea.
+REVA_ERRORS_HIGH_3,Biraz daha rötuş zamanı iyi olurdu.,A little more polish time would have helped.
+REVA_NOVELTY_BAD_1,"Bunu daha önce görmüştük, hem de yakın zamanda.","We've seen this before, and recently."
+REVA_NOVELTY_BAD_2,Ajans kendini tekrar etmeye başladı.,The agency is starting to repeat itself.
+REVA_NOVELTY_BAD_3,Tanıdık bir fikir; sürpriz yok.,A familiar idea; no surprises.
+REVA_PIONEER_1,Bu mecrayı ({channel}) ilk kullananlardan olmak cesaret ister.,It takes courage to be among the first on {channel}.
+REVA_PIONEER_2,Yeni bir mecrada taze bir ses.,A fresh voice on a new medium.
+REVA_FIT_BAD_1,Mesaj yanlış kitleye konuşuyor gibi.,The message seems to be talking to the wrong crowd.
+REVA_FIT_BAD_2,{client} için seçilen ton biraz tuhaf kaçmış.,The tone chosen for {client} feels a little off.
+REVA_FIT_GOOD_1,"Doğru mesaj, doğru kitle, doğru mecra.","Right message, right audience, right medium."
+REVA_FIT_GOOD_2,{client} markasının sesini tam yakalamışlar.,They caught the {client} brand voice perfectly.
+REVA_VOLUME_LOW_1,"Aceleye gelmiş, emek eksik kalmış.",It feels rushed; the effort falls short.
+REVA_VOLUME_LOW_2,Bu işe daha fazla zaman ayrılmalıydı.,More time should have gone into this job.
+REVA_KPI_BEATEN_1,Hedefler rahatça aşıldı.,The targets were beaten comfortably.
+REVA_KPI_BEATEN_2,Sonuçlar beklentinin epey üstünde.,The results are well above expectations.
+REVA_KPI_MISSED_1,Hedeflerin epey gerisinde kalındı.,It fell well short of its targets.
+REVA_KPI_MISSED_2,Rakamlar hedefi göremedi bile.,The numbers didn't even get near the target.
+REVA_VIRAL_1,Herkes paylaşıyor; viral oldu!,Everyone is sharing it; it went viral!
+REVA_VIRAL_2,Telefonlarda elden ele dolaşıyor.,It's being passed from phone to phone.

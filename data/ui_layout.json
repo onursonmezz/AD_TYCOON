@@ -31,6 +31,7 @@
 	"tool_art": { "_note": "Parodi yazılım logoları (LG-1, tools/logos); olmayan araçta genel alet ikonu.", "tablo_pro": "logo-nitrosoft-newcel", "slayt_ustasi": "logo-nitrosoft-strongpoint", "slak": "logo-slak", "kelime_ustasi": "logo-nitrosoft-world", "yazgan_ai": "logo-chattnt", "pixelshop": "logo-abode-photostore", "vektorel": "logo-abode-vectorator", "kanvaz": "logo-kamva", "figmo": "logo-digma", "hayalci_ai": "logo-topjourney", "sayfa_ustasi": "logo-abode-outdesign", "kurgu_pro": "logo-abode-premium-pro", "efekt_sonrasi": "logo-abode-before-effects", "kubik_3d": "logo-theatre-4d", "video_ai": "logo-tricksfield", "anket_pro": "logo-surveycappybara", "gooble_analitik": "logo-gooble-analytics", "sosyal_panel": "logo-tootsuite" },
 	"option_picker_row": 132,
 	"campaign_strip": { "width": 470, "height": 40 },
+	"report_body_height": 300,
 	"negotiation_stage": { "height": 150, "portrait": 96, "side_margin": 24, "reps": { "ucuzcu_ofset": "erkek_03", "renkli_baski": "kadin_03", "altin_varak": "erkek_04", "hizli_dijital": "nonbinary_02" } },
 	"channel_art": {
 		"newspaper": "gazete-ilani", "magazine": "dergi-ilani", "flyer_brochure": "brosur", "catalog": "katalog",
