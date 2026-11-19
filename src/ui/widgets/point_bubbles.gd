@@ -62,6 +62,9 @@ func refresh(camp: Dictionary) -> void:
 		if errors > _last_errors and not workers.is_empty():
 			var ids: Array = workers.keys()
 			_spawn(str(ids[day % ids.size()]), "!", CozyTheme.NEGATIVE, 3)
+		elif errors < _last_errors and not workers.is_empty():  # S3C: rötuşta giderilen hata
+			var fixers: Array = workers.keys()
+			_spawn(str(fixers[day % fixers.size()]), "−%d" % (_last_errors - errors), CozyTheme.FOREST, 3)
 	_last_errors = errors
 
 

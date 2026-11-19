@@ -35,6 +35,8 @@ static func build(root: Control, min_size: Vector2, animate: bool = true, fixed:
 	var cap: float = min_size.y - UiUtil.MODAL_CHROME if fixed else minf(min_size.y, 600.0)
 	scroll.custom_minimum_size = Vector2(min_size.x - 2.0 * CozyTheme.SPACE_XL, 0.0)
 	var fit: Callable = func() -> void:
+		if not is_instance_valid(content) or not is_instance_valid(scroll):
+			return  # pencere bu arada kapandı
 		var need: float = content.get_combined_minimum_size().y
 		var shown: bool = scroll.vertical_scroll_mode == ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
 		var low: float = need * scaler.min_scale
@@ -53,7 +55,9 @@ static func build(root: Control, min_size: Vector2, animate: bool = true, fixed:
 	if root.has_meta("esc_closes"):
 		(parts[2] as HBoxContainer).add_child(UiUtil.close_button(root.queue_free))
 	# Başlık içerik kurulduktan sonra banda taşınır.
-	var adopt: Callable = func() -> void: UiUtil.adopt_heading(parts[0], content)
+	var adopt: Callable = func() -> void:
+		if is_instance_valid(parts[0]) and is_instance_valid(content):  # pencere bu arada kapandıysa geç
+			UiUtil.adopt_heading(parts[0], content)
 	if root.is_node_ready():
 		adopt.call_deferred()
 	else:

@@ -78,7 +78,16 @@ func _run() -> void:
 	await _shot("05c_strip")
 	var before: int = sim.state.finished.size()
 	var shown_production: bool = false
+	var shown_polish: bool = false
 	while sim.state.finished.size() == before:
+		if not shown_polish and not sim.state.active_campaign.is_empty() and CampaignProduction.production_done(sim.state.active_campaign):
+			# S3C: üretim bitti, rötuş ve teslim düğmesi.
+			shown_polish = true
+			await _close_modals(screen)
+			screen.call("show_panel", "campaign")
+			await _shot("05d_polish")
+			screen.call("close_panel")
+			await _shot("05e_polish_strip")
 		if GameState.is_waiting():
 			var phase: int = sim.production.current_phase(sim.state.active_campaign)
 			if phase < 2:

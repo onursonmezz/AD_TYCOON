@@ -59,7 +59,7 @@ func _counter_card(i: int) -> PanelContainer:
 ## Her yenilemede: faz, fazın ilerlemesi, kalan gün ve dört sayaç.
 func update(phase: int, phase_progress: float, days_left: int, values: Array[int]) -> void:
 	_tracker.set_state(phase, phase_progress, days_left)
-	_tracker.tooltip_text = tr("UI_PHASE_STATUS") % [tr("PHASE_%d" % phase), days_left]
+	_tracker.tooltip_text = tr("UI_PHASE_STATUS") % [tr("PHASE_%d" % mini(phase, 2)) if phase < 3 else tr("UI_POLISH_TITLE"), days_left]
 	for i: int in values.size():
 		var v: int = values[i]
 		if _target[i] < 0:

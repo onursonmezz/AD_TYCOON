@@ -1694,3 +1694,15 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Aynı anda en çok 14 baloncuk oluyor. Karakter ekranda değilse yalnızca sayaç kıpırdıyor.
 - **3B ofisteki eski baloncuklar kalktı:** Rastgele "S/K/T" harfleri ve "!" yerine artık bu baloncuklar var. Seviye atlama yıldızı duruyor.
 - Oturan karakterin başı daha alçakta hesaplanıyor (`OfficeCharacter.head_height`).
+
+## K-135 — 3C: Üretim, rötuş ve teslim düğmesi (2026-11-19)
+- **İstek (Orgo):** Kampanya bitince "Kampanyayı bitir" düğmesi çıksın; basılmazsa ekip hataları gidersin. Süre yetiyorsa hatalar giderilince, yetmiyorsa hatalarla yayınlansın.
+- **Süre ikiye ayrılıyor:** Planla başlayan kampanyada süre üretim (%75) ve rötuş (%25) (`production.polish_share`).
+  - Fazlar üretim süresine yayılıyor.
+  - Üretim aynı toplam işi kısa sürede çıkarıyor: günlük puan ve hata zarı süre oranıyla hızlanıyor. Toplam puan ve hata eskisiyle aynı, denge değişmiyor (test ediliyor).
+- **Rötuş:** Yeni puan gelmiyor. Her gün her müsait ekip üyesi, dikkatine göre bir hatayı giderebiliyor (`polish_fix_chance` × dikkat/100). Şeritte yeşil "−n" hata sayacına uçuyor.
+- **Teslim:**
+  - Rötuşa geçince bildirim çıkıyor. Kampanya penceresinde durum yazısı ("n hata kaldı, teslime n gün var") ve "Kampanyayı teslim et" düğmesi var (`DeliverNowCommand` → `Simulation.deliver_now`).
+  - Basılmazsa son gün kendiliğinden teslim.
+  - Şerit "Rötuş · n gün" yazıyor; adım çizgisinde üç adım da tamamlanmış görünüyor.
+- **Eski yol:** Botlar ve eski kayıtlar `production_share` 1 ile eskisi gibi; rötuş yok.

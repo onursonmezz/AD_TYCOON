@@ -41,7 +41,7 @@
 
 	"_comment_m1": "M1 ile eklenen sabitler; GDD'de sayısı olmayanlar docs/decisions.md K-018+ içinde listelenir.",
 	"calendar": { "days_per_week": 7, "months_per_year": 12 },
-	"production": { "base_per_day": 1.0, "stat_reference": 50.0, "overcap_efficiency": 0.5,
+	"production": { "polish_share": 0.25, "polish_fix_chance": 0.35, "base_per_day": 1.0, "stat_reference": 50.0, "overcap_efficiency": 0.5,
 		"rush_below_weeks": 4, "rush_error_mult": 1.4, "overtime_error_mult": 1.6 },
 	"_comment_m3": "M3 çalışan/ofis sabitleri; GDD'de sayısı olmayanlar docs/decisions.md K-035'te.",
 	"founder": { "default_background": "copywriter", "tool_mult": 1.0 },

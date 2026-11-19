@@ -65,8 +65,11 @@ func create(setup: Dictionary, campaign_id: String, week_index: int) -> Dictiona
 	var points: Dictionary = {}
 	for id: String in data.focus_ids:
 		points[id] = 0.0
+	# S3C: planlı kampanyada süre üretim + rötuş; üretim aynı toplam işi sürenin bir kısmında çıkarır.
+	var share: float = 1.0 - data.balf("production.polish_share") if bool(setup.get("polish", false)) else 1.0
 	return {"id": campaign_id, "setup": setup, "points": points, "errors": 0, "day": 0,
-		"days_total": int(setup["deadline_weeks"]) * data.bali("calendar.days_per_week"), "start_week": week_index}
+		"days_total": int(setup["deadline_weeks"]) * data.bali("calendar.days_per_week"), "start_week": week_index,
+		"production_share": share}
 
 
 func current_phase(campaign: Dictionary) -> int:
@@ -74,11 +77,45 @@ func current_phase(campaign: Dictionary) -> int:
 
 
 static func phase_of(campaign: Dictionary) -> int:
-	return mini(2, int(campaign["day"]) * 3 / int(campaign["days_total"]))
+	return mini(2, int(campaign["day"]) * 3 / production_days(campaign))
 
 
+## Üretim günleri (S3C): sürenin production_share kadarı; eski kampanyalarda tüm süre.
+static func production_days(campaign: Dictionary) -> int:
+	var total: int = int(campaign["days_total"])
+	return clampi(int(ceilf(float(total) * float(campaign.get("production_share", 1.0)))), 1, total)
+
+
+## Üretim bitti, rötuşta (hata gideriliyor): teslim düğmesi açık.
+static func production_done(campaign: Dictionary) -> bool:
+	return int(campaign["day"]) >= production_days(campaign)
+
+
+## Teslim zamanı: süre doldu ya da oyuncu "Kampanyayı teslim et" dedi.
 func is_finished(campaign: Dictionary) -> bool:
-	return int(campaign["day"]) >= int(campaign["days_total"])
+	return int(campaign["day"]) >= int(campaign["days_total"]) or bool(campaign.get("deliver_now", false))
+
+
+## Günlük üretim hızı: üretim süreye sıkıştırıldıysa aynı toplam iş için daha hızlı (puan ve hata zarı).
+static func production_rate(campaign: Dictionary) -> float:
+	return 1.0 / maxf(0.1, float(campaign.get("production_share", 1.0)))
+
+
+## Rötuş günü (S3C): yeni puan yok; her müsait ekip üyesi dikkatine göre bir hatayı giderebilir.
+func _polish_day(campaign: Dictionary, state: SimState) -> void:
+	var fixed: int = 0
+	for id: Variant in campaign["setup"].get("team", []):
+		if int(campaign["errors"]) <= 0:
+			break
+		var emp: Dictionary = state.staff.get(str(id), {})
+		if emp.is_empty() or not Employee.is_available(emp, state.clock.week_index):
+			continue
+		var p: float = data.balf("production.polish_fix_chance") * float(emp["stats"]["attention"]) / 100.0
+		if state.rng.chance("polish", p):
+			campaign["errors"] = int(campaign["errors"]) - 1
+			fixed += 1
+	campaign["errors_fixed"] = int(campaign.get("errors_fixed", 0)) + fixed
+	campaign["day"] = int(campaign["day"]) + 1
 
 
 ## Ekibin geçerliliği: en az bir kişi, herkes var ve müsait (eğitimde/izinde değil).
@@ -95,13 +132,17 @@ func validate_team(team: Array, state: SimState) -> String:
 ## Bir günlük üretim (GDD 7.5): ekipteki her müsait çalışan, fazın üç odak alanına slider payıyla puan üretir;
 ## her çalışan için günde bir hata zarı atılır (K-021).
 func produce_day(campaign: Dictionary, state: SimState) -> void:
+	if production_done(campaign):
+		_polish_day(campaign, state)
+		return
+	var rate: float = production_rate(campaign)
 	var phase: int = current_phase(campaign)
 	var ids: Array[String] = data.focus_ids_of_phase(phase)
 	var setup: Dictionary = campaign["setup"]
 	var sliders: Array = setup["sliders"][phase]
 	var ref: float = data.balf("production.stat_reference")
 	var year: int = state.clock.year()
-	var overtime_out: float = data.balf("staff.overtime_output") if state.overtime else 1.0
+	var overtime_out: float = (data.balf("staff.overtime_output") if state.overtime else 1.0) * rate
 	var rush: bool = int(setup["deadline_weeks"]) < data.bali("production.rush_below_weeks")
 	var points: Dictionary = campaign["points"]
 	# Oda etkisi (12.2): ör. beyin fırtınası odası konsepte +%10.
@@ -135,7 +176,7 @@ func produce_day(campaign: Dictionary, state: SimState) -> void:
 			p_error *= data.balf("production.rush_error_mult")
 		if state.overtime:
 			p_error *= data.balf("production.overtime_error_mult")
-		if state.rng.chance("production", p_error):
+		if state.rng.chance("production", minf(1.0, p_error * production_rate(campaign))):
 			campaign["errors"] = int(campaign["errors"]) + 1
 	campaign["day"] = int(campaign["day"]) + 1
 
@@ -167,5 +208,5 @@ func _produce_tasked(campaign: Dictionary, state: SimState, emp: Dictionary, pha
 		p_error *= data.balf("production.rush_error_mult")
 	if state.overtime:
 		p_error *= data.balf("production.overtime_error_mult")
-	if state.rng.chance("production", p_error):
+	if state.rng.chance("production", minf(1.0, p_error * production_rate(campaign))):
 		campaign["errors"] = int(campaign["errors"]) + 1

@@ -1870,3 +1870,9 @@ UI_PLAN_ASSIGN,Ata,Assign
 UI_PLAN_RENTALS,Kiralık ekipman (bedeli başlarken ödenir),Rental equipment (paid at the start)
 UI_STRIP_PHASE,%s · %d gün,%s · %d days
 UI_STRIP_TIP,Kampanyanın ilerlemesi. Ayrıntı için tıkla.,Campaign progress. Click for details.
+NOTE_POLISH_START,"%s: üretim bitti. Ekip hataları gideriyor; istediğinde teslim et.","%s: production is done. The team is fixing errors; deliver whenever you like."
+UI_POLISH_TITLE,Rötuş,Polish
+UI_POLISH_STATUS,"Üretim bitti. Ekip hataları gideriyor: %d hata kaldı, teslime %d gün var.","Production is done. The team is fixing errors: %d errors left, %d days to the deadline."
+UI_DELIVER_NOW,Kampanyayı teslim et,Deliver the campaign
+UI_STRIP_POLISH,Rötuş · %d gün,Polish · %d days
+ERR_NOT_READY,Üretim henüz bitmedi.,Production is not finished yet.

@@ -33,7 +33,8 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 	if team.is_empty():
 		team = [state.founder()["id"]]
 	setup["team"] = team.duplicate()
-	setup["minigames"] = bool(choices.get("minigames", false))  # planlı kampanyada faz başı mini oyunu beklenir
+	setup["minigames"] = bool(choices.get("minigames", false))
+	setup["polish"] = bool(choices.get("planned", false))  # S3C: üretim + rötuş, teslim düğmesi  # planlı kampanyada faz başı mini oyunu beklenir
 	var err: String = sim.production.validate_setup(setup, state.clock.year())
 	for entry: Dictionary in setup["mix"]:
 		if err.is_empty() and sim.data.channels.has(str(entry.get("channel", ""))) and not sim.research.channel_unlocked(state, entry["channel"]):

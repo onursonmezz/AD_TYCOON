@@ -73,9 +73,13 @@ func refresh(camp: Dictionary) -> void:
 	_client.text = str(setup.get("client_name", ""))
 	var phase: int = sim.production.current_phase(camp)
 	var days_total: int = int(camp["days_total"])
-	var phase_len: float = float(days_total) / 3.0
-	var days_left: int = maxi(0, int(ceilf(phase_len * (phase + 1) - float(camp["day"]))))
-	_phase.text = tr("UI_STRIP_PHASE") % [tr("UI_STEP_" + ["STRATEGY", "CREATIVE", "PRODUCTION"][phase]), days_left]
+	var prod_days: int = CampaignProduction.production_days(camp)
+	var phase_len: float = float(prod_days) / 3.0
+	if CampaignProduction.production_done(camp):  # S3C: rötuş
+		_phase.text = tr("UI_STRIP_POLISH") % maxi(0, days_total - int(camp["day"]))
+	else:
+		var days_left: int = maxi(0, int(ceilf(phase_len * (phase + 1) - float(camp["day"]))))
+		_phase.text = tr("UI_STRIP_PHASE") % [tr("UI_STEP_" + ["STRATEGY", "CREATIVE", "PRODUCTION"][phase]), days_left]
 	_bar.value = 100.0 * float(camp["day"]) / maxf(1.0, float(days_total))
 	var totals: Dictionary = sim.scoring.stat_totals(camp["points"])
 	var values: Array = [int(totals["strategy"]), int(totals["creative"]), int(totals["technical"]), int(camp["errors"])]

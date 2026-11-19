@@ -20,7 +20,7 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 - [x] Karakterleri göreve atamak çok karmaşık; çok kişide daha da karışıyor. Basit olsun.
 - [ ] Boşta çalışan varsa başka bir kampanya da kabul edilebilsin; aynı anda birden çok kampanya yürüsün.
 - [x] Faz sürerken pencere açık kalmasın; ilerleme yukarıda küçük bir şeritte görünsün. Çalışanları izleyelim, puanlar kafalarından çıkıp dolsun (GDT gibi).
-- [ ] Kampanyayı bitirme ve hata giderme:
+- [x] Kampanyayı bitirme ve hata giderme (3C, K-135):
   - Normal süre dolunca "Kampanyayı bitir" düğmesi çıksın.
   - Basılmazsa kampanya devam etsin ve hatalar giderilsin.
   - Süre yetiyorsa hatalar bitince yayınlanır; yetmiyorsa hatalarla yayınlanır.

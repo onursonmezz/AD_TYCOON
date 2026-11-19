@@ -178,6 +178,8 @@ func close_panel() -> void:
 	_fit = null
 	_panel_id = ""
 	_refresh_menu_state()
+	if GameState.has_game():  # S3B: pencere kapanınca kampanya şeridi hemen dönsün
+		_strip.refresh(GameState.sim.state.active_campaign)
 
 
 ## İnşa modu (M6-B): pencere kapanır, ofisin altında araç çubuğu açılır.
@@ -242,6 +244,7 @@ func show_panel(id: String) -> void:
 	UiUtil.clear(_content)
 	var was_visible: bool = _window.visible
 	_panel_id = id
+	_strip.visible = false  # pencerede aynı bilgi var
 	_window.visible = true
 	match id:
 		"inbox":

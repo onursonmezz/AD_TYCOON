@@ -136,8 +136,12 @@ func step_day() -> void:
 	if not state.active_campaign.is_empty():
 		if pause_on_phase and _needs_phase_input():
 			return
+		var was_polishing: bool = CampaignProduction.production_done(state.active_campaign)
 		production.produce_day(state.active_campaign, state)
-		if production.is_finished(state.active_campaign):
+		var camp: Dictionary = state.active_campaign
+		if not was_polishing and CampaignProduction.production_done(camp) and float(camp.get("production_share", 1.0)) < 1.0:
+			staff_note.emit("NOTE_POLISH_START", [str(camp["setup"].get("client_name", ""))], "info")
+		if production.is_finished(camp):
 			_deliver()
 	staff_life.daily(state)
 	pitches.produce_day(state)
@@ -206,6 +210,14 @@ func _wait_for_minigame(camp: Dictionary, phase: int) -> bool:
 
 
 ## Faz başı girişleri PhaseInput'ta (dosya boyutu, K-118/K-119).
+## S3C: oyuncu rötuşu bitirip kampanyayı hemen teslim eder (üretim bitmiş olmalı).
+func deliver_now() -> String:
+	if state.active_campaign.is_empty() or not CampaignProduction.production_done(state.active_campaign):
+		return "ERR_NOT_READY"
+	_deliver()
+	return ""
+
+
 func set_phase_sliders(sliders: Array) -> bool:
 	return PhaseInput.apply_sliders(self, sliders)
 

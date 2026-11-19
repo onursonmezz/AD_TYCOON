@@ -7,6 +7,7 @@ extends VBoxContainer
 
 var _info: VBoxContainer
 var _live: CampaignLive
+var _polish_label: Label
 var _slider_box: VBoxContainer
 var _airing: VBoxContainer
 var _airing_head: Control
@@ -32,9 +33,11 @@ func refresh() -> void:
 	var sig: String = str(camp.get("id", "")) + str(s.waiting_for_input) + str(s.airing.size())
 	if camp.is_empty():
 		sig += "idle"
-	elif s.waiting_for_input:
-		# Mini oyun bitince (K-120) bekleme notu panoya dönsün.
-		sig += str(Minigames.pending(camp, GameState.sim.production.current_phase(camp)))
+	else:
+		sig += str(CampaignProduction.production_done(camp))  # S3C: rötuşa geçince teslim kutusu çıksın
+		if s.waiting_for_input:
+			# Mini oyun bitince (K-120) bekleme notu panoya dönsün.
+			sig += str(Minigames.pending(camp, GameState.sim.production.current_phase(camp)))
 	if sig != _signature:
 		_signature = sig
 		_rebuild(s)
@@ -64,6 +67,8 @@ func _rebuild(s: SimState) -> void:
 		_info.add_child(overtime)
 		if s.waiting_for_input:
 			_build_sliders(camp)
+		elif CampaignProduction.production_done(camp):
+			_build_polish(camp)
 		else:
 			# Faz sürerken: ekip çalışıyor; faz bitince yeni dağılım istenir.
 			var note: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
@@ -74,6 +79,22 @@ func _rebuild(s: SimState) -> void:
 	for a: Dictionary in s.airing:
 		var weeks: int = int(a["air_end_week"]) - s.clock.week_index
 		_airing.add_child(UiUtil.label(tr("UI_AIRING_ROW") % [a["setup"].get("client_name", ""), weeks], 13))
+
+
+## Rötuş (S3C): üretim bitti; ekip hataları gideriyor. Oyuncu istediğinde teslim eder, yoksa süre dolunca teslim.
+func _build_polish(camp: Dictionary) -> void:
+	var card: PanelContainer = UiUtil.card()
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	card.add_child(row)
+	row.add_child(UiUtil.icon("check", 22, CozyTheme.FOREST))
+	_polish_label = UiUtil.wrapped("", 13, CozyTheme.TEXT, 200.0)
+	_polish_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(_polish_label)
+	var deliver: Button = UiUtil.button(tr("UI_DELIVER_NOW"), func() -> void: GameState.execute(DeliverNowCommand.new()))
+	deliver.theme_type_variation = "PrimaryButton"
+	deliver.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(deliver)
+	_slider_box.add_child(card)
 
 
 ## Başlık (UI-3, taslak 03): müşteri ve kampanya adı, hedef ve ana kanal etiketleri, sağda ekip.
@@ -115,9 +136,11 @@ func _build_header(s: SimState, camp: Dictionary) -> void:
 func _update_live(camp: Dictionary) -> void:
 	if _live == null:
 		return
+	if is_instance_valid(_polish_label):
+		_polish_label.text = tr("UI_POLISH_STATUS") % [int(camp["errors"]), maxi(0, int(camp["days_total"]) - int(camp["day"]))]
 	var prod: CampaignProduction = GameState.sim.production
 	var phase: int = prod.current_phase(camp)
-	var days_total: int = int(camp["days_total"])
+	var days_total: int = CampaignProduction.production_days(camp)  # fazlar üretim süresine yayılır (S3C)
 	var phase_len: float = float(days_total) / 3.0
 	var phase_end: int = int(ceilf(phase_len * (phase + 1)))
 	var days_left: int = maxi(0, phase_end - int(camp["day"]))
@@ -125,6 +148,9 @@ func _update_live(camp: Dictionary) -> void:
 	var progress: float = (float(camp["day"]) - phase_start) / maxf(1.0, phase_len)
 	var totals: Dictionary = GameState.sim.scoring.stat_totals(camp["points"])
 	var values: Array[int] = [int(totals["strategy"]), int(totals["creative"]), int(totals["technical"]), int(camp["errors"])]
+	if CampaignProduction.production_done(camp):  # S3C: rötuşta üç adım da bitti
+		_live.update(3, 1.0, maxi(0, int(camp["days_total"]) - int(camp["day"])), values)
+		return
 	_live.update(phase, progress, days_left, values)
 
 
