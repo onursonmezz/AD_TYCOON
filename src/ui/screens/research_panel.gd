@@ -253,9 +253,12 @@ func _knowledge_table(sim: Simulation, s: SimState) -> HBoxContainer:
 		grid.columns = mini(6, (spec[1] as Array).size())
 		grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_S)
 		grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
+		# S11: başlıklar bir satırda, kutular altındaki satırda; satır yüksekliğini en uzun başlık belirler, kutular hep hizalı.
+		for col_id: String in spec[1]:
+			grid.add_child(_fit_head(UiUtil.name_of(spec[2], col_id)))
 		for col_id: String in spec[1]:
 			var known: bool = sim.research.is_known(s, spec[0], _sector, col_id)
-			grid.add_child(_fit_cell(UiUtil.name_of(spec[2], col_id), data.fit(spec[0], _sector, col_id), known))
+			grid.add_child(_fit_pill(data.fit(spec[0], _sector, col_id), known))
 		right.add_child(grid)
 	right.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 11, UiUtil.MUTED, 420.0))
 	return box
@@ -270,16 +273,19 @@ func _known_cells(sim: Simulation, s: SimState, sector: String) -> int:
 	return n
 
 
-## Tek uyum hücresi: üstte ad, altta renkli kutuda +++ / − / ? (iyi yeşil, kötü kiremit, nötr krem, bilinmeyen soluk).
-func _fit_cell(name: String, v: int, known: bool) -> VBoxContainer:
-	var cell: VBoxContainer = UiUtil.vbox(2)
-	cell.custom_minimum_size.x = 72.0
+## Uyum başlığı: ortalı, gerekirse alt alta; tablonun başlık satırında alta yaslı.
+func _fit_head(name: String) -> Label:
 	var head: Label = UiUtil.label(name, 11, CozyTheme.WOOD)
 	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	head.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	head.custom_minimum_size = Vector2(72.0, 44.0)  # üç satıra kadar ad; kutular aynı hizada
+	head.custom_minimum_size.x = 72.0
+	head.size_flags_vertical = Control.SIZE_FILL
 	head.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-	cell.add_child(head)
+	return head
+
+
+## Uyum kutusu: +++ / − / ? (iyi yeşil, kötü kiremit, nötr krem, bilinmeyen soluk).
+func _fit_pill(v: int, known: bool) -> PanelContainer:
 	var fill: Color = CozyTheme.CREAM
 	var ink: Color = CozyTheme.MUTED
 	if known:
@@ -293,5 +299,5 @@ func _fit_cell(name: String, v: int, known: bool) -> VBoxContainer:
 	sym.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	pill.add_child(sym)
 	pill.tooltip_text = tr("UI_FIT_UNKNOWN") if not known else ""
-	cell.add_child(pill)
-	return cell
+	pill.custom_minimum_size.x = 72.0
+	return pill
