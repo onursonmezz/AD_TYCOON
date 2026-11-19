@@ -193,7 +193,7 @@ func test_ui_full_loop_smoke() -> void:
 	var wizard: WizardDialog = WizardDialog.new(brief, screen)
 	screen.call("open_modal", wizard)
 	await wait_physics_frames(2)
-	wizard.call("_on_start")
+	wizard.call("start_auto")
 	await wait_physics_frames(2)
 	assert_false(sim.state.is_idle(), "sihirbaz kampanyayı başlattı")
 	while not GameState.is_waiting():
@@ -215,20 +215,14 @@ func test_ui_full_loop_smoke() -> void:
 	var host: MinigameHost = hosts[0]
 	(host.get("_game") as MinigameGame).time_up()
 	await wait_seconds(DataDB.data.balf("minigames.result_hold") + 0.3)
-	var boards: Array[Node] = panel.find_children("*", "WorkBoard", true, false)
-	assert_eq(boards.size(), 1, "faz başında görev panosu açılır (K-118)")
-	var board: WorkBoard = boards[0]
-	var who: String = (board.get("_members") as Array)[0]
-	var plan: Dictionary = board.get("_plan")
-	plan[who] = [0.25, 0.25, 0.5]
-	board.call("_refresh")
-	board.call("_confirm")
-	assert_false(GameState.is_waiting())
-	assert_almost_eq(float(sim.state.active_campaign["setup"]["sliders"][0][2]), 0.5, 0.0001, "odak payı plandan")
+	# S3A: plan kampanya başında yapıldı; mini oyun bitince faz panosuz devam eder.
+	assert_eq(panel.find_children("*", "WorkBoard", true, false).size(), 0, "planlı kampanyada faz panosu yok")
+	assert_false(GameState.is_waiting(), "mini oyundan sonra beklemez")
+	assert_almost_eq(float(sim.state.active_campaign["setup"]["sliders"][0][2]), 1.0 / 3.0, 0.0001, "ağırlıklar plandan")
 	var reports_before: int = sim.state.finished.size()
 	for i: int in 1000:
-		if GameState.is_waiting():
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+		if GameState.is_waiting() and not sim.state.active_campaign.is_empty():  # planlı: faz başında mini oyun bekler
+			GameState.execute(MinigameResultCommand.new(sim.production.current_phase(sim.state.active_campaign), 0.5))
 		_answer_events(sim)
 		GameState.step_day()
 		if sim.state.finished.size() > reports_before:

@@ -9,7 +9,7 @@
 	"fit_min_scale": 0.72, "research_per_page": 3,
 	"dialogs": {
 		"wizard": [708, 475], "report": [681, 504], "event": [527, 292], "ceremony": [619, 525], "settings": [775, 430],
-		"channel_picker": [475, 504], "option_picker": [520, 70], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [560, 560], "game_over": [560, 340], "confirm": [480, 220], "minigame": [700, 590], "pitch_invite": [660, 500]
+		"channel_picker": [475, 504], "option_picker": [520, 70], "task_plan": [900, 470], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [560, 560], "game_over": [560, 340], "confirm": [480, 220], "minigame": [700, 590], "pitch_invite": [660, 500]
 	},
 	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
 	"_art": "Görsel eşlemeleri: kimlik (ya da ad) → assets/ui/icons altındaki dosya adı. Eşleme yoksa arayüz ikon kullanır.",

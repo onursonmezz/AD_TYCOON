@@ -127,7 +127,7 @@ func _brief() -> void:
 	await _wait(0.6)
 	await _snap("wizard")
 	await _wait(0.6)
-	wizard.call("_on_start")
+	wizard.call("start_auto")
 	while not GameState.is_waiting():  # faz başına kadar ilerle: kampanya penceresinde emek dağılımı panosu
 		_step()
 	_close_modals()

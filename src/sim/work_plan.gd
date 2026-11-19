@@ -26,6 +26,8 @@ static func load_of_alloc(alloc: Array) -> float:
 
 ## Çalışanın o fazdaki yükü (plan yoksa ekipteyse 1.0, değilse 0).
 static func load_of(campaign: Dictionary, phase: int, emp_id: String) -> float:
+	if TaskPlan.has_plan(campaign["setup"]):  # S3A: atamalı planda fazdaki yoğunluk
+		return TaskPlan.phase_intensity(campaign["setup"], phase, emp_id)
 	var plan: Dictionary = phase_plan(campaign, phase)
 	if plan.is_empty():
 		return 1.0 if (campaign["setup"].get("team", []) as Array).has(emp_id) else 0.0

@@ -33,12 +33,23 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 	if team.is_empty():
 		team = [state.founder()["id"]]
 	setup["team"] = team.duplicate()
+	setup["minigames"] = bool(choices.get("minigames", false))  # planlı kampanyada faz başı mini oyunu beklenir
 	var err: String = sim.production.validate_setup(setup, state.clock.year())
 	for entry: Dictionary in setup["mix"]:
 		if err.is_empty() and sim.data.channels.has(str(entry.get("channel", ""))) and not sim.research.channel_unlocked(state, entry["channel"]):
 			err = "ERR_CHANNEL_LOCKED"
 	if err.is_empty():
 		err = sim.production.validate_team(team, state)
+	# S3A: plan başta bir kez yapılır ("planned"); atama yalnızca gereken işlerde (küçük iş / tek kişi değilse).
+	var planned: bool = bool(choices.get("planned", false))
+	if err.is_empty() and planned and TaskPlan.needs_assignment(sim.data, setup):
+		var assign: Array = choices.get("assign", [])
+		err = TaskPlan.validate(assign, team)
+		if err.is_empty():
+			setup["assign"] = assign.duplicate(true)
+	var rentals: Array = choices.get("rentals", [])
+	if err.is_empty() and not rentals.is_empty():
+		err = sim.equipment.validate_rentals(state, rentals)
 	if err.is_empty():
 		err = sim.media.prepare_mix(setup, state)
 	if not err.is_empty():
@@ -57,5 +68,10 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 	state.cash += float(setup["media_advance"])
 	state.inbox.erase(brief)
 	var id: String = state.next_id("cp")
+	if not rentals.is_empty():
+		sim.economy.pay(state, sim.equipment.rental_cost(state, rentals))
+		setup["rentals"] = rentals.duplicate()
 	state.active_campaign = sim.production.create(setup, id, state.clock.week_index)
+	if planned:
+		state.active_campaign["confirmed_phases"] = [0, 1, 2]  # faz başlarında beklemez
 	return {"ok": true, "error": "", "campaign_id": id}

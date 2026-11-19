@@ -12,6 +12,7 @@ var _tone: OptionButton
 var _estimate: Label
 var _mix: MixEditor
 var _team_checks: Dictionary = {}
+var _plan: TaskPlanDialog
 var _error: Label
 
 
@@ -196,9 +197,15 @@ func _on_start() -> void:
 	if (choices["team"] as Array).is_empty():
 		_fail("ERR_TEAM_EMPTY")
 		return
-	var result: Dictionary = GameState.execute(StartCampaignCommand.new(_brief["id"], choices))
-	if not bool(result["ok"]):
-		_fail(str(result["error"]))
-		return
-	_main.call("show_panel", "campaign")
-	queue_free()
+	# S3A: önce görev planı (ağırlıklar ve gerekiyorsa kişi ataması); kampanya plan onaylanınca başlar.
+	_plan = TaskPlanDialog.new(_brief, choices, func() -> void:
+		_main.call("show_panel", "campaign")
+		queue_free())
+	_main.call("open_modal", _plan)
+
+
+## Araçlar ve testler için: sihirbazı ve görev planını varsayılan (otomatik) planla onaylar.
+func start_auto() -> void:
+	_on_start()
+	if is_instance_valid(_plan):
+		_plan.call("_start")

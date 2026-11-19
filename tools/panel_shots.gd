@@ -54,7 +54,7 @@ func _run() -> void:
 		var wizard: WizardDialog = WizardDialog.new(sim.state.inbox[0], screen)
 		screen.call("open_modal", wizard)
 		await get_tree().create_timer(0.4).timeout
-		wizard.call("_on_start")
+		wizard.call("start_auto")
 		while not GameState.is_waiting() and days < WARMUP_DAYS:
 			_step()
 			days += 1

@@ -136,4 +136,6 @@ func _build_sliders(camp: Dictionary) -> void:
 		# Mini oyun kendi penceresinde açılır (MinigameDialog); bitince bu panel yenilenir.
 		_slider_box.add_child(UiUtil.label(tr("UI_MG_WAITING"), 14, UiUtil.MUTED))
 		return
+	if (camp.get("confirmed_phases", []) as Array).has(phase):
+		return  # S3A: plan başta yapıldı; pano yok
 	_slider_box.add_child(WorkBoard.new(camp, func() -> void: Clock.set_paused(false)))

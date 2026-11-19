@@ -185,9 +185,23 @@ func _needs_phase_input() -> bool:
 	var confirmed: Array = camp.get("confirmed_phases", [])
 	for p: Variant in confirmed:
 		if int(p) == phase:
-			return false
+			return _wait_for_minigame(camp, phase)
 	state.waiting_for_input = true
 	phase_started.emit(phase)
+	return true
+
+
+## Planı başta yapılmış kampanya (S3A): faz başında yalnızca fazın mini oyunu için beklenir (oynanınca ya da
+## atlanınca MinigameResultCommand bekleyişi kaldırır).
+func _wait_for_minigame(camp: Dictionary, phase: int) -> bool:
+	if not bool(camp["setup"].get("minigames", false)) or not Minigames.pending(camp, phase):
+		return false
+	# Atlandıysa ya da sonucu yazıldıysa (taslaksız son faz da) bekleme.
+	if (camp.get("minigames_skipped", []) as Array).has(phase) or (camp.get("minigames", {}) as Dictionary).has(str(phase)):
+		return false
+	if not state.waiting_for_input:
+		state.waiting_for_input = true
+		phase_started.emit(phase)
 	return true
 
 

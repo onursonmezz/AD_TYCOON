@@ -23,7 +23,13 @@ func _init(camp: Dictionary, phase: int, on_done: Callable = Callable()) -> void
 static func maybe_open(screen: Node, modal_layer: Node) -> void:
 	if not GameState.has_game() or not GameState.is_waiting() or GameState.is_pitch_waiting():
 		return
-	if not bool(Settings.get_value("minigames")) or not GameState.pending_event().is_empty():
+	if not GameState.pending_event().is_empty():
+		return
+	var planned: Dictionary = GameState.sim.state.active_campaign
+	if not bool(Settings.get_value("minigames")):
+		# Mini oyunlar sonradan kapatıldıysa planlı kampanya faz başında takılı kalmasın (S3A).
+		if not planned.is_empty() and (planned.get("confirmed_phases", []) as Array).has(GameState.sim.production.current_phase(planned)):
+			GameState.execute(MinigameResultCommand.new(GameState.sim.production.current_phase(planned), 0.0, {}, true))
 		return
 	if modal_layer.get_child_count() > 0:
 		return

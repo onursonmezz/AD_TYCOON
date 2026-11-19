@@ -64,7 +64,7 @@ func _run() -> void:
 	await _shot("inbox")
 	_screen.call("close_panel")
 	var wizard: WizardDialog = await _open(WizardDialog.new(sim.state.inbox[0], _screen))
-	wizard.call("_on_start")
+	wizard.call("start_auto")
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before and days < WARMUP_DAYS * 2:
 		if GameState.is_waiting():

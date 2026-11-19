@@ -1666,3 +1666,21 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **Brief süresi:** 2 haftadan 4 haftaya çıkarmak denendi (100 koşu); kaldı.
   - Bilgili botun 10. yıl kasası %50 arttı ve büyük ofise taşınma 10. yıldan 9. yıla indi (hedef 12–16). Ekonomi fazla hızlanıyordu.
   - Süre 2 hafta kaldı; yeni oyuncu için ilk brief 8 hafta (K-131).
+
+## K-133 — 3A: Görev planı (Game Dev Tycoon tarzı ağırlık ve atama) (2026-11-19)
+- **İstek (Orgo):** Görev çubukları geri gelsin. Görev ağırlığı seçilsin, her göreve tek kişi atansın, kişinin yükü atandığı görevlerin ağırlıkları toplamı olsun (üç fazda %40 → %120, fazla çalışma). Küçük işte ve tek başınayken atama/yük olmasın.
+- **Plan kampanyanın başında bir kez yapılıyor (`TaskPlanDialog`):** Sihirbazdaki "Kampanyayı başlat" bu pencereyi açıyor.
+  - Üç faz yan yana; her görevin ağırlık çubuğu var, fazın üç görevi oranlanıyor.
+  - Atamalı işte her görevde bir kişi düğmesi var; basınca ekip portreleri, göreve uygunluk ve yükle açılıyor.
+  - Altta herkesin kampanya yükü yazıyor. Prodüksiyon fazının kiralıkları da burada seçiliyor.
+  - Faz sürerken pencere açılmıyor; faz başında yalnızca mini oyun bekleniyor. Mini oyunlar Ayarlar'dan kapalıysa beklenmiyor.
+- **Sim (`TaskPlan`, `setup.assign`):**
+  - Kişi yalnızca atandığı görevlerde üretir; görevin payı ağırlığın 3 katı. Üç kişi birer %33'lük görevle tam gün çalışır.
+  - Fazla çalışma (verim ve hata) kampanya yükünden hesaplanıyor; enerji fazdaki yoğunluğa göre azalıyor.
+- **Atama ne zaman açılıyor:** Orta/büyük işte ve en az 3 kişilik ekipte (`workload.assign_sizes`, `assign_min_team`).
+  - Gerekçe: dokuz görevin toplam yükü her zaman %300. İki kişilik ekip ne yaparsa yapsın kişi başı %150 yüklü olurdu.
+  - Küçük işte ve 1–2 kişide eski yol: herkes her görevde ağırlık payıyla çalışıyor, yük sayılmıyor.
+- **Otomatik dağıtım:**
+  - Görevler ağırdan hafife sıralanıyor. Her görev, o fazda görevi olmayan ve yükü %100'ü aşmayacak kişilerin en uygununa veriliyor.
+  - Eşit ağırlıkta üç kişi tam %100'er yük alıyor.
+- **Eski yol korundu:** Botlar, denge aracı ve eski kayıtlar için faz başı kaydırıcı/pano (K-118). Denge sayıları bu yüzden değişmedi.

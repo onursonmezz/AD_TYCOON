@@ -1860,3 +1860,11 @@ UI_NEGO_SAY_FAIL,"Yeter! Liste fiyatı, o kadar.","Enough! List price, that is i
 UI_NEGO_SAY_YES_0,Anlaştık!,Deal!
 UI_NEGO_SAY_YES_1,"Peki, sizin için olsun!","All right, just for you!"
 UI_NEGO_SAY_YES_2,"Tamam, el sıkışalım!","Fine, let us shake on it!"
+UI_PLAN_TITLE,Görev planı,Task plan
+UI_PLAN_HINT_ASSIGN,"Her fazın görevlerine ağırlık ver ve her göreve bir kişi ata. Kişinin yükü, aldığı görevlerin ağırlıklarının toplamıdır; %100'ü aşan yorulur ve hata yapar.","Weigh each phase's tasks and put one person on each task. A person's load is the sum of their tasks' weights; above 100% they tire and make mistakes."
+UI_PLAN_HINT_AUTO,"Küçük iş: atama gerekmez. Ağırlıkları seç, ekip her göreve ağırlığı kadar zaman verir.","Small job: no assignments needed. Set the weights and the team gives each task time in proportion."
+UI_PLAN_WEIGHT_TIP,Görevin fazdaki ağırlığı. Fazın üç görevi birbirine göre oranlanır.,The task's weight in its phase. The three tasks of a phase are weighed against each other.
+UI_PLAN_PICK_INFO,Uygunluk %d · yük %s,Fit %d · load %s
+UI_PLAN_NOBODY,Kimse,Nobody
+UI_PLAN_ASSIGN,Ata,Assign
+UI_PLAN_RENTALS,Kiralık ekipman (bedeli başlarken ödenir),Rental equipment (paid at the start)

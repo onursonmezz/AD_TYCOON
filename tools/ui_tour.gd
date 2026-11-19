@@ -48,7 +48,10 @@ func _run() -> void:
 	var wizard: WizardDialog = WizardDialog.new(sim.state.inbox[0], screen)
 	screen.call("open_modal", wizard)
 	await _shot("03_wizard")
+	# S3A: görev planı kampanya başında (küçük iş: yalnızca ağırlıklar).
 	wizard.call("_on_start")
+	await _shot("03b_task_plan")
+	(wizard.get("_plan") as TaskPlanDialog).call("_start")
 	while not GameState.is_waiting():
 		_step()
 	while not EventSystem.pending(sim.state).is_empty():
@@ -62,14 +65,7 @@ func _run() -> void:
 	await get_tree().create_timer(0.3).timeout
 	await _shot("04_minigame")
 	await _finish_minigame(panel)
-	await _shot("04_phase_sliders")
-	var board: WorkBoard = panel.find_children("*", "WorkBoard", true, false)[0]
-	var plan: Dictionary = board.get("_plan")
-	var who: String = (board.get("_members") as Array)[0]
-	plan[who] = [1.0, 0.5, 0.25]
-	board.call("_refresh")
-	await _shot("04b_phase_sliders_moved")
-	board.call("_confirm")
+	_unblock()
 	Clock.set_paused(true)
 	for i: int in 10:
 		_step()
@@ -111,7 +107,7 @@ func _run() -> void:
 						shell_scroll.scroll_vertical = 100000
 					await get_tree().process_frame
 					await _shot("05b_production_board")
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+			_unblock()
 		_step()
 	await get_tree().create_timer(2.0).timeout
 	await _shot("06_report")
@@ -149,11 +145,18 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 	(sim.state.research["done"] as Array).append_array(["media_planning", "tone_choice", "audience_analysis", "digital_department"])
 	while sim.state.clock.game_year() < 3 or not sim.state.is_idle() or sim.state.inbox.is_empty():
 		if GameState.is_waiting():
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+			_unblock()
 		_step()
 	for child: Node in screen.get("_modal_layer").get_children():
 		child.queue_free()
 	await get_tree().process_frame
+	sim.state.inbox[0]["size"] = "medium"  # tur: atamalı görev planını göstermek için
+	while sim.state.staff.size() < 3:  # atama 3 kişiden başlar (S3A)
+		var found: Array[Dictionary] = sim.staff.search(sim.state, sim.economy, "copywriter", "job_ad", "tr")
+		if found.is_empty():
+			break
+		found[0]["hired_week"] = sim.state.clock.week_index - 30
+		sim.state.staff[found[0]["id"]] = found[0]
 	var wizard: WizardDialog = WizardDialog.new(sim.state.inbox[0], screen)
 	screen.call("open_modal", wizard)
 	await get_tree().process_frame
@@ -179,11 +182,16 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 		await _shot("12_negotiation")
 		if is_instance_valid(dialog):
 			dialog.queue_free()
+	# S3A: görev planı penceresi (atamalı: orta boy iş, ekip varsa).
 	wizard.call("_on_start")
+	await _shot("11c_task_plan")
+	var plan_dialog: TaskPlanDialog = wizard.get("_plan")
+	if is_instance_valid(plan_dialog):
+		plan_dialog.call("_start")
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+			_unblock()
 		_step()
 	await get_tree().create_timer(2.0).timeout
 	await _shot("13_report_channels")
@@ -226,7 +234,7 @@ func _tour_industry(screen: Control, sim: Simulation) -> void:
 	while sim.state.clock.month() != sim.awards.entry_month("golden_apple"):
 		_step()
 		if GameState.is_waiting():
-			GameState.set_phase_sliders([0.4, 0.4, 0.2])
+			_unblock()
 	if not sim.state.history.is_empty():
 		var last: Dictionary = sim.state.history[sim.state.history.size() - 1]
 		last["week"] = sim.state.clock.week_index
@@ -349,6 +357,13 @@ func _tour_build(screen: Control, sim: Simulation) -> void:
 
 
 ## Paneldeki mini oyunu atlar (taslakta ilkini seçer) ve sonuç gösterimi bitene kadar bekler.
+## Planlı kampanya faz başında mini oyunu bekliyorsa (S3A) sonucu yazıp devam ettirir.
+func _unblock() -> void:
+	var sim: Simulation = GameState.sim
+	if GameState.is_waiting() and not sim.state.active_campaign.is_empty():
+		GameState.execute(MinigameResultCommand.new(sim.production.current_phase(sim.state.active_campaign), 0.5))
+
+
 func _finish_minigame(panel: Node) -> void:
 	var hosts: Array[Node] = panel.get_tree().root.find_children("*", "MinigameHost", true, false)
 	if hosts.is_empty():
