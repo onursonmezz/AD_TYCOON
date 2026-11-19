@@ -1766,3 +1766,21 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Pozisyonlar departman ikonu ve departman adıyla, çok seçenek olduğu için 5 sütunlu küçük kartlarda; kanallar fiyatıyla.
   - `OptionArt` artık ikon paketinden ikon da çiziyor (tür "icon").
 - **Ekip tablosu:** Rol ve ad sütunları genişledi; kesilen metin "…" ile bitiyor ve tamamı ipucunda.
+
+## K-140 — İnceleme 6. aşama: ofis ve inşa (2026-11-19)
+- **Duvara yaslanma:** Eşya yerleştirme artık yürüme ızgarasına bakmıyor (`OfficeLayout.furniture_free`).
+  - Eşya binanın içinde olmalı; duvarın gövdesine (`build.wall_thickness` 0,18 m) ve başka eşyaya değmemeli.
+  - Eskiden duvarın 30 cm yakınındaki hücreler dolu sayılıyordu. Bu yüzden eşya duvara yaslanamıyor, arada boşluk kalıyordu.
+  - Yolun kapanmaması eskisi gibi ayrıca denetleniyor.
+- **Yapışma ve Ctrl:**
+  - Normalde eşya ızgaraya oturuyor ve 0,4 m yakınındaki duvarın yüzüne yaslanıyor (`snap_to_walls`, `build.wall_snap_distance`).
+  - Ctrl basılıyken ızgara da duvar da yok; 5 cm adımla serbest konuyor (`build.free_step`).
+- **Önizleme = sonuç:** Hayalet model artık saydam değil (`look.json build_ghost.model_transparency` 0).
+  - Saydam modelde arkadaki yüz öne çıkıyor, pano tersine dönmüş gibi görünüyordu.
+  - Kutu ve yeşil/kırmızı renk yine ince bir katman olarak var.
+- **Kapı:** `door_width` 1,6 → 1,2 m; `door_min_piece` 0,4 → 0,3 m. Kısa duvarda kapı artık neredeyse tüm duvarı silmiyor.
+- **Asılı eşya:** `furniture.json` alanı `"hanging": true` (asılı saksı).
+  - Asılı eşya yalnız başka asılı eşyaya çarpıyor; masanın, rafın üstüne ve duvar yüzüne asılabiliyor.
+  - Altı yürüme yolu sayılmıyor (karakterin başı saksıdan geçmesin diye).
+- **Kuru bitki:** Kuruyan bitkinin üstüne yarı saydam, gölgesiz kahverengi katman giydiriliyordu. Bu katman rafı ve saksıyı soluk, renksiz bir hayalete çeviriyordu.
+  - Artık renk çarpılıyor (`ModelLibrary.multiply`, `models.json dry_plant_multiply`): yapraklar sararıyor, ahşap ve saksı kendi rengini koruyor.

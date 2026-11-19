@@ -41,11 +41,11 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 - [x] Her ofiste kurucunun ekipten ayrı kendi masası olsun (GDT gibi).
 
 ## 6. aşama: Ofis ve inşa
-- [ ] Mobilya eklerken duvara yaslanma sıfırlanmıyor. Ctrl basılıyken ızgaraya ve duvara yapışmadan serbest yerleştirme olsun (Sims gibi).
-- [ ] Yerleştirirken ön yüzü görünüyor ama koyunca arka yüzü görünüyor; önizleme ile sonuç aynı olsun (ekran görüntüsü: pano).
-- [ ] Bitki rafının renkleri yokmuş gibi duruyor.
-- [ ] Kapı çok geniş, neredeyse tüm duvarı siliyor.
-- [ ] Asılı saksı duvara takılabilsin.
+- [x] Mobilya eklerken duvara yaslanma sıfırlanmıyor. Ctrl basılıyken ızgaraya ve duvara yapışmadan serbest yerleştirme olsun (Sims gibi).
+- [x] Yerleştirirken ön yüzü görünüyor ama koyunca arka yüzü görünüyor; önizleme ile sonuç aynı olsun (ekran görüntüsü: pano).
+- [x] Bitki rafının renkleri yokmuş gibi duruyor.
+- [x] Kapı çok geniş, neredeyse tüm duvarı siliyor.
+- [x] Asılı saksı duvara takılabilsin. (6. aşama, K-140)
 
 ## 7. aşama: Araçlar, Ar-Ge, ekipman
 - [ ] Araçlarda satın al düğmesi bazı durumlarda yok (Orgo gördü; hangi durumda olduğu bulunacak).

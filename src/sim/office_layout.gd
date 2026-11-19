@@ -66,7 +66,7 @@ static func build(rec: Dictionary, custom: Dictionary = {}, furniture_defs: Dict
 	for f: Dictionary in custom.get("furniture", []):
 		if furniture_defs.has(f["id"]):
 			l.props.append({"kind": "furniture", "id": f["id"], "index": i, "rot": int(f.get("rot", 0)),
-				"flat": bool(furniture_defs[f["id"]].get("flat", false)),
+				"flat": bool(furniture_defs[f["id"]].get("flat", false)), "hanging": bool(furniture_defs[f["id"]].get("hanging", false)),
 				"rect": furniture_rect(furniture_defs[f["id"]], Vector2(float(f["pos"][0]), float(f["pos"][1])), int(f.get("rot", 0)))})
 		i += 1
 	l._build_grid()
@@ -303,7 +303,7 @@ func _build_grid() -> void:
 		_mark(box, func(c: Vector2) -> bool:
 			return Geometry2D.get_closest_point_to_segment(c, a, b).distance_to(c) < WALL_CLEARANCE)
 	for prop: Dictionary in props:
-		if bool(prop.get("flat", false)):  # halı gibi yere serilen eşyanın üstünden yürünür, üstüne eşya konur
+		if bool(prop.get("flat", false)):  # halı gibi yere serilen eşyanın üstünden yürünür
 			continue
 		_mark(prop["rect"], func(c: Vector2) -> bool: return (prop["rect"] as Rect2).has_point(c))
 
@@ -338,6 +338,52 @@ func furniture_at(p: Vector2) -> Dictionary:
 
 
 ## Alanın tamamı boş mu (duvar ve kutu yok, bina içinde)?
+## Eşya yerleştirme (S6): ızgaradan bağımsız; eşya binanın içinde, duvarın gövdesine (kalınlık) ve başka eşyaya değmiyor.
+## Eskiden yürüme ızgarası kullanılıyordu: duvarın 30 cm yakınındaki hücreler dolu sayıldığı için eşya duvara
+## yaslanamıyor, arada yarım metre kalıyordu. Yolun kapanmaması ayrıca (all_reachable) denetlenir.
+## hanging (S6): asılı eşya (saksı) yerdeki eşyaların üstünde durur; yalnız başka asılı eşyaya çarpar.
+func furniture_free(r: Rect2, wall_thickness: float, hanging: bool = false) -> bool:
+	if not Rect2(Vector2.ZERO, size).encloses(r):
+		return false
+	var inner: Rect2 = r.grow(-0.01)
+	for w: Dictionary in walls:
+		var body: Rect2 = Rect2(w["a"], Vector2.ZERO).expand(w["b"]).grow(wall_thickness * 0.5)
+		if inner.intersects(body):
+			return false
+	for prop: Dictionary in props:
+		if bool(prop.get("flat", false)):  # halı gibi yere serilen eşyanın üstüne eşya konur
+			continue
+		if bool(prop.get("hanging", false)) != hanging:  # asılı saksı ile yerdeki eşya farklı yükseklikte
+			continue
+		if inner.intersects(prop["rect"]):
+			return false
+	return true
+
+
+## Eşyayı yakınındaki duvara yaslar (S6): kenarı duvar yüzüne snap mesafesinden yakınsa yüzüne kaydırır.
+func snap_to_walls(r: Rect2, wall_thickness: float, snap: float) -> Rect2:
+	var out: Rect2 = r
+	var half: float = wall_thickness * 0.5
+	for w: Dictionary in walls:
+		var a: Vector2 = w["a"]
+		var b: Vector2 = w["b"]
+		if is_equal_approx(a.x, b.x):  # dikey duvar (x sabit)
+			if out.end.y <= minf(a.y, b.y) or out.position.y >= maxf(a.y, b.y):
+				continue
+			if absf(out.position.x - (a.x + half)) < snap:
+				out.position.x = a.x + half
+			elif absf(out.end.x - (a.x - half)) < snap:
+				out.position.x = a.x - half - out.size.x
+		elif is_equal_approx(a.y, b.y):  # yatay duvar (z sabit)
+			if out.end.x <= minf(a.x, b.x) or out.position.x >= maxf(a.x, b.x):
+				continue
+			if absf(out.position.y - (a.y + half)) < snap:
+				out.position.y = a.y + half
+			elif absf(out.end.y - (a.y - half)) < snap:
+				out.position.y = a.y - half - out.size.y
+	return out
+
+
 func is_free(r: Rect2) -> bool:
 	if not Rect2(Vector2.ZERO, size).encloses(r):
 		return false

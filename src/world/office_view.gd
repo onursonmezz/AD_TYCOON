@@ -169,8 +169,16 @@ func _furniture_rect(p: Vector2) -> Rect2:
 	var def: Dictionary = DataDB.data.furniture[build_tool["id"]]
 	var rot: int = int(build_tool["rot"])
 	var r: Rect2 = OfficeLayout.furniture_rect(def, Vector2.ZERO, rot)
-	# Fare eşyanın ortasında dursun (döndürünce eşya imlecin etrafında döner).
-	return OfficeLayout.furniture_rect(def, snap(p - r.size * 0.5 + Vector2.ONE * OfficeLayout.CELL * 0.5, OfficeLayout.CELL), rot)
+	# Fare eşyanın ortasında dursun (döndürünce eşya imlecin etrafında döner). S6: Ctrl basılıyken ızgara yok (serbest);
+	# değilse ızgaraya oturur ve yakındaki duvara yaslanır.
+	var free: bool = Input.is_key_pressed(KEY_CTRL)
+	var step: float = float(DataDB.data.bal("build.free_step")) if free else OfficeLayout.CELL
+	var at: Rect2 = OfficeLayout.furniture_rect(def, snap(p - r.size * 0.5 + Vector2.ONE * step * 0.5, step), rot)
+	if free:
+		return at
+	var sim: Simulation = GameState.sim
+	return sim.build.layout(sim.state).snap_to_walls(at, float(DataDB.data.bal("build.wall_thickness")),
+		float(DataDB.data.bal("build.wall_snap_distance")))
 
 
 func _room_rect(a: Vector2, b: Vector2) -> Rect2:

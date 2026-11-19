@@ -1,6 +1,6 @@
 {
 	"build_ghost": { "ok": [0.3, 0.75, 0.4], "bad": [0.85, 0.3, 0.25], "remove": [0.9, 0.35, 0.25],
-		"box_alpha": 0.22, "box_alpha_no_model": 0.45, "model_transparency": 0.3, "tint_alpha": 0.28 },
+		"box_alpha": 0.22, "box_alpha_no_model": 0.45, "model_transparency": 0.0, "tint_alpha": 0.28 },
 	"_quality": "Grafik kalitesi kademeleri (Ayarlar → Ekran). msaa: 0/2/4/8; screen_aa: none/fxaa/smaa; scale: 3D çizim ölçeği.",
 	"quality": { "default": "high", "levels": {
 		"low": { "msaa": 0, "screen_aa": "fxaa", "scale": 0.85, "debanding": false, "ssao": false, "ssil": false, "glow": false, "dof": false, "interior_lights": false },

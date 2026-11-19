@@ -61,6 +61,16 @@ static func triangle_count(root: Node) -> int:
 
 
 ## Kuru bitki gibi durumlar için bütün mesh'lere yarı saydam renk katmanı.
+## Rengi silmeden çarparak boyar (S6: kuru bitki; yapraklar sararır, ahşap ve saksı kendi rengini korur).
+static func multiply(root: Node, color: Color) -> void:
+	var mat: StandardMaterial3D = StandardMaterial3D.new()
+	mat.albedo_color = color
+	mat.blend_mode = BaseMaterial3D.BLEND_MODE_MUL
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	for node: Node in root.find_children("*", "MeshInstance3D", true, false):
+		(node as MeshInstance3D).material_overlay = mat
+
+
 static func tint(root: Node, color: Color) -> void:
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
 	mat.albedo_color = color

@@ -70,7 +70,8 @@ func place_error(state: SimState, id: String, pos: Vector2, rot: int, full: bool
 		return "ERR_FURNITURE"
 	if count_of(state, id) >= int(data.furniture[id]["max_count"]):
 		return "ERR_FURNITURE_LIMIT"
-	if not layout(state).is_free(OfficeLayout.furniture_rect(data.furniture[id], pos, rot)):
+	if not layout(state).furniture_free(OfficeLayout.furniture_rect(data.furniture[id], pos, rot), float(_b("wall_thickness")),
+			bool(data.furniture[id].get("hanging", false))):
 		return "ERR_PLACE_BLOCKED"
 	if not full:
 		return ""

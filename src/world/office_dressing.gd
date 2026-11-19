@@ -86,7 +86,7 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 				Vector2(float(def["size"][0]), float(def["size"][1])), float(def["height"]), col, -90.0 * int(prop.get("rot", 0)),
 				float(def.get("mount_y", 0.0)))
 			if withered and bool(t["model"]):
-				ModelLibrary.tint(t["node"], Color(col, 0.55))
+				ModelLibrary.multiply(t["node"], color_of(_m()["dry_plant_multiply"]))
 			continue
 		if prop["kind"] == "counter" and props.has("kitchen_sink"):
 			_counter(parent, pr, props)

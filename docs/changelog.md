@@ -1,5 +1,19 @@
 # Değişiklik günlüğü
 
+## İnceleme 6. aşama: ofis ve inşa (2026-11-19)
+- Eşyalar duvara tam yaslanıyor; duvara yaklaşınca kendiliğinden yapışıyor. Ctrl basılı tutarsan ızgarasız, serbest konuyor.
+- Yerleştirirken görülen önizleme artık saydam değil; koyduğun eşya önizlemede nasıl duruyorsa öyle duruyor (pano ters dönmüyor).
+- Kapı daha dar (1,2 m).
+- Asılı saksı duvara, masanın ya da rafın üstüne asılabiliyor.
+- Bitkiler kuruyunca soluk bir hayalete dönmüyor; renkleri kalıyor, yaprakları sararıyor.
+- Nasıl test ederim:
+  1. İnşa modunda bir bitki rafını duvara yaklaştır. Duvara boşluksuz yapışmalı.
+  2. Ctrl basılı tutarak gezdir. Eşya ızgaraya oturmadan, ince adımlarla kaymalı.
+  3. Panoyu (mood board) yerleştir. Önizlemede gördüğün yüz, koyunca da aynı yüz olmalı.
+  4. Duvarlar sekmesinden kapı ekle. Açıklık eskisinden dar olmalı.
+  5. Asılı saksıyı bir duvara ve bir masanın üstüne as.
+  6. Bitkileri birkaç hafta sulama. Kuruyunca renkli kalmalı, sadece sararmalı.
+
 ## İnceleme 5. aşama: ekip (2026-11-19)
 - Aynı karakter tekrar gelmiyor. Ofiste kullanılmayan bir 3B model seçiliyor, yoksa saçı, kıyafeti ve rengi farklı bir karakter geliyor. Aday portreleri de birbirinden farklı.
 - Kurucunun her ofiste ekipten ayrı, ekibe dönük kendi masası var.

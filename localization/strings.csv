@@ -851,7 +851,7 @@ UI_NONE,yok,none
 UI_DESK_TIER,Masa ve sandalyeler:,Desks and chairs:
 UI_BUILD_MODE,İnşa moduna geç,Enter build mode
 UI_BUILD_TITLE,İnşa modu,Build mode
-UI_BUILD_KEYS,R / Shift+R: döndür · Del: imlecin altındakini sat ya da yık · Esc: aracı bırak,R / Shift+R: rotate · Del: sell or remove what is under the cursor · Esc: drop tool
+UI_BUILD_KEYS,R / Shift+R: döndür · Ctrl: serbest yerleştir · Del: imlecin altındakini sat ya da yık · Esc: aracı bırak,R / Shift+R: rotate · Ctrl: free placement · Del: sell or remove what is under the cursor · Esc: drop tool
 UI_BUILD_DONE,Bitir,Done
 UI_BUILD_REMOVE,Sil / sat,Delete / sell
 UI_BUILD_ROTATE_LEFT,Sola döndür (Shift+R),Turn left (Shift+R)

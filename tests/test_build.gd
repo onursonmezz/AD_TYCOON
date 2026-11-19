@@ -176,3 +176,46 @@ func test_build_survives_save() -> void:
 	assert_eq(errors.size(), 0)
 	assert_eq((loaded.state.build["furniture"] as Array).size(), 1)
 	assert_almost_eq(loaded.state.room_quality, sim.state.room_quality, 0.001, "kalite yüklemede yeniden hesaplanır")
+
+
+## S6: eşya duvara yaslanabilir (eskiden arada yarım metre kalıyordu); duvarın gövdesine giremez.
+func test_furniture_can_touch_a_wall_but_not_enter_it() -> void:
+	var sim: Simulation = _sim(1)
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	var t: float = data.balf("build.wall_thickness")
+	var flush: Vector2 = Vector2.INF
+	for z: int in range(2, int(l.size.y * 2.0) - 2):
+		var p: Vector2 = Vector2(t * 0.5, z * 0.5)  # batı dış duvarının iç yüzü
+		if sim.build.place_error(sim.state, "plant_small", p, 0) == "":
+			flush = p
+			break
+	assert_ne(flush, Vector2.INF, "duvara yaslı bir yer bulunur")
+	assert_eq(sim.build.place_error(sim.state, "plant_small", flush - Vector2(0.05, 0.0), 0), "ERR_PLACE_BLOCKED",
+		"duvarın içine giremez")
+
+
+func test_wall_snap_pulls_item_to_the_wall() -> void:
+	var sim: Simulation = _sim(1)
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	var t: float = data.balf("build.wall_thickness")
+	var r: Rect2 = l.snap_to_walls(Rect2(Vector2(0.3, 3.0), Vector2(0.5, 0.5)), t, data.balf("build.wall_snap_distance"))
+	assert_almost_eq(r.position.x, t * 0.5, 0.001, "yakındaki duvarın yüzüne yaslanır")
+
+
+func test_hanging_plant_hangs_over_floor_items_and_on_walls() -> void:
+	var sim: Simulation = _sim(1)
+	var l: OfficeLayout = sim.build.layout(sim.state)
+	var desk: Rect2 = Rect2()
+	for prop: Dictionary in l.props:
+		if prop["kind"] == "desk":
+			desk = prop["rect"]
+			break
+	assert_ne(desk, Rect2(), "ofiste masa var")
+	var over: Vector2 = desk.get_center() - Vector2(0.25, 0.25)
+	assert_eq(sim.build.place_error(sim.state, "hanging_plant", over, 0), "", "asılı saksı masanın üstüne asılır")
+	assert_eq(sim.build.place_error(sim.state, "plant_small", over, 0), "ERR_PLACE_BLOCKED", "yerdeki saksı masaya giremez")
+	assert_eq(sim.build.place(sim.state, sim.economy, "hanging_plant", over, 0), "")
+	assert_eq(sim.build.place_error(sim.state, "hanging_plant", over, 0), "ERR_PLACE_BLOCKED", "iki saksı aynı yere asılmaz")
+	var t: float = data.balf("build.wall_thickness")
+	var on_wall: Rect2 = l.snap_to_walls(Rect2(Vector2(0.3, 3.0), Vector2(0.5, 0.5)), t, data.balf("build.wall_snap_distance"))
+	assert_eq(sim.build.place_error(sim.state, "hanging_plant", on_wall.position, 0), "", "duvara asılır")
