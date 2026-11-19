@@ -35,5 +35,5 @@
 	"music": { "crossfade_seconds": 2.5, "gap_seconds": 4.0 },
 	"ambient": { "staff_full": 20, "paused_factor": 0.3, "update_seconds": 0.5, "fade_seconds": 1.0 },
 	"juice": { "cash_fly_min_1990": 1000, "cash_fly_seconds": 1.4, "confetti_score": 8.0, "confetti_count": 90,
-		"hover_scale": 1.04, "notify_slide": 40, "notify_seconds": 0.35 }
+		"notify_slide": 40, "notify_seconds": 0.35 }
 }

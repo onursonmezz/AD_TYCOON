@@ -220,8 +220,16 @@ static func art(map: String, key: String, px: float, fallback_icon: String, fill
 static func compact(c: Control, primary: bool = false) -> Control:
 	var fill: Color = CozyTheme.FOREST if primary else CozyTheme.CREAM_LIGHT
 	var style: StyleBoxFlat = CozyTheme.box(fill, 7, fill if primary else CozyTheme.BORDER, 1, false, Vector2(9.0, 3.0))
-	for st: String in ["normal", "hover", "pressed", "hover_pressed", "read_only"]:
+	# S11: bütün hâllerde aynı iç boşluk (yazı kaymasın); üstüne gelince yalnızca kenar/zemin rengi değişir.
+	var hover: StyleBoxFlat = CozyTheme.box(fill.darkened(0.08) if primary else CozyTheme.SAGE_SOFT, 7,
+		CozyTheme.FOREST_LIGHT, 1, false, Vector2(9.0, 3.0))
+	var off: StyleBoxFlat = CozyTheme.box(CozyTheme.CREAM, 7, CozyTheme.BORDER, 1, false, Vector2(9.0, 3.0))
+	for st: String in ["normal", "read_only"]:
 		c.add_theme_stylebox_override(st, style)
+	for st: String in ["hover", "pressed", "hover_pressed"]:
+		c.add_theme_stylebox_override(st, hover)
+	c.add_theme_stylebox_override("disabled", off)
+	c.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	c.add_theme_font_size_override("font_size", 12)
 	c.custom_minimum_size.y = 26.0
 	c.size_flags_vertical = Control.SIZE_SHRINK_CENTER

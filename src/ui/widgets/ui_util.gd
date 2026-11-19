@@ -62,13 +62,10 @@ static func button(text: String, on_press: Callable) -> Button:
 	return b
 
 
-## Üzerine gelince hafifçe büyüme (M9-B "juice"); yalnızca görüntü, yerleşimi bozmaz.
-static func add_hover(c: Control) -> void:
-	var s: float = float(DataDB.data.sounds["juice"]["hover_scale"]) if DataDB.is_ok() else 1.0
-	c.mouse_entered.connect(func() -> void:
-		c.pivot_offset = c.size * 0.5
-		c.create_tween().tween_property(c, "scale", Vector2.ONE * s, 0.08))
-	c.mouse_exited.connect(func() -> void: c.create_tween().tween_property(c, "scale", Vector2.ONE, 0.08))
+## S11: üzerine gelince büyüme kaldırıldı (Orgo): büyüyen düğmenin yazısı kayıyor, kenarı pencereden taşıyordu.
+## Üzerine gelme artık yalnızca temadaki renk değişimi. Eski çağrılar bozulmasın diye işlev duruyor.
+static func add_hover(_c: Control) -> void:
+	pass
 
 
 ## CheckBox/CheckButton tema gereği düğme zeminini miras alır; düz ve okunaklı yapar.
