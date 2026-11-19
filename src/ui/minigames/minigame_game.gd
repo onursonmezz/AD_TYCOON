@@ -11,6 +11,8 @@ const CANVAS: Vector2 = Vector2(640, 360)
 const RADIUS: int = 16
 const STAMP_GREAT: float = 0.8
 const STAMP_OK: float = 0.4
+const CONFETTI_GREAT: int = 70
+const CONFETTI_OK: int = 30
 
 static var _stage_cache: Dictionary = {}
 
@@ -164,6 +166,8 @@ func _show_stamp(q: float) -> void:
 			var b: TextureRect = DraftArt._image(burst, Rect2(CANVAS * 0.5 - Vector2(220, 160), Vector2(440, 320)),
 				TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
 			holder.add_child(b)
+	if q >= STAMP_OK:  # S3E: başarılı bitişte tepeden konfeti yağar (Harika'da daha bol)
+		_confetti_rain(holder, CONFETTI_GREAT if q >= STAMP_GREAT else CONFETTI_OK)
 	var stamp: Control = MenuArt.tape(stamp_text if not stamp_text.is_empty() else tr(key), "", 46, -6.0)
 	holder.add_child(stamp)
 	await get_tree().process_frame
@@ -177,6 +181,29 @@ func _show_stamp(q: float) -> void:
 	tw.tween_property(stamp, "scale", Vector2.ONE, 0.32).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	if q < STAMP_OK:
 		stamp.modulate = Color(0.85, 0.85, 0.85)
+
+
+## Tepeden yağan kâğıt konfeti: her parça farklı renkte, döner ve sağa sola salınarak düşer.
+func _confetti_rain(parent: Control, count: int) -> void:
+	var cols: Array[Color] = [CozyTheme.TERRA, CozyTheme.FOREST_LIGHT, UiUtil.MUSTARD, Color("7fb3d5"), Color("e6007e"),
+		CozyTheme.CREAM_LIGHT]
+	for i: int in count:
+		var piece: ColorRect = ColorRect.new()
+		piece.color = cols[i % cols.size()]
+		piece.size = Vector2(randf_range(5.0, 9.0), randf_range(9.0, 15.0))
+		piece.pivot_offset = piece.size * 0.5
+		piece.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var x: float = randf_range(0.0, CANVAS.x)
+		piece.position = Vector2(x, randf_range(-80.0, -10.0))
+		piece.rotation = randf_range(0.0, TAU)
+		parent.add_child(piece)
+		var secs: float = randf_range(1.4, 2.4)
+		var delay: float = randf_range(0.0, 0.6)
+		var tw: Tween = piece.create_tween().set_parallel(true)
+		tw.tween_property(piece, "position:y", CANVAS.y + 20.0, secs).set_delay(delay).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		tw.tween_property(piece, "position:x", x + randf_range(-60.0, 60.0), secs).set_delay(delay).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(piece, "rotation", piece.rotation + randf_range(-9.0, 9.0), secs).set_delay(delay)
+		tw.chain().tween_callback(piece.queue_free)
 
 
 ## Taslak dizgicisiyle küçük bir ilan (billboard, gazete): kampanyanın ilk taslak seçeneği.

@@ -1539,7 +1539,7 @@ MG_RADIO_WAVE_HINT,Ses dalgasının üç parçasını doğru sırayla tıkla.,Cl
 MG_BILLBOARD_NAME,Açık hava provası,Outdoor rehearsal
 MG_BILLBOARD_HINT,İlanı sürücüye doğru anda göster: araba yeşil bölgedeyken Göster'e bas.,Show the ad to the driver at the right moment: press Show while the car is in the green zone.
 MG_NEWSPAPER_NAME,Gazete provası,Newspaper rehearsal
-MG_NEWSPAPER_HINT,İlanı sürükleyip sayfadaki boş kutuya bırak.,Drag the ad into the empty box on the page.
+MG_NEWSPAPER_HINT,"Üç gazeteden yalnızca birinin ilan yeri ilanına uyuyor. İlanı o gazeteye sürükle; yanlış gazete puan götürür.","Only one of the three papers has an ad space that fits your ad. Drag the ad onto that paper; a wrong paper costs points."
 MG_DRAFT_NAME,Taslak seçimi,Draft pick
 MG_DRAFT_HINT,Kreatif ekip üç taslak hazırladı. Birini seç: ofisteki posterde ve sokaktaki billboard'da bu görünecek.,The creative team made three drafts. Pick one: it will appear on the office poster and the street billboard.
 MG_DRAFT_TEAM,Ekibin üç taslağı,The team's three drafts
@@ -1574,14 +1574,14 @@ EQ_NEEDS_VISUAL,görsel,visual
 ERR_EQUIPMENT_NA,Bu ekipman şu an yok.,This equipment is not available now.
 ERR_EQUIPMENT_OWNED,Bu ekipman zaten sende.,You already own this equipment.
 UI_EQ_TITLE,Prodüksiyon ekipmanı,Production equipment
-UI_EQ_HINT,"Ekipman prodüksiyon alanında üretimi artırır. Etkisi kampanyanın kanallarına bağlı: kamera TV ve video işlerinde, fotoğraf seti basılı ve açık hava işlerinde, ses seti radyo ve videoda işe yarar. Her türden yalnızca en iyisi sayılır. Kiralıkları kampanyanın prodüksiyon fazında seçersin.","Equipment boosts output in the production area. The effect depends on the campaign's channels: cameras help TV and video, photo kits print and outdoor, sound kits radio and video. Only the best of each type counts. Rentals are picked in a campaign's production phase."
+UI_EQ_HINT,"Ekipman prodüksiyon alanında üretimi artırır. Etkisi kampanyanın kanallarına bağlı: kamera TV ve video işlerinde, fotoğraf seti basılı ve açık hava işlerinde, ses seti radyo ve videoda işe yarar. Her türden yalnızca en iyisi sayılır. Kiralıkları kampanyayı başlatırken görev planında seçersin.","Equipment boosts output in the production area. The effect depends on the campaign's channels: cameras help TV and video, photo kits print and outdoor, sound kits radio and video. Only the best of each type counts. Rentals are picked in the task plan when you start a campaign."
 UI_EQ_MONTHLY,"Ekipman bakımı: %s / ay","Equipment upkeep: %s / month"
 UI_EQ_ROW,"+%%%d %s · bakım %s/ay","+%d%% %s · upkeep %s/mo"
 UI_EQ_RENT_ROW,"+%%%d %s · kampanya başı %s","+%d%% %s · per campaign %s"
 UI_EQ_BUY,"Satın al %s","Buy %s"
 UI_EQ_SELL,"Sat (%s)","Sell (%s)"
 UI_EQ_OUTDATED,Daha iyisi var,Superseded
-UI_EQ_RENTALS,Kiralıklar (yalnızca prodüksiyon fazında seçilir),Rentals (picked in the production phase)
+UI_EQ_RENTALS,Kiralıklar (kampanyanın görev planında seçilir),Rentals (picked in the campaign task plan)
 UI_BOARD_EQUIPMENT,"Ekipman · prodüksiyon ×%s","Equipment · production ×%s"
 UI_BOARD_RENT,"%s (%s)","%s (%s)"
 UI_TOOLS_TAB_SOFTWARE,Yazılım ve donanım,Software and hardware
@@ -1827,7 +1827,7 @@ TRAILER_WISHLIST,Steam'de istek listene ekle,Wishlist on Steam
 MG_STAMP_GREAT,Harika!,Brilliant!
 MG_STAMP_OK,Fena değil,Not bad
 MG_STAMP_MISS,Kaçtı!,Missed!
-MG_NEWSPAPER_DRAG,İlanı sayfaya sürükle,Drag the ad onto the page
+MG_NEWSPAPER_DRAG,İlanı ona uyan gazeteye sürükle,Drag the ad onto the paper it fits
 MG_RADIO_ON_AIR,YAYINDA,ON AIR
 MG_RADIO_CLIPS,Kayıt parçaları,Recorded clips
 MG_FILM_PRESENTS,%s sunar,%s presents

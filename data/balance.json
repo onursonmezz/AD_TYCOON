@@ -77,7 +77,7 @@
 		"strategy_default": "audience", "strategy_by_category": { "ooh": "map", "event": "map", "sponsorship": "map" },
 		"ribbon_window": 0.12, "ribbon_seconds": 1.6, "feed_speed": 80.0, "map_pins": 4,
 		"audience_targets": { "young": ["young"], "adult": ["adult", "family"], "mature": ["mature"], "b2b": ["business"], "": ["adult", "young"] },
-		"billboard_window": 0.12, "newspaper_tolerance": 0.35, "dark_bg_luminance": 0.35,
+		"billboard_window": 0.12, "newspaper_mistake_cost": 0.3, "dark_bg_luminance": 0.35,
 		"art_default": { "bg": ["bg_studio", "bg_pattern", "bg_sunny"], "fx": ["fx_sparkle", "fx_rays", "fx_confetti"] },
 		"art_by_tone": {
 			"food_beverage": { "bg": ["bg_sunny", "bg_tabletop", "bg_studio", "bg_pattern"], "fx": ["fx_steam", "fx_sparkle", "fx_splash", "fx_confetti"] },

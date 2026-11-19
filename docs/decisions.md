@@ -1725,3 +1725,12 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Kampanya penceresinin üstünde, birden çok kampanya varken "Müşteri · Faz" sekmeleri var; mini oyun bekleyen kampanya kendiliğinden gösteriliyor.
   - Her kampanyanın kendi şeridi ve baloncukları var, en çok 3 alt alta (`LiveStrips`).
 - **Botlar:** Denge aracındaki botlar yine yalnızca boşta olunca kampanya alıyor; denge sayıları değişmedi.
+
+## K-137 — 3E: Mini oyun düzeltmeleri ve ekipman ekranı (2026-11-19)
+- **Hedef kitle oyunu:** Kişi görsellerinin saydam kenarları kırpılıyor (belirgin piksellerin kutusu) ve hepsi aynı boya getiriliyor; geniş görsel (aile) daha geniş yer alıyor. Hepsi sığmazsa boy birlikte küçülüyor. Eskiden aile ve çocuk çok küçük görünüyordu.
+- **Konfeti:** Başarılı bitişte ("Harika!" ve "Fena değil") tepeden kâğıt konfeti yağıyor; parçalar renkli, dönerek ve sallanarak düşüyor, "Harika"da daha bol. Eski sabit konfeti resmi kalktı.
+- **Gazete oyunu:** Masada üç gazete var; ilan yerleri dikey, fazla enine ve ilana uyan boyda (sıra her oyunda karışık).
+  - Ortadaki bant kâğıt rengiyle örtülüp yeni ilan yeri ve yazı satırları kodla çiziliyor.
+  - İlan doğru gazeteye sürüklenince yerine oturuyor; yanlışa bırakılan geri dönüyor.
+  - Her yanlış puanı düşürüyor (`minigames.newspaper_mistake_cost`); eski `newspaper_tolerance` kalktı.
+- **Ekipman ekranı:** Taşma eski prodüksiyon fazı panosundaydı; o pano yeni akışta yok, kiralıklar görev planında. "Kiralıklar" başlığı ve ipucu güncellendi; uzun ekipman adları kesilmiyor.

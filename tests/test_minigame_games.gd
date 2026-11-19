@@ -46,16 +46,20 @@ func test_billboard_center_catch_scores_high_and_miss_scores_zero() -> void:
 	assert_almost_eq(float(get_signal_parameters(late, "finished")[0]), 0.0, 0.01)
 
 
-func test_newspaper_drop_inside_box_finishes() -> void:
+func test_newspaper_needs_the_right_page() -> void:
 	var g: MgNewspaper = _start(MgNewspaper.new())
 	var ad: Control = g.get("_ad")
-	var slot: Rect2 = g.get("_slot")
-	ad.position = Vector2(5, 5)
+	var pages: Array[Rect2] = g.get("_pages")
+	var right: int = int(g.get("_right"))
+	var wrong: int = (right + 1) % 3
+	var half: Vector2 = ad.size * ad.scale * 0.5
+	ad.position = pages[wrong].get_center() - half
 	g.call("_drop")
-	assert_signal_not_emitted(g, "finished", "kutunun dışı: tekrar dene")
-	ad.position = slot.position
+	assert_signal_not_emitted(g, "finished", "yanlış gazete: geri döner")
+	ad.position = (g.get("_slots") as Array[Rect2])[right].get_center() - half
 	g.call("_drop")
-	assert_almost_eq(float(get_signal_parameters(g, "finished")[0]), 1.0, 0.01)
+	var q: float = float(get_signal_parameters(g, "finished")[0])
+	assert_almost_eq(q, 1.0 - DataDB.data.balf("minigames.newspaper_mistake_cost"), 0.05, "bir yanlış: puan düşer")
 
 
 func test_draft_offers_three_and_skip_picks_first() -> void:

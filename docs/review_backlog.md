@@ -24,8 +24,8 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
   - Normal süre dolunca "Kampanyayı bitir" düğmesi çıksın.
   - Basılmazsa kampanya devam etsin ve hatalar giderilsin.
   - Süre yetiyorsa hatalar bitince yayınlanır; yetmiyorsa hatalarla yayınlanır.
-- [ ] Ekipman seçme penceresinin çerçevesi ekrandan taşıyor.
-- [ ] Mini oyunlar:
+- [x] Ekipman seçme penceresinin çerçevesi ekrandan taşıyor.
+- [x] Mini oyunlar:
   - Hedef kitle seçimindeki görsellerin boyutları farklı; hepsi aynı boyda olsun.
   - Başarıyla biten her mini oyunda konfeti tepeden yağsın.
   - Gazeteye görsel ekleme oyunu çok basit (tut-çek). Üç gazete olsun: biri dikey, biri fazla enine, biri doğru boyda; oyuncu doğrusunu bulsun.

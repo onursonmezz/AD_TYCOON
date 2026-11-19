@@ -1,5 +1,28 @@
 # Değişiklik günlüğü
 
+## İnceleme 3. aşama: kampanya sistemi (2026-11-19)
+- **Görev planı:** "Kampanyayı başlat" önce bir görev planı açıyor.
+  - Üç fazın görevlerine ağırlık çubuklarıyla önem veriyorsun.
+  - 3+ kişilik ekiple orta/büyük işte her göreve bir kişi atıyorsun. Kişinin yükü aldığı görevlerin ağırlık toplamı; %100'ü aşan yorulur ve hata yapar.
+  - Küçük işte ve küçük ekipte atama yok. "Otomatik dağıt" herkese yaklaşık %100 yük verir.
+- **Faz sürerken pencere yok:** Saat kutusunun altındaki şerit müşteriyi, fazı, kalan günü ve dört sayacı gösteriyor. Çalışanların başından "+n" puanlar çıkıp sayaçlara uçuyor; hata olunca kırmızı "!".
+- **Rötuş ve teslim:** Süre üretim ve rötuş diye ikiye ayrıldı. Üretim bitince ekip hataları gideriyor (yeşil "−1"). "Kampanyayı teslim et" ile istediğin an yayınlıyorsun; basmazsan son gün kendiliğinden teslim.
+- **Birden çok kampanya:** Boşta kişi varsa yeni brief kabul edilebiliyor. Bir kişi tek kampanyada çalışıyor. Kampanya penceresinde sekmeler var, üstte her kampanyanın şeridi.
+- **Mini oyunlar:**
+  - Hedef kitledeki kişiler aynı boyda.
+  - Başarılı bitişte tepeden konfeti yağıyor.
+  - Gazete oyununda üç gazeteden doğrusunu buluyorsun.
+- **Ekipman ekranı:** Adlar tam görünüyor; kiralıklar artık görev planında seçiliyor.
+- Nasıl test ederim:
+  1. Bir brief kabul et ve "Kampanyayı başlat"a bas. Görev planı açılmalı; çubukları oynatınca yüzdeler değişmeli.
+  2. 3 kişilik ekiple orta boy bir işte görevlerin yanındaki kişi düğmesine bas; portreler, uygunluk ve yük görünmeli. Birine üç görev ver, yükü %100'ü geçince turuncu ya da kırmızıya dönmeli.
+  3. Kampanya başlayınca pencereyi kapat. Üstte şerit görünmeli; çalışanların başından "+n" puanlar şeride uçmalı.
+  4. Üretim bitince bildirim gelmeli. Kampanya penceresinde "Kampanyayı teslim et" çıkmalı; beklersen hata sayısı azalmalı.
+  5. Birinci kampanya sürerken, boşta bir çalışan varsa yeni bir brief kabul et. İki şerit alt alta görünmeli, pencerede iki sekme olmalı. Başka kampanyadaki kişi sihirbazda seçilememeli.
+  6. Hedef kitle provasında kişiler aynı boyda olmalı; iyi bitirince konfeti tepeden yağmalı.
+  7. Gazete provasında ilanı yanlış gazeteye bırak (geri dönmeli), sonra doğrusuna bırak (oturmalı).
+  8. Eski bir kaydı aç; kampanyası varsa devam etmeli.
+
 ## İnceleme 2. aşama: kampanya kurma (2026-11-19)
 - Kampanya penceresinde açılır menü yok. Ürün, kalite, matbaa, lokasyon, kuşak, mekân gibi her seçenek küçük çizimli bir düğme; basınca seçenekler resimli kartlarla açılıyor, seçince kapanıyor.
 - Tek kanallı planda anlamsız bütçe çubuğu gizli; birden çok kanalda bütçeyi böldüğünü ipucu söylüyor.

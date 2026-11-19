@@ -127,19 +127,7 @@ func _on_finished(quality: float) -> void:
 		var band: String = "GREAT" if quality >= 0.8 else ("OK" if quality >= 0.4 else "MISS")
 		_result.text = tr("MG_RESULT_" + band) % UiUtil.num(bonus, 1)
 		_result.add_theme_color_override("font_color", CozyTheme.FOREST if quality >= 0.4 else CozyTheme.MUTED)
-		if quality >= 0.8:
-			_confetti()
 		Audio.play("money" if quality >= 0.8 else "click")
 	await get_tree().create_timer(data.balf("minigames.result_hold")).timeout
 	if is_inside_tree():
 		_on_done.call()
-
-
-func _confetti() -> void:
-	var t: Texture2D = DraftArt.tex("effects", "fx_confetti")
-	if t == null:
-		return
-	var fx: TextureRect = DraftArt._image(t, Rect2(Vector2.ZERO, MinigameGame.CANVAS), TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
-	_game.add_child(fx)
-	fx.modulate.a = 0.0
-	create_tween().tween_property(fx, "modulate:a", 1.0, 0.25)
