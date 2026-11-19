@@ -84,6 +84,25 @@ func monthly_cost(state: SimState) -> float:
 
 # --- oyuncu eylemleri -------------------------------------------------------------
 
+## Satırda ne yapılabilir (S7): "buy" | "update" | "subscribe" | "cancel" | "latest" (güncel) | "needs_hardware"
+## (bilgisayar yeni sürümü çalıştıramıyor) | "starter". Arayüz her satırda ya düğme ya da durum etiketi gösterir.
+func row_action(state: SimState, id: String) -> String:
+	var year: int = state.clock.year()
+	if bool(data.tools[id]["starter"]):
+		return "starter"
+	if not owned(state, id):
+		return "buy" if supported_version(state, id) >= 0 else "needs_hardware"
+	if bool(state.tools[id]["sub"]):
+		return "cancel"
+	if is_subscription_era(id, year):
+		return "subscribe"
+	var v: int = int(state.tools[id]["version"])
+	if released_version(id, year) > v:
+		return "update" if supported_version(state, id) > v else "needs_hardware"
+	return "latest"
+
+
+
 ## Satın alma: abonelik döneminde aylık koltukla, öncesinde tek seferlik lisansla. Dönüş: "" veya hata anahtarı.
 func buy(state: SimState, economy: Economy, id: String) -> String:
 	if not data.tools.has(id) or bool(data.tools[id]["starter"]) or released_version(id, state.clock.year()) < 0:

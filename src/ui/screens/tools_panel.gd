@@ -109,9 +109,8 @@ func rebuild() -> void:
 		if hidden > 0 or open and buyable.size() > 1:
 			var more: Button = UiUtil.button(tr("UI_TOOLS_MORE") % hidden if not open else tr("UI_TOOLS_LESS"),
 				_toggle_area.bind(str(area)))
-			more.flat = true
-			more.add_theme_font_size_override("font_size", 12)
-			more.add_theme_color_override("font_color", CozyTheme.FOREST_LIGHT)
+			# S7: gizli araçlar görünür bir düğmede (eskiden soluk yazıydı; bırakılan araç orada kayboluyordu).
+			Cards.compact(more)
 			more.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 			col.add_child(more)
 			rows += 1
@@ -206,20 +205,27 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	st.tooltip_text = status
 	st.mouse_filter = Control.MOUSE_FILTER_STOP
 	row.add_child(st)
-	if bool(t["starter"]):
-		row.add_child(Cards.chip("✓ " + tr("UI_TOOL_IN_USE")))
-		return row
-	var sub_era: bool = sim.tools.is_subscription_era(id, year)
-	if not sim.tools.owned(s, id):
-		var price: String = tr("UI_TOOL_SEAT") % UiUtil.money(sim.tools.seat_cost(s, id)) if sub_era \
-			else UiUtil.money(sim.tools.license_cost(s, id))
-		row.add_child(_action_button(tr("UI_TOOL_BUY") % price, "buy", id))
-	elif bool(s.tools[id]["sub"]):
-		row.add_child(_action_button(tr("UI_TOOL_CANCEL"), "cancel", id))
-	elif sub_era:
-		row.add_child(_action_button(tr("UI_TOOL_SUBSCRIBE") % UiUtil.money(sim.tools.seat_cost(s, id)), "subscribe", id))
-	elif sim.tools.released_version(id, year) > int(s.tools[id]["version"]):
-		row.add_child(_action_button(tr("UI_TOOL_UPDATE") % UiUtil.money(sim.tools.update_cost(s, id)), "update", id))
+	# S7: her satırda ya bir düğme ya da durum etiketi var (eskiden güncel araçta ve donanım yetmeyende boş kalıyordu).
+	match sim.tools.row_action(s, id):
+		"starter":
+			row.add_child(Cards.chip("✓ " + tr("UI_TOOL_IN_USE")))
+		"latest":
+			row.add_child(Cards.chip("✓ " + tr("UI_TOOL_LATEST"), CozyTheme.SAGE_SOFT, CozyTheme.FOREST, tr("UI_TOOL_LATEST_TIP")))
+		"needs_hardware":
+			row.add_child(Cards.chip(tr("UI_TOOL_NEEDS_HW"), CozyTheme.CREAM, CozyTheme.TERRA, tr("ERR_HARDWARE")))
+		"buy":
+			var sub_era: bool = sim.tools.is_subscription_era(id, year)
+			var price: String = tr("UI_TOOL_SEAT") % UiUtil.money(sim.tools.seat_cost(s, id)) if sub_era \
+				else UiUtil.money(sim.tools.license_cost(s, id))
+			if not sub_era and is_zero_approx(sim.tools.license_cost(s, id)):
+				price = tr("UI_TOOL_FREE")
+			row.add_child(_action_button(tr("UI_TOOL_BUY") % price, "buy", id))
+		"cancel":
+			row.add_child(_action_button(tr("UI_TOOL_CANCEL"), "cancel", id))
+		"subscribe":
+			row.add_child(_action_button(tr("UI_TOOL_SUBSCRIBE") % UiUtil.money(sim.tools.seat_cost(s, id)), "subscribe", id))
+		"update":
+			row.add_child(_action_button(tr("UI_TOOL_UPDATE") % UiUtil.money(sim.tools.update_cost(s, id)), "update", id))
 	return row
 
 

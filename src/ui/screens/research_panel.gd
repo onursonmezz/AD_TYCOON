@@ -65,7 +65,6 @@ func rebuild() -> void:
 					int(active["weeks_left"])], "", "clock"))
 			_list_page(sim, s)
 		"fit":
-			_body.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 12, UiUtil.MUTED, 600.0))
 			_body.add_child(_knowledge_table(sim, s))
 		"focus":
 			_body.add_child(_focus_table(sim, s))
@@ -123,7 +122,9 @@ func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
 	name.add_theme_font_override("font", CozyTheme.title_font(700))
 	mid.add_child(name)
 	mid.add_child(UiUtil.wrapped(tr(rec["desc_key"]), 12, CozyTheme.TEXT, 240.0))
-	if done:
+	if done:  # S7: biten araştırmanın sağında açık bir "Tamamlandı" etiketi
+		var ok: PanelContainer = Cards.chip("✓ " + tr("UI_RESEARCH_DONE"))
+		row.add_child(ok)
 		return card
 	var reqs: HFlowContainer = Cards.flow_row()
 	for r: Dictionary in sim.research.requirements(s, id):
@@ -147,6 +148,13 @@ func _research_row(sim: Simulation, s: SimState, id: String) -> PanelContainer:
 		_signature = ""
 		refresh())
 	b.disabled = not sim.research.can_start(s, id)
+	# S7: kapalı düğmenin nedeni ipucunda; yürüyen araştırmanın kartında düğme yerine kalan süre.
+	var active: Dictionary = s.research["active"]
+	if str(active.get("id", "")) == id:
+		row.add_child(Cards.chip(tr("UI_RESEARCH_RUNNING") % int(active["weeks_left"]), CozyTheme.SAGE_SOFT, CozyTheme.FOREST))
+		return card
+	if b.disabled:
+		b.tooltip_text = tr("UI_RESEARCH_WHY_BUSY") if not active.is_empty() else tr("UI_RESEARCH_WHY_REQ")
 	b.theme_type_variation = "PrimaryButton"
 	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(b)
@@ -179,42 +187,101 @@ func _focus_table(sim: Simulation, s: SimState) -> VBoxContainer:
 	return box
 
 
-## Seçilen sektörün hedef ve kitle uyumları; bilinmeyen hücre "?".
-func _knowledge_table(sim: Simulation, s: SimState) -> VBoxContainer:
+## Sektör uyumu (S7): solda sektör listesi (her birinde kaç hücrenin bilindiği), sağda seçilenin hedef ve kitle
+## uyumları renkli hücrelerde. Eskiden açılır menü ve düz "+/?" yazısıydı.
+func _knowledge_table(sim: Simulation, s: SimState) -> HBoxContainer:
 	var data: GameData = DataDB.data
-	var box: VBoxContainer = UiUtil.vbox(6)
-	var pick: OptionButton = OptionButton.new()
 	var sectors: Array[String] = data.sectors_available(s.clock.year())
 	if _sector.is_empty() or not sectors.has(_sector):
 		_sector = sectors[0]
-	for i: int in sectors.size():
-		pick.add_item(UiUtil.name_of(data.sectors, sectors[i]))
-		if sectors[i] == _sector:
-			pick.selected = i
-	pick.item_selected.connect(func(i: int) -> void:
-		_sector = sectors[i]
-		_signature = ""
-		refresh())
-	var row: HBoxContainer = UiUtil.hbox()
-	row.add_child(pick)
+	var box: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.custom_minimum_size = Vector2(230.0, float(DataDB.data.raw["ui_layout.json"].get("research_fit_list_height", 300)))
+	box.add_child(scroll)
+	var list: VBoxContainer = UiUtil.vbox(4)
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(list)
+	var cells: int = data.objective_ids.size() + data.audience_ids.size()
+	for id: String in sectors:
+		var known: int = _known_cells(sim, s, id)
+		var b: Button = UiUtil.button("%s   %d/%d" % [UiUtil.name_of(data.sectors, id), known, cells], func() -> void:
+			_sector = id
+			_signature = ""
+			refresh())
+		Cards.compact(b, id == _sector)
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if id == _sector:
+			b.add_theme_color_override("font_color", CozyTheme.CREAM_LIGHT)
+			b.add_theme_color_override("font_hover_color", CozyTheme.CREAM_LIGHT)
+		list.add_child(b)
+	var right: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_child(right)
+	var title_row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var title: Label = UiUtil.label(UiUtil.name_of(data.sectors, _sector), 16, CozyTheme.FOREST)
+	title.add_theme_font_override("font", CozyTheme.title_font(700))
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_row.add_child(title)
 	if sim.research.has(s, "market_research"):
-		row.add_child(UiUtil.button(tr("UI_BUY_INSIGHT") % UiUtil.money(sim.research.market_research_cost(s)), func() -> void:
+		var buy: Button = UiUtil.button(tr("UI_BUY_INSIGHT") % UiUtil.money(sim.research.market_research_cost(s)), func() -> void:
 			var err: String = GameState.execute(ResearchActionCommand.new("insight", _sector))
 			if not err.is_empty():
 				EventBus.notification.emit(err, [], "bad")
 			_signature = ""
-			refresh()))
-	box.add_child(row)
-	for spec: Array in [["sector_objective", data.objective_ids, data.objectives], ["sector_audience", data.audience_ids, data.audiences]]:
+			refresh())
+		Cards.compact(buy, true)
+		buy.disabled = _known_cells(sim, s, _sector) >= cells
+		title_row.add_child(buy)
+	right.add_child(title_row)
+	for spec: Array in [["sector_objective", data.objective_ids, data.objectives, "UI_FIT_OBJECTIVES"],
+			["sector_audience", data.audience_ids, data.audiences, "UI_FIT_AUDIENCES"]]:
+		right.add_child(Cards.section(tr(spec[3]), ""))
 		var grid: GridContainer = GridContainer.new()
-		grid.columns = (spec[1] as Array).size()
-		grid.add_theme_constant_override("h_separation", 16)
-		for col_id: String in spec[1]:
-			grid.add_child(UiUtil.label(UiUtil.name_of(spec[2], col_id), 12, UiUtil.WOOD))
+		grid.columns = mini(6, (spec[1] as Array).size())
+		grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_S)
+		grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
 		for col_id: String in spec[1]:
 			var known: bool = sim.research.is_known(s, spec[0], _sector, col_id)
-			var v: int = data.fit(spec[0], _sector, col_id)
-			grid.add_child(UiUtil.label(SYMBOLS[v] if known else "?", 15,
-				UiUtil.MUTED if not known else (UiUtil.SAGE_DARK if v > 0 else (UiUtil.TERRACOTTA if v < 0 else UiUtil.TEXT))))
-		box.add_child(grid)
+			grid.add_child(_fit_cell(UiUtil.name_of(spec[2], col_id), data.fit(spec[0], _sector, col_id), known))
+		right.add_child(grid)
+	right.add_child(UiUtil.wrapped(tr("UI_KNOWLEDGE_HINT"), 11, UiUtil.MUTED, 420.0))
 	return box
+
+
+func _known_cells(sim: Simulation, s: SimState, sector: String) -> int:
+	var n: int = 0
+	for spec: Array in [["sector_objective", DataDB.data.objective_ids], ["sector_audience", DataDB.data.audience_ids]]:
+		for col_id: String in spec[1]:
+			if sim.research.is_known(s, spec[0], sector, col_id):
+				n += 1
+	return n
+
+
+## Tek uyum hücresi: üstte ad, altta renkli kutuda +++ / − / ? (iyi yeşil, kötü kiremit, nötr krem, bilinmeyen soluk).
+func _fit_cell(name: String, v: int, known: bool) -> VBoxContainer:
+	var cell: VBoxContainer = UiUtil.vbox(2)
+	cell.custom_minimum_size.x = 82.0
+	var head: Label = UiUtil.label(name, 11, CozyTheme.WOOD)
+	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	head.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	head.custom_minimum_size = Vector2(82.0, 44.0)  # üç satıra kadar ad; kutular aynı hizada
+	head.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	cell.add_child(head)
+	var fill: Color = CozyTheme.CREAM
+	var ink: Color = CozyTheme.MUTED
+	if known:
+		fill = CozyTheme.SAGE_SOFT if v > 0 else (CozyTheme.TERRA_SOFT if v < 0 else CozyTheme.CREAM_LIGHT)
+		ink = CozyTheme.FOREST if v > 0 else (CozyTheme.NEGATIVE if v < 0 else CozyTheme.TEXT)
+	var pill: PanelContainer = PanelContainer.new()
+	pill.add_theme_stylebox_override("panel", CozyTheme.box(fill, 8, CozyTheme.BORDER if not known else Color.TRANSPARENT,
+		1 if not known else 0, false, Vector2(6, 4)))
+	var sym: Label = UiUtil.label(SYMBOLS[v] if known else "?", 16, ink)
+	sym.add_theme_font_override("font", CozyTheme.strong_font())
+	sym.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pill.add_child(sym)
+	pill.tooltip_text = tr("UI_FIT_UNKNOWN") if not known else ""
+	cell.add_child(pill)
+	return cell

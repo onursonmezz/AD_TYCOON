@@ -129,3 +129,20 @@ func test_new_era_is_announced() -> void:
 	assert_signal_emitted_with_parameters(sim, "era_started", ["web_dawn"])
 	assert_eq(data.era_of(1990), "classic")
 	assert_eq(data.era_of(2024), "ai")
+
+
+## S7: her araç satırının bir eylemi ya da durumu var; donanım yetmezse düğme yerine "yeni bilgisayar gerekir".
+func test_every_tool_row_has_an_action_or_state() -> void:
+	var sim: Simulation = _sim_at(2015)
+	sim.state.hardware = "pc386"
+	var seen: Dictionary = {}
+	for id: String in data.tool_ids:
+		var a: String = sim.tools.row_action(sim.state, id)
+		assert_true(a in ["buy", "update", "subscribe", "cancel", "latest", "needs_hardware", "starter"], "%s: %s" % [id, a])
+		seen[a] = true
+	assert_true(seen.has("needs_hardware"), "eski bilgisayarda yeni araç alınamaz, satırda neden yazar")
+	assert_eq(sim.tools.row_action(sim.state, "gooble_analitik"), "needs_hardware")
+	sim.state.hardware = "imak"
+	assert_eq(sim.tools.row_action(sim.state, "gooble_analitik"), "buy")
+	assert_eq(sim.tools.buy(sim.state, sim.economy, "gooble_analitik"), "")
+	assert_eq(sim.tools.row_action(sim.state, "gooble_analitik"), "latest", "en yeni sürüm sende: Güncel")

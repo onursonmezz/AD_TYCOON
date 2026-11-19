@@ -1784,3 +1784,21 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Altı yürüme yolu sayılmıyor (karakterin başı saksıdan geçmesin diye).
 - **Kuru bitki:** Kuruyan bitkinin üstüne yarı saydam, gölgesiz kahverengi katman giydiriliyordu. Bu katman rafı ve saksıyı soluk, renksiz bir hayalete çeviriyordu.
   - Artık renk çarpılıyor (`ModelLibrary.multiply`, `models.json dry_plant_multiply`): yapraklar sararıyor, ahşap ve saksı kendi rengini koruyor.
+
+## K-141 — İnceleme 7. aşama: Araçlar, Ar-Ge, ekipman (2026-11-19)
+- **Araçlarda satın al düğmesi:** Düğmesiz kalan satırlar bulundu.
+  - (a) Lisansı alınmış ve en yeni sürümdeki araç (ya da ücretsiz araç): satırda hiçbir şey yoktu.
+  - (b) Bilgisayar yeni sürümü çalıştıramıyorsa düğme vardı ama basınca hata veriyordu.
+  - (c) Aboneliği bitirilen araç listeden düşüp soluk "N seçenek daha" yazısının altına saklanıyordu.
+- **Çözüm:** `ToolSystem.row_action` her satır için tek bir sonuç veriyor: al / güncelle / aboneliğe geç / aboneliği bitir / Güncel / Yeni bilgisayar gerekir / Kullanılıyor.
+  - Arayüz her satırda ya düğme ya etiket gösteriyor.
+  - Ücretsiz lisansın fiyatı "ücretsiz" yazıyor.
+  - "+ N araç daha" artık görünür bir düğme.
+- **Ar-Ge kartları:**
+  - Biten araştırmada "✓ Tamamlandı" etiketi; yürüyen araştırmanın kartında kalan hafta.
+  - Kapalı "Araştır" düğmesinin nedeni ipucunda: aynı anda tek araştırma ya da eksik koşul.
+- **Sektör uyumu:** Açılır menü kalktı.
+  - Solda 35 sektörün listesi, her birinde bilinen hücre sayısı (ör. 3/10). Hangi sektörü ne kadar tanıdığın tek bakışta görünüyor.
+  - Sağda hedef ve kitle uyumları renkli kutularda: iyi yeşil, kötü kiremit, bilinmeyen soluk "?".
+  - Pazar araştırması düğmesi sektör adının yanında; sektör tamamen biliniyorsa kapalı.
+  - Liste yüksekliği `ui_layout.json research_fit_list_height`.

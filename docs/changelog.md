@@ -1,5 +1,16 @@
 # Değişiklik günlüğü
 
+## İnceleme 7. aşama: Araçlar, Ar-Ge, ekipman (2026-11-19)
+- Araçlarda her satırda artık bir düğme ya da durum var: güncel araçta "✓ Güncel", bilgisayar yetmiyorsa "Yeni bilgisayar gerekir". Ücretsiz araçlarda fiyat yerine "ücretsiz" yazıyor.
+- Aboneliğini bitirdiğin araç "+ N araç daha" düğmesinde; o düğme artık belirgin.
+- Ar-Ge'de biten araştırmalarda "Tamamlandı" yazıyor. Araştır düğmesi kapalıysa, üstüne gelince nedeni çıkıyor.
+- Sektör uyumu sekmesinde açılır menü yok. Solda sektör listesi ve her sektörde kaç uyumu bildiğin (3/10 gibi) var; sağda uyumlar renkli kutularda.
+- Nasıl test ederim:
+  1. 2015'te Araçlar penceresini aç. Hiçbir satır sağ tarafı boş kalmamalı.
+  2. Bir aracın aboneliğini bitir. "+ N araç daha"ya basınca o araç yeniden alınabilir görünmeli.
+  3. Ar-Ge'de bir araştırma başlat, sonra başka birinin Araştır düğmesinin üstüne gel. Neden kapalı olduğu yazmalı.
+  4. Sektör uyumu sekmesinde soldan farklı sektörler seç. Sayılar ve renkli kutular değişmeli.
+
 ## İnceleme 6. aşama: ofis ve inşa (2026-11-19)
 - Eşyalar duvara tam yaslanıyor; duvara yaklaşınca kendiliğinden yapışıyor. Ctrl basılı tutarsan ızgarasız, serbest konuyor.
 - Yerleştirirken görülen önizleme artık saydam değil; koyduğun eşya önizlemede nasıl duruyorsa öyle duruyor (pano ters dönmüyor).

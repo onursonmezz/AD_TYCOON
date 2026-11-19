@@ -48,7 +48,7 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 - [x] Asılı saksı duvara takılabilsin. (6. aşama, K-140)
 
 ## 7. aşama: Araçlar, Ar-Ge, ekipman
-- [ ] Araçlarda satın al düğmesi bazı durumlarda yok (Orgo gördü; hangi durumda olduğu bulunacak).
+- [x] Araçlarda satın al düğmesi bazı durumlarda yok (7. aşama, K-141: güncel araç, donanım yetmeyen araç, bırakılan araç).
 
 ## 9. aşama: Olaylar ve bildirimler
 - [ ] (Benim notum) Olay metninde kampanya adı boş kalıyor: "'' taslakları yayından önce bir sitede yayımlandı." Adsız kampanyada müşteri adı ya da "kampanya" yazmalı.

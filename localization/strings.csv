@@ -1841,7 +1841,7 @@ UI_STEP_CREATIVE,Kreatif,Creative
 UI_STEP_PRODUCTION,Prodüksiyon,Production
 UI_PHASE_WORKING,Ekip bu faz üzerinde çalışıyor; faz bitince yeni bir dağılım isteyeceğiz.,The team is working on this phase; you will set a new split when it ends.
 UI_STEP_DAYS,%s · %d gün kaldı,%s · %d days left
-UI_TOOLS_MORE,+ %d seçenek daha,+ %d more options
+UI_TOOLS_MORE,+ %d araç daha,+ %d more tools
 UI_TOOLS_LESS,Daha az göster,Show less
 UI_ROOM_EFFECTS_COUNT,Oda etkileri: %d (üzerine gel),Room effects: %d (hover)
 UI_RANDOM_NAME,Rastgele bir ad öner,Suggest a random name
@@ -2044,3 +2044,14 @@ REVA_KPI_MISSED_1,Hedeflerin epey gerisinde kalındı.,It fell well short of its
 REVA_KPI_MISSED_2,Rakamlar hedefi göremedi bile.,The numbers didn't even get near the target.
 REVA_VIRAL_1,Herkes paylaşıyor; viral oldu!,Everyone is sharing it; it went viral!
 REVA_VIRAL_2,Telefonlarda elden ele dolaşıyor.,It's being passed from phone to phone.
+UI_TOOL_LATEST,Güncel,Up to date
+UI_TOOL_LATEST_TIP,Bu aracın en yeni sürümü sende. Yeni sürüm çıkınca burada Güncelle düğmesi belirir.,You have the newest version. When a new version comes out an Update button appears here.
+UI_TOOL_NEEDS_HW,Yeni bilgisayar gerekir,Needs new computers
+UI_TOOL_FREE,ücretsiz,free
+UI_RESEARCH_DONE,Tamamlandı,Done
+UI_RESEARCH_RUNNING,Araştırılıyor · %d hafta,Researching · %d weeks
+UI_RESEARCH_WHY_BUSY,Aynı anda tek araştırma yürür; şu anki bitince başlatabilirsin.,Only one research runs at a time; start this when the current one ends.
+UI_RESEARCH_WHY_REQ,Koşulların hepsi henüz tamam değil (soluk etiketler).,Not all requirements are met yet (faded tags).
+UI_FIT_OBJECTIVES,Hedef uyumu,Objective fit
+UI_FIT_AUDIENCES,Kitle uyumu,Audience fit
+UI_FIT_UNKNOWN,"Henüz bilinmiyor. Bu sektörde bu seçimle bir kampanya bitirince öğrenirsin.","Not known yet. Finish a campaign in this sector with this choice to learn it."
