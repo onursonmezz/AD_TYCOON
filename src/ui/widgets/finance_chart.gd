@@ -6,6 +6,7 @@ extends Control
 const LABEL_H: float = 16.0
 
 var values: Array[float] = []
+var expenses: Array[float] = []  # S8: her ayın gideri (gelirin yanında kiremit renkli ince sütun)
 var months: Array[String] = []  # values ile aynı sırada ay kısaltmaları
 var empty_text: String = ""
 
@@ -21,15 +22,21 @@ func _draw() -> void:
 		var x: float = gap + float(i) * (w + gap)
 		draw_string(font, Vector2(x, size.y - 3.0), months[i], HORIZONTAL_ALIGNMENT_CENTER, w, 11, CozyTheme.MUTED)
 	var top: float = 0.0
-	for v: float in values:
+	for v: float in values + expenses:
 		top = maxf(top, v)
 	if top <= 0.0:
 		if not empty_text.is_empty():
 			draw_string(font, Vector2(0.0, base_y * 0.5 + 6.0), empty_text, HORIZONTAL_ALIGNMENT_CENTER, size.x, 13,
 				CozyTheme.MUTED)
 		return
+	var pair: bool = not expenses.is_empty()
+	var bw: float = w * 0.5 - 1.0 if pair else w
 	for i: int in values.size():
+		var x: float = gap + float(i) * (w + gap)
 		var h: float = maxf(2.0, (base_y - 6.0) * values[i] / top)
-		var rect: Rect2 = Rect2(gap + float(i) * (w + gap), base_y - h, w, h)
 		var col: Color = CozyTheme.FOREST_LIGHT if i == values.size() - 1 else CozyTheme.SAGE
-		draw_style_box(CozyTheme.box(col, 3, Color.TRANSPARENT, 0, false, Vector2.ZERO), rect)
+		draw_style_box(CozyTheme.box(col, 3, Color.TRANSPARENT, 0, false, Vector2.ZERO), Rect2(x, base_y - h, bw, h))
+		if pair and i < expenses.size() and expenses[i] > 0.0:
+			var eh: float = maxf(2.0, (base_y - 6.0) * expenses[i] / top)
+			var ecol: Color = CozyTheme.TERRA if i == values.size() - 1 else CozyTheme.TERRA_SOFT.darkened(0.08)
+			draw_style_box(CozyTheme.box(ecol, 3, Color.TRANSPARENT, 0, false, Vector2.ZERO), Rect2(x + bw + 2.0, base_y - eh, bw, eh))

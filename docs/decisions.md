@@ -1802,3 +1802,14 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Sağda hedef ve kitle uyumları renkli kutularda: iyi yeşil, kötü kiremit, bilinmeyen soluk "?".
   - Pazar araştırması düğmesi sektör adının yanında; sektör tamamen biliniyorsa kapalı.
   - Liste yüksekliği `ui_layout.json research_fit_list_height`.
+
+## K-142 — İnceleme 8. aşama: para ve uzun dönem (2026-11-19)
+- **Aylık gider:** Finans ekranındaki "Aylık sabit gider" yalnız taban gideri gösteriyordu (2015'te ₺10 bin yazıp gerçekte ayda ₺300 bin gidiyordu).
+  - Artık bütün kalemler `MonthlyCosts` (src/sim/monthly_costs.gd) içinde hesaplanıyor: maaş, kira, yazılım aboneliği, ekipman bakımı, kredi taksiti, elektrik/kırtasiye.
+  - Ay sonunda simülasyon da aynı hesabı ödüyor, yani ekran ile ödenen tutar hep aynı (testle bağlı).
+  - Satırdaki tutara basınca döküm açılıyor (her kalemin payı bir çubukla gösteriliyor). Kart sabit yükseklikte (`ui_layout.json finance_rows_height`), pencere zıplamıyor.
+- **Nakit kaç ay yeter:** (nakit + bekleyen tahsilat − ödenecek medya) / aylık gider.
+  - 2 aydan azsa kırmızı (`cashflow.runway_warn_months`). Kırmızı bakiyeye düşmeden önce erken uyarı veriyor.
+- **Grafik:** Son 6 ayın geliri yeşil, gideri kiremit renkli, yan yana sütunlar. Hangi ay kâr, hangi ay zarar tek bakışta görülüyor.
+- **Kredi:** Tutar ve vade açılır menü değil, yan yana düğmeler. Aylık taksit büyük yazıyla, "Kredi çek" düğmesinin yanında.
+- **Denge ölçümü** (200 koşu × 10 yıl): bilgili bot iflası %5, Y10 medyan nakit ₺2,6 M, Y6'da ilk ödül. Rastgele bot ilk 3 yılda %14,5 iflas ediyor (hedef %20–40). İlk brief güvencesi bilerek tutuldu (Orgo kararı); bu yüzden değiştirilmedi.

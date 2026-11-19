@@ -199,7 +199,7 @@ UI_FIN_PROJECTED,Hepsi ödenince nakit,Cash after all settle
 UI_FIN_YEAR_INCOME,Bu yıl ajans geliri,Agency income this year
 UI_FIN_YEAR_EXPENSE,Bu yıl gider,Expenses this year
 UI_FIN_YEAR_PROFIT,Bu yıl kâr (vergi öncesi),Profit this year (pre-tax)
-UI_FIN_MONTHLY,Aylık sabit gider,Monthly fixed costs
+UI_FIN_MONTHLY,Aylık giderler,Monthly costs
 UI_FIN_RED_WEEKS,Eksi bakiye haftası,Weeks in the red
 UI_NO_HISTORY,Henüz biten kampanya yok.,No finished campaigns yet.
 UI_OPEN_REPORT,Raporu aç,Open report
@@ -1645,7 +1645,7 @@ UI_FIN_TAB_MONTH,Bu ay,This month
 UI_FIN_TAB_QUARTER,Son 3 ay,Last 3 months
 UI_FIN_INCOME,Gelir,Income
 UI_FIN_EXPENSE,Gider,Expenses
-UI_FIN_CHART,Son 6 ay gelir,"Income, last 6 months"
+UI_FIN_CHART,"Son 6 ay: gelir (yeşil), gider (kiremit)","Last 6 months: income (green), costs (terracotta)"
 UI_FOUNDER_TITLE,Karakterini Oluştur,Create Your Character
 UI_FOUNDER_HINT,Bir görünüş seç ve adını yaz. Ekip seni bu adla tanıyacak.,Pick a look and enter your name. Your team will know you by it.
 UI_FOUNDER_NAME,Adın,Your name
@@ -2055,3 +2055,14 @@ UI_RESEARCH_WHY_REQ,Koşulların hepsi henüz tamam değil (soluk etiketler).,No
 UI_FIT_OBJECTIVES,Hedef uyumu,Objective fit
 UI_FIT_AUDIENCES,Kitle uyumu,Audience fit
 UI_FIT_UNKNOWN,"Henüz bilinmiyor. Bu sektörde bu seçimle bir kampanya bitirince öğrenirsin.","Not known yet. Finish a campaign in this sector with this choice to learn it."
+UI_FIN_RUNWAY,Nakit kaç ay yeter,Cash lasts
+UI_FIN_RUNWAY_MONTHS,≈ %s ay,≈ %s months
+UI_FIN_COSTS_TITLE,Aylık giderler: %s,Monthly costs: %s
+UI_FIN_COST_PAYROLL,Maaşlar ve SGK,Salaries
+UI_FIN_COST_RENT,Kira,Rent
+UI_FIN_COST_TOOLS,Yazılım abonelikleri,Software subscriptions
+UI_FIN_COST_EQUIPMENT,Ekipman bakımı,Equipment upkeep
+UI_FIN_COST_LOAN,Kredi taksiti,Loan payment
+UI_FIN_COST_BASE,Elektrik ve kırtasiye,Utilities and supplies
+UI_LOAN_AMOUNT,Tutar,Amount
+UI_LOAN_TERM_LABEL,Vade,Term

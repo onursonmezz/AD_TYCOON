@@ -173,8 +173,7 @@ func step_day() -> void:
 		if state.bankrupt:
 			went_bankrupt.emit()
 	if ended["month"]:
-		economy.monthly(state, offices.monthly_rent(state) + staff.monthly_payroll(state) + tools.monthly_cost(state)
-			+ equipment.monthly_cost(state))
+		economy.monthly(state, MonthlyCosts.extra(self))  # S8: döküm finans ekranıyla aynı yerden
 		loans.monthly(state)
 		for offer: Dictionary in staff_life.monthly_offers(state):
 			offer["rival"] = rivals.pick_by_power(state)

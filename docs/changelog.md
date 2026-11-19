@@ -1,5 +1,16 @@
 # Değişiklik günlüğü
 
+## İnceleme 8. aşama: para ve uzun dönem (2026-11-19)
+- Finans ekranında "Aylık giderler" artık gerçek toplam (maaş, kira, abonelik, bakım, kredi dahil). Tutara basınca kalem kalem döküm açılıyor.
+- Yeni satır "Nakit kaç ay yeter": parasız kalmaya 2 aydan az varsa kırmızı oluyor.
+- Grafik hem geliri (yeşil) hem gideri (kiremit) gösteriyor.
+- Kredi tutarı ve vadesi düğmelerle seçiliyor; aylık taksit hemen görünüyor.
+- Nasıl test ederim:
+  1. Birkaç kişi işe al, Finans → Özet'e bak. Aylık giderler maaşlarla birlikte büyük bir rakam olmalı.
+  2. Tutara bas: maaş, kira, abonelik ayrı satırlarda görünmeli; geri düğmesiyle dön. Pencere boyu değişmemeli.
+  3. Banka kredisi sekmesinde farklı tutar ve vadeleri seç. Aylık taksit her seçimde değişmeli.
+  4. Birkaç ay oyna. Grafikte her ay için yeşil ve kiremit iki sütun olmalı.
+
 ## İnceleme 7. aşama: Araçlar, Ar-Ge, ekipman (2026-11-19)
 - Araçlarda her satırda artık bir düğme ya da durum var: güncel araçta "✓ Güncel", bilgisayar yetmiyorsa "Yeni bilgisayar gerekir". Ücretsiz araçlarda fiyat yerine "ücretsiz" yazıyor.
 - Aboneliğini bitirdiğin araç "+ N araç daha" düğmesinde; o düğme artık belirgin.

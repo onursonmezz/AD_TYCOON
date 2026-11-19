@@ -560,7 +560,14 @@ func _tour_saves(screen: Control) -> void:
 	await _shot("45_juice")
 	# M10: Finans ekranında kredi.
 	screen.call("show_panel", "finance")
+	var fin: Node = screen.get("_panel")  # S8: kredi sekmesi (eskiden özet çekiliyordu)
+	fin.set("_view", "loan")
+	fin.call("refresh")
 	await _shot("46_finance_loan")
+	fin.set("_view", "summary")
+	fin.set("_costs_open", true)
+	fin.call("refresh")
+	await _shot("46b_finance_costs")
 	ModelLibrary.overrides = {}
 	ModelLibrary.clear_cache()
 

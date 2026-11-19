@@ -8,6 +8,8 @@ extends VBoxContainer
 
 const PERIODS: Array = [["month", "UI_FIN_TAB_MONTH"], ["quarter", "UI_FIN_TAB_QUARTER"], ["year", "UI_FIN_SECTION_YEAR"]]
 const CHART_MONTHS: int = 6
+const COST_ICONS: Dictionary = {"payroll": "users", "rent": "building", "tools": "device-desktop", "equipment": "tool",
+	"loan": "building-bank", "base": "receipt"}
 const VIEWS: Array = [["summary", "UI_FIN_VIEW_SUMMARY"], ["loan", "UI_LOAN_TITLE"], ["suppliers", "UI_SUPPLIERS"]]
 
 var _period: String = "month"
@@ -22,6 +24,9 @@ var _chart: FinanceChart
 var _suppliers: VBoxContainer
 var _loan: VBoxContainer
 var _sig: String = ""
+var _costs_open: bool = false  # S8: satır kartında aylık gider dökümü açık mı
+var _loan_amount: int = -1  # S8: kredi tutarı ve vadesi seçili düğmeler (açılır menü yerine)
+var _loan_term: int = 1
 
 
 func _init() -> void:
@@ -50,6 +55,7 @@ func _init() -> void:
 	var rows_card: PanelContainer = _card(mid)
 	rows_card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rows_card.size_flags_stretch_ratio = 1.6
+	rows_card.custom_minimum_size.y = float(DataDB.data.raw["ui_layout.json"]["finance_rows_height"])  # S8: döküm açılınca pencere zıplamasın
 	_rows = UiUtil.vbox(CozyTheme.SPACE_S)
 	rows_card.add_child(_rows)
 	var chart_card: PanelContainer = _card(mid)
@@ -117,12 +123,12 @@ func _period_totals(s: SimState) -> Vector2:
 	return total
 
 
-## Son n ayın gelirleri (kaydı olmayan ay 0), eskiden yeniye.
-static func _recent_income(s: SimState, n: int) -> Array[float]:
+## Son n ayın gelirleri (key "in") ya da giderleri ("out"); kaydı olmayan ay 0, eskiden yeniye.
+static func _recent_income(s: SimState, n: int, key: String = "in") -> Array[float]:
 	var now: int = s.clock.year() * 12 + s.clock.month() - 1
 	var by_month: Dictionary = {}
 	for rec: Dictionary in s.finance_months:
-		by_month[int(rec["m"])] = float(rec["in"])
+		by_month[int(rec["m"])] = float(rec[key])
 	var out: Array[float] = []
 	for k: int in range(now - n + 1, now + 1):
 		out.append(float(by_month.get(k, 0.0)))
@@ -144,15 +150,20 @@ func _summary_item(icon_name: String, icon_color: Color, name: String, value: St
 	_summary.add_child(item)
 
 
-func _row(icon_name: String, name: String, value: String, color: Color = CozyTheme.TEXT) -> void:
+func _row(icon_name: String, name: String, value: String, color: Color = CozyTheme.TEXT, extra: Control = null) -> void:
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 	row.add_child(UiUtil.icon(icon_name, 20, CozyTheme.FOREST_LIGHT))
 	var n: Label = UiUtil.label(name, 13, CozyTheme.TEXT)
 	n.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(n)
-	var v: Label = UiUtil.label(value, 13, color)
-	v.add_theme_font_override("font", CozyTheme.strong_font(760))
-	row.add_child(v)
+	if extra != null:
+		row.add_child(extra)
+	if not value.is_empty():
+		var v: Label = UiUtil.label(value, 13, color)
+		v.add_theme_font_override("font", CozyTheme.strong_font(760))
+		v.custom_minimum_size.x = 96.0 if extra != null else 0.0
+		v.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		row.add_child(v)
 	_rows.add_child(row)
 
 
@@ -181,7 +192,6 @@ func refresh() -> void:
 	var payable: float = 0.0
 	for p: Dictionary in s.payables:
 		payable += float(p["amount"])
-	var monthly: float = data.balf("cashflow.monthly_base_cost") * Economy.inflation(data, s.clock.year())
 	var totals: Vector2 = _period_totals(s)
 	UiUtil.clear(_summary)
 	_summary_item("wallet", CozyTheme.FOREST, tr("UI_FIN_CASH"), UiUtil.money(s.cash),
@@ -189,19 +199,12 @@ func refresh() -> void:
 	_summary_item("arrow-up", CozyTheme.POSITIVE, tr("UI_FIN_INCOME"), UiUtil.money(totals.x), CozyTheme.TEXT)
 	_summary_item("arrow-down", CozyTheme.NEGATIVE, tr("UI_FIN_EXPENSE"), UiUtil.money(totals.y), CozyTheme.TEXT)
 	UiUtil.clear(_rows)
-	_row("receipt", tr("UI_FIN_RECEIVABLE"), "%s (%d)" % [UiUtil.money(receivable), s.receivables.size()])
-	_row("calendar", tr("UI_FIN_NEXT_DUE"), tr("UI_WEEKS") % (next_due - s.clock.week_index) if next_due >= 0 else "—")
-	_row("speakerphone", tr("UI_FIN_PAYABLE"), "%s (%d)" % [UiUtil.money(payable), s.payables.size()])
-	var projected: float = s.cash + receivable - payable
-	_row("building-bank", tr("UI_FIN_PROJECTED"), UiUtil.money(projected),
-		CozyTheme.NEGATIVE if projected < 0.0 else CozyTheme.TEXT)
-	_row("building", tr("UI_FIN_MONTHLY"), UiUtil.money(monthly))
-	var profit: float = s.year_income - s.year_expense
-	_row("chart-bar", tr("UI_FIN_YEAR_PROFIT"), UiUtil.money(profit),
-		CozyTheme.NEGATIVE if profit < 0.0 else (CozyTheme.POSITIVE if profit > 0.0 else CozyTheme.TEXT))
-	_row("alert-triangle", tr("UI_FIN_RED_WEEKS"), "%d / %d" % [s.red_weeks, data.bali("cashflow.red_weeks_to_bankrupt")],
-		CozyTheme.NEGATIVE if s.red_weeks > 0 else CozyTheme.TEXT)
+	if _costs_open:
+		_cost_rows()
+	else:
+		_main_rows(s, data, receivable, next_due, payable)
 	_chart.values = _recent_income(s, CHART_MONTHS)
+	_chart.expenses = _recent_income(s, CHART_MONTHS, "out")
 	_chart.months.clear()
 	for k: int in CHART_MONTHS:
 		var m: int = posmod(s.clock.month() - 1 - (CHART_MONTHS - 1 - k), 12) + 1
@@ -210,6 +213,52 @@ func refresh() -> void:
 	_chart.queue_redraw()
 	_refresh_suppliers(s)
 	_refresh_loan(s)
+
+
+func _main_rows(s: SimState, data: GameData, receivable: float, next_due: int, payable: float) -> void:
+	_row("receipt", tr("UI_FIN_RECEIVABLE"), "%s (%d)" % [UiUtil.money(receivable), s.receivables.size()])
+	_row("calendar", tr("UI_FIN_NEXT_DUE"), tr("UI_WEEKS") % (next_due - s.clock.week_index) if next_due >= 0 else "—")
+	_row("speakerphone", tr("UI_FIN_PAYABLE"), "%s (%d)" % [UiUtil.money(payable), s.payables.size()])
+	var projected: float = s.cash + receivable - payable
+	_row("building-bank", tr("UI_FIN_PROJECTED"), UiUtil.money(projected),
+		CozyTheme.NEGATIVE if projected < 0.0 else CozyTheme.TEXT)
+	# S8: aylık giderin tamamı (maaş, kira, abonelik, bakım, kredi); basınca döküm açılır. Nakit kaç ay yeter.
+	var monthly: float = MonthlyCosts.total(GameState.sim)
+	var open: Button = UiUtil.button("%s  ›" % UiUtil.money(monthly), func() -> void:
+		_costs_open = true
+		refresh())
+	Cards.compact(open)
+	_row("building", tr("UI_FIN_MONTHLY"), "", CozyTheme.TEXT, open)
+	var runway: String = "—" if monthly <= 0.0 else tr("UI_FIN_RUNWAY_MONTHS") % UiUtil.num(maxf(0.0, projected) / monthly, 1)
+	_row("clock", tr("UI_FIN_RUNWAY"), runway,
+		CozyTheme.NEGATIVE if monthly > 0.0 and projected < monthly * data.balf("cashflow.runway_warn_months") else CozyTheme.TEXT)
+	var profit: float = s.year_income - s.year_expense
+	_row("chart-bar", tr("UI_FIN_YEAR_PROFIT"), UiUtil.money(profit),
+		CozyTheme.NEGATIVE if profit < 0.0 else (CozyTheme.POSITIVE if profit > 0.0 else CozyTheme.TEXT))
+	_row("alert-triangle", tr("UI_FIN_RED_WEEKS"), "%d / %d" % [s.red_weeks, data.bali("cashflow.red_weeks_to_bankrupt")],
+		CozyTheme.NEGATIVE if s.red_weeks > 0 else CozyTheme.TEXT)
+
+
+## Aylık gider dökümü: her kalem, tutarı ve toplamdaki payı (ince çubuk); üstte geri düğmesi.
+func _cost_rows() -> void:
+	var b: Dictionary = MonthlyCosts.breakdown(GameState.sim)
+	var total: float = MonthlyCosts.total(GameState.sim)
+	var back: Button = UiUtil.button("‹  " + tr("UI_FIN_COSTS_TITLE") % UiUtil.money(total), func() -> void:
+		_costs_open = false
+		refresh())
+	Cards.compact(back)
+	back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_rows.add_child(back)
+	for k: String in MonthlyCosts.ORDER:
+		var v: float = float(b[k])
+		if v <= 0.0 and k != "payroll":
+			continue
+		var bar: ProgressBar = ProgressBar.new()
+		bar.show_percentage = false
+		bar.custom_minimum_size = Vector2(70.0, 8.0)
+		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		bar.value = 100.0 * v / maxf(1.0, total)
+		_row(str(COST_ICONS[k]), tr("UI_FIN_COST_" + k.to_upper()), UiUtil.money(v), CozyTheme.TEXT, bar)
 
 
 ## Kredi: varsa kalan borç, taksit ve erken kapatma; yoksa tutar ve vade seçip çekme (taksit önizlemesiyle).
@@ -232,33 +281,47 @@ func _refresh_loan(s: SimState) -> void:
 		UiUtil.percent(100.0 * DataDB.data.balf("loans.annual_interest"))], 14, CozyTheme.MUTED))
 	var steps: Array = DataDB.data.bal("loans.amount_steps")
 	var terms: Array = DataDB.data.bal("loans.terms_months")
-	var amount_pick: OptionButton = OptionButton.new()
-	for st: Variant in steps:
-		amount_pick.add_item(UiUtil.money(max_amount * float(st)))
-	amount_pick.select(steps.size() - 1)
-	amount_pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var term_pick: OptionButton = OptionButton.new()
-	for t: Variant in terms:
-		term_pick.add_item(tr("UI_LOAN_TERM") % int(t))
-	term_pick.select(1)
-	term_pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var preview: Label = UiUtil.label("", 14, CozyTheme.MUTED)
-	var update: Callable = func(_i: int = 0) -> void:
-		preview.text = tr("UI_LOAN_PREVIEW") % UiUtil.money(GameState.sim.loans.monthly_payment(
-			max_amount * float(steps[amount_pick.selected]), int(terms[term_pick.selected])))
-	amount_pick.item_selected.connect(update)
-	term_pick.item_selected.connect(update)
-	update.call()
-	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	row.add_child(amount_pick)
-	row.add_child(term_pick)
+	# S8: tutar ve vade açılır menü değil, yan yana düğmeler; seçince taksit hemen güncellenir.
+	if _loan_amount < 0 or _loan_amount >= steps.size():
+		_loan_amount = steps.size() - 1
+	_loan_term = clampi(_loan_term, 0, terms.size() - 1)
+	var amounts: Array = []
+	for i: int in steps.size():
+		amounts.append([str(i), UiUtil.money(max_amount * float(steps[i]))])
+	var term_tabs: Array = []
+	for i: int in terms.size():
+		term_tabs.append([str(i), tr("UI_LOAN_TERM") % int(terms[i])])
+	var pick_again: Callable = func() -> void:
+		_sig = ""
+		refresh()
+	_loan.add_child(_loan_choice(tr("UI_LOAN_AMOUNT"), UiUtil.segmented(amounts, str(_loan_amount), func(id: String) -> void:
+		_loan_amount = int(id)
+		pick_again.call())))
+	_loan.add_child(_loan_choice(tr("UI_LOAN_TERM_LABEL"), UiUtil.segmented(term_tabs, str(_loan_term), func(id: String) -> void:
+		_loan_term = int(id)
+		pick_again.call())))
+	var amount: float = max_amount * float(steps[_loan_amount])
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var preview: Label = UiUtil.label(tr("UI_LOAN_PREVIEW") % UiUtil.money(GameState.sim.loans.monthly_payment(amount,
+		int(terms[_loan_term]))), 15, CozyTheme.FOREST)
+	preview.add_theme_font_override("font", CozyTheme.strong_font())
+	preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(preview)
 	var take: Button = UiUtil.button(tr("UI_LOAN_TAKE"), func() -> void:
-		_run(LoanActionCommand.new("take", max_amount * float(steps[amount_pick.selected]), int(terms[term_pick.selected]))))
+		_run(LoanActionCommand.new("take", amount, int(terms[_loan_term]))))
 	take.theme_type_variation = "PrimaryButton"
-	take.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(take)
 	_loan.add_child(row)
-	_loan.add_child(preview)
+
+
+func _loan_choice(title: String, seg: Control) -> HBoxContainer:
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var l: Label = UiUtil.label(title, 13, CozyTheme.MUTED)
+	l.custom_minimum_size.x = 70.0
+	row.add_child(l)
+	seg.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(seg)
+	return row
 
 
 func _run(cmd: RefCounted) -> void:
