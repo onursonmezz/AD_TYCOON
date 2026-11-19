@@ -70,6 +70,12 @@ func _run() -> void:
 	for i: int in 10:
 		_step()
 	await _shot("05_phase_running")
+	# S3B: pencere kapalıyken üst şerit ve kafadan sayaçlara uçan puanlar.
+	screen.call("close_panel")
+	for i: int in 3:
+		_step()
+		await get_tree().create_timer(0.12).timeout
+	await _shot("05c_strip")
 	var before: int = sim.state.finished.size()
 	var shown_production: bool = false
 	while sim.state.finished.size() == before:

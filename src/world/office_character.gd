@@ -9,6 +9,7 @@ const TURN_SPEED: float = 10.0
 const BODY_HEIGHT: float = 1.5
 const SIT_DROP: float = 0.35
 const BUBBLE_RISE: float = 0.9
+const SEATED_HEAD: float = 0.7  # oturunca baş, ayakta boyun bu oranında
 const BUBBLE_SECONDS: float = 1.3
 
 var employee_id: String = ""
@@ -86,6 +87,11 @@ func walk(path: PackedVector2Array, face: Vector2, sit: bool) -> void:
 
 func is_moving() -> bool:
 	return not _path.is_empty()
+
+
+## Başın üstünün yerden yüksekliği: oturan karakterde daha alçak (S3B puan baloncukları buradan çıkar).
+func head_height() -> float:
+	return BODY_HEIGHT * (SEATED_HEAD if _seated else 1.0) + 0.1
 
 
 func bubble(text: String, color: Color) -> void:

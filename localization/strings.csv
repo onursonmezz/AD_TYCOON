@@ -1868,3 +1868,5 @@ UI_PLAN_PICK_INFO,Uygunluk %d · yük %s,Fit %d · load %s
 UI_PLAN_NOBODY,Kimse,Nobody
 UI_PLAN_ASSIGN,Ata,Assign
 UI_PLAN_RENTALS,Kiralık ekipman (bedeli başlarken ödenir),Rental equipment (paid at the start)
+UI_STRIP_PHASE,%s · %d gün,%s · %d days
+UI_STRIP_TIP,Kampanyanın ilerlemesi. Ayrıntı için tıkla.,Campaign progress. Click for details.

@@ -48,6 +48,15 @@ func _init() -> void:
 	vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
+## Çalışanın başının ekrandaki yeri (S3B puan baloncukları için); görünmüyorsa Vector2.INF.
+func head_screen_pos(emp_id: String) -> Vector2:
+	var p3: Vector3 = world.head_position(emp_id)
+	if p3 == Vector3.INF or world.rig == null or world.rig.camera == null or world.rig.camera.is_position_behind(p3):
+		return Vector2.INF
+	var p: Vector2 = world.rig.camera.unproject_position(p3)
+	return global_position + p * (size / Vector2(_viewport.size))
+
+
 func _on_setting_changed(key: String) -> void:
 	if key == WorldQuality.SETTING:
 		WorldQuality.apply_viewport(_viewport)

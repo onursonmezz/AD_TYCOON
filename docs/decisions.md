@@ -1684,3 +1684,13 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Görevler ağırdan hafife sıralanıyor. Her görev, o fazda görevi olmayan ve yükü %100'ü aşmayacak kişilerin en uygununa veriliyor.
   - Eşit ağırlıkta üç kişi tam %100'er yük alıyor.
 - **Eski yol korundu:** Botlar, denge aracı ve eski kayıtlar için faz başı kaydırıcı/pano (K-118). Denge sayıları bu yüzden değişmedi.
+
+## K-134 — 3B: Faz sürerken canlı izleme (2026-11-19)
+- **Kampanya şeridi (`CampaignStrip`):** Saat kutusunun hemen altında ince bir şerit.
+  - Gösterdikleri: müşteri, faz ve fazın kalan günü, dört sayaç (Strateji, Kreatif, Teknik, Hata), kampanyanın ilerleme çizgisi.
+  - Basınca kampanya penceresi açılıyor. Pencere açıkken (aynı bilgi orada) gizleniyor. Ölçüler `ui_layout campaign_strip`.
+- **Puan baloncukları (`PointBubbles`):** Her gün, o fazda çalışan kişilerin başından günün katkısı "+n" olarak çıkıyor; önce yükseliyor, sonra şeritteki sayaca uçuyor ve sayaç zıplıyor.
+  - Artış, çalışanlara fazdaki yoğunluklarına göre bölünüyor (atamasız işte eşit). Hata olunca kırmızı "!" hata sayacına uçuyor.
+  - Aynı anda en çok 14 baloncuk oluyor. Karakter ekranda değilse yalnızca sayaç kıpırdıyor.
+- **3B ofisteki eski baloncuklar kalktı:** Rastgele "S/K/T" harfleri ve "!" yerine artık bu baloncuklar var. Seviye atlama yıldızı duruyor.
+- Oturan karakterin başı daha alçakta hesaplanıyor (`OfficeCharacter.head_height`).

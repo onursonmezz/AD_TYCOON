@@ -6,8 +6,6 @@ extends Node3D
 
 ## Duvar kalınlığı: posterler (OfficeDressing) duvarın iç yüzüne bunu kullanarak oturur.
 const WALL_THICKNESS: float = 0.18
-const BUBBLE_CHANCE: float = 0.45
-const BUBBLES: Array[Array] = [["S", Color(0.24, 0.55, 0.32)], ["K", Color(0.9, 0.5, 0.2)], ["T", Color(0.25, 0.45, 0.85)]]
 
 var rig: CameraRig
 var layout: OfficeLayout
@@ -300,26 +298,17 @@ func _update_looks_and_activities(s: SimState) -> void:
 
 # --- baloncuklar ------------------------------------------------------------------
 
-## Her oyun günü: kampanya ekibinin masada oturanlarından bazıları fazın alanında baloncuk çıkarır; yeni hata = "!".
+## S3B: kampanya puan ve hata baloncukları artık arayüzde (PointBubbles): kafadan çıkıp üst şeritteki sayaca uçar.
 func _daily_bubbles(s: SimState) -> void:
-	var camp: Dictionary = s.active_campaign
-	if camp.is_empty():
-		_last_errors = 0
-		return
-	var phase: int = GameState.sim.production.current_phase(camp)
-	var team: Array = camp["setup"].get("team", [])
-	for id: Variant in team:
-		var c: OfficeCharacter = _chars.get(str(id))
-		if c != null and c.visible and not c.is_moving() and str(_place_of.get(str(id), "")).begins_with("desk") \
-				and _rng.randf() < BUBBLE_CHANCE:
-			var b: Array = BUBBLES[clampi(phase, 0, BUBBLES.size() - 1)]
-			c.bubble(str(b[0]), b[1])
-	var errors: int = int(camp.get("errors", 0))
-	if errors > _last_errors and not team.is_empty():
-		var c: OfficeCharacter = _chars.get(str(team[_rng.randi_range(0, team.size() - 1)]))
-		if c != null and c.visible:
-			c.bubble("!", UiUtil.TERRACOTTA)
-	_last_errors = errors
+	_last_errors = int(s.active_campaign.get("errors", 0))
+
+
+## Çalışanın başının üstü (dünya konumu); karakter yoksa ya da görünmüyorsa Vector3.INF.
+func head_position(emp_id: String) -> Vector3:
+	var c: OfficeCharacter = _chars.get(emp_id)
+	if c == null or not c.visible or not c.is_inside_tree():
+		return Vector3.INF
+	return c.global_position + Vector3(0.0, c.head_height(), 0.0)
 
 
 func _on_notification(key: String, args: Array, _kind: String) -> void:

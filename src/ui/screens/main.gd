@@ -34,6 +34,8 @@ var _modal_open: bool = false
 var _last_cash: float = NAN
 var _save_button: Button
 var _tutorial: Tutorial
+var _strip: CampaignStrip  # S3B: faz sürerken üstteki kampanya şeridi
+var _bubbles: PointBubbles
 
 
 func _ready() -> void:
@@ -89,6 +91,9 @@ func _build() -> void:
 	_cash = w["cash"]
 	_rep = w["rep"]
 	_feed = w["feed"]
+	var live: Dictionary = MainHud.campaign_strip(self, _office, func() -> void: show_panel("campaign"))
+	_strip = live["strip"]
+	_bubbles = live["bubbles"]
 	_build_window()
 	_modal_layer = Control.new()
 	_modal_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -306,6 +311,9 @@ func _refresh() -> void:
 	_set_dot("campaign", "!" if GameState.is_waiting() else "")
 	if _panel != null:
 		_panel.call("refresh")
+	_strip.refresh(s.active_campaign)
+	_strip.visible = _strip.visible and _panel == null  # pencere açıkken aynı bilgi orada
+	_bubbles.refresh(s.active_campaign)
 	_refresh_speed()
 	_maybe_minigame.call_deferred()  # faz başı mini oyunu (K-120)
 

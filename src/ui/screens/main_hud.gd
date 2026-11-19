@@ -104,6 +104,19 @@ static func _mini(icon_name: String, tip: String, on_press: Callable) -> Button:
 
 
 ## Üst orta: zaman kutusu. Dönüş: { date, pause, speeds }.
+## S3B: saat kutusunun altında kampanya şeridi ve puan baloncukları katmanı.
+static func campaign_strip(main: Control, office: OfficeView, on_open: Callable) -> Dictionary:
+	var strip: CampaignStrip = CampaignStrip.new(on_open)
+	main.add_child(strip)
+	strip.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	strip.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	strip.offset_top = TOP + BOX_HEIGHT + 6.0
+	strip.visible = false
+	var bubbles: PointBubbles = PointBubbles.new(office, strip)
+	main.add_child(bubbles)
+	return {"strip": strip, "bubbles": bubbles}
+
+
 static func time_bar(main: Control) -> Dictionary:
 	var pill: PanelContainer = PanelContainer.new()
 	pill.add_theme_stylebox_override("panel", _box(999, Vector2(18.0, 4.0)))

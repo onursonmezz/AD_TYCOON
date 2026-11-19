@@ -13,13 +13,13 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 - [x] (Benim notum) Brief'lerin 2 haftalık geçerlilik süresi 1× hızda 6 saniye; kısa. → 4 hafta ekonomiyi fazla hızlandırdı (denge ölçümü); 2 hafta kaldı, ilk brief 8 hafta.
 
 ## 3. aşama: Kampanya süreci (çekirdek sistem)
-- [ ] Görev dağıtımı Game Dev Tycoon gibi işlesin:
+- [x] Görev dağıtımı Game Dev Tycoon gibi işlesin (3A, K-133):
   - Her görevin bir ağırlığı (%) olsun ve her göreve tek kişi atansın.
   - Kişinin iş yükü, atandığı görevlerin ağırlıklarının toplamı olsun; %100'ü aşan fazla çalışmış sayılsın.
   - Örnek: bir kişi üç fazda %40'lık birer göreve atanırsa yükü %120 olur.
-- [ ] Karakterleri göreve atamak çok karmaşık; çok kişide daha da karışıyor. Basit olsun.
+- [x] Karakterleri göreve atamak çok karmaşık; çok kişide daha da karışıyor. Basit olsun.
 - [ ] Boşta çalışan varsa başka bir kampanya da kabul edilebilsin; aynı anda birden çok kampanya yürüsün.
-- [ ] Faz sürerken pencere açık kalmasın; ilerleme yukarıda küçük bir şeritte görünsün. Çalışanları izleyelim, puanlar kafalarından çıkıp dolsun (GDT gibi).
+- [x] Faz sürerken pencere açık kalmasın; ilerleme yukarıda küçük bir şeritte görünsün. Çalışanları izleyelim, puanlar kafalarından çıkıp dolsun (GDT gibi).
 - [ ] Kampanyayı bitirme ve hata giderme:
   - Normal süre dolunca "Kampanyayı bitir" düğmesi çıksın.
   - Basılmazsa kampanya devam etsin ve hatalar giderilsin.
@@ -49,6 +49,9 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 
 ## 7. aşama: Araçlar, Ar-Ge, ekipman
 - [ ] Araçlarda satın al düğmesi bazı durumlarda yok (Orgo gördü; hangi durumda olduğu bulunacak).
+
+## 9. aşama: Olaylar ve bildirimler
+- [ ] (Benim notum) Olay metninde kampanya adı boş kalıyor: "'' taslakları yayından önce bir sitede yayımlandı." Adsız kampanyada müşteri adı ya da "kampanya" yazmalı.
 
 ## Orgo'nun kararları (2026-11-19)
 - **Kanal seçenek görselleri:** Kodla çizilecek (logolar gibi); istenirse sonra gerçek çizimle değiştirilir.
