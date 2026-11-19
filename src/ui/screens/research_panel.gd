@@ -180,9 +180,19 @@ func _focus_table(sim: Simulation, s: SimState) -> VBoxContainer:
 	for f: String in data.focus_ids:
 		grid.add_child(UiUtil.label(UiUtil.name_of(data.focus_areas, f), 12, UiUtil.TEXT))
 		for obj: String in data.objective_ids:
-			var cell: CenterContainer = CenterContainer.new()
-			cell.add_child(FocusHint.badge(obj, f, 14))
-			grid.add_child(cell)
+			# S10: Sektör uyumu gibi renkli kutu (iyi yeşil, kötü kiremit, bilinmeyen soluk); ipucu FocusHint'ten.
+			var is_known: bool = FocusHint.known(obj, f)
+			var v: int = FocusHint.value(obj, f)
+			var pill: PanelContainer = PanelContainer.new()
+			var fill: Color = CozyTheme.CREAM
+			if is_known:
+				fill = CozyTheme.SAGE_SOFT if v > 0 else (CozyTheme.TERRA_SOFT if v < 0 else CozyTheme.CREAM_LIGHT)
+			pill.add_theme_stylebox_override("panel", CozyTheme.box(fill, 6, CozyTheme.BORDER if not is_known else Color.TRANSPARENT,
+				1 if not is_known else 0, false, Vector2(2, 1)))
+			var badge: Label = FocusHint.badge(obj, f, 13)
+			badge.add_theme_font_override("font", CozyTheme.strong_font())
+			pill.add_child(badge)
+			grid.add_child(pill)
 	box.add_child(grid)
 	return box
 

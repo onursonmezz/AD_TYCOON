@@ -197,6 +197,17 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 	var layer: Node = screen.get("_modal_layer")
 	layer.get_child(layer.get_child_count() - 1).queue_free()
 	opener.free()
+	# S10: hedef ve ton da çizimli kartlarla seçilir.
+	for kind: String in ["objective", "tone"]:
+		var table: Dictionary = DataDB.data.objectives if kind == "objective" else DataDB.data.tones
+		var items: Array = []
+		for id: String in table:
+			items.append({"id": id, "name": UiUtil.name_of(table, id), "art_kind": kind, "art_id": id})
+		screen.call("open_modal", OptionPickerDialog.new(tr("UI_OBJECTIVE" if kind == "objective" else "UI_TONE"), items,
+			str(items[0]["id"]), func(_i: String) -> void: pass))
+		await _shot("11g_pick_" + kind)
+		layer.get_child(layer.get_child_count() - 1).queue_free()
+		await get_tree().process_frame
 	var job: Dictionary = mix.get_mix()[1].get("options", {}).get("job", {})
 	if not job.is_empty():
 		var dialog: NegotiationDialog = NegotiationDialog.new(job["supplier"], 20000.0, func(_d: float) -> void: pass)

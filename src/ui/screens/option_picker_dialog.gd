@@ -56,7 +56,7 @@ func _card(it: Dictionary) -> Button:
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 6)
 	b.add_child(box)
-	var art: OptionArt = OptionArtMedia.new(str(it["art_kind"]), str(it["art_id"]))
+	var art: OptionArt = OptionArtBrief.new(str(it["art_kind"]), str(it["art_id"]))
 	var art_size: Vector2 = ART * (0.55 if _compact else 1.0)
 	art.custom_minimum_size = art_size
 	box.add_child(art)
@@ -105,7 +105,7 @@ static func opener(title: String, items: Array, current: String, main_screen: Co
 		box.content_margin_left = ART_GAP
 		b.add_theme_stylebox_override(st, box)
 	if not chosen.is_empty():
-		var art: OptionArt = OptionArtMedia.new(str(chosen["art_kind"]), str(chosen["art_id"]))
+		var art: OptionArt = OptionArtBrief.new(str(chosen["art_kind"]), str(chosen["art_id"]))
 		art.size = Vector2(32.0, 24.0)
 		art.position = Vector2(6.0, 5.0)
 		b.add_child(art)

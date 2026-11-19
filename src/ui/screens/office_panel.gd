@@ -42,11 +42,15 @@ func refresh() -> void:
 	_quality_block(sim, s)
 	_col.add_child(_sizes_row(cur["allowed_sizes"]))
 	_desk_tiers(sim, s)
-	_plants_row(sim, s)
+	# S10: bitkiler ve inşa modu tek satırda (büyük ofiste düğme alttan kesiliyordu).
+	var bottom: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	_col.add_child(bottom)
+	_plants_row(sim, s, bottom)
 	var build: Button = UiUtil.button(tr("UI_BUILD_MODE"), func() -> void: _main.call("enter_build_mode"))
 	build.theme_type_variation = "PrimaryButton"
 	build.icon = UiUtil.icon_texture("hammer", 18)
-	_col.add_child(build)
+	build.size_flags_horizontal = Control.SIZE_EXPAND_FILL if bottom.get_child_count() == 0 else Control.SIZE_SHRINK_END
+	bottom.add_child(build)
 	cols.add_child(VSeparator.new())
 	_col = _column()
 	cols.add_child(_col)
@@ -159,16 +163,20 @@ func _sizes_text(sizes: Array) -> String:
 
 
 ## Bitkiler (12.3): sayı, son sulama; kuruysa uyarı. Ofis asistanı varsa o sular.
-func _plants_row(sim: Simulation, s: SimState) -> void:
+func _plants_row(sim: Simulation, s: SimState, parent: HBoxContainer) -> void:
 	var count: int = sim.build.plant_count(s)
 	if count == 0:
 		return
-	var row: HFlowContainer = Cards.flow_row(CozyTheme.SPACE_S)
-	row.add_child(UiUtil.label(tr("UI_PLANTS_STATE") % [count, sim.build.weeks_since_watered(s)], 13))
+	var info: VBoxContainer = UiUtil.vbox(0)
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	info.add_child(UiUtil.label(tr("UI_PLANTS_STATE") % [count, sim.build.weeks_since_watered(s)], 12))
 	if sim.build.plants_dry(s):
-		row.add_child(UiUtil.label(tr("UI_PLANTS_DRY"), 14, UiUtil.TERRACOTTA))
-	row.add_child(UiUtil.button(tr("UI_WATER_PLANTS"), func() -> void:
+		info.add_child(UiUtil.label(tr("UI_PLANTS_DRY"), 12, UiUtil.TERRACOTTA))
+	parent.add_child(info)
+	var water: Button = UiUtil.button(tr("UI_WATER_PLANTS"), func() -> void:
 		GameState.execute(WaterPlantsCommand.new())
 		_signature = ""
-		refresh()))
-	_col.add_child(row)
+		refresh())
+	Cards.compact(water)
+	water.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	parent.add_child(water)

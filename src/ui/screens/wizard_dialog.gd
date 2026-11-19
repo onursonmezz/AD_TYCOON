@@ -6,9 +6,11 @@ extends Control
 var _brief: Dictionary
 var _main: Control
 var _name_edit: LineEdit
-var _objective: OptionButton
-var _audience: OptionButton
-var _tone: OptionButton
+## S10: hedef, kitle ve ton açılır menü değil, çizimli seçim paneli (OptionPickerDialog); seçili kimlikler burada.
+var _objective: String = ""
+var _audience: String = ""
+var _tone: String = ""
+var _brief_box: VBoxContainer
 var _estimate: Label
 var _mix: MixEditor
 var _team_checks: Dictionary = {}
@@ -59,21 +61,12 @@ func _ready() -> void:
 	_name_edit.placeholder_text = tr("UI_CAMPAIGN_NAME_HINT")
 	_name_edit.max_length = 40
 	_add_row(left, "UI_CAMPAIGN_NAME", _name_edit)
-	_objective = OptionButton.new()
-	if str(_brief["objective"]).is_empty():
-		for id: String in data.objective_ids:
-			_objective.add_item(UiUtil.name_of(data.objectives, id))
-	else:
-		_objective.add_item(UiUtil.name_of(data.objectives, _brief["objective"]))
-		_objective.disabled = true
-	_add_row(left, "UI_OBJECTIVE", _objective)
-	_audience = _option_for(data.audiences, data.audience_ids)
-	_add_row(left, "UI_AUDIENCE", _audience)
-	_tone = _option_for(data.tones, data.tone_ids)
-	_add_row(left, "UI_TONE", _tone)
-	# Araştırılmadıysa (GDD 17) otomatik: seçim kapalı, nötr sayılır; gereken araştırma altında yazar.
-	_lock_unless(_audience, "audience_analysis", "UI_AUTO_AUDIENCE")
-	_lock_unless(_tone, "tone_choice", "UI_AUTO_TONE")
+	_objective = str(_brief["objective"]) if not str(_brief["objective"]).is_empty() else data.objective_ids[0]
+	_audience = data.audience_ids[0]
+	_tone = data.tone_ids[0]
+	_brief_box = UiUtil.vbox(4)
+	left.add_child(_brief_box)
+	_build_brief_pickers()
 	var free_staff: Array = []
 	var busy: Array = s.busy_staff()  # S3D: başka kampanyada çalışan seçilemez
 	for emp: Dictionary in s.staff.values():
@@ -131,12 +124,49 @@ func _fail(key: String) -> void:
 	_error.visible = true
 
 
-func _lock_unless(o: OptionButton, research_id: String, key: String) -> void:
-	if GameState.sim.research.has(GameState.sim.state, research_id):
-		return
-	o.clear()
-	o.add_item(tr(key))
-	o.disabled = true
+## Hedef, kitle, ton seçicileri. Brief hedefi belirlediyse hedef sabit; kitle ve ton araştırılmadıysa (GDD 17)
+## otomatik sayılır, seçici yerine soluk bir not durur.
+func _build_brief_pickers() -> void:
+	var data: GameData = DataDB.data
+	UiUtil.clear(_brief_box)
+	var fixed_objective: bool = not str(_brief["objective"]).is_empty()
+	if fixed_objective:
+		_add_row(_brief_box, "UI_OBJECTIVE", _fixed(UiUtil.name_of(data.objectives, _objective)))
+	else:
+		_add_row(_brief_box, "UI_OBJECTIVE", _picker("UI_OBJECTIVE", "objective", data.objectives, data.objective_ids, _objective,
+			func(id: String) -> void: _objective = id))
+	for spec: Array in [["UI_AUDIENCE", "audience", data.audiences, data.audience_ids, "audience_analysis", "UI_AUTO_AUDIENCE"],
+			["UI_TONE", "tone", data.tones, data.tone_ids, "tone_choice", "UI_AUTO_TONE"]]:
+		if not GameState.sim.research.has(GameState.sim.state, str(spec[4])):
+			_add_row(_brief_box, str(spec[0]), _fixed(tr(str(spec[5]))))
+			continue
+		var kind: String = str(spec[1])
+		_add_row(_brief_box, str(spec[0]), _picker(str(spec[0]), kind, spec[2], spec[3], _audience if kind == "audience" else _tone,
+			func(id: String) -> void:
+				if kind == "audience":
+					_audience = id
+				else:
+					_tone = id))
+
+
+func _picker(title_key: String, kind: String, table: Dictionary, ids: Array[String], current: String, on_pick: Callable) -> Button:
+	var items: Array = []
+	for id: String in ids:
+		items.append({"id": id, "name": UiUtil.name_of(table, id), "art_kind": kind, "art_id": id,
+			"sub": tr(str(table[id].get("desc_key", ""))) if table[id].has("desc_key") else ""})
+	var b: Button = OptionPickerDialog.opener(tr(title_key), items, current, _main, func(id: String) -> void:
+		on_pick.call(id)
+		_build_brief_pickers.call_deferred())
+	b.clip_text = true
+	return b
+
+
+func _fixed(text: String) -> Label:
+	var l: Label = UiUtil.label(text, 13, CozyTheme.MUTED)
+	l.clip_text = true
+	l.tooltip_text = text
+	l.mouse_filter = Control.MOUSE_FILTER_STOP
+	return l
 
 
 ## Fokus Grup (GDD 17): yayından önce kombinasyonun uyumuna dair kaba bir tahmin (iyi / orta / zayıf).
@@ -148,9 +178,9 @@ func _on_focus_group() -> void:
 	var client: Dictionary = _brief["prospect"] if not (_brief["prospect"] as Dictionary).is_empty() \
 		else sim.state.clients.get(_brief["client_id"], {})
 	var setup: Dictionary = {"sector": _brief["sector"], "mix": mix,
-		"objective": DataDB.data.objective_ids[_objective.selected] if not _objective.disabled else _brief["objective"],
-		"audience": DataDB.data.audience_ids[_audience.selected] if not _audience.disabled else "",
-		"tone": DataDB.data.tone_ids[_tone.selected] if not _tone.disabled else ""}
+		"objective": _objective,
+		"audience": _audience if sim.research.has(sim.state, "audience_analysis") else "",
+		"tone": _tone if sim.research.has(sim.state, "tone_choice") else ""}
 	var m: float = float(sim.scoring.combination(setup, client)["m"])
 	var band: String = "GOOD" if m >= DataDB.data.balf("research.focus_good") \
 		else ("WEAK" if m < DataDB.data.balf("research.focus_weak") else "MID")
@@ -163,13 +193,6 @@ func _picked_team() -> Array:
 		if (_team_checks[id] as CheckBox).button_pressed:
 			team.append(id)
 	return team
-
-
-func _option_for(table: Dictionary, ids: Array[String]) -> OptionButton:
-	var o: OptionButton = OptionButton.new()
-	for id: String in ids:
-		o.add_item(UiUtil.name_of(table, id))
-	return o
 
 
 ## Alan: üstte kalın başlık, altında denetim (dar sütuna sığsın).
@@ -185,16 +208,15 @@ func _add_row(col: VBoxContainer, key: String, control: Control) -> void:
 
 
 func _on_start() -> void:
-	var data: GameData = DataDB.data
 	var mix: Array = _mix.get_mix()
 	if mix.is_empty():
 		_fail("ERR_CHANNEL")
 		return
 	var choices: Dictionary = {
 		"name": _name_edit.text.strip_edges(),
-		"objective": data.objective_ids[_objective.selected] if not _objective.disabled else _brief["objective"],
-		"audience": data.audience_ids[_audience.selected],
-		"tone": data.tone_ids[_tone.selected],
+		"objective": _objective,
+		"audience": _audience,
+		"tone": _tone,
 		"mix": mix,
 		"team": _picked_team(),
 	}

@@ -1826,3 +1826,16 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Etkiler renkli etiketlerde: iyi yeşil, kötü kiremit.
   - Artınca kötü olan etkiler (tükenmişlik, gecikme, hata, rakibin itibarı) `events.bad_when_up`'ta; evet/hayır etkilerin yönü `bool_tone`'da.
 - Bildirim kartları dar ama sağ kenarı boş bırakma tercihi (Orgo) nedeniyle genişletilmedi.
+
+## K-144 — İnceleme 10. aşama: genel cila (2026-11-19)
+- **Ofis paneli:** Büyük ofiste (2015) sol sütun uzayınca "İnşa moduna geç" düğmesi alttan kesiliyordu.
+  - Bitki durumu, "Bitkileri sula" ve "İnşa moduna geç" artık tek satırda; "Bitkileri sula" küçük düğme.
+  - Bitki yoksa inşa düğmesi satırın tamamını kaplıyor.
+- **Kampanya kurulumu:** Hedef, hedef kitle ve ton açılır menü değil, 2. aşamadaki gibi çizimli seçim kartları.
+  - `OptionArtBrief`: 6 hedef, 4 kitle ve 6 ton kodla çizildi.
+  - Brief hedefi belirlediyse hedef sabit yazıyor.
+  - Kitle ya da ton araştırılmadıysa seçici yerine soluk "otomatik" notu var; simülasyon zaten nötr sayıyordu.
+  - Seçim paneli artık `OptionArtBrief` kullanıyor; baskı ve medya çizimleri üst sınıflardan geliyor.
+- **Odak önemi tablosu:** Düz "?" yazıları yerine Sektör uyumu sekmesiyle aynı renkli kutular.
+- **Ekran turu:** Hedef ve ton seçim panelleri `11g_pick_*` adıyla turda.
+- **Kalan açılır menüler** yalnızca filtre ve ayar menüleri (ekip/müşteri filtreleri, dil); bunlar seçim değil süzme için olduğundan bırakıldı.

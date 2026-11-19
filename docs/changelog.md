@@ -1,5 +1,17 @@
 # Değişiklik günlüğü
 
+## İnceleme 10. aşama: genel cila (2026-11-19)
+- Büyük ofiste "İnşa moduna geç" düğmesi artık kesilmiyor; bitki sulama ile aynı satırda.
+- Yeni kampanyada hedef, hedef kitle ve ton da çizimli kartlarla seçiliyor (açılır menü kalmadı).
+- Ar-Ge → Odak önemi tablosu renkli kutularda.
+- Nasıl test ederim:
+  1. 2015'te başla (ya da ofisini büyüt), Ofis penceresini aç. İnşa moduna geç düğmesi tam görünmeli.
+  2. Bir brief kabul et ve Yeni kampanya penceresini aç. Hedef, kitle ve ton düğmelerine basınca çizimli kartlar çıkmalı. Araştırılmamış seçeneklerde "otomatik" yazmalı.
+  3. Ar-Ge → Odak önemi sekmesine bak. Bilinen hücreler yeşil ya da kiremit, bilinmeyenler soluk "?" olmalı.
+
+## İnceleme tamamlandı (10 aşama)
+- Orgo'nun listesindeki maddelerin hepsi işaretlendi (docs/review_backlog.md). Kararlar K-131 ile K-144 arasında.
+
 ## İnceleme 9. aşama: olaylar ve bildirimler (2026-11-19)
 - Adı verilmemiş kampanyada olay metni artık boş tırnak yerine müşterinin adını yazıyor.
 - Olay sonucunda ne olduğunu anlatan kısa bir cümle var (iyi, kötü ya da karışık sonuç); etkiler yeşil ve kiremit etiketlerde.
