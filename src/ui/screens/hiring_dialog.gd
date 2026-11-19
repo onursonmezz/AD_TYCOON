@@ -22,7 +22,7 @@ var _error: Label
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	var s: SimState = GameState.sim.state
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(706.0, 450.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(706.0, 480.0), true, true)  # S11: adaylar gelince pencere büyümesin
 	col.add_child(UiUtil.heading(tr("UI_HIRE_TITLE"), "users-group"))
 	col.add_child(UiUtil.label(tr("UI_TEAM_HEADER") % [s.staff.size(), GameState.sim.staff.capacity(s),
 		UiUtil.money(GameState.sim.staff.monthly_payroll(s))], 13, CozyTheme.FOREST))

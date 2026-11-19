@@ -149,7 +149,7 @@ func _set_year(year: int) -> void:
 		b.set_pressed_no_signal(on)
 		var style: StyleBoxFlat = CozyTheme.box(CozyTheme.FOREST if on else CozyTheme.CREAM_LIGHT, CozyTheme.RADIUS_CARD,
 			CozyTheme.FOREST if on else CozyTheme.BORDER, 1, false, Vector2(CozyTheme.SPACE_L, 6))
-		for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+		for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
 			b.add_theme_stylebox_override(st, style)
 		for c: String in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
 			b.add_theme_color_override(c, CozyTheme.CREAM_LIGHT if on else CozyTheme.TEXT)

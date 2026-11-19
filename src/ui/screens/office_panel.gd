@@ -7,7 +7,7 @@ var _body: VBoxContainer
 var _signature: String = ""
 var _col: VBoxContainer  # o an doldurulan sütun
 
-const COLUMN_TEXT: float = 300.0
+const COLUMN_TEXT: float = 258.0
 const OFFICE_ART: float = 84.0
 const DESK_ART: int = 40
 

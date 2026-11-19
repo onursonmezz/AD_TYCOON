@@ -50,7 +50,7 @@ func _build() -> void:
 				Vector2(CozyTheme.SPACE_M, 10))
 			active.border_width_left = 3
 			active.border_color = CozyTheme.FOREST
-			for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+			for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
 				b.add_theme_stylebox_override(st, active)
 		nav.add_child(b)
 	split.add_child(VSeparator.new())  # taslak 19: sol menü ile ayarlar arasında ince dikey çizgi

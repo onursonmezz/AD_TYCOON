@@ -57,7 +57,20 @@ func _ready() -> void:
 	_palette = UiUtil.hbox(4)
 	scroll.add_child(_palette)
 	col.add_child(scroll)
-	col.add_child(UiUtil.label(tr("UI_BUILD_KEYS"), 10, UiUtil.MUTED))
+	# S11: durum yazısı ("Buraya konabilir", "Tıklarsan … satılır") geniş alt satırda; kısayollar bilgi simgesinin ipucunda.
+	var line: HBoxContainer = UiUtil.hbox(6)
+	_status = UiUtil.label(tr("UI_BUILD_PICK"), 12, UiUtil.TEXT)
+	_status.clip_text = true
+	_status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.add_child(_status)
+	var keys: TextureRect = UiUtil.icon("info", 14, CozyTheme.FOREST)
+	keys.tooltip_text = tr("UI_BUILD_KEYS").replace(" · ", "
+")
+	keys.mouse_filter = Control.MOUSE_FILTER_STOP
+	line.add_child(keys)
+	line.add_child(UiUtil.label(tr("UI_BUILD_KEYS_SHORT"), 11, UiUtil.MUTED))
+	col.add_child(line)
 	_fill_palette("all")
 	_view.place_requested.connect(_on_place)
 	_view.room_requested.connect(_on_room)
@@ -122,14 +135,14 @@ func _tools_box(width: float) -> PanelContainer:
 		for state: String in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
 			rb.add_theme_color_override(state, CozyTheme.FOREST)
 		rb.add_theme_color_override("icon_disabled_color", Color(UiUtil.MUTED, 0.45))
-		rb.add_theme_stylebox_override("normal", CozyTheme.box(CozyTheme.CREAM_LIGHT, 6, CozyTheme.BORDER, 1, false, Vector2(4.0, 2.0)))
+		# S11: bütün hâller aynı iç boşlukta (üstüne gelince ok kaymasın)
+		for st: String in ["normal", "disabled"]:
+			rb.add_theme_stylebox_override(st, CozyTheme.box(CozyTheme.CREAM_LIGHT, 6, CozyTheme.BORDER, 1, false, Vector2(4.0, 2.0)))
+		for st: String in ["hover", "pressed", "hover_pressed"]:
+			rb.add_theme_stylebox_override(st, CozyTheme.box(CozyTheme.SAGE_SOFT, 6, CozyTheme.FOREST_LIGHT, 1, false, Vector2(4.0, 2.0)))
 		rb.disabled = true
 		_rotate_buttons.append(rb)
 		foot.add_child(rb)
-	_status = UiUtil.label(tr("UI_BUILD_PICK"), 10, UiUtil.TEXT)
-	_status.clip_text = true
-	_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	foot.add_child(_status)
 	body.add_child(foot)
 	return box
 

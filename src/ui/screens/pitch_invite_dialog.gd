@@ -45,9 +45,14 @@ func _ready() -> void:
 	col.add_child(UiUtil.wrapped(tr("UI_PITCH_HOW"), 13, CozyTheme.MUTED))
 	col.add_child(Cards.section(tr("UI_PITCH_TEAM"), "", "users-group"))
 	var busy: Array = s.busy_staff()
-	var team_box: VBoxContainer = UiUtil.vbox(6)
+	# S11: ekip iki sütunda (üç kişide pencere ekrandan taşıyordu).
+	var team_box: GridContainer = GridContainer.new()
+	team_box.columns = 2
+	team_box.add_theme_constant_override("h_separation", CozyTheme.SPACE_S)
+	team_box.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
 	for emp: Dictionary in s.staff.values():
 		var card: PanelContainer = UiUtil.card()
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var check: CheckBox = CheckBox.new()
 		check.disabled = not Employee.is_available(emp, s.clock.week_index)
 		check.button_pressed = not check.disabled and not busy.has(emp["id"])

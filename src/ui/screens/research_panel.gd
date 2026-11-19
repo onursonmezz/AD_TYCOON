@@ -207,7 +207,7 @@ func _knowledge_table(sim: Simulation, s: SimState) -> HBoxContainer:
 	var box: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.custom_minimum_size = Vector2(230.0, float(DataDB.data.raw["ui_layout.json"].get("research_fit_list_height", 300)))
+	scroll.custom_minimum_size = Vector2(200.0, float(DataDB.data.raw["ui_layout.json"].get("research_fit_list_height", 300)))
 	box.add_child(scroll)
 	var list: VBoxContainer = UiUtil.vbox(4)
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -273,11 +273,11 @@ func _known_cells(sim: Simulation, s: SimState, sector: String) -> int:
 ## Tek uyum hücresi: üstte ad, altta renkli kutuda +++ / − / ? (iyi yeşil, kötü kiremit, nötr krem, bilinmeyen soluk).
 func _fit_cell(name: String, v: int, known: bool) -> VBoxContainer:
 	var cell: VBoxContainer = UiUtil.vbox(2)
-	cell.custom_minimum_size.x = 82.0
+	cell.custom_minimum_size.x = 72.0
 	var head: Label = UiUtil.label(name, 11, CozyTheme.WOOD)
 	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	head.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	head.custom_minimum_size = Vector2(82.0, 44.0)  # üç satıra kadar ad; kutular aynı hizada
+	head.custom_minimum_size = Vector2(72.0, 44.0)  # üç satıra kadar ad; kutular aynı hizada
 	head.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	cell.add_child(head)
 	var fill: Color = CozyTheme.CREAM

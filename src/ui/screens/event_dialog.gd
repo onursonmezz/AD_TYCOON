@@ -92,7 +92,7 @@ func _choose(option: int) -> void:
 		tone = 1 if bool(r["success"]) and tone >= 0 else (-1 if not bool(r["success"]) else tone)
 		_buttons.add_child(UiUtil.label(tr("UI_EVENT_SUCCESS" if bool(r["success"]) else "UI_EVENT_FAIL"), 18,
 			UiUtil.SAGE_DARK if bool(r["success"]) else UiUtil.TERRACOTTA))
-	var story: Label = UiUtil.wrapped(aftermath(str(_inst.get("category", "")), tone, str(_inst["uid"])), 15, CozyTheme.TEXT, 520.0)
+	var story: Label = UiUtil.wrapped(aftermath(str(_inst.get("category", "")), tone, str(_inst["uid"])), 15, CozyTheme.TEXT, 460.0)
 	_buttons.add_child(story)
 	var flow: HFlowContainer = Cards.flow_row()
 	var tones: Array[int] = effect_tones(r["effects"])

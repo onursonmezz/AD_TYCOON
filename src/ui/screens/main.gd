@@ -268,8 +268,10 @@ func show_panel(id: String) -> void:
 	_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_layout()
 	# Tek kaydırma pencerenin kendisinde; panellerin kendi dikey listeleri kaymaz.
+	# S11: kendi yüksekliği verilmiş listeler (sektör listesi gibi) kendi kutusunda kayar; pencere sabit kalır.
 	for inner: Node in _panel.find_children("*", "ScrollContainer", true, false):
-		if (inner as ScrollContainer).horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED:
+		if (inner as ScrollContainer).horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED \
+				and (inner as ScrollContainer).custom_minimum_size.y <= 0.0:
 			(inner as ScrollContainer).vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED

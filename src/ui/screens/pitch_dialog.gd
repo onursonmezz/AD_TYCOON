@@ -18,7 +18,7 @@ var _title: Label
 func _ready() -> void:
 	var sim: Simulation = GameState.sim
 	var pitch: Dictionary = sim.state.pitch
-	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(760.0, 560.0))
+	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(760.0, 540.0), true, true)  # S11: tur ve sonuç aynı boyda
 	col.add_child(UiUtil.heading(tr("UI_PITCH_TITLE") % pitch["client"]["name"], "speakerphone"))
 	var presenter: Dictionary = sim.pitches.presenter(sim.state, pitch)
 	var strip: PanelContainer = UiUtil.card()

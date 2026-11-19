@@ -173,7 +173,7 @@ func _row(emp: Dictionary) -> Button:
 	var b: Button = Button.new()
 	b.theme_type_variation = "PickCardActive" if open else "QuietButton"
 	if open:
-		for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+		for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
 			b.add_theme_stylebox_override(st, CozyTheme.box(CozyTheme.CREAM_LIGHT, CozyTheme.RADIUS_CONTROL, CozyTheme.FOREST_LIGHT, 2,
 				false, Vector2(CozyTheme.SPACE_S, 4)))
 	b.pressed.connect(func() -> void:

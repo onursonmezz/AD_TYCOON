@@ -22,7 +22,7 @@ func _init(supplier_id: String, list_price: float, on_done: Callable) -> void:
 func _ready() -> void:
 	var data: GameData = DataDB.data
 	GameState.execute(NegotiateCommand.new(_supplier, _list_price))
-	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("negotiation"))
+	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("negotiation"), true, true)  # S11: sabit boy
 	col.add_child(UiUtil.heading(tr("UI_NEGOTIATION_TITLE") % tr(data.suppliers[_supplier]["name_key"]), "receipt"))
 	col.add_child(Cards.header(Cards.art("supplier_art", _supplier, 52.0, "receipt"), tr(data.suppliers[_supplier]["name_key"]),
 		tr("UI_LIST_PRICE") % UiUtil.money(_list_price)))

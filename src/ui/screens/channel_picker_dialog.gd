@@ -93,7 +93,7 @@ func _chip(category: String, text: String) -> Button:
 	var on: bool = category == _category
 	var style: StyleBoxFlat = CozyTheme.box(CozyTheme.CREAM_LIGHT if on else CozyTheme.SAGE_SOFT, 999,
 		CozyTheme.FOREST if on else Color.TRANSPARENT, 1 if on else 0, false, Vector2(10.0, 1.0))
-	for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+	for st: String in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
 		b.add_theme_stylebox_override(st, style)
 	b.add_theme_font_size_override("font_size", 12)
 	return b

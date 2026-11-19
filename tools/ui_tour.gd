@@ -3,6 +3,7 @@ extends Node
 ## Çalıştırma (pencere açılır): godot --path . res://tools/ui_tour.tscn -- --out=C:/klasor [--lang=en]
 
 var _out: String = "user://ui_tour"
+var _audit: UiAudit = UiAudit.new()  # S11: her karede taşma / kesik yazı / boy değişimi denetimi
 ## --lang=en: turu İngilizce çalıştırır (M9-C çeviri kontrolü: taşan ya da kesilen metin).
 var _lang: String = "tr"
 
@@ -69,6 +70,7 @@ func _run() -> void:
 	Clock.set_paused(true)
 	for i: int in 10:
 		_step()
+	screen.call("show_panel", "campaign")  # S11: faz sürerken pencere kendiliğinden açılmaz; turda açılır
 	await _shot("05_phase_running")
 	# S3B: pencere kapalıyken üst şerit ve kafadan sayaçlara uçan puanlar.
 	screen.call("close_panel")
@@ -102,26 +104,22 @@ func _run() -> void:
 					if child is EventDialog:
 						child.queue_free()
 				await get_tree().process_frame
-				# Prodüksiyon fazı panosu: ekipman çarpanı ve kiralıklar (K-119).
+				# S11: 3. faz başında o fazın görev planı (kiralıklarla) açılır; kare çekilir, sonra taslak seçimi.
 				shown_production = true
 				sim.state.equipment = ["vhs_camcorder", "film_photo_kit"]
-				screen.call("close_panel")
-				screen.call("show_panel", "campaign")
+				screen.call("_on_phase_started")
+				await get_tree().create_timer(0.4).timeout
+				if not screen.find_children("*", "TaskPlanDialog", true, false).is_empty():
+					await _shot("05b_production_board")
+				_unblock()
+				for d: Node in screen.find_children("*", "TaskPlanDialog", true, false):
+					d.queue_free()
 				await get_tree().process_frame
-				# Kreatiften sonra ekibin 3 taslağı (K-120).
 				screen.call("_refresh")  # faz başı mini oyun penceresi (K-121)
 				await get_tree().create_timer(0.3).timeout
 				if not get_tree().root.find_children("*", "MinigameHost", true, false).is_empty():
 					await _shot("05a_draft")
-					await _finish_minigame(screen.get("_panel"))
-				var pboards: Array[Node] = (screen.get("_panel") as Node).find_children("*", "WorkBoard", true, false)
-				if not pboards.is_empty():
-					# UI-3: kaydırma kutusu panelin dışında, pencere kabuğunda (main._scroll).
-					var shell_scroll: ScrollContainer = screen.get("_scroll")
-					if shell_scroll != null:
-						shell_scroll.scroll_vertical = 100000
-					await get_tree().process_frame
-					await _shot("05b_production_board")
+					await _finish_minigame(screen)
 			_unblock()
 		_step()
 	await get_tree().create_timer(2.0).timeout
@@ -160,6 +158,7 @@ func _run() -> void:
 	screen.call("show_panel", "office")
 	await _shot("10_office")
 	await _tour_media(screen, sim)
+	_audit.save(_out.path_join("audit.txt"))
 	get_tree().quit()
 
 
@@ -419,7 +418,7 @@ func _unblock() -> void:
 
 
 func _finish_minigame(panel: Node) -> void:
-	var hosts: Array[Node] = panel.get_tree().root.find_children("*", "MinigameHost", true, false)
+	var hosts: Array[Node] = get_tree().root.find_children("*", "MinigameHost", true, false)
 	if hosts.is_empty():
 		return
 	((hosts[0] as MinigameHost).get("_game") as MinigameGame).time_up()
@@ -587,6 +586,7 @@ func _shot(file_name: String) -> void:
 	await get_tree().create_timer(0.35).timeout  # açılış animasyonu (G2) bitsin
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
+	_audit.check(get_tree().root, file_name)
 	get_viewport().get_texture().get_image().save_png(_out.path_join(file_name + ".png"))
 
 

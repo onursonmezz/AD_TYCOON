@@ -174,15 +174,16 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 	var t: Dictionary = DataDB.data.tools[id]
 	var year: int = s.clock.year()
 	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	row.custom_minimum_size.y = 28.0
+	row.custom_minimum_size.y = 30.0
 	var owned: bool = sim.tools.owned(s, id)
 	row.add_child(_tool_logo(id, owned))
+	# S11: ad üstte, durum (sürüm, abonelik) altında küçük satır; eskiden yan yana sığmayıp kesiliyordu.
+	var texts: VBoxContainer = UiUtil.vbox(-3)
+	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(texts)
 	var name_label: Label = UiUtil.label(UiUtil.name_of(DataDB.data.tools, id), 14, CozyTheme.TEXT)
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
-	name_label.custom_minimum_size.x = 104.0  # ad kesilmez ("Nitrosoft StrongPoint"); yer daralırsa durum yazısı kısalır
-	name_label.tooltip_text = name_label.text
-	name_label.mouse_filter = Control.MOUSE_FILTER_STOP
-	row.add_child(name_label)
+	texts.add_child(name_label)
 	var status: String = ""
 	var color: Color = UiUtil.TEXT
 	if owned:
@@ -199,12 +200,9 @@ func _tool_row(sim: Simulation, s: SimState, id: String) -> HBoxContainer:
 		color = UiUtil.MUTED
 	if float(t["ai_penalty"]) > 0.0:
 		status += " · " + tr("UI_TOOL_AI")
-	var st: Label = UiUtil.label(status, 12, color)
-	st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	st.clip_text = true
-	st.tooltip_text = status
-	st.mouse_filter = Control.MOUSE_FILTER_STOP
-	row.add_child(st)
+	var st: Label = UiUtil.label(status, 11, color)
+	st.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	texts.add_child(st)
 	# S7: her satırda ya bir düğme ya da durum etiketi var (eskiden güncel araçta ve donanım yetmeyende boş kalıyordu).
 	match sim.tools.row_action(s, id):
 		"starter":

@@ -132,6 +132,7 @@ static func build() -> Theme:
 	_bars(t)
 	_toggles(t)
 	_tabs(t, head)
+	ThemeStates.unify(t)
 	return t
 
 
@@ -343,8 +344,13 @@ static func _toggles(t: Theme) -> void:
 		for st: String in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
 			t.set_color(st, cb, TEXT)
 		t.set_color("font_disabled_color", cb, MUTED)
+		var empty: StyleBoxEmpty = StyleBoxEmpty.new()  # S11: üstüne gelince kutusuyla aynı iç boşluk
+		empty.content_margin_left = 4.0
+		empty.content_margin_right = 4.0
+		empty.content_margin_top = 2.0
+		empty.content_margin_bottom = 2.0
 		for st: String in ["normal", "pressed", "disabled", "hover_pressed"]:
-			t.set_stylebox(st, cb, StyleBoxEmpty.new())
+			t.set_stylebox(st, cb, empty)
 		t.set_stylebox("hover", cb, box(SAGE_SOFT, 6, Color.TRANSPARENT, 0, false, Vector2(4, 2)))
 		t.set_stylebox("focus", cb, box(Color.TRANSPARENT, 6, FOREST, 2, false, Vector2(4, 2)))
 	# Aç/kapa anahtarı (CheckButton): yeşil ray, krem topuz.

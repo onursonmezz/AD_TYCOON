@@ -2115,3 +2115,4 @@ UI_PLAN_TITLE_PHASE,Görev planı · %s,Task plan · %s
 UI_PLAN_START_PHASE,Fazı başlat,Start phase
 UI_PLAN_PHASE_BUTTON,Fazı planla,Plan the phase
 UI_PHASE_PLAN_WAITING,Yeni faz başladı; görevlerin ağırlığını ve kişilerini seç.,A new phase has started; set the task weights and people.
+UI_BUILD_KEYS_SHORT,Kısayollar,Shortcuts

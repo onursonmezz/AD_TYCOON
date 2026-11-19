@@ -117,7 +117,7 @@ static func _row(id: String, best: Dictionary, on_change: Callable) -> HBoxConta
 	name_label.add_theme_font_override("font", CozyTheme.strong_font())
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS  # kesilirse "…" (tam adı ipucunda)
-	name_label.custom_minimum_size.x = 150.0
+	name_label.custom_minimum_size.x = 136.0  # S11: pencere sabit genişlikte; iki sütun sığsın
 	var tip: String = TranslationServer.translate("UI_EQ_ROW") % [int(roundf(float(e["bonus"]) * 100.0)), _needs(e),
 		UiUtil.money(float(e.get("upkeep_1990", 0.0)) * Economy.inflation(DataDB.data, s.clock.year()))]
 	if outdated:

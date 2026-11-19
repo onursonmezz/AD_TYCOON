@@ -1,15 +1,15 @@
 {
 	"_doc": "UI-3: pencere boyutları Orgo'nun taslaklarından ölçüldü (docs/reference/ui_mockups, 1672×941 görüntü → 1280×720 mantıksal piksel). [genişlik, yükseklik].",
 	"windows": {
-		"inbox": [677, 475], "clients": [706, 449], "campaign": [674, 491], "team": [713, 425], "office": [703, 423],
-		"tools": [703, 410], "research": [706, 449], "finance": [706, 440], "industry": [706, 452], "history": [706, 449]
+		"inbox": [820, 540], "clients": [820, 540], "campaign": [820, 540], "team": [820, 540], "office": [820, 540], "tools": [820, 540], "research": [820, 540], "finance": [820, 540], "industry": [820, 540], "history": [820, 540]
 	},
-	"default_window": [706, 449],
+	"_windows": "S11: bütün ana pencereler aynı boyda (paneller arasında geçince boy değişmez); yazı küçültülmez (fit_min_scale 1).",
+	"default_window": [820, 540],
 	"_fit": "K-122: pencere içeriği taşarsa kaydırma yerine bu ölçeğe kadar küçülür; Ar-Ge listesi sayfa başına bu kadar kart.",
-	"fit_min_scale": 0.72, "research_per_page": 3, "research_fit_list_height": 370, "finance_rows_height": 252,
+	"fit_min_scale": 1.0, "research_per_page": 3, "research_fit_list_height": 370, "finance_rows_height": 252,
 	"dialogs": {
-		"wizard": [708, 475], "report": [681, 504], "event": [527, 292], "ceremony": [619, 525], "settings": [775, 430],
-		"channel_picker": [475, 504], "option_picker": [520, 70], "task_plan": [600, 480], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [560, 560], "game_over": [560, 340], "confirm": [480, 220], "minigame": [700, 590], "pitch_invite": [660, 500]
+		"wizard": [760, 475], "report": [681, 504], "event": [580, 340], "ceremony": [619, 525], "settings": [775, 430],
+		"channel_picker": [475, 504], "option_picker": [560, 84], "task_plan": [600, 480], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [560, 560], "game_over": [560, 340], "confirm": [480, 220], "minigame": [700, 612], "pitch_invite": [700, 560]
 	},
 	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
 	"_art": "Görsel eşlemeleri: kimlik (ya da ad) → assets/ui/icons altındaki dosya adı. Eşleme yoksa arayüz ikon kullanır.",

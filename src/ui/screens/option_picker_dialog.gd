@@ -9,7 +9,7 @@ const ART: Vector2 = Vector2(104.0, 72.0)
 const ART_GAP: float = 44.0
 const COMPACT_FROM: int = 8
 const COMPACT_COLUMNS: int = 5
-const COMPACT_ROW: float = 0.68  # seçici düğmede soldaki çizimin yeri
+const COMPACT_ROW: float = 0.82  # seçici düğmede soldaki çizimin yeri
 
 var _title: String
 var _items: Array
