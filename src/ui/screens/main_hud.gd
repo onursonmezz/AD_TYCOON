@@ -221,6 +221,8 @@ static func fit_scroll(scroll: ScrollContainer, content: Control, room: float) -
 
 ## Bildirim kartı (toast): kayarak gelir, birkaç saniye sonra solup kaybolur; en fazla TOASTS_KEPT tane.
 static func toast(feed: VBoxContainer, key: String, args: Array, kind: String) -> void:
+	if key.begins_with("NOTE_PLANTS_"):
+		return  # S11: bitki durumu sağdaki kalıcı "Sula" kartında (PlantAlert)
 	var card: PanelContainer = PanelContainer.new()
 	card.add_theme_stylebox_override("panel", _box(TOAST_RADIUS, Vector2(12.0, 6.0)))
 	card.custom_minimum_size = Vector2(TOAST_WIDTH, TOAST_HEIGHT)
@@ -242,5 +244,9 @@ static func toast(feed: VBoxContainer, key: String, args: Array, kind: String) -
 	fade.tween_callback(card.queue_free)
 	while feed.get_child_count() > TOASTS_KEPT:
 		var first: Node = feed.get_child(0)
+		if first.has_meta(PlantAlert.META):  # bitki kartı kalıcı; ondan sonraki en eski bildirim gider
+			if feed.get_child_count() < 2:
+				break
+			first = feed.get_child(1)
 		feed.remove_child(first)
 		first.queue_free()

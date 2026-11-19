@@ -153,7 +153,7 @@ static func score_color(score: float) -> Color:
 
 
 static func date_text(clock: SimClock) -> String:
-	return tr_fmt("FMT_DATE", [clock.year(), clock.month(), clock.week_in_month(), clock.game_year()])
+	return tr_fmt("FMT_DATE", ["MONTH_%d" % clock.month(), clock.year(), clock.week_in_month(), clock.game_year()])  # S11: "Kasım 1993 · Hafta 2 (Y4)"
 
 
 ## Metin argümanları da çevrilir: simülasyon rakip/ödül adlarını anahtar olarak gönderir (anahtar olmayan metin aynen kalır).

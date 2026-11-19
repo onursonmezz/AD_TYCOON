@@ -141,7 +141,7 @@ MENU_HISTORY,Raporlar,Reports
 UI_REPUTATION,İtibar %.1f,Reputation %.1f
 UI_RESUME,▶ Devam,▶ Resume
 UI_PAUSE,⏸ Durdur,⏸ Pause
-FMT_DATE,%d · Ay %d · Hafta %d (Y%d),%d · Month %d · Week %d (Y%d)
+FMT_DATE,%s %d · Hafta %d (Y%d),%s %d · Week %d (Y%d)
 NOTE_WELCOME,"Ajansın kuruldu! Evinin bir odasında, iki küçük müşteriyle başlıyorsun. Gelen kutusunu takip et.",Your agency is open! You start in a spare room with two small clients. Keep an eye on your inbox.
 NOTE_LOADED,Kayıt yüklendi.,Game loaded.
 NOTE_SAVED,Oyun kaydedildi.,Game saved.
@@ -1467,7 +1467,7 @@ UI_SLOT_CURRENT,şu anki,current
 UI_SLOT_OVERWRITE,Üstüne yaz?,Overwrite?
 UI_LOAD,Yükle,Load
 UI_SLOT_EMPTY,Boş,Empty
-UI_SLOT_DATE,%d · Ay %d,%d · Month %d
+UI_SLOT_DATE,%s %d,%s %d
 UI_SLOT_STAFF,%d çalışan,%d staff
 UI_SLOT_BANKRUPT,iflas etti,bankrupt
 UI_UNSAVED_TITLE,Kaydedilmemiş ilerleme,Unsaved progress
@@ -2116,3 +2116,6 @@ UI_PLAN_START_PHASE,Fazı başlat,Start phase
 UI_PLAN_PHASE_BUTTON,Fazı planla,Plan the phase
 UI_PHASE_PLAN_WAITING,Yeni faz başladı; görevlerin ağırlığını ve kişilerini seç.,A new phase has started; set the task weights and people.
 UI_BUILD_KEYS_SHORT,Kısayollar,Shortcuts
+UI_PLANT_ALERT_THIRSTY,Bitkiler susadı.,The plants are thirsty.
+UI_PLANT_ALERT_DRY,Bitkiler kurudu!,The plants dried out!
+UI_PLANT_ALERT_WATER,Sula,Water

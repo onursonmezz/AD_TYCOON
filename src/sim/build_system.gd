@@ -300,6 +300,18 @@ func water(state: SimState) -> void:
 		refresh(state)
 
 
+## S11: bitki uyarı kartı için: 0 sulama gerekmez (bitki yok ya da ofis asistanı suluyor), 1 susadı, 2 kurudu.
+func plants_need_water(state: SimState) -> int:
+	if plant_count(state) == 0:
+		return 0
+	for emp: Dictionary in state.staff.values():
+		if emp["role"] == data.bal("plants.auto_water_role"):
+			return 0
+	if plants_dry(state):
+		return 2
+	return 1 if weeks_since_watered(state) >= data.bali("plants.thirsty_weeks") else 0
+
+
 ## Hafta sonu: ofis asistanı varsa bitkileri o sular; yoksa susadığında ve kuruduğunda bildirim anahtarı döner.
 func plants_weekly(state: SimState) -> String:
 	if not state.build.has("watered_week"):

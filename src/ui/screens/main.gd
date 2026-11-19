@@ -302,6 +302,7 @@ func _refresh() -> void:
 	if not GameState.has_game():
 		return
 	var s: SimState = GameState.sim.state
+	PlantAlert.update(_feed)  # S11: bitkiler susayınca sağda Sula kartı
 	if not is_nan(_last_cash) and not is_equal_approx(s.cash, _last_cash):
 		Juice.cash_fly(_cash, s.cash - _last_cash, s.clock.year())
 	_last_cash = s.cash

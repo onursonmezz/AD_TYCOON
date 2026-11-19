@@ -76,7 +76,7 @@ static func summary(meta: Dictionary) -> String:
 	var month: int = (week % wpy) / data.bali("time.weeks_per_month") + 1
 	var agency: String = str(meta.get("agency", ""))
 	var parts: PackedStringArray = PackedStringArray([agency if not agency.is_empty() else TranslationServer.translate("UI_DEFAULT_AGENCY"),
-		TranslationServer.translate("UI_SLOT_DATE") % [year, month], UiUtil.money(float(meta["cash"])),
+		TranslationServer.translate("UI_SLOT_DATE") % [TranslationServer.translate("MONTH_%d" % month), year], UiUtil.money(float(meta["cash"])),
 		TranslationServer.translate("UI_SLOT_STAFF") % int(meta["staff"])])
 	if float(meta.get("saved_at", 0.0)) > 0.0:
 		var t: Dictionary = Time.get_datetime_dict_from_unix_time(int(meta["saved_at"]) + _tz_offset())
