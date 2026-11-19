@@ -37,8 +37,8 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 - [x] Kampanya yankısı metinleri çok tekrar ediyor; farklı gazeteler aynı yorumu yapıyor. Çok daha çeşitli olsun (3–4 ek alternatif değil).
 
 ## 5. aşama: Ekip
-- [ ] İşe alırken hep aynı (tek) erkek karakter geliyor. Ofiste olan bir görünüş, seçenekler bitene kadar tekrar gelmesin.
-- [ ] Her ofiste kurucunun ekipten ayrı kendi masası olsun (GDT gibi).
+- [x] İşe alırken hep aynı (tek) erkek karakter geliyor. Ofiste olan bir görünüş, seçenekler bitene kadar tekrar gelmesin.
+- [x] Her ofiste kurucunun ekipten ayrı kendi masası olsun (GDT gibi).
 
 ## 6. aşama: Ofis ve inşa
 - [ ] Mobilya eklerken duvara yaslanma sıfırlanmıyor. Ctrl basılıyken ızgaraya ve duvara yapışmadan serbest yerleştirme olsun (Sims gibi).

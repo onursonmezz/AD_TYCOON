@@ -43,16 +43,25 @@ static func _cyl(parent: Node3D, top: float, bottom: float, height: float, y: fl
 	return mi
 
 
-## Masanın arka sağ köşesine lamba ve ışığı. desk: masanın taban dikdörtgeni (metre); top: masa üstü yüksekliği.
-## flip: masa ters dönükse (ada kuzey sırası) lamba karşı köşeye, masanın arka kenarına gelir.
-static func desk_lamp(parent: Node3D, desk: Rect2, top: float, flip: bool = false) -> void:
+## Yer düzleminde (x, z) bir yönü dikey eksende derece kadar döndürür (Godot y dönüşüyle aynı yön).
+static func turned(v: Vector2, degrees: float) -> Vector2:
+	var t: float = deg_to_rad(degrees)
+	return Vector2(v.x * cos(t) + v.y * sin(t), -v.x * sin(t) + v.y * cos(t))
+
+
+## Masanın arka sağ köşesine lamba ve ışığı. desk: masanın taban dikdörtgeni (metre, dönmüş hâli); top: masa üstü
+## yüksekliği; turn: masanın dönüşü (derece; 0 = oturan güneyde, 180 = ada kuzey sırası, 90 = kurucu masası).
+static func desk_lamp(parent: Node3D, desk: Rect2, top: float, turn: float = 0.0) -> void:
 	if not enabled():
 		return
 	var c: Dictionary = _cfg()["desk_lamp"]
 	var inset: Vector2 = WorldLook.v2(c["inset"])
+	var size: Vector2 = desk.size if int(turn) % 180 == 0 else Vector2(desk.size.y, desk.size.x)
+	var local: Vector2 = Vector2(size.x * 0.5 - inset.x, -size.y * 0.5 + inset.y)  # dönmemiş masada arka sağ köşe
+	var at: Vector2 = desk.get_center() + turned(local, turn)
 	var root: Node3D = Node3D.new()
 	root.name = LAMP_NAME
-	root.position = Vector3(desk.position.x + inset.x, top, desk.end.y - inset.y) if flip 		else Vector3(desk.end.x - inset.x, top, desk.position.y + inset.y)
+	root.position = Vector3(at.x, top, at.y)
 	parent.add_child(root)
 	var body: StandardMaterial3D = _mat(WorldLook.col(c["body_color"]))
 	var shade: StandardMaterial3D = _mat(WorldLook.col(c["shade_color"]))

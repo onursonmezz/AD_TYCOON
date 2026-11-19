@@ -192,7 +192,7 @@ func _assign_places(s: SimState) -> void:
 	var week: int = s.clock.week_index
 	var counters: Dictionary = {}
 	var low_energy: float = DataDB.data.balf("energy.low_threshold")
-	_desk_of = allocate_desks(_desk_of, s.staff.keys(), layout.desks.size())
+	_desk_of = allocate_desks(_desk_of, s.staff.keys(), layout.desks.size(), str(s.founder().get("id", "")))
 	for id: String in _chars:
 		var emp: Dictionary = s.staff[id]
 		var place: String = "desk"
@@ -217,10 +217,16 @@ func _assign_places(s: SimState) -> void:
 
 ## Her çalışana ayrı masa: geçerli eski atama korunur, masası olmayana ilk boş masa verilir; masa yoksa atanmaz.
 ## (Masa silinince ya da kişi masa sayısını aşınca birden çok kişi aynı masaya gidiyordu.)
-static func allocate_desks(current: Dictionary, staff_ids: Array, desk_count: int) -> Dictionary:
+## S5: founder_id verilirse 0 numaralı masa (kurucu masası) yalnızca onundur.
+static func allocate_desks(current: Dictionary, staff_ids: Array, desk_count: int, founder_id: String = "") -> Dictionary:
 	var out: Dictionary = {}
 	var used: Dictionary = {}
+	if not founder_id.is_empty() and staff_ids.has(founder_id) and desk_count > 0:
+		out[founder_id] = 0
+		used[0] = true
 	for id: Variant in staff_ids:
+		if out.has(id):
+			continue
 		var i: int = int(current.get(id, -1))
 		if i >= 0 and i < desk_count and not used.has(i):
 			out[id] = i

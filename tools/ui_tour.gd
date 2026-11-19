@@ -143,6 +143,15 @@ func _run() -> void:
 	await get_tree().process_frame
 	hiring.call("_on_search")
 	await _shot("08_hiring")
+	# S5: pozisyon seçimi çizimli panelde.
+	for b: Node in hiring.find_children("*", "Button", true, false):
+		if (b as Button).text.begins_with(tr("UI_ROLE")):
+			(b as Button).pressed.emit()
+			break
+	await _shot("08b_role_picker")
+	var top: Node = screen.get("_modal_layer").get_child(screen.get("_modal_layer").get_child_count() - 1)
+	if top is OptionPickerDialog:
+		top.queue_free()
 	var cand: Dictionary = sim.state.candidates[0]
 	GameState.execute(HireEmployeeCommand.new(cand["id"]))
 	hiring.queue_free()

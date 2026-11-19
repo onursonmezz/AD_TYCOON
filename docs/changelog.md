@@ -1,5 +1,16 @@
 # Değişiklik günlüğü
 
+## İnceleme 5. aşama: ekip (2026-11-19)
+- Aynı karakter tekrar gelmiyor. Ofiste kullanılmayan bir 3B model seçiliyor, yoksa saçı, kıyafeti ve rengi farklı bir karakter geliyor. Aday portreleri de birbirinden farklı.
+- Kurucunun her ofiste ekipten ayrı, ekibe dönük kendi masası var.
+- İşe almada pozisyon ve kanal, ikonlu kartlardan seçiliyor (açılır menü yok).
+- Ekip tablosunda roller kesilmiyor.
+- Nasıl test ederim:
+  1. 1990 başlangıcıyla oyna ve birkaç erkek çalışan işe al. Ofiste hepsi aynı karakter olmamalı.
+  2. Aday ara; aynı aramadaki adayların portreleri birbirinden farklı olmalı.
+  3. Ofise bak. Kurucu ekiple karşılıklı değil, kendi ayrı masasında ekibe dönük oturmalı. Ofis taşıyınca yeni ofiste de öyle olmalı.
+  4. İşe alım penceresinde Pozisyon düğmesine bas; departman ikonlu kartlar açılmalı. Kanalda fiyatlar kartın altında yazmalı.
+
 ## İnceleme 4. aşama: sonuç ve puanlama (2026-11-19)
 - Raporda yeni "Neden bu puan?" sekmesi var. Puanı etkileyen 8 etken renkli kartlarda; her birinde Güçlü/İyi/Nötr/Zayıf derecesi ve ne yapman gerektiğini söyleyen bir cümle var. Formül dilindeki puan dökümü kalktı (sayılar ipucunda).
 - Kanal performans tablosu pencerenin tamamına yayılıyor.

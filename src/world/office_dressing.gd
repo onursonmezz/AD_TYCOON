@@ -93,18 +93,19 @@ func _props(parent: Node3D, layout: OfficeLayout, state: SimState) -> void:
 			continue
 		var def2: Dictionary = props[prop["kind"]]
 		var h: float = float(def2["height"])
-		var flip: bool = bool(prop.get("flip", false))  # OF-2: adanın kuzey sırası ters döner
-		var turn: float = 180.0 if flip else 0.0
-		var side: float = -1.0 if flip else 1.0
-		thing(parent, str(def2["model"]), pr.get_center(), pr.size, h, color_of(def2["color"]), float(def2.get("yaw", 0.0)) + turn)
+		# OF-2: adanın kuzey sırası ters (180°); S5: kurucunun masası ekibe dönük (90°). turn yoksa flip'ten.
+		var turn: float = float(prop.get("turn", 180.0 if bool(prop.get("flip", false)) else 0.0))
+		var seat_dir: Vector2 = OfficeLights.turned(Vector2(0, 1), turn)  # masadan sandalyeye
+		var unrotated: Vector2 = pr.size if int(turn) % 180 == 0 else Vector2(pr.size.y, pr.size.x)
+		thing(parent, str(def2["model"]), pr.get_center(), unrotated, h, color_of(def2["color"]), float(def2.get("yaw", 0.0)) + turn)
 		if prop["kind"] == "desk":
 			var chair: Dictionary = props["chair"]
-			thing(parent, str(chair["model"]), pr.get_center() + Vector2(0, side * (OfficeLayout.SEAT_OFFSET - 0.1)),
+			thing(parent, str(chair["model"]), pr.get_center() + seat_dir * (OfficeLayout.SEAT_OFFSET - 0.1),
 				_v2(chair["size"]), float(chair["height"]), color_of(chair["color"]), float(chair.get("yaw", 0.0)) + turn)
 			if not equip.is_empty():
-				thing(parent, str(equip["model"]), pr.get_center() + Vector2(0, -0.1 * side), _v2(equip["size"]),
+				thing(parent, str(equip["model"]), pr.get_center() - seat_dir * 0.1, _v2(equip["size"]),
 					float(equip["height"]), color_of(equip["color"]), turn, h)
-			OfficeLights.desk_lamp(parent, pr, h, flip)
+			OfficeLights.desk_lamp(parent, pr, h, turn)
 
 
 ## Mutfak tezgâhı: tezgâh modüllere bölünür; ortadaki lavabolu dolap, diğerleri düz tezgâh.

@@ -34,6 +34,12 @@ func setup(k: String, i: String) -> void:
 func _draw() -> void:
 	var s: float = minf(size.x / W, size.y / H)
 	draw_set_transform(Vector2((size.x - W * s) * 0.5, (size.y - H * s) * 0.5), 0.0, Vector2(s, s))
+	if kind == "icon":  # S5: ikon paketinden bir ikon (pozisyon, işe alım kanalı)
+		var tex: Texture2D = UiUtil.icon_texture(id, 64)
+		if tex != null:
+			draw_texture_rect(tex, Rect2(Vector2(W * 0.5 - 22.0, H * 0.5 - 22.0), Vector2(44, 44)), false, TERRA)
+		draw_set_transform(Vector2.ZERO)
+		return
 	var k: String = kind.replace(".", "_").replace("social_", "digital_")  # sosyal kanallar dijitalin seçeneklerini kullanır
 	var f: String = "_d_%s_%s" % [k, id]
 	if has_method(f):

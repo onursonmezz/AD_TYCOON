@@ -41,6 +41,7 @@ func set_founder_profile(state: SimState, founder_name: String, avatar_id: Strin
 		if str(rec["id"]) == avatar_id:
 			emp["avatar"] = avatar_id
 			emp["gender"] = str(rec["gender"])
+	emp["cast"] = unused_cast(state, str(emp["gender"]), state.clock.year(), str(emp["id"]))
 
 
 func _blank(state: SimState, role: String, level: int) -> Dictionary:
@@ -64,9 +65,11 @@ func search(state: SimState, economy: Economy, role: String, channel_id: String,
 	var cost: float = float(ch["cost_1990"]) * Economy.inflation(data, year)
 	economy.pay(state, cost)
 	var out: Array[Dictionary] = []
+	state.candidates.clear()  # adaylar birbirinin portresini de görsün (aynı yüz iki kez çıkmasın)
 	for i: int in int(ch["candidates"]):
-		out.append(_candidate(state, role, ch, lang))
-	state.candidates = out
+		var cand: Dictionary = _candidate(state, role, ch, lang)
+		out.append(cand)
+		state.candidates.append(cand)
 	return out
 
 
@@ -94,6 +97,7 @@ func _candidate(state: SimState, role: String, ch: Dictionary, lang: String) -> 
 		pool.erase(t)
 		(emp["traits"] as Array).append(t)
 	_assign_name(state, emp, lang)
+	emp["avatar"] = _unused_avatar(state, str(emp["gender"]))
 	emp["salary"] = roundf(Employee.market_value(data, emp, state.clock.year()) * float(ch["salary_factor"]))
 	return emp
 
@@ -103,6 +107,41 @@ func _assign_name(state: SimState, emp: Dictionary, lang: String) -> void:
 	var gender: String = state.rng.pick("staff", ["female", "male", "neutral"])
 	emp["gender"] = gender
 	emp["name"] = "%s %s" % [state.rng.pick("staff", names[gender]), state.rng.pick("staff", names["surnames"])]
+
+
+# --- görünüş: aynı yüz iki kez gelmesin (S5) --------------------------------------
+
+## Bu cinsiyetten, ofiste ve aday listesinde kullanılmayan bir portre; hepsi kullanılıyorsa herhangi biri.
+func _unused_avatar(state: SimState, gender: String) -> String:
+	var used: Array = []
+	for emp: Dictionary in state.staff.values():
+		used.append(str(emp.get("avatar", "")))
+	for c: Dictionary in state.candidates:
+		used.append(str(c.get("avatar", "")))
+	var pool: Array = []
+	var free: Array = []
+	for rec: Dictionary in data.raw.get("avatars.json", []):
+		if str(rec["gender"]) == gender:
+			pool.append(str(rec["id"]))
+			if not used.has(str(rec["id"])):
+				free.append(str(rec["id"]))
+	var list: Array = free if not free.is_empty() else pool
+	return str(state.rng.pick("staff", list)) if not list.is_empty() else ""
+
+
+## Ofiste kullanılmayan, cinsiyete ve işe alındığı döneme uyan 3B kadro karakteri; yoksa "" (parçalı karakter:
+## saç, kıyafet ve renk kişiye göre değişir). Eskiden 90'larda tek erkek modeli vardı, her erkek o geliyordu.
+func unused_cast(state: SimState, gender: String, year: int, except_id: String = "") -> String:
+	var used: Array = []
+	for emp: Dictionary in state.staff.values():
+		if str(emp["id"]) != except_id:
+			used.append(str(emp.get("cast", "")))
+	var free: Array = []
+	for c: Dictionary in data.characters.get("cast", []):
+		if int(c["from"]) <= year and year <= int(c["to"]) and not used.has(str(c["id"])) \
+				and (str(c["gender"]) == gender or not gender in ["female", "male"]):
+			free.append(str(c["id"]))
+	return str(state.rng.pick("staff", free)) if not free.is_empty() else ""
 
 
 # --- kapasite ve işe alım ----------------------------------------------------
@@ -145,6 +184,7 @@ func hire(state: SimState, candidate_id: String) -> String:
 	if Employee.is_creative(data, cand) and creative_count(state) >= creative_limit(state):
 		return "ERR_NEED_CD"
 	cand["hired_week"] = state.clock.week_index
+	cand["cast"] = unused_cast(state, str(cand["gender"]), state.clock.year(), str(cand["id"]))
 	state.staff[cand["id"]] = cand
 	state.candidates.erase(cand)
 	return ""

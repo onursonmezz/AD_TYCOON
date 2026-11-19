@@ -213,7 +213,9 @@ func _furnish(room: Dictionary) -> void:
 			# OF-2: karşılıklı masa adaları (DeskLayout); masa adedi eski dizilişle aynı.
 			for d: Dictionary in DeskLayout.work_desks(r, _near_door):
 				desks.append(d)
-				props.append({"kind": "desk", "rect": Rect2((d["pos"] as Vector2) - DESK_SIZE * 0.5, DESK_SIZE), "flip": d["flip"]})
+				var footprint: Vector2 = DESK_SIZE if int(d.get("turn", 0.0)) % 180 == 0 else Vector2(DESK_SIZE.y, DESK_SIZE.x)
+				props.append({"kind": "desk", "rect": Rect2((d["pos"] as Vector2) - footprint * 0.5, footprint), "flip": d["flip"],
+					"turn": float(d.get("turn", 0.0)), "founder": bool(d.get("founder", false))})
 		"kitchen":
 			props.append({"kind": "counter", "rect": Rect2(r.position + Vector2(0.3, 0.2), Vector2(r.size.x - 0.6, 0.6))})
 			list = _row(r.position.x + 0.8, r.end.x - 0.8, minf(r.position.y + 1.4, r.end.y - 0.6))

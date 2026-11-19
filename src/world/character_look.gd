@@ -19,7 +19,9 @@ static func make(data: GameData, emp: Dictionary, year: int, hire_year: int = -1
 	var outfit_color: Array = ch["outfit_colors"][_mix(seed, 3) % (ch["outfit_colors"] as Array).size()]
 	if bool(emp.get("is_founder", false)):
 		outfit_color = ch["founder_outfit_color"]
-	var cast: Dictionary = _cast(ch, str(emp.get("gender", "")), hire_year, seed) if hire_year >= 0 else {}
+	# S5: işe alınırken seçilen kadro karakteri (kayıtta "cast"; "" = parçalı); eski kayıtlarda kimlikten türetilir.
+	var cast: Dictionary = _by_id(ch, str(emp["cast"])) if emp.has("cast") \
+		else (_cast(ch, str(emp.get("gender", "")), hire_year, seed) if hire_year >= 0 else {})
 	return {
 		"cast": str(cast.get("id", "")), "cast_model": str(cast.get("model", "")),
 		"body": body["id"], "body_model": str(body["model"]),
@@ -44,6 +46,13 @@ static func _cast(ch: Dictionary, gender: String, hire_year: int, seed: int) -> 
 				same.append(c)
 	var pool: Array = same if not same.is_empty() or gender in ["female", "male"] else era
 	return _pick(pool, _mix(seed, 6))
+
+
+static func _by_id(ch: Dictionary, id: String) -> Dictionary:
+	for c: Dictionary in ch.get("cast", []):
+		if str(c["id"]) == id:
+			return c
+	return {}
 
 
 ## Çalışanın işe alındığı yıl.

@@ -1750,3 +1750,19 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Aynı raporda bir cümle iki kez çıkmıyor (test var). Cümlelerde müşteri ve kanal adı geçiyor; kanal adına Türkçe ek gerekmeyecek biçimde yazıldı.
 - **Türkçe ondalık:** Yüzde ve işaretli sayılar virgüllü ("+%0,3", "-8,6").
 - **Puanlama adilliği (60 koşu):** Bilinçli oynayan bot ilk yıl ortalama 6,2, rastgele bot 4,4. Ayrım yerinde; formüle dokunulmadı.
+
+## K-139 — İnceleme 5. aşama: ekip (2026-11-19)
+- **Aynı karakter tekrar gelmesin:**
+  - Neden: 1990'lar için hazırlanmış 3B modellerden yalnızca bir erkek var, kadın yok. O yıllarda işe alınan her erkek aynı modelle geliyordu.
+  - 3B model artık işe alınırken seçilip kayda yazılıyor (`emp.cast`, `StaffSystem.unused_cast`). Ofiste kullanılmayan, cinsiyete ve döneme uyan bir model seçiliyor; hiçbiri boşta değilse parçalı karakter geliyor (saç, kıyafet ve renk kişiye göre).
+  - Kurucu da yeni oyunda bir model alıyor. Eski kayıtlarda alan yok, eski davranış sürüyor.
+  - 2B portreler aday oluşturulurken o cinsiyetten, ofiste ve diğer adaylarda kullanılmayanlardan seçiliyor (`emp.avatar`). Eskiden addan türetiliyordu ve çakışabiliyordu.
+- **Kurucunun ayrı masası:** `DeskLayout` listesinin ilk masası kurucunun.
+  - İlk adanın en sondaki sütununda, ekibe dönük duruyor (90° dönmüş); o sütunun karşı masası boş kalıyor.
+  - Toplam masa sayısı (kapasite) eskisiyle aynı.
+  - Masa, sandalye, ekran ve lamba artık herhangi bir açıya dönebiliyor (`OfficeLights.turned`, prop "turn").
+  - 0 numaralı masa yalnızca kurucunun (`allocate_desks`).
+- **İşe alma:** Pozisyon ve kanal açılır menü yerine çizimli seçim panelinde.
+  - Pozisyonlar departman ikonu ve departman adıyla, çok seçenek olduğu için 5 sütunlu küçük kartlarda; kanallar fiyatıyla.
+  - `OptionArt` artık ikon paketinden ikon da çiziyor (tür "icon").
+- **Ekip tablosu:** Rol ve ad sütunları genişledi; kesilen metin "…" ile bitiyor ve tamamı ipucunda.

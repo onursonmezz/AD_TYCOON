@@ -6,12 +6,16 @@ extends Control
 
 const COLUMNS: int = 4
 const ART: Vector2 = Vector2(104.0, 72.0)
-const ART_GAP: float = 44.0  # seçici düğmede soldaki çizimin yeri
+const ART_GAP: float = 44.0
+const COMPACT_FROM: int = 8
+const COMPACT_COLUMNS: int = 5
+const COMPACT_ROW: float = 0.68  # seçici düğmede soldaki çizimin yeri
 
 var _title: String
 var _items: Array
 var _current: String
 var _on_pick: Callable
+var _compact: bool = false
 
 
 func _init(title: String, items: Array, current: String, on_pick: Callable) -> void:
@@ -24,12 +28,14 @@ func _init(title: String, items: Array, current: String, on_pick: Callable) -> v
 func _ready() -> void:
 	set_meta("esc_closes", true)
 	var base: Vector2 = UiUtil.dialog_size("option_picker")
-	var rows: int = ceili(float(_items.size()) / COLUMNS)
-	var row_h: float = float(DataDB.data.raw["ui_layout.json"]["option_picker_row"])
+	_compact = _items.size() > COMPACT_FROM  # S5: çok seçenekte (pozisyonlar) küçük kartlar, 5 sütun
+	var columns: int = COMPACT_COLUMNS if _compact else COLUMNS
+	var rows: int = ceili(float(_items.size()) / columns)
+	var row_h: float = float(DataDB.data.raw["ui_layout.json"]["option_picker_row"]) * (COMPACT_ROW if _compact else 1.0)
 	var col: VBoxContainer = UiUtil.modal_frame(self, Vector2(base.x, base.y + row_h * rows), true, true)
 	col.add_child(UiUtil.heading(_title, "speakerphone"))
 	var grid: GridContainer = GridContainer.new()
-	grid.columns = mini(COLUMNS, _items.size())
+	grid.columns = mini(columns, _items.size())
 	grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_S)
 	grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -51,16 +57,23 @@ func _card(it: Dictionary) -> Button:
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 6)
 	b.add_child(box)
 	var art: OptionArt = OptionArtMedia.new(str(it["art_kind"]), str(it["art_id"]))
-	art.custom_minimum_size = ART
+	var art_size: Vector2 = ART * (0.55 if _compact else 1.0)
+	art.custom_minimum_size = art_size
 	box.add_child(art)
 	var name: Label = UiUtil.label(str(it["name"]), 13, CozyTheme.FOREST if on else CozyTheme.TEXT)
 	name.add_theme_font_override("font", CozyTheme.strong_font())
 	name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	name.custom_minimum_size = Vector2(ART.x, 34.0)
+	name.custom_minimum_size = Vector2(art_size.x if not _compact else 0.0, 34.0)
 	name.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	if _compact:
+		name.add_theme_font_size_override("font_size", 12)
 	box.add_child(name)
-	b.custom_minimum_size = Vector2(ART.x + 12.0, ART.y + 46.0)
+	if not str(it.get("note", "")).is_empty():  # kartın altında küçük not (fiyat, departman)
+		var note: Label = UiUtil.label(str(it["note"]), 11, CozyTheme.MUTED)
+		note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		box.add_child(note)
+	b.custom_minimum_size = Vector2(art_size.x + 12.0, art_size.y + (60.0 if not str(it.get("note", "")).is_empty() else 46.0))
 	if on:
 		var tick: TextureRect = TextureRect.new()
 		tick.texture = UiUtil.icon_texture("check", 16)

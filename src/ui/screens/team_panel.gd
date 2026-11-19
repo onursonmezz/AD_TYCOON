@@ -3,8 +3,8 @@ extends VBoxContainer
 ## Ekip ekranı (GDD 20, 11; UI-3 taslağı 13_ekip): arama, rol süzgeci ve sıralamalı çalışan tablosu.
 ## Satıra tıklayınca altında ayrıntı açılır: özellikler, maaş, eğitim / uzmanlaşma / sertifika / zam / kovma.
 
-const COL_NAME: float = 104.0
-const COL_ROLE: float = 96.0
+const COL_NAME: float = 120.0
+const COL_ROLE: float = 136.0  # S5: "Account Executive" sayıya yapışıyordu; sağda boş yer vardı
 const COL_STAT: float = 30.0
 const COL_AVATAR: float = 34.0
 const COL_GAP: int = 6
@@ -141,7 +141,8 @@ func _visible_staff(s: SimState) -> Array:
 func _cell(text: String, width: float, size: int = 13, color: Color = CozyTheme.TEXT, strong: bool = false) -> Label:
 	var l: Label = UiUtil.label(text, size, color)
 	l.custom_minimum_size.x = width
-	l.clip_text = true
+	l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS  # kesilirse "…"; tam metin ipucunda
+	l.tooltip_text = text
 	l.mouse_filter = Control.MOUSE_FILTER_PASS
 	if strong:
 		l.add_theme_font_override("font", CozyTheme.strong_font())
