@@ -78,6 +78,6 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 		setup["rentals"] = rentals.duplicate()
 	var camp: Dictionary = sim.production.create(setup, id, state.clock.week_index)
 	if planned:
-		camp["confirmed_phases"] = [0, 1, 2]  # faz başlarında beklemez
+		camp["confirmed_phases"] = [0]  # S11: sonraki fazların planı faz başladığında yapılır (PhaseInput.apply_task_phase)
 	state.campaigns.append(camp)
 	return {"ok": true, "error": "", "campaign_id": id}

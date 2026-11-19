@@ -225,7 +225,7 @@ func _on_start() -> void:
 		return
 	# S3A: önce görev planı (ağırlıklar ve gerekiyorsa kişi ataması); kampanya plan onaylanınca başlar.
 	_plan = TaskPlanDialog.new(_brief, choices, func() -> void:
-		_main.call("show_panel", "campaign")
+		_main.call("close_panel")  # S11: kampanya başlayınca ofis görünür; ilerleme üstteki şeritte
 		queue_free())
 	_main.call("open_modal", _plan)
 

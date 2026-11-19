@@ -1,7 +1,8 @@
 class_name TaskPlan
 extends RefCounted
 ## Görev planı (S3A, Game Dev Tycoon tarzı): her fazın üç görevi bir ağırlık (setup.sliders[faz][görev], faz toplamı 1)
-## ve en çok bir kişi alır (setup.assign[faz][görev] = emp_id ya da ""). Plan kampanyanın başında bir kez yapılır.
+## ve en çok bir kişi alır (setup.assign[faz][görev] = emp_id ya da ""). S11: plan faz faz yapılır (Orgo): kampanya başında
+## 1. faz, sonraki fazlar başladıklarında. Henüz planlanmamış fazın görevleri boş.
 ## Kişinin kampanya yükü = atandığı görevlerin ağırlıkları toplamı (üç fazda %40'lık birer görev → %120).
 ## Fazdaki günlük yoğunluğu = 3 × o fazdaki ağırlıklarının toplamı (üç kişi birer %33'lük görevle %100 çalışır).
 ## Küçük işlerde ve küçük ekipte atama yok (Orgo, 2026-11-19): ekip her görevde ağırlık payıyla çalışır, yük sayılmaz.
@@ -65,14 +66,28 @@ static func validate(assign: Array, team: Array) -> String:
 
 ## Otomatik atama: ağır görevden hafife; her görev, yükü %100'ü aşmayacak kişilerin en uygununa (stat × uzmanlık).
 static func auto_assign(data: GameData, state: SimState, sliders: Array, team: Array) -> Array:
-	var assign: Array = [["", "", ""], ["", "", ""], ["", "", ""]]
+	return auto_assign_phases(data, state, sliders, team, [["", "", ""], ["", "", ""], ["", "", ""]], [0, 1, 2])
+
+
+## S11: yalnızca verilen fazları dağıtır; diğer fazların ataması (önceden planlananlar) korunur ve yüke sayılır.
+static func auto_assign_phases(data: GameData, state: SimState, sliders: Array, team: Array, existing: Array,
+		phases: Array) -> Array:
+	var assign: Array = existing.duplicate(true)
 	var load: Dictionary = {}
 	for id: Variant in team:
 		load[str(id)] = 0.0
-	var tasks: Array = []
 	for p: int in 3:
+		if phases.has(p):
+			assign[p] = ["", "", ""]
+			continue
 		for i: int in 3:
-			tasks.append([p, i, float(sliders[p][i])])
+			var who: String = str(assign[p][i])
+			if load.has(who):
+				load[who] = float(load[who]) + float(sliders[p][i])
+	var tasks: Array = []
+	for p: Variant in phases:
+		for i: int in 3:
+			tasks.append([int(p), i, float(sliders[int(p)][i])])
 	tasks.sort_custom(func(a: Array, b: Array) -> bool: return float(a[2]) > float(b[2]))
 	for t: Array in tasks:
 		var p: int = int(t[0])

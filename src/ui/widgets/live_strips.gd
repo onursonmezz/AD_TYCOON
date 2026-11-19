@@ -31,6 +31,11 @@ func _ensure(n: int) -> void:
 		strip.visible = false
 		var layer: PointBubbles = PointBubbles.new(_office, strip)
 		_main.add_child(layer)
+		# S11: şerit ve baloncuklar sonradan eklendiği için pencerelerin üstüne çıkıyordu; pencere katmanının altına alınır.
+		var modal: Variant = _main.get("_modal_layer")
+		if modal is Node and is_instance_valid(modal):
+			_main.move_child(layer, (modal as Node).get_index())
+			_main.move_child(strip, (modal as Node).get_index())
 		_strips.append(strip)
 		_bubbles.append(layer)
 

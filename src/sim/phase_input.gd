@@ -26,6 +26,57 @@ static func apply_sliders(sim: Simulation, sliders: Array) -> bool:
 	return true
 
 
+## S11: planlı kampanyada faz başında o fazın görev planı (Orgo: fazlar sırayla). weights: fazın üç görev ağırlığı
+## (toplam 1), assign_row: üç görevin kişisi ("" boş; atama gerekmeyen işte yok sayılır), rentals: yalnız prodüksiyon fazında.
+static func apply_task_phase(sim: Simulation, campaign_id: String, weights: Array, assign_row: Array, rentals: Array = []) -> String:
+	var camp: Dictionary = sim.state.find_campaign(campaign_id)
+	if camp.is_empty() or not sim.state.waiting_for_input or str(sim.state.waiting_campaign) != campaign_id:
+		return "ERR_PLAN"
+	var phase: int = sim.production.current_phase(camp)
+	if (camp.get("confirmed_phases", []) as Array).has(phase) or weights.size() != 3:
+		return "ERR_PLAN"
+	var sum: float = 0.0
+	for v: Variant in weights:
+		if float(v) < 0.0:
+			return "ERR_PLAN"
+		sum += float(v)
+	if not is_equal_approx(sum, 1.0):
+		return "ERR_PLAN"
+	var setup: Dictionary = camp["setup"]
+	var team: Array = setup.get("team", [])
+	if TaskPlan.has_plan(setup):
+		if assign_row.size() != 3:
+			return "ERR_PLAN"
+		var any: bool = false
+		for id: Variant in assign_row:
+			if not str(id).is_empty() and not team.has(str(id)):
+				return "ERR_PLAN_MEMBER"
+			any = any or not str(id).is_empty()
+		if not any:
+			return "ERR_PLAN_EMPTY"
+	if not rentals.is_empty():
+		if phase != 2:
+			return "ERR_PLAN"
+		var err: String = sim.equipment.validate_rentals(sim.state, rentals)
+		if not err.is_empty():
+			return err
+		sim.economy.pay(sim.state, sim.equipment.rental_cost(sim.state, rentals))
+		var have: Array = setup.get("rentals", [])
+		for id: Variant in rentals:
+			if not have.has(id):
+				have.append(id)
+		setup["rentals"] = have
+	setup["sliders"][phase] = weights.duplicate()
+	if TaskPlan.has_plan(setup):
+		setup["assign"][phase] = assign_row.duplicate()
+	var confirmed: Array = camp.get("confirmed_phases", [])
+	confirmed.append(phase)
+	camp["confirmed_phases"] = confirmed
+	sim.state.waiting_for_input = false
+	sim.state.waiting_campaign = ""
+	return ""
+
+
 ## Oyuncu fazın görev planını onaylar (K-118): { emp_id: [a0, a1, a2] }. Kaydırıcılar plandan hesaplanır.
 ## rentals (K-119): bu kampanya için kiralanan ekipman; bedeli hemen ödenir.
 static func apply_plan(sim: Simulation, plan: Dictionary, rentals: Array = []) -> String:

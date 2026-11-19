@@ -42,7 +42,7 @@ func _ready() -> void:
 	EventBus.state_changed.connect(_refresh)
 	EventBus.speed_changed.connect(func(_i: int, _p: bool) -> void: _refresh_speed())
 	EventBus.notification.connect(_on_notification)
-	EventBus.phase_started.connect(func(_phase: int) -> void: show_panel("campaign"))
+	EventBus.phase_started.connect(func(_phase: int) -> void: _on_phase_started.call_deferred())
 	EventBus.campaign_finished.connect(_on_campaign_finished)
 	EventBus.bankrupt.connect(_on_bankrupt)
 	EventBus.offer_received.connect(func(offer: Dictionary) -> void: open_modal(OfferDialog.new(offer)))
@@ -353,6 +353,32 @@ func _on_modal_closed() -> void:
 	Clock.release()
 	_refresh()
 	_open_event.call_deferred()
+	_open_phase_plan.call_deferred()
+
+
+## S11 (Orgo): planlı kampanyada faz başında kampanya penceresi açılmaz, ofis görünür. Fazın planı yapılmadıysa
+## görev planı penceresi açılır; plan varsa sıradaki iş mini oyundur (MinigameDialog.maybe_open). Eski yol: pencere.
+func _on_phase_started() -> void:
+	if not is_inside_tree() or not GameState.has_game():
+		return
+	var camp: Dictionary = GameState.sim.state.active_campaign
+	if camp.is_empty() or not bool(camp["setup"].get("polish", false)):
+		show_panel("campaign")
+		return
+	close_panel()
+	_open_phase_plan()
+
+
+## Bekleyen planlı kampanyanın fazı planlanmadıysa planını açar (başka pencere açıkken bekler).
+func _open_phase_plan() -> void:
+	if not GameState.has_game() or not GameState.is_waiting() or _modal_layer.get_child_count() > 0:
+		return
+	var camp: Dictionary = GameState.sim.state.active_campaign
+	if camp.is_empty() or not bool(camp["setup"].get("polish", false)):
+		return
+	if (camp.get("confirmed_phases", []) as Array).has(GameState.sim.production.current_phase(camp)):
+		return
+	open_modal(TaskPlanDialog.for_phase(camp))
 
 
 ## Kuyruktaki olay (M7-C) için pencere; aynı anda tek olay penceresi açık olur, kapanınca sıradaki gelir.

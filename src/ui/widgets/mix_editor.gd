@@ -118,7 +118,7 @@ func _add_row(channel_index: int) -> void:
 	box.add_child(share_line)
 	var print_box: VBoxContainer = UiUtil.vbox(4)
 	box.add_child(print_box)
-	var row: Dictionary = {"box": card, "pick": pick, "slider": slider, "share": share_label, "print_box": print_box, "icon": icon_box,
+	var row: Dictionary = {"box": card, "pick": pick, "slider": slider, "share": share_label, "share_line": share_line, "print_box": print_box, "icon": icon_box,
 		"open": open,
 		"job": {}, "auto": true, "opts": {}, "influencer": ""}
 	_rows.append(row)
@@ -160,6 +160,8 @@ func _refresh() -> void:
 		var too_small: bool = budget < float(data.channels[ch]["min_budget"]) * infl
 		label.add_theme_color_override("font_color", UiUtil.TERRACOTTA if too_small else UiUtil.TEXT)
 		label.tooltip_text = tr("UI_MIN_BUDGET") % UiUtil.money(float(data.channels[ch]["min_budget"]) * infl)
+		# S11: tek kanalda "%100 · tutar" satırı bir şey söylemiyor (Orgo); yalnızca bütçe kanala yetmiyorsa uyarı olarak görünür.
+		(row["share_line"] as Control).visible = _rows.size() > 1 or too_small
 		if PrintSystem.is_print_channel(data, ch):
 			if bool(row["auto"]) or (row["job"] as Dictionary).is_empty():
 				var discount: float = float((row["job"] as Dictionary).get("negotiated_discount", 0.0))

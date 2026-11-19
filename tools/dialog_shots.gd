@@ -68,7 +68,7 @@ func _run() -> void:
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before and days < WARMUP_DAYS * 2:
 		if GameState.is_waiting():
-			GameState.execute(MinigameResultCommand.new(GameState.sim.production.current_phase(GameState.sim.state.active_campaign), 0.6)) if not GameState.sim.state.active_campaign.is_empty() else null
+			ToolUnblock.unblock(0.6)
 		_step()
 		days += 1
 	_screen.call("close_panel")

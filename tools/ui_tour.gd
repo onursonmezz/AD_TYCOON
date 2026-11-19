@@ -415,7 +415,7 @@ func _tour_build(screen: Control, sim: Simulation) -> void:
 func _unblock() -> void:
 	var sim: Simulation = GameState.sim
 	if GameState.is_waiting() and not sim.state.active_campaign.is_empty():
-		GameState.execute(MinigameResultCommand.new(sim.production.current_phase(sim.state.active_campaign), 0.5))
+		ToolUnblock.unblock(0.5)
 
 
 func _finish_minigame(panel: Node) -> void:

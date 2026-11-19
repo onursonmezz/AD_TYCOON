@@ -1,6 +1,7 @@
 class_name TaskPlanDialog
 extends Control
-## Görev planı (S3A, Game Dev Tycoon tarzı): kampanya başlamadan bir kez. Üç faz yan yana; her görevin ağırlık
+## Görev planı (S3A, Game Dev Tycoon tarzı). S11 (Orgo): fazlar sırayla — kampanya başlarken yalnız 1. fazın planı,
+## 2. ve 3. faz başladığında o fazın planı (for_phase). Her görevin ağırlık
 ## çubuğu (fazın üç görevi oranlanır, toplam %100) ve atama gereken işlerde tek kişilik atama yeri. Altta kişilerin
 ## kampanya yükü (atandığı görevlerin ağırlık toplamı; %100 üstü yorulur). Küçük iş / tek kişi: atama yok.
 ## Onaylanınca StartCampaignCommand (choices + sliders + assign + rentals, planned).
@@ -19,6 +20,8 @@ var _share_labels: Array = [[], [], []]
 var _who_buttons: Array = [[], [], []]
 var _loads: Dictionary = {}  # emp_id → Label
 var _error: Label
+var _phase: int = 0  # S11: bu pencerenin planladığı faz
+var _camp: Dictionary = {}  # S11: faz başı planında kampanya (boşsa kampanya başlangıcı)
 
 
 func _init(brief: Dictionary, choices: Dictionary, on_started: Callable) -> void:
@@ -28,19 +31,33 @@ func _init(brief: Dictionary, choices: Dictionary, on_started: Callable) -> void
 	_team = (choices.get("team", []) as Array).duplicate()
 
 
+## S11: faz başında (2. ve 3. faz) o fazın planı; önceki fazların planı yüke sayılır.
+static func for_phase(camp: Dictionary) -> TaskPlanDialog:
+	var setup: Dictionary = camp["setup"]
+	var d: TaskPlanDialog = TaskPlanDialog.new({"size": setup["size"], "objective": setup["objective"], "id": ""},
+		{"team": setup.get("team", []), "objective": setup["objective"]}, Callable())
+	d._camp = camp
+	d._phase = GameState.sim.production.current_phase(camp)
+	for p: int in 3:
+		for i: int in 3:
+			d._raw[p][i] = 100.0 * float(setup["sliders"][p][i])
+		d._raw[d._phase] = [50.0, 50.0, 50.0]
+	if TaskPlan.has_plan(setup):
+		d._assign = (setup["assign"] as Array).duplicate(true)
+	return d
+
+
 func _ready() -> void:
-	set_meta("esc_closes", true)
 	var data: GameData = DataDB.data
+	set_meta("esc_closes", _camp.is_empty())  # faz başı planı kapatılırsa kampanya bekler; panelden yeniden açılır
 	_assign_mode = TaskPlan.needs_assignment(data, {"size": _brief["size"], "team": _team})
 	if _assign_mode:
-		_assign = TaskPlan.auto_assign(data, GameState.sim.state, sliders(), _team)
+		_assign = TaskPlan.auto_assign_phases(data, GameState.sim.state, sliders(), _team, _assign, [_phase])
 	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("task_plan"), true, true)
-	col.add_child(UiUtil.heading(tr("UI_PLAN_TITLE"), "users-group"))
+	col.add_child(UiUtil.heading(tr("UI_PLAN_TITLE_PHASE") % tr("PHASE_%d" % _phase), "users-group"))
 	col.add_child(UiUtil.wrapped(tr("UI_PLAN_HINT_ASSIGN" if _assign_mode else "UI_PLAN_HINT_AUTO"), 13, CozyTheme.TEXT, 400.0))
-	var phases: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	for p: int in 3:
-		phases.add_child(_phase_card(p))
-	col.add_child(phases)
+	col.add_child(_phase_steps())
+	col.add_child(_phase_card(_phase))
 	if _assign_mode:
 		col.add_child(_load_strip())
 	var frame: VBoxContainer = UiUtil.modal_outer(col)
@@ -52,10 +69,11 @@ func _ready() -> void:
 	foot.add_child(UiUtil.spacer())
 	if _assign_mode:
 		foot.add_child(UiUtil.button(tr("UI_BOARD_AUTO"), func() -> void:
-			_assign = TaskPlan.auto_assign(DataDB.data, GameState.sim.state, sliders(), _team)
+			_assign = TaskPlan.auto_assign_phases(DataDB.data, GameState.sim.state, sliders(), _team, _assign, [_phase])
 			_refresh()))
-	foot.add_child(UiUtil.button(tr("UI_BACK"), queue_free))
-	var start: Button = UiUtil.button(tr("UI_START_CAMPAIGN"), _start)
+	if _camp.is_empty():
+		foot.add_child(UiUtil.button(tr("UI_BACK"), queue_free))
+	var start: Button = UiUtil.button(tr("UI_START_CAMPAIGN") if _camp.is_empty() else tr("UI_PLAN_START_PHASE"), _start)
 	start.theme_type_variation = "PrimaryButton"
 	foot.add_child(start)
 	frame.add_child(foot)
@@ -74,6 +92,18 @@ func sliders() -> Array:
 		var b: float = float(_raw[p][1]) / total
 		out.append([a, b, 1.0 - a - b])
 	return out
+
+
+## Üç fazın sırası: geçen fazlar ✓, planlanan faz vurgulu, sonrakiler soluk (fazlar sırayla gelir).
+func _phase_steps() -> HBoxContainer:
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	for p: int in 3:
+		var done: bool = p < _phase
+		var now: bool = p == _phase
+		row.add_child(Cards.chip(("✓ " if done else "") + tr("PHASE_%d" % p),
+			CozyTheme.FOREST if now else (CozyTheme.SAGE_SOFT if done else CozyTheme.CREAM),
+			CozyTheme.CREAM_LIGHT if now else (CozyTheme.FOREST if done else CozyTheme.MUTED)))
+	return row
 
 
 func _phase_card(p: int) -> PanelContainer:
@@ -223,6 +253,8 @@ func _refresh() -> void:
 	var data: GameData = DataDB.data
 	var s: Array = sliders()
 	for p: int in 3:
+		if (_share_labels[p] as Array).is_empty():
+			continue  # S11: yalnızca planlanan fazın satırları var
 		for i: int in 3:
 			(_share_labels[p][i] as Label).text = UiUtil.percent(roundf(float(s[p][i]) * 100.0))
 			if _assign_mode:
@@ -246,6 +278,16 @@ func _refresh() -> void:
 
 
 func _start() -> void:
+	if not _camp.is_empty():  # S11: faz başı planı
+		var row: Array = (_assign[_phase] as Array).duplicate() if _assign_mode else []
+		var err: String = GameState.execute(PlanTaskPhaseCommand.new(str(_camp["id"]), sliders()[_phase], row,
+			_rentals.duplicate()))
+		if not err.is_empty():
+			_error.text = tr(err)
+			_error.visible = true
+			return
+		queue_free()
+		return
 	var choices: Dictionary = _choices.duplicate(true)
 	choices["sliders"] = sliders()
 	choices["planned"] = true

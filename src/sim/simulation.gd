@@ -229,6 +229,10 @@ func set_phase_plan(plan: Dictionary, rentals: Array = []) -> String:
 	return PhaseInput.apply_plan(self, plan, rentals)
 
 
+func plan_task_phase(campaign_id: String, weights: Array, assign_row: Array, rentals: Array = []) -> String:
+	return PhaseInput.apply_task_phase(self, campaign_id, weights, assign_row, rentals)
+
+
 func step_week() -> void:
 	for i: int in state.clock.days_per_week:
 		step_day()

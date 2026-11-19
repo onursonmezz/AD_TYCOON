@@ -39,7 +39,13 @@ static func maybe_open(screen: Node, modal_layer: Node) -> void:
 	var phase: int = GameState.sim.production.current_phase(camp)
 	if not Minigames.pending(camp, phase):
 		return
-	screen.call("open_modal", MinigameDialog.new(camp, phase, func() -> void: screen.call("show_panel", "campaign")))
+	# S11: planlı kampanyada mini oyundan sonra ofis görünür (çalışanlar izlenir); eski yolda kampanya penceresi.
+	var planned_camp: bool = bool(camp["setup"].get("polish", false))
+	screen.call("open_modal", MinigameDialog.new(camp, phase, func() -> void:
+		if planned_camp:
+			screen.call("close_panel")
+		else:
+			screen.call("show_panel", "campaign")))
 
 
 func _ready() -> void:

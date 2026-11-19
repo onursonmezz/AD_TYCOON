@@ -89,7 +89,7 @@ func _rebuild(s: SimState) -> void:
 			# Faz sürerken: ekip çalışıyor; faz bitince yeni dağılım istenir.
 			var note: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 			note.add_child(UiUtil.icon("clock", 18, CozyTheme.FOREST_LIGHT))
-			var planned: bool = (camp.get("confirmed_phases", []) as Array).size() >= 3  # S3A: plan başta yapıldı
+			var planned: bool = bool(camp["setup"].get("polish", false))  # S11: planlı kampanya (faz faz plan)
 			note.add_child(UiUtil.label(tr("UI_PHASE_WORKING_PLANNED" if planned else "UI_PHASE_WORKING"), 13, CozyTheme.MUTED))
 			_slider_box.add_child(note)
 	_airing_head.visible = not s.airing.is_empty()
@@ -202,5 +202,17 @@ func _build_sliders(camp: Dictionary) -> void:
 		_slider_box.add_child(UiUtil.label(tr("UI_MG_WAITING"), 14, UiUtil.MUTED))
 		return
 	if (camp.get("confirmed_phases", []) as Array).has(phase):
-		return  # S3A: plan başta yapıldı; pano yok
+		return  # plan yapıldı; pano yok
+	if bool(camp["setup"].get("polish", false)):  # S11: planlı kampanyada fazın planı kendi penceresinde
+		_slider_box.add_child(UiUtil.label(tr("UI_PHASE_PLAN_WAITING"), 13, CozyTheme.TEXT))
+		var plan: Button = UiUtil.button(tr("UI_PLAN_PHASE_BUTTON"), func() -> void:
+			var main: Node = self
+			while main != null and not main.has_method("open_modal"):
+				main = main.get_parent()
+			if main != null:
+				main.call("open_modal", TaskPlanDialog.for_phase(camp)))
+		plan.theme_type_variation = "PrimaryButton"
+		plan.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		_slider_box.add_child(plan)
+		return
 	_slider_box.add_child(WorkBoard.new(camp, func() -> void: Clock.set_paused(false)))

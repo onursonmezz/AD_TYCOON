@@ -200,9 +200,8 @@ func test_ui_full_loop_smoke() -> void:
 	while not GameState.is_waiting():
 		_answer_events(sim)
 		GameState.step_day()
-	screen.call("show_panel", "campaign")
 	await wait_physics_frames(1)
-	var panel: CampaignPanel = screen.get("_panel")
+	assert_true(screen.get("_panel") == null, "S11: faz başında kampanya penceresi açılmaz, ofis görünür")
 	# Faz başında önce mini oyun (K-120): atla, sonuç süresi dolunca pano açılır.
 	# Olaylar sim üzerinden cevaplandı; açık kalan olay pencerelerini kapat (oyunda olay kapanınca mini oyun açılır).
 	for c: Node in (screen.get("_modal_layer") as Node).get_children():
@@ -216,14 +215,23 @@ func test_ui_full_loop_smoke() -> void:
 	var host: MinigameHost = hosts[0]
 	(host.get("_game") as MinigameGame).time_up()
 	await wait_seconds(DataDB.data.balf("minigames.result_hold") + 0.3)
-	# S3A: plan kampanya başında yapıldı; mini oyun bitince faz panosuz devam eder.
-	assert_eq(panel.find_children("*", "WorkBoard", true, false).size(), 0, "planlı kampanyada faz panosu yok")
+	# S11: 1. fazın planı başlarken yapıldı; mini oyun bitince faz devam eder, pencere kapalı.
+	assert_eq(screen.find_children("*", "WorkBoard", true, false).size(), 0, "planlı kampanyada faz panosu yok")
 	assert_false(GameState.is_waiting(), "mini oyundan sonra beklemez")
+	assert_true(screen.get("_panel") == null, "mini oyundan sonra ofis görünür")
 	assert_almost_eq(float(sim.state.active_campaign["setup"]["sliders"][0][2]), 1.0 / 3.0, 0.0001, "ağırlıklar plandan")
 	var reports_before: int = sim.state.finished.size()
 	for i: int in 1000:
-		if GameState.is_waiting() and not sim.state.active_campaign.is_empty():  # planlı: faz başında mini oyun bekler
-			GameState.execute(MinigameResultCommand.new(sim.production.current_phase(sim.state.active_campaign), 0.5))
+		if GameState.is_waiting() and not sim.state.active_campaign.is_empty():  # planlı: faz başında plan, sonra mini oyun
+			var camp: Dictionary = sim.state.active_campaign
+			var ph: int = sim.production.current_phase(camp)
+			if not (camp.get("confirmed_phases", []) as Array).has(ph):
+				var third: float = 1.0 / 3.0
+				var row: Array = (camp["setup"].get("team", []) as Array).slice(0, 3) if TaskPlan.has_plan(camp["setup"]) else []
+				assert_eq(GameState.execute(PlanTaskPhaseCommand.new(str(camp["id"]), [third, third, 1.0 - 2.0 * third], row)), "",
+					"faz %d planı" % ph)
+			else:
+				GameState.execute(MinigameResultCommand.new(ph, 0.5))
 		_answer_events(sim)
 		GameState.step_day()
 		if sim.state.finished.size() > reports_before:
