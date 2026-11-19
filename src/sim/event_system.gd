@@ -104,8 +104,8 @@ func _pick(state: SimState, trigger: String) -> Dictionary:
 func _context(state: SimState, trigger: String) -> Dictionary:
 	var ctx: Dictionary = {}
 	var camp: Dictionary = {}
-	if trigger == "production":
-		camp = state.active_campaign
+	if trigger == "production":  # S9: aynı anda birden çok kampanya varsa olay rastgele birine düşer
+		camp = state.rng.pick("events", state.campaigns) if state.campaigns.size() > 1 else state.active_campaign
 	elif trigger == "airing":
 		camp = state.rng.pick("events", state.airing)
 	var pool: Array = []

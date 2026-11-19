@@ -1,5 +1,14 @@
 # Değişiklik günlüğü
 
+## İnceleme 9. aşama: olaylar ve bildirimler (2026-11-19)
+- Adı verilmemiş kampanyada olay metni artık boş tırnak yerine müşterinin adını yazıyor.
+- Olay sonucunda ne olduğunu anlatan kısa bir cümle var (iyi, kötü ya da karışık sonuç); etkiler yeşil ve kiremit etiketlerde.
+- Aynı anda birden çok kampanya varken üretim olayları hepsine eşit dağılıyor.
+- Nasıl test ederim:
+  1. Bir kampanyayı adsız başlat ve olay gelene kadar oyna. Metinde boş '' görmemelisin, müşterinin adı yazmalı.
+  2. Bir olayda bir seçenek seç. Sonuçta bir cümle ve renkli etiketler görmelisin; kötü etkiler kiremit, iyiler yeşil olmalı.
+  3. İki kampanya birlikte yürürken gelen üretim olaylarının ikisine de denk geldiğini gör.
+
 ## İnceleme 8. aşama: para ve uzun dönem (2026-11-19)
 - Finans ekranında "Aylık giderler" artık gerçek toplam (maaş, kira, abonelik, bakım, kredi dahil). Tutara basınca kalem kalem döküm açılıyor.
 - Yeni satır "Nakit kaç ay yeter": parasız kalmaya 2 aydan az varsa kırmızı oluyor.

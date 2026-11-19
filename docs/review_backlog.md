@@ -51,7 +51,7 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
 - [x] Araçlarda satın al düğmesi bazı durumlarda yok (7. aşama, K-141: güncel araç, donanım yetmeyen araç, bırakılan araç).
 
 ## 9. aşama: Olaylar ve bildirimler
-- [ ] (Benim notum) Olay metninde kampanya adı boş kalıyor: "'' taslakları yayından önce bir sitede yayımlandı." Adsız kampanyada müşteri adı ya da "kampanya" yazmalı.
+- [x] (Benim notum, 9. aşama K-143) Olay metninde kampanya adı boş kalıyor: "'' taslakları yayından önce bir sitede yayımlandı." Adsız kampanyada müşteri adı ya da "kampanya" yazmalı.
 
 ## Orgo'nun kararları (2026-11-19)
 - **Kanal seçenek görselleri:** Kodla çizilecek (logolar gibi); istenirse sonra gerçek çizimle değiştirilir.

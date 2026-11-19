@@ -1813,3 +1813,16 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **Grafik:** Son 6 ayın geliri yeşil, gideri kiremit renkli, yan yana sütunlar. Hangi ay kâr, hangi ay zarar tek bakışta görülüyor.
 - **Kredi:** Tutar ve vade açılır menü değil, yan yana düğmeler. Aylık taksit büyük yazıyla, "Kredi çek" düğmesinin yanında.
 - **Denge ölçümü** (200 koşu × 10 yıl): bilgili bot iflası %5, Y10 medyan nakit ₺2,6 M, Y6'da ilk ödül. Rastgele bot ilk 3 yılda %14,5 iflas ediyor (hedef %20–40). İlk brief güvencesi bilerek tutuldu (Orgo kararı); bu yüzden değiştirilmedi.
+
+## K-143 — İnceleme 9. aşama: olaylar ve bildirimler (2026-11-19)
+- **Boş kampanya adı:** Oyuncu kampanyaya ad vermezse olay metni "'' taslakları…" diye çıkıyordu.
+  - Artık adsız kampanyanın yerine müşterinin adı yazılıyor ("'Ali Usta' taslakları…").
+  - "X kampanyası" denemesi bazı cümlelerde "kampanyası kampanyasını" diye bozulduğu için seçilmedi.
+  - Müşteri, rakip, marka ve çalışan da hiçbir zaman boş ya da "{…}" kalmıyor (`EventDialog.with_fallbacks`).
+  - 83 olayın tüm metinleri testte dolduruluyor; açık yer ya da boş tırnak kalırsa test kırılıyor.
+- **Çoklu kampanya:** Üretim olayı birden çok kampanya varken rastgele birine düşüyor (eskiden hep öne çıkan kampanyaya).
+- **Olay sonucu:** Eskiden yalnızca "• Nakit: −₺13.697" gibi madde listesiydi.
+  - Artık önce olay türüne (müşteri, ekip, üretim, kriz, fırsat, piyasa, mizah) ve sonucun iyi/kötü/karışık oluşuna göre bir cümle var (42 cümle, `EVR_*`, `events.aftermath_variants`).
+  - Etkiler renkli etiketlerde: iyi yeşil, kötü kiremit.
+  - Artınca kötü olan etkiler (tükenmişlik, gecikme, hata, rakibin itibarı) `events.bad_when_up`'ta; evet/hayır etkilerin yönü `bool_tone`'da.
+- Bildirim kartları dar ama sağ kenarı boş bırakma tercihi (Orgo) nedeniyle genişletilmedi.

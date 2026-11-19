@@ -235,7 +235,10 @@
 	},
 	"events": {
 		"gate": { "weekly": 0.08, "production": 0.10, "airing": 0.06 }, "min_gap_weeks": 3, "cooldown_weeks": 144,
-		"auto_resolve_weeks": 1, "log_kept": 40, "categories": ["client", "staff", "production", "crisis", "opportunity", "macro", "humor"],
+		"auto_resolve_weeks": 1, "aftermath_variants": 2,
+		"bad_when_up": ["team.burnout", "employee.burnout", "employee2.burnout", "campaign.days", "campaign.errors", "employee.leave_weeks", "employee2.leave_weeks", "rival.reputation"],
+		"neutral_effects": ["macro", "employee.salary", "employee2.salary"],
+		"bool_tone": { "client.leave": -1, "employee.quit": -1, "employee2.quit": -1, "plants.dry": -1, "plants.water": 1, "prospect_brief": 1, "client.brief": 1 }, "log_kept": 40, "categories": ["client", "staff", "production", "crisis", "opportunity", "macro", "humor"],
 		"percent_effects": ["award_buzz", "client.budget", "employee.salary", "employee2.salary", "campaign.quality", "campaign.kpi", "campaign.fee_bonus"]
 	},
 	"plants": { "thirsty_weeks": 3, "dry_weeks": 5, "auto_water_role": "office_assistant" },
