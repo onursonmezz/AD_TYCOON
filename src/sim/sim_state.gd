@@ -44,8 +44,22 @@ var scandals: Array[Dictionary] = []
 var clients: Dictionary = {}
 ## Gelen kutusundaki brief'ler.
 var inbox: Array[Dictionary] = []
-## Üretimdeki kampanya (boşsa {}).
-var active_campaign: Dictionary = {}
+## Üretimdeki kampanyalar (S3D: aynı anda birden çok; bir kişi tek kampanyada).
+var campaigns: Array[Dictionary] = []
+## Faz başında mini oyun bekleyen kampanyanın kimliği (waiting_for_input iken).
+var waiting_campaign: String = ""
+## Öne çıkan kampanya (eski tek kampanyalı kod için, salt okunur): mini oyun bekleyen, yoksa ilki; yoksa {}.
+var active_campaign: Dictionary:
+	get:
+		for c: Dictionary in campaigns:
+			if str(c["id"]) == waiting_campaign:
+				return c
+		return campaigns[0] if not campaigns.is_empty() else {}
+	# Eski kod ve testler için: tek kampanyaya ayarlar ({} = hiç).
+	set(value):
+		campaigns.clear()
+		if not value.is_empty():
+			campaigns.append(value)
 ## Teslim edilmiş, yayında olan kampanyalar.
 var airing: Array[Dictionary] = []
 ## Biten kampanyaların özetleri (tekrar cezası için), en yenisi sonda.
@@ -106,7 +120,7 @@ var _next_id: Dictionary = {}
 ## Kayda giren alanlar (rng ve clock ayrıca yazılır).
 const SAVED_FIELDS: Array[String] = ["agency_name", "cash", "reputation", "office_level", "bankrupt", "red_weeks", "waiting_for_input",
 	"staff", "candidates", "offers", "overtime", "supplier_rel", "supplier_offers", "supplier_deals", "print_volume_year",
-	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "active_campaign", "airing", "history", "finished",
+	"negotiation", "year_media", "influencers", "influencer_pool_week", "influencer_history", "scandals", "clients", "inbox", "campaigns", "waiting_campaign", "airing", "history", "finished",
 	"receivables", "payables", "best_raw", "year_income", "year_expense", "finance_months", "_next_id",
 	"rivals", "award_entries", "award_history", "award_points_year", "award_buzz", "rankings", "ranking_history", "last_year_income",
 	"pitch_invites", "pitch", "warm_clients", "pitch_history", "build", "tools", "equipment", "hardware", "research", "knowledge", "events", "loan"]
@@ -134,7 +148,41 @@ func next_id(prefix: String) -> String:
 
 
 func is_idle() -> bool:
-	return active_campaign.is_empty()
+	return campaigns.is_empty()
+
+
+func find_campaign(campaign_id: String) -> Dictionary:
+	for c: Dictionary in campaigns:
+		if str(c["id"]) == campaign_id:
+			return c
+	return {}
+
+
+## Kampanyalarda çalışan herkes (S3D).
+func busy_staff() -> Array:
+	var out: Array = []
+	for c: Dictionary in campaigns:
+		for id: Variant in c["setup"].get("team", []):
+			if not out.has(str(id)):
+				out.append(str(id))
+	return out
+
+
+## Kişinin çalıştığı kampanya ({} ise boşta).
+func campaign_of(emp_id: String) -> Dictionary:
+	for c: Dictionary in campaigns:
+		if (c["setup"].get("team", []) as Array).has(emp_id):
+			return c
+	return {}
+
+
+## Yeni kampanya başlatılabilir mi: kampanyada olmayan, müsait en az bir kişi var.
+func has_free_staff() -> bool:
+	var busy: Array = busy_staff()
+	for emp: Dictionary in staff.values():
+		if not busy.has(str(emp["id"])) and Employee.is_available(emp, clock.week_index):
+			return true
+	return false
 
 
 func find_brief(brief_id: String) -> Dictionary:
@@ -190,7 +238,11 @@ static func from_dict(data: GameData, saved: Dictionary) -> SimState:
 	s.scandals.assign(saved.get("scandals", []))
 	s.clients = saved.get("clients", {})
 	s.inbox.assign(saved.get("inbox", []))
-	s.active_campaign = saved.get("active_campaign", {})
+	s.campaigns.assign(saved.get("campaigns", []))
+	var legacy: Dictionary = saved.get("active_campaign", {})  # S3D öncesi kayıt: tek kampanya
+	if not legacy.is_empty():
+		s.campaigns.append(legacy)
+	s.waiting_campaign = str(saved.get("waiting_campaign", ""))
 	s.airing.assign(saved.get("airing", []))
 	s.history.assign(saved.get("history", []))
 	s.finished.assign(saved.get("finished", []))

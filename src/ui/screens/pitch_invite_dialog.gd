@@ -44,7 +44,7 @@ func _ready() -> void:
 	col.add_child(UiUtil.wrapped(", ".join(rivals), 13, CozyTheme.WOOD))
 	col.add_child(UiUtil.wrapped(tr("UI_PITCH_HOW"), 13, CozyTheme.MUTED))
 	col.add_child(Cards.section(tr("UI_PITCH_TEAM"), "", "users-group"))
-	var busy: Array = s.active_campaign.get("setup", {}).get("team", [])
+	var busy: Array = s.busy_staff()
 	var team_box: VBoxContainer = UiUtil.vbox(6)
 	for emp: Dictionary in s.staff.values():
 		var card: PanelContainer = UiUtil.card()

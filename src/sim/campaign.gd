@@ -77,18 +77,18 @@ func current_phase(campaign: Dictionary) -> int:
 
 
 static func phase_of(campaign: Dictionary) -> int:
-	return mini(2, int(campaign["day"]) * 3 / production_days(campaign))
+	return mini(2, int(campaign.get("day", 0)) * 3 / production_days(campaign))
 
 
 ## Üretim günleri (S3C): sürenin production_share kadarı; eski kampanyalarda tüm süre.
 static func production_days(campaign: Dictionary) -> int:
-	var total: int = int(campaign["days_total"])
+	var total: int = maxi(1, int(campaign.get("days_total", 1)))
 	return clampi(int(ceilf(float(total) * float(campaign.get("production_share", 1.0)))), 1, total)
 
 
 ## Üretim bitti, rötuşta (hata gideriliyor): teslim düğmesi açık.
 static func production_done(campaign: Dictionary) -> bool:
-	return int(campaign["day"]) >= production_days(campaign)
+	return int(campaign.get("day", 0)) >= production_days(campaign)
 
 
 ## Teslim zamanı: süre doldu ya da oyuncu "Kampanyayı teslim et" dedi.

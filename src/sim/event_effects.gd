@@ -130,7 +130,7 @@ static func _employee(sim: Simulation, emp: Dictionary, parts: PackedStringArray
 ## Üretimdeki kampanyada: days (gecikme), errors, quality (tüm puanlar ×(1+v)).
 ## Yayındaki kampanyada: kpi (görülme ×(1+v)), satisfaction (memnuniyet kalemi), fee_bonus (fee'nin payı kadar ödeme).
 static func _campaign(sim: Simulation, camp: Dictionary, field: String, v: Variant) -> bool:
-	var producing: bool = not sim.state.active_campaign.is_empty() and sim.state.active_campaign["id"] == camp["id"]
+	var producing: bool = not sim.state.find_campaign(str(camp["id"])).is_empty()
 	match field:
 		"days":
 			if not producing:

@@ -1706,3 +1706,22 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Basılmazsa son gün kendiliğinden teslim.
   - Şerit "Rötuş · n gün" yazıyor; adım çizgisinde üç adım da tamamlanmış görünüyor.
 - **Eski yol:** Botlar ve eski kayıtlar `production_share` 1 ile eskisi gibi; rötuş yok.
+
+## K-136 — 3D: Aynı anda birden çok kampanya (2026-11-19)
+- **İstek (Orgo):** Boşta çalışan varsa başka kampanya da kabul edilebilsin; aynı anda birden çok kampanya yürüsün. Bir kişi aynı anda tek kampanyada çalışır (karar).
+- **Sim:**
+  - `SimState.campaigns` listesi ve `waiting_campaign` (mini oyun bekleyen kampanya) eklendi.
+  - Eski `active_campaign` artık "öne çıkan" kampanyayı veriyor: önce bekleyen, yoksa ilki. Yazınca liste o tek kampanyaya ayarlanıyor. Böylece eski kod ve testler değişmeden çalışıyor.
+  - Her gün bütün kampanyalar üretiyor. Biri faz başında mini oyun bekliyorsa o gün hiçbiri ilerlemiyor (oyun duruyor).
+  - Teslim her kampanya için ayrı (`_deliver(camp)`, `deliver_now(id)`).
+- **Kurallar:**
+  - Yeni kampanya için kampanyada olmayan, müsait en az bir kişi gerekiyor (`has_free_staff`).
+  - Başka kampanyadaki kişi ekibe alınamıyor (`ERR_BUSY_EMPLOYEE`).
+  - Enerji, moral ve pitch'te "meşgul" listesi bütün kampanyaların ekipleri (`busy_staff`, `campaign_of`).
+  - Müşteri başına bekleyen brief ve rakip çalma kontrolü bütün kampanyalara bakıyor.
+- **Kayıt:** `campaigns` ve `waiting_campaign` yazılıyor. Eski kayıttaki `active_campaign` yüklenince listeye giriyor (test var).
+- **Arayüz:**
+  - Gelen kutusunda "Kabul et", boşta kişi varken açık; sihirbazda başka kampanyadaki kişiler seçilemiyor.
+  - Kampanya penceresinin üstünde, birden çok kampanya varken "Müşteri · Faz" sekmeleri var; mini oyun bekleyen kampanya kendiliğinden gösteriliyor.
+  - Her kampanyanın kendi şeridi ve baloncukları var, en çok 3 alt alta (`LiveStrips`).
+- **Botlar:** Denge aracındaki botlar yine yalnızca boşta olunca kampanya alıyor; denge sayıları değişmedi.

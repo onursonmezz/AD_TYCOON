@@ -203,6 +203,25 @@ func _tour_media(screen: Control, sim: Simulation) -> void:
 	var plan_dialog: TaskPlanDialog = wizard.get("_plan")
 	if is_instance_valid(plan_dialog):
 		plan_dialog.call("_start")
+	# S3D: ikinci kampanya boştaki yeni kişiyle; üstte iki şerit, pencerede iki sekme.
+	var extra: Array[Dictionary] = sim.staff.search(sim.state, sim.economy, "copywriter", "job_ad", "tr")
+	if not extra.is_empty():
+		extra[0]["hired_week"] = sim.state.clock.week_index - 30
+		sim.state.staff[extra[0]["id"]] = extra[0]
+		var second: Dictionary = sim.briefs.make_brief(sim.state, sim.state.clients.values()[0], {})
+		sim.state.inbox.append(second)
+		sim.start_campaign(second["id"], {"objective": "awareness", "mix": [{"channel": "newspaper", "share": 1.0}],
+			"team": [extra[0]["id"]], "planned": true})
+		screen.call("close_panel")
+		for i: int in 4:
+			_unblock()
+			_step()
+		await _close_modals(screen)
+		screen.call("close_panel")
+		screen.call("_refresh")
+		await _shot("11d_two_strips")
+		screen.call("show_panel", "campaign")
+		await _shot("11e_campaign_tabs")
 	var before: int = sim.state.finished.size()
 	while sim.state.finished.size() == before:
 		if GameState.is_waiting():

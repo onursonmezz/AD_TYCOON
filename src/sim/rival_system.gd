@@ -109,8 +109,9 @@ func steal_clients(state: SimState) -> Array[Dictionary]:
 
 ## Üretimde ya da yayında işi olan müşteri çalınmaz (ajans parasını alamazdı).
 func _busy(state: SimState, client_id: String) -> bool:
-	if state.active_campaign.get("setup", {}).get("client_id", "") == client_id:
-		return true
+	for c: Dictionary in state.campaigns:
+		if c["setup"].get("client_id", "") == client_id:
+			return true
 	for camp: Dictionary in state.airing:
 		if camp["setup"]["client_id"] == client_id:
 			return true

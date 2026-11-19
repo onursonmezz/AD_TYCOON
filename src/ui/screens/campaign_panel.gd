@@ -12,11 +12,15 @@ var _slider_box: VBoxContainer
 var _airing: VBoxContainer
 var _airing_head: Control
 var _signature: String = ""
+var _tabs: HBoxContainer  # S3D: birden çok kampanya varken üstte sekmeler
+var _selected: String = ""
 
 
 func _init() -> void:
 	add_theme_constant_override("separation", CozyTheme.SPACE_S)
 	add_child(UiUtil.heading(tr("MENU_CAMPAIGN")))
+	_tabs = UiUtil.hbox(CozyTheme.SPACE_S)
+	add_child(_tabs)
 	_info = UiUtil.vbox(6)
 	add_child(_info)
 	_slider_box = UiUtil.vbox(8)
@@ -27,10 +31,21 @@ func _init() -> void:
 	add_child(_airing)
 
 
+## Gösterilen kampanya: mini oyun bekleyen, yoksa seçilen sekme, yoksa ilki.
+func _camp(s: SimState) -> Dictionary:
+	if s.waiting_for_input and not s.waiting_campaign.is_empty():
+		return s.find_campaign(s.waiting_campaign)
+	var picked: Dictionary = s.find_campaign(_selected)
+	return picked if not picked.is_empty() else s.active_campaign
+
+
 func refresh() -> void:
 	var s: SimState = GameState.sim.state
-	var camp: Dictionary = s.active_campaign
-	var sig: String = str(camp.get("id", "")) + str(s.waiting_for_input) + str(s.airing.size())
+	var camp: Dictionary = _camp(s)
+	var ids: PackedStringArray = PackedStringArray()
+	for c: Dictionary in s.campaigns:
+		ids.append(str(c["id"]))
+	var sig: String = str(camp.get("id", "")) + str(s.waiting_for_input) + str(s.airing.size()) + ",".join(ids)
 	if camp.is_empty():
 		sig += "idle"
 	else:
@@ -50,7 +65,8 @@ func _rebuild(s: SimState) -> void:
 	UiUtil.clear(_slider_box)
 	UiUtil.clear(_airing)
 	_live = null
-	var camp: Dictionary = s.active_campaign
+	var camp: Dictionary = _camp(s)
+	_build_tabs(s, camp)
 	if camp.is_empty():
 		_info.add_child(Cards.empty_state("speakerphone", tr("UI_NO_ACTIVE_CAMPAIGN")))
 	else:
@@ -73,12 +89,34 @@ func _rebuild(s: SimState) -> void:
 			# Faz sürerken: ekip çalışıyor; faz bitince yeni dağılım istenir.
 			var note: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 			note.add_child(UiUtil.icon("clock", 18, CozyTheme.FOREST_LIGHT))
-			note.add_child(UiUtil.label(tr("UI_PHASE_WORKING"), 13, CozyTheme.MUTED))
+			var planned: bool = (camp.get("confirmed_phases", []) as Array).size() >= 3  # S3A: plan başta yapıldı
+			note.add_child(UiUtil.label(tr("UI_PHASE_WORKING_PLANNED" if planned else "UI_PHASE_WORKING"), 13, CozyTheme.MUTED))
 			_slider_box.add_child(note)
 	_airing_head.visible = not s.airing.is_empty()
 	for a: Dictionary in s.airing:
 		var weeks: int = int(a["air_end_week"]) - s.clock.week_index
 		_airing.add_child(UiUtil.label(tr("UI_AIRING_ROW") % [a["setup"].get("client_name", ""), weeks], 13))
+
+
+## S3D: birden çok kampanya varken her biri için sekme (müşteri adı); seçilen çerçeveli.
+func _build_tabs(s: SimState, current: Dictionary) -> void:
+	UiUtil.clear(_tabs)
+	_tabs.visible = s.campaigns.size() > 1
+	if not _tabs.visible:
+		return
+	for c: Dictionary in s.campaigns:
+		var id: String = str(c["id"])
+		var on: bool = id == str(current.get("id", ""))
+		var steps: Array[String] = ["UI_STEP_STRATEGY", "UI_STEP_CREATIVE", "UI_STEP_PRODUCTION"]
+		var step: String = tr("UI_POLISH_TITLE") if CampaignProduction.production_done(c) else tr(steps[CampaignProduction.phase_of(c)])
+		var b: Button = UiUtil.button("%s · %s" % [str(c["setup"].get("client_name", "")), step], func() -> void:
+			_selected = id
+			refresh())
+		b.toggle_mode = true
+		b.button_pressed = on
+		b.theme_type_variation = "PickCardActive" if on else "PickCard"
+		b.add_theme_font_size_override("font_size", 13)
+		_tabs.add_child(b)
 
 
 ## Rötuş (S3C): üretim bitti; ekip hataları gideriyor. Oyuncu istediğinde teslim eder, yoksa süre dolunca teslim.
@@ -90,7 +128,8 @@ func _build_polish(camp: Dictionary) -> void:
 	_polish_label = UiUtil.wrapped("", 13, CozyTheme.TEXT, 200.0)
 	_polish_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(_polish_label)
-	var deliver: Button = UiUtil.button(tr("UI_DELIVER_NOW"), func() -> void: GameState.execute(DeliverNowCommand.new()))
+	var deliver: Button = UiUtil.button(tr("UI_DELIVER_NOW"), func() -> void:
+		GameState.execute(DeliverNowCommand.new(str(camp["id"]))))
 	deliver.theme_type_variation = "PrimaryButton"
 	deliver.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(deliver)

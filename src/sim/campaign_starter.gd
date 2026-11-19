@@ -8,7 +8,7 @@ extends RefCounted
 ## Dönüş: { "ok": bool, "error": hata anahtarı, "campaign_id" }
 static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dictionary:
 	var state: SimState = sim.state
-	if not state.is_idle():
+	if not state.has_free_staff():  # S3D: boşta kimse yoksa yeni kampanya olmaz
 		return {"ok": false, "error": "ERR_BUSY"}
 	var brief: Dictionary = state.find_brief(brief_id)
 	if brief.is_empty():
@@ -31,7 +31,7 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 		"category_er_mult": {"social": sim.data.balf("research.social_er_mult")} if sim.research.has(state, "social_media_management") else {}}
 	var team: Array = choices.get("team", [])
 	if team.is_empty():
-		team = [state.founder()["id"]]
+		team = [state.founder()["id"]] if not state.busy_staff().has(str(state.founder()["id"])) else []
 	setup["team"] = team.duplicate()
 	setup["minigames"] = bool(choices.get("minigames", false))
 	setup["polish"] = bool(choices.get("planned", false))  # S3C: üretim + rötuş, teslim düğmesi  # planlı kampanyada faz başı mini oyunu beklenir
@@ -41,6 +41,10 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 			err = "ERR_CHANNEL_LOCKED"
 	if err.is_empty():
 		err = sim.production.validate_team(team, state)
+	var busy: Array = state.busy_staff()
+	for id: Variant in team:
+		if err.is_empty() and busy.has(str(id)):
+			err = "ERR_BUSY_EMPLOYEE"  # bir kişi aynı anda tek kampanyada
 	# S3A: plan başta bir kez yapılır ("planned"); atama yalnızca gereken işlerde (küçük iş / tek kişi değilse).
 	var planned: bool = bool(choices.get("planned", false))
 	if err.is_empty() and planned and TaskPlan.needs_assignment(sim.data, setup):
@@ -72,7 +76,8 @@ static func start(sim: Simulation, brief_id: String, choices: Dictionary) -> Dic
 	if not rentals.is_empty():
 		sim.economy.pay(state, sim.equipment.rental_cost(state, rentals))
 		setup["rentals"] = rentals.duplicate()
-	state.active_campaign = sim.production.create(setup, id, state.clock.week_index)
+	var camp: Dictionary = sim.production.create(setup, id, state.clock.week_index)
 	if planned:
-		state.active_campaign["confirmed_phases"] = [0, 1, 2]  # faz başlarında beklemez
+		camp["confirmed_phases"] = [0, 1, 2]  # faz başlarında beklemez
+	state.campaigns.append(camp)
 	return {"ok": true, "error": "", "campaign_id": id}

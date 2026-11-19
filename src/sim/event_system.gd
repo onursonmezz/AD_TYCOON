@@ -301,8 +301,8 @@ static func _campaign(state: SimState, ctx: Dictionary) -> Dictionary:
 	var id: String = str(ctx.get("campaign_id", ""))
 	if id.is_empty():
 		return {}
-	if not state.active_campaign.is_empty() and state.active_campaign["id"] == id:
-		return state.active_campaign
+	if not state.find_campaign(id).is_empty():
+		return state.find_campaign(id)
 	for camp: Dictionary in state.airing:
 		if camp["id"] == id:
 			return camp

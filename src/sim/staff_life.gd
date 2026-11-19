@@ -14,21 +14,13 @@ func _r(key: String) -> float:
 	return data.balf("staff_rules." + key)
 
 
-func _team(state: SimState) -> Array:
-	if state.active_campaign.is_empty():
-		return []
-	return state.active_campaign["setup"].get("team", [])
-
-
-## Günlük enerji: ekiptekiler çalışır (fazla mesaide ×2), diğerleri dinlenir.
+## Günlük enerji: kampanyalardaki ekipler çalışır (fazla mesaide ×2), diğerleri dinlenir (S3D: her kişi kendi kampanyası).
 func daily(state: SimState) -> void:
-	var team: Array = _team(state)
 	var drain: float = _r("energy_work_per_day") * (data.balf("staff.overtime_energy_mult") if state.overtime else 1.0)
-	var camp: Dictionary = state.active_campaign
-	var phase: int = CampaignProduction.phase_of(camp) if not camp.is_empty() else 0
 	for emp: Dictionary in state.staff.values():
 		# Görev panosu (K-118): yük kadar yorulur; bu fazda görevsiz ekip üyesi dinlenir.
-		var load: float = WorkPlan.load_of(camp, phase, str(emp["id"])) if team.has(emp["id"]) else 0.0
+		var camp: Dictionary = state.campaign_of(str(emp["id"]))
+		var load: float = WorkPlan.load_of(camp, CampaignProduction.phase_of(camp), str(emp["id"])) if not camp.is_empty() else 0.0
 		var delta: float = -drain * WorkPlan.energy_mult(data, load) if load > 0.0 \
 			else _r("energy_rest_per_day") * float(state.office_effects.get("energy_rest_mult", 1.0))
 		emp["energy"] = clampf(float(emp["energy"]) + delta, 0.0, 100.0)
@@ -38,7 +30,7 @@ func daily(state: SimState) -> void:
 ## Dönüş: bildirimler [{ "key", "args", "kind" }].
 func weekly(state: SimState) -> Array[Dictionary]:
 	var notes: Array[Dictionary] = []
-	var team: Array = _team(state)
+	var team: Array = state.busy_staff()  # S3D: bütün kampanyaların ekipleri
 	var comfort: float = float(data.office(state.office_level)["comfort"])
 	var has_hr: bool = false
 	for emp: Dictionary in state.staff.values():
@@ -103,8 +95,8 @@ func _display_name(emp: Dictionary) -> String:
 
 func remove_employee(state: SimState, emp_id: String) -> void:
 	state.staff.erase(emp_id)
-	if not state.active_campaign.is_empty():
-		(state.active_campaign["setup"]["team"] as Array).erase(emp_id)
+	for c: Dictionary in state.campaigns:
+		(c["setup"]["team"] as Array).erase(emp_id)
 	var kept: Array[Dictionary] = []
 	for o: Dictionary in state.offers:
 		if o["employee_id"] != emp_id:

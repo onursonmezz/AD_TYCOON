@@ -15,13 +15,14 @@ static func apply_sliders(sim: Simulation, sliders: Array) -> bool:
 		sum += float(v)
 	if not is_equal_approx(sum, 1.0):
 		return false
-	var camp: Dictionary = sim.state.active_campaign
+	var camp: Dictionary = sim.state.active_campaign  # öne çıkan = faz başında bekleyen (S3D)
 	var phase: int = sim.production.current_phase(camp)
 	camp["setup"]["sliders"][phase] = sliders.duplicate()
 	var confirmed: Array = camp.get("confirmed_phases", [])
 	confirmed.append(phase)
 	camp["confirmed_phases"] = confirmed
 	sim.state.waiting_for_input = false
+	sim.state.waiting_campaign = ""
 	return true
 
 

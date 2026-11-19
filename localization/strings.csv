@@ -151,7 +151,7 @@ NOTE_CLIENT_LOST,%s ajansla çalışmayı bıraktı.,%s stopped working with the
 NOTE_DELIVERED,%s kampanyası teslim edildi ve yayında.,The %s campaign was delivered and is on air.
 NOTE_REPORT_READY,%s kampanyasının raporu hazır: %s,The %s campaign report is ready: %s
 UI_INBOX_EMPTY,Gelen kutusu boş. Zamanı ilerlet; brief'ler haftalık gelir.,The inbox is empty. Let time run; briefs arrive weekly.
-UI_BUSY_HINT,Şu an bir kampanya üretimde. Yeni bir işi kabul etmek için onun bitmesini bekle.,A campaign is in production. Wait for it to finish before accepting a new job.
+UI_BUSY_HINT,"Herkes bir kampanyada çalışıyor. Yeni bir işi kabul etmek için boşta biri olmalı ya da bir kampanya bitmeli.","Everyone is working on a campaign. To accept a new job someone must be free, or a campaign must finish."
 UI_NEW_CLIENT,Yeni müşteri,New client
 UI_EXPIRES,%d hafta kaldı,%d week(s) left
 UI_OBJECTIVE_FREE,Serbest (sen seç),Open (your choice)
@@ -231,7 +231,7 @@ ERR_MIX_EMPTY,En az bir kanal seç.,Choose at least one channel.
 ERR_SHARE,Kanal bütçe payları toplamı %100 olmalı.,Channel budget shares must total 100%.
 ERR_MIN_BUDGET,Bu kanal için bütçe yetersiz.,The budget is too low for this channel.
 ERR_SLIDERS,Slider'ların toplamı %100 olmalı.,Sliders must total 100%.
-ERR_BUSY,Zaten üretimde bir kampanya var.,A campaign is already in production.
+ERR_BUSY,Boşta çalışan yok; herkes bir kampanyada.,Nobody is free; everyone is on a campaign.
 ERR_NO_BRIEF,Bu brief artık geçerli değil.,This brief is no longer available.
 UI_REPORT_TITLE,Rapor: %s — %s,Report: %s — %s
 REVIEWER_REKLAM_DUNYASI,Reklam Dünyası,Reklam Dünyası
@@ -1876,3 +1876,4 @@ UI_POLISH_STATUS,"Üretim bitti. Ekip hataları gideriyor: %d hata kaldı, tesli
 UI_DELIVER_NOW,Kampanyayı teslim et,Deliver the campaign
 UI_STRIP_POLISH,Rötuş · %d gün,Polish · %d days
 ERR_NOT_READY,Üretim henüz bitmedi.,Production is not finished yet.
+UI_PHASE_WORKING_PLANNED,"Ekip planladığın görevler üzerinde çalışıyor; ilerlemeyi üstteki şeritten de izleyebilirsin.","The team is working on the tasks you planned; you can also follow progress on the strip at the top."

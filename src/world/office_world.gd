@@ -271,7 +271,7 @@ func _go(c: OfficeCharacter, id: String, place: String, slot: int) -> void:
 ## toplantıda sunum; çok yorgun uyuklar, tükenmiş stres yapar (M8-B).
 func _update_looks_and_activities(s: SimState) -> void:
 	var cfg: Dictionary = DataDB.data.characters["activity"]
-	var team: Array = s.active_campaign["setup"].get("team", []) if not s.active_campaign.is_empty() else []
+	var team: Array = s.busy_staff()  # S3D: bütün kampanyaların ekipleri
 	var year: int = s.clock.year()
 	for id: String in _chars:
 		var emp: Dictionary = s.staff[id]

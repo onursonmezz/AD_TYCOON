@@ -133,16 +133,18 @@ func step_day() -> void:
 		return
 	if pause_on_phase and (pitches.is_waiting(state) or not EventSystem.pending(state).is_empty()):
 		return
-	if not state.active_campaign.is_empty():
-		if pause_on_phase and _needs_phase_input():
-			return
-		var was_polishing: bool = CampaignProduction.production_done(state.active_campaign)
-		production.produce_day(state.active_campaign, state)
-		var camp: Dictionary = state.active_campaign
+	# S3D: önce faz başında bekleyen var mı (bekleyen varsa o gün hiçbiri ilerlemez), sonra hepsi üretir.
+	if pause_on_phase:
+		for camp: Dictionary in state.campaigns:
+			if _needs_phase_input(camp):
+				return
+	for camp: Dictionary in state.campaigns.duplicate():
+		var was_polishing: bool = CampaignProduction.production_done(camp)
+		production.produce_day(camp, state)
 		if not was_polishing and CampaignProduction.production_done(camp) and float(camp.get("production_share", 1.0)) < 1.0:
 			staff_note.emit("NOTE_POLISH_START", [str(camp["setup"].get("client_name", ""))], "info")
 		if production.is_finished(camp):
-			_deliver()
+			_deliver(camp)
 	staff_life.daily(state)
 	pitches.produce_day(state)
 	var ended: Dictionary = state.clock.advance_day()
@@ -183,14 +185,14 @@ func step_day() -> void:
 
 
 ## Yeni bir faza girildiyse ve slider'ları onaylanmadıysa bekle.
-func _needs_phase_input() -> bool:
-	var camp: Dictionary = state.active_campaign
+func _needs_phase_input(camp: Dictionary) -> bool:
 	var phase: int = production.current_phase(camp)
 	var confirmed: Array = camp.get("confirmed_phases", [])
 	for p: Variant in confirmed:
 		if int(p) == phase:
 			return _wait_for_minigame(camp, phase)
 	state.waiting_for_input = true
+	state.waiting_campaign = str(camp["id"])
 	phase_started.emit(phase)
 	return true
 
@@ -205,16 +207,18 @@ func _wait_for_minigame(camp: Dictionary, phase: int) -> bool:
 		return false
 	if not state.waiting_for_input:
 		state.waiting_for_input = true
+		state.waiting_campaign = str(camp["id"])
 		phase_started.emit(phase)
 	return true
 
 
 ## Faz başı girişleri PhaseInput'ta (dosya boyutu, K-118/K-119).
 ## S3C: oyuncu rötuşu bitirip kampanyayı hemen teslim eder (üretim bitmiş olmalı).
-func deliver_now() -> String:
-	if state.active_campaign.is_empty() or not CampaignProduction.production_done(state.active_campaign):
+func deliver_now(campaign_id: String = "") -> String:
+	var camp: Dictionary = state.find_campaign(campaign_id) if not campaign_id.is_empty() else state.active_campaign
+	if camp.is_empty() or not CampaignProduction.production_done(camp):
 		return "ERR_NOT_READY"
-	_deliver()
+	_deliver(camp)
 	return ""
 
 
@@ -250,9 +254,8 @@ func decline_brief(brief_id: String) -> bool:
 # --- kampanya yaşam döngüsü (GDD 4.2) ----------------------------------------
 
 ## Üretim bitti: puanla, medyayı öde, faturayı kes, yayına al.
-func _deliver() -> void:
-	var camp: Dictionary = state.active_campaign
-	state.active_campaign = {}
+func _deliver(camp: Dictionary) -> void:
+	state.campaigns.erase(camp)
 	var setup: Dictionary = camp["setup"]
 	var client: Dictionary = state.clients.get(setup["client_id"], {})
 	var size: String = setup["size"]

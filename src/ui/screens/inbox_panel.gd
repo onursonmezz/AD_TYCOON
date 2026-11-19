@@ -30,7 +30,7 @@ func _pick_tab(id: String) -> void:
 
 func refresh() -> void:
 	var s: SimState = GameState.sim.state
-	var sig: String = _tab + str(s.inbox.size()) + str(s.is_idle()) + str(s.clock.week_index)
+	var sig: String = _tab + str(s.inbox.size()) + str(s.has_free_staff()) + str(s.clock.week_index)
 	for b: Dictionary in s.inbox:
 		sig += str(b["id"])
 	for o: Dictionary in s.supplier_offers:
@@ -58,7 +58,7 @@ func refresh() -> void:
 			_list.add_child(_supplier_offer_card(offer, s))
 			shown += 1
 	if _tab != "offers":
-		if not s.inbox.is_empty() and not s.is_idle():
+		if not s.inbox.is_empty() and not s.has_free_staff():  # S3D: boşta kimse yoksa
 			_list.add_child(UiUtil.wrapped(tr("UI_BUSY_HINT"), 13, UiUtil.WOOD, 400.0))
 		for brief: Dictionary in s.inbox:
 			_list.add_child(_brief_card(brief, s))
@@ -125,7 +125,7 @@ func _brief_card(brief: Dictionary, s: SimState) -> PanelContainer:
 		Cards.fact("calendar", tr("UI_FACT_DURATION"), tr("UI_WEEKS") % int(brief["deadline_weeks"]))]))
 	var accept: Button = UiUtil.button(tr("UI_ACCEPT"), func() -> void:
 		_main.call("open_modal", WizardDialog.new(brief, _main)))
-	accept.disabled = not s.is_idle()
+	accept.disabled = not s.has_free_staff()
 	col.add_child(_buttons(tr("UI_BRIEF_OBJECTIVE") % objective, tr("UI_DECLINE"), func() -> void:
 		GameState.execute(DeclineBriefCommand.new(brief["id"])), accept))
 	return card

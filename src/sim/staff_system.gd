@@ -170,9 +170,7 @@ func severance(state: SimState, emp: Dictionary) -> float:
 
 
 func _on_active_team(state: SimState, emp_id: String) -> bool:
-	if state.active_campaign.is_empty():
-		return false
-	return (state.active_campaign["setup"].get("team", []) as Array).has(emp_id)
+	return state.busy_staff().has(emp_id)
 
 
 ## Stat eğitimi: para + zaman + enerji; kazanç potansiyelle sınırlı (GDD 11.3).

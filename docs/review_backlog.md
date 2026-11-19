@@ -18,7 +18,7 @@ aşamada yapılır; bitenler [x] ile işaretlenir.
   - Kişinin iş yükü, atandığı görevlerin ağırlıklarının toplamı olsun; %100'ü aşan fazla çalışmış sayılsın.
   - Örnek: bir kişi üç fazda %40'lık birer göreve atanırsa yükü %120 olur.
 - [x] Karakterleri göreve atamak çok karmaşık; çok kişide daha da karışıyor. Basit olsun.
-- [ ] Boşta çalışan varsa başka bir kampanya da kabul edilebilsin; aynı anda birden çok kampanya yürüsün.
+- [x] Boşta çalışan varsa başka bir kampanya da kabul edilebilsin (3D, K-136); aynı anda birden çok kampanya yürüsün.
 - [x] Faz sürerken pencere açık kalmasın; ilerleme yukarıda küçük bir şeritte görünsün. Çalışanları izleyelim, puanlar kafalarından çıkıp dolsun (GDT gibi).
 - [x] Kampanyayı bitirme ve hata giderme (3C, K-135):
   - Normal süre dolunca "Kampanyayı bitir" düğmesi çıksın.

@@ -72,8 +72,9 @@ func weekly(state: SimState) -> void:
 
 
 func _has_pending(state: SimState, client_id: String) -> bool:
-	if state.active_campaign.get("setup", {}).get("client_id", "") == client_id:
-		return true
+	for c: Dictionary in state.campaigns:
+		if c["setup"].get("client_id", "") == client_id:
+			return true
 	for b: Dictionary in state.inbox:
 		if b["client_id"] == client_id:
 			return true

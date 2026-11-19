@@ -30,4 +30,5 @@ func execute(sim: Simulation) -> String:
 	# Planlı kampanyada faz yalnızca mini oyunu bekliyordu: devam.
 	if (camp.get("confirmed_phases", []) as Array).has(phase):
 		sim.state.waiting_for_input = false
+		sim.state.waiting_campaign = ""
 	return ""

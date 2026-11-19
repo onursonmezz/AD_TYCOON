@@ -75,8 +75,9 @@ func _ready() -> void:
 	_lock_unless(_audience, "audience_analysis", "UI_AUTO_AUDIENCE")
 	_lock_unless(_tone, "tone_choice", "UI_AUTO_TONE")
 	var free_staff: Array = []
+	var busy: Array = s.busy_staff()  # S3D: başka kampanyada çalışan seçilemez
 	for emp: Dictionary in s.staff.values():
-		if Employee.is_available(emp, s.clock.week_index):
+		if Employee.is_available(emp, s.clock.week_index) and not busy.has(str(emp["id"])):
 			free_staff.append(emp["id"])
 	_mix = MixEditor.new(_brief, GameState.sim.media.channel_limit(s, free_staff), _main)
 	right.add_child(_mix)
@@ -85,9 +86,12 @@ func _ready() -> void:
 		var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 		var check: CheckBox = CheckBox.new()
 		UiUtil.style_toggle(check)
-		var available: bool = Employee.is_available(emp, s.clock.week_index)
+		var on_other: bool = busy.has(str(emp["id"]))
+		var available: bool = Employee.is_available(emp, s.clock.week_index) and not on_other
 		check.button_pressed = available
 		check.disabled = not available
+		if on_other:
+			check.tooltip_text = tr("UI_EMP_CAMPAIGN")
 		_team_checks[emp["id"]] = check
 		row.add_child(check)
 		var pic: PanelContainer = Cards.avatar(emp, 32.0)

@@ -56,6 +56,6 @@ func _status_key(s: SimState, emp: Dictionary) -> String:
 		return "UI_EMP_AWAY"
 	if int(emp.get("pitch_until", -1)) > week:
 		return "UI_EMP_PITCH"
-	if (s.active_campaign.get("setup", {}).get("team", []) as Array).has(emp["id"]):
+	if s.busy_staff().has(str(emp["id"])):
 		return "UI_EMP_CAMPAIGN"
 	return "UI_EMP_IDLE"

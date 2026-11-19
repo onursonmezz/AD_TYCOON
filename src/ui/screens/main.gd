@@ -34,8 +34,7 @@ var _modal_open: bool = false
 var _last_cash: float = NAN
 var _save_button: Button
 var _tutorial: Tutorial
-var _strip: CampaignStrip  # S3B: faz sürerken üstteki kampanya şeridi
-var _bubbles: PointBubbles
+var _live: LiveStrips  # S3B/S3D: kampanya şeritleri ve puan baloncukları
 
 
 func _ready() -> void:
@@ -91,9 +90,7 @@ func _build() -> void:
 	_cash = w["cash"]
 	_rep = w["rep"]
 	_feed = w["feed"]
-	var live: Dictionary = MainHud.campaign_strip(self, _office, func() -> void: show_panel("campaign"))
-	_strip = live["strip"]
-	_bubbles = live["bubbles"]
+	_live = LiveStrips.new(self, _office, func() -> void: show_panel("campaign"))
 	_build_window()
 	_modal_layer = Control.new()
 	_modal_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -179,7 +176,7 @@ func close_panel() -> void:
 	_panel_id = ""
 	_refresh_menu_state()
 	if GameState.has_game():  # S3B: pencere kapanınca kampanya şeridi hemen dönsün
-		_strip.refresh(GameState.sim.state.active_campaign)
+		_live.refresh(GameState.sim.state, true)
 
 
 ## İnşa modu (M6-B): pencere kapanır, ofisin altında araç çubuğu açılır.
@@ -244,7 +241,7 @@ func show_panel(id: String) -> void:
 	UiUtil.clear(_content)
 	var was_visible: bool = _window.visible
 	_panel_id = id
-	_strip.visible = false  # pencerede aynı bilgi var
+	_live.hide_all()  # pencerede aynı bilgi var
 	_window.visible = true
 	match id:
 		"inbox":
@@ -314,9 +311,7 @@ func _refresh() -> void:
 	_set_dot("campaign", "!" if GameState.is_waiting() else "")
 	if _panel != null:
 		_panel.call("refresh")
-	_strip.refresh(s.active_campaign)
-	_strip.visible = _strip.visible and _panel == null  # pencere açıkken aynı bilgi orada
-	_bubbles.refresh(s.active_campaign)
+	_live.refresh(s, _panel == null)  # pencere açıkken aynı bilgi orada
 	_refresh_speed()
 	_maybe_minigame.call_deferred()  # faz başı mini oyunu (K-120)
 
