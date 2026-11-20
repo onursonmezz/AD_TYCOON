@@ -1882,3 +1882,7 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **Pencere ana ekranda:** `Settings._apply_window` pencereyi masaüstünün (0,0) noktasına göre ortalıyordu. Orgo'nun iki ekranlı düzeninde orası yan ekrandı.
   - Artık Windows'un ana ekranına (`DisplayServer.get_primary_screen()`) taşınıp orada ortalanıyor.
   - Hem oyun hem test araçları için geçerli. `--screen` komut satırı bayrağı bu düzende işe yaramadı.
+- **Görev planı çubukları (S12, Orgo):** Çubuğun konumu artık görevin gerçek yüzdesi; çentikler %25, %50 ve %75'i gösteriyor.
+  - Eskiden çubuk ham ağırlıktı (üçü de ortadayken her biri %33 yazıyordu, çentikler yanıltıyordu).
+  - Bir görev değişince kalan pay diğer ikisine eski oranlarıyla dağılıyor; ikisi de sıfırsa eşit paylaşıyorlar. Toplam hep %100.
+  - Çentikler tutamağın merkeziyle aynı hesapla çiziliyor.

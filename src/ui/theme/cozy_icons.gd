@@ -115,11 +115,3 @@ static func pill_grabber(col: Color) -> ImageTexture:
 				img.set_pixel(x, y, CozyTheme.CREAM_LIGHT)
 	return ImageTexture.create_from_image(img)
 
-
-## S12: çubuğun altındaki çentik; doku uzun, çizgi alt yarıda (Godot çentiği rayın ortasına koyar, böylece altta görünür).
-static func slider_tick(col: Color) -> ImageTexture:
-	var img: Image = Image.create(2, 22, false, Image.FORMAT_RGBA8)
-	for y: int in range(15, 22):
-		for x: int in 2:
-			img.set_pixel(x, y, col)
-	return ImageTexture.create_from_image(img)

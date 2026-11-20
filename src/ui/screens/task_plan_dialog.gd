@@ -13,7 +13,9 @@ var _choices: Dictionary
 var _on_started: Callable
 var _team: Array = []
 var _assign_mode: bool = false
-var _raw: Array = [[50.0, 50.0, 50.0], [50.0, 50.0, 50.0], [50.0, 50.0, 50.0]]
+## S12 (Orgo): çubuk konumu görevin gerçek yüzdesidir; fazın üç görevi hep %100 eder (çentikler %25/%50/%75'i gösterir).
+var _raw: Array = [[33.333, 33.333, 33.334], [33.333, 33.333, 33.334], [33.333, 33.333, 33.334]]
+var _slider_ctrls: Array = [[], [], []]
 var _assign: Array = [["", "", ""], ["", "", ""], ["", "", ""]]
 var _rentals: Array = []
 var _share_labels: Array = [[], [], []]
@@ -41,7 +43,7 @@ static func for_phase(camp: Dictionary) -> TaskPlanDialog:
 	for p: int in 3:
 		for i: int in 3:
 			d._raw[p][i] = 100.0 * float(setup["sliders"][p][i])
-		d._raw[d._phase] = [50.0, 50.0, 50.0]
+		d._raw[d._phase] = [33.333, 33.333, 33.334]
 	if TaskPlan.has_plan(setup):
 		d._assign = (setup["assign"] as Array).duplicate(true)
 	return d
@@ -169,17 +171,16 @@ func _task_row(p: int, i: int, area: String) -> HBoxContainer:
 	var slider: HSlider = HSlider.new()
 	slider.min_value = 0.0
 	slider.max_value = 100.0
-	slider.step = 5.0
-	slider.tick_count = 5  # çentikler yüzde 25, 50, 75 (uçlardakiler çizilmez)
-	slider.ticks_on_borders = false
+	slider.step = 1.0
 	slider.value = float(_raw[p][i])
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	slider.tooltip_text = tr("UI_PLAN_WEIGHT_TIP")
 	_style_slider(slider)
 	slider.value_changed.connect(func(v: float) -> void:
-		_raw[p][i] = v
+		_rebalance(p, i, v)
 		_refresh())
+	(_slider_ctrls[p] as Array).append(slider)
 	row.add_child(slider)
 	var share: Label = UiUtil.label("", 20, CozyTheme.FOREST)
 	share.add_theme_font_override("font", CozyTheme.title_font(700))
@@ -202,6 +203,23 @@ func _task_row(p: int, i: int, area: String) -> HBoxContainer:
 
 
 ## S12 (taslak): kalın yuvarlak ray (dolu kısım yeşil, boşu krem ve kiremit kenarlı), turuncu "II" tutamak, altta çentikler.
+## Bir görevin yüzdesi değişince kalan pay diğer ikisine eski oranlarıyla dağıtılır (ikisi de sıfırsa eşit).
+func _rebalance(p: int, i: int, v: float) -> void:
+	var others: Array[int] = []
+	for k: int in 3:
+		if k != i:
+			others.append(k)
+	var rest: float = 100.0 - v
+	var before: float = float(_raw[p][others[0]]) + float(_raw[p][others[1]])
+	for k: int in others:
+		_raw[p][k] = rest * float(_raw[p][k]) / before if before > 0.001 else rest * 0.5
+	_raw[p][i] = v
+	var ctrls: Array = _slider_ctrls[p]
+	for k: int in others:
+		if k < ctrls.size():
+			(ctrls[k] as HSlider).set_value_no_signal(float(_raw[p][k]))
+
+
 static func _style_slider(slider: HSlider) -> void:
 	var rail: StyleBoxFlat = CozyTheme.box(Color("f8e6cf"), 999, Color("e3ad85"), 1, false, Vector2(0.0, 7.0))
 	var fill: StyleBoxFlat = CozyTheme.box(Color("a9b98b"), 999, Color("a9b98b"), 1, false, Vector2(0.0, 7.0))
@@ -211,8 +229,15 @@ static func _style_slider(slider: HSlider) -> void:
 	slider.add_theme_stylebox_override("grabber_area_highlight", fill_hi)
 	slider.add_theme_icon_override("grabber", CozyIcons.pill_grabber(CozyTheme.TERRA))
 	slider.add_theme_icon_override("grabber_highlight", CozyIcons.pill_grabber(CozyTheme.TERRA.darkened(0.1)))
-	slider.add_theme_icon_override("tick", CozyIcons.slider_tick(Color("d9865a")))
-	slider.custom_minimum_size.y = 40.0
+	slider.custom_minimum_size.y = 54.0
+	# Çentikler %25, %50, %75: tutamağın merkeziyle aynı hesap (tutamak %50'deyken tam ortadaki çentiğin üstünde).
+	# Godot'nun kendi çentikleri tutamak genişliğini hesaba katmadığı için birkaç piksel kayıyordu.
+	slider.draw.connect(func() -> void:
+		var gw: float = float(slider.get_theme_icon("grabber").get_width())
+		var mid: float = slider.size.y * 0.5
+		for r: float in [0.25, 0.5, 0.75]:
+			var x: float = gw * 0.5 + r * (slider.size.x - gw)
+			slider.draw_line(Vector2(x, mid + 17.0), Vector2(x, mid + 25.0), Color("d9865a"), 2.0))
 
 
 ## "Büyük Fikir / Konsept" → ["Büyük Fikir", "Konsept"]; "Metin Yazarlığı (Copy)" → ["Metin Yazarlığı", "Copy"].
