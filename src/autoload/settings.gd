@@ -87,6 +87,10 @@ func apply(key: String) -> void:
 func _apply_window() -> void:
 	if DisplayServer.get_name() == "headless":
 		return
+	# S12: pencere hep ana ekranda açılır (iki ekranlı düzende eskiden masaüstünün (0,0) noktasına, yani yan ekrana gidiyordu).
+	var target: int = DisplayServer.get_primary_screen()
+	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
+		DisplayServer.window_set_current_screen(target)
 	if bool(get_value("fullscreen")):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 		return
@@ -94,10 +98,10 @@ func _apply_window() -> void:
 	var parts: PackedStringArray = str(get_value("resolution")).split("x")
 	if parts.size() == 2:
 		var size: Vector2i = Vector2i(int(parts[0]), int(parts[1]))
-		var screen: Vector2i = DisplayServer.screen_get_size()
+		var screen: Vector2i = DisplayServer.screen_get_size(target)
 		size = Vector2i(mini(size.x, screen.x), mini(size.y, screen.y))
 		DisplayServer.window_set_size(size)
-		DisplayServer.window_set_position((screen - size) / 2)
+		DisplayServer.window_set_position(DisplayServer.screen_get_position(target) + (screen - size) / 2)
 
 
 # --- tutorial (M9-C kullanır) -------------------------------------------------------

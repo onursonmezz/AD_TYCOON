@@ -2119,3 +2119,12 @@ UI_BUILD_KEYS_SHORT,Kısayollar,Shortcuts
 UI_PLANT_ALERT_THIRSTY,Bitkiler susadı.,The plants are thirsty.
 UI_PLANT_ALERT_DRY,Bitkiler kurudu!,The plants dried out!
 UI_PLANT_ALERT_WATER,Sula,Water
+UI_PLAN_DAYS,%d gün,%d days
+UI_PLAN_PHASE_HINT_0,Ekibin zamanını strateji görevleri arasında paylaştır.,Share the team's time between the strategy tasks.
+UI_PLAN_PHASE_HINT_1,Ekibin zamanını kreatif görevler arasında paylaştır.,Share the team's time between the creative tasks.
+UI_PLAN_PHASE_HINT_2,Ekibin zamanını prodüksiyon ve yayın görevleri arasında paylaştır.,Share the team's time between the production and launch tasks.
+UI_PLAN_FOOT_AUTO,Küçük işlerde görev ataması gerekmez.,Small jobs need no task assignments.
+UI_PLAN_FOOT_ASSIGN,"Her göreve bir kişi ata; yükü %100'ü aşan yorulur ve hata yapar.","Put one person on each task; anyone above 100% load tires and makes mistakes."
+UI_PLAN_STEP_0,Strateji,Strategy
+UI_PLAN_STEP_1,Kreatif,Creative
+UI_PLAN_STEP_2,Prodüksiyon & Yayın,Production & Launch

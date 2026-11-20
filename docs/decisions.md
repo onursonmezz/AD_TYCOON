@@ -1872,3 +1872,13 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - İnşa durum yazısı geniş alt satırda; kısayollar bilgi simgesinin ipucunda.
   - Sektör uyumunda başlıklar ve kutular ayrı satırlarda.
   - Sunum davetinde ekip iki sütunda.
+
+## K-146 — S12: Faz ekranı taslağa göre, pencere ana ekranda (2026-11-20)
+- **Görev planı penceresi (Orgo'nun taslağı):**
+  - Üstte müşteri adı ve "iş boyu · fazın gün sayısı" var. Altında ok biçimli faz adımları (`PhaseSteps`): geçen faz ✓ açık yeşil, şimdiki faz koyu yeşil, sonraki faz krem.
+  - Fazın kısa yönergesi geliyor ("Ekibin zamanını kreatif görevler arasında paylaştır.").
+  - Her görev bir satır: kâğıt üstü çizim (`FocusArt`, dokuz odak alanı kodla çizildi), büyük ad ve alt ad (parantez ya da "/" sonrası), çentikli ağırlık çubuğu, büyük yüzde. Atamalı işte en sağda kişi düğmesi var.
+  - Altta bilgi notu ("Küçük işlerde görev ataması gerekmez.") ve "Fazı başlat". Pencere 740×580.
+- **Pencere ana ekranda:** `Settings._apply_window` pencereyi masaüstünün (0,0) noktasına göre ortalıyordu. Orgo'nun iki ekranlı düzeninde orası yan ekrandı.
+  - Artık Windows'un ana ekranına (`DisplayServer.get_primary_screen()`) taşınıp orada ortalanıyor.
+  - Hem oyun hem test araçları için geçerli. `--screen` komut satırı bayrağı bu düzende işe yaramadı.

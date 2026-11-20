@@ -6,7 +6,7 @@ extends Control
 ## kampanya yükü (atandığı görevlerin ağırlık toplamı; %100 üstü yorulur). Küçük iş / tek kişi: atama yok.
 ## Onaylanınca StartCampaignCommand (choices + sliders + assign + rentals, planned).
 
-const ROW_H: float = 58.0
+const ROW_H: float = 72.0
 
 var _brief: Dictionary
 var _choices: Dictionary
@@ -54,19 +54,44 @@ func _ready() -> void:
 	if _assign_mode:
 		_assign = TaskPlan.auto_assign_phases(data, GameState.sim.state, sliders(), _team, _assign, [_phase])
 	var col: VBoxContainer = UiUtil.modal_frame(self, UiUtil.dialog_size("task_plan"), true, true)
-	col.add_child(UiUtil.heading(tr("UI_PLAN_TITLE_PHASE") % tr("PHASE_%d" % _phase), "users-group"))
-	col.add_child(UiUtil.wrapped(tr("UI_PLAN_HINT_ASSIGN" if _assign_mode else "UI_PLAN_HINT_AUTO"), 13, CozyTheme.TEXT, 400.0))
-	col.add_child(_phase_steps())
-	col.add_child(_phase_card(_phase))
+	col.add_theme_constant_override("separation", CozyTheme.SPACE_S)
+	col.add_child(UiUtil.heading(tr("UI_PLAN_TITLE"), "users-group"))
+	# S12 (Orgo'nun taslağı): müşteri adı ve "iş boyu · gün", ok biçimli faz adımları, kısa yönerge, görev satırları.
+	var head: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
+	var client: Label = UiUtil.label(_client_name(), 20, CozyTheme.FOREST)
+	client.add_theme_font_override("font", CozyTheme.title_font(700))
+	client.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	client.clip_text = true
+	head.add_child(client)
+	head.add_child(UiUtil.label("%s · %s" % [tr("SIZE_" + str(_brief["size"]).to_upper()), tr("UI_PLAN_DAYS") % _phase_days()], 15,
+		CozyTheme.TEXT))
+	col.add_child(head)
+	var names: Array[String] = []
+	for ph: int in 3:
+		names.append(tr("UI_PLAN_STEP_%d" % ph))
+	col.add_child(PhaseSteps.new(_phase, names))
+	col.add_child(UiUtil.label(tr("UI_PLAN_PHASE_HINT_%d" % _phase), 15, CozyTheme.TEXT))
+	var areas: Array[String] = data.focus_ids_of_phase(_phase)
+	for i: int in 3:
+		col.add_child(_task_row(_phase, i, areas[i]))
+		if i < 2:
+			col.add_child(HSeparator.new())
+	if _phase == 2:
+		col.add_child(_rentals_box())
 	if _assign_mode:
 		col.add_child(_load_strip())
 	var frame: VBoxContainer = UiUtil.modal_outer(col)
-	frame.add_child(HSeparator.new())
 	_error = UiUtil.label("", 13, CozyTheme.NEGATIVE)
 	_error.visible = false
 	frame.add_child(_error)
 	var foot: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	foot.add_child(UiUtil.spacer())
+	var info: TextureRect = UiUtil.icon("info", 18, CozyTheme.TEXT)
+	info.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	foot.add_child(info)
+	var note: Label = UiUtil.label(tr("UI_PLAN_FOOT_ASSIGN" if _assign_mode else "UI_PLAN_FOOT_AUTO"), 13, CozyTheme.TEXT)
+	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	foot.add_child(note)
 	if _assign_mode:
 		foot.add_child(UiUtil.button(tr("UI_BOARD_AUTO"), func() -> void:
 			_assign = TaskPlan.auto_assign_phases(DataDB.data, GameState.sim.state, sliders(), _team, _assign, [_phase])
@@ -75,9 +100,28 @@ func _ready() -> void:
 		foot.add_child(UiUtil.button(tr("UI_BACK"), queue_free))
 	var start: Button = UiUtil.button(tr("UI_START_CAMPAIGN") if _camp.is_empty() else tr("UI_PLAN_START_PHASE"), _start)
 	start.theme_type_variation = "PrimaryButton"
+	start.custom_minimum_size = Vector2(170.0, 44.0)
 	foot.add_child(start)
 	frame.add_child(foot)
 	_refresh()
+
+
+func _client_name() -> String:
+	if not _camp.is_empty():
+		return str(_camp["setup"].get("client_name", ""))
+	var prospect: Dictionary = _brief.get("prospect", {})
+	if not prospect.is_empty():
+		return str(prospect.get("name", ""))
+	return str(GameState.sim.state.clients.get(str(_brief.get("client_id", "")), {}).get("name", ""))
+
+
+## Fazın süresi (gün): üretim günleri üç faza eşit bölünür (rötuş payı hariç, S3C).
+func _phase_days() -> int:
+	if not _camp.is_empty():
+		return maxi(1, CampaignProduction.production_days(_camp) / 3)
+	var data: GameData = DataDB.data
+	var total: int = int(_brief.get("deadline_weeks", 1)) * data.bali("calendar.days_per_week")
+	return maxi(1, int(ceilf(float(total) * (1.0 - data.balf("production.polish_share")))) / 3)
 
 
 ## Ham çubuk değerlerinden faz başına paylar (toplam 1).
@@ -94,57 +138,40 @@ func sliders() -> Array:
 	return out
 
 
-## Üç fazın sırası: geçen fazlar ✓, planlanan faz vurgulu, sonrakiler soluk (fazlar sırayla gelir).
-func _phase_steps() -> HBoxContainer:
-	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
-	for p: int in 3:
-		var done: bool = p < _phase
-		var now: bool = p == _phase
-		row.add_child(Cards.chip(("✓ " if done else "") + tr("PHASE_%d" % p),
-			CozyTheme.FOREST if now else (CozyTheme.SAGE_SOFT if done else CozyTheme.CREAM),
-			CozyTheme.CREAM_LIGHT if now else (CozyTheme.FOREST if done else CozyTheme.MUTED)))
-	return row
-
-
-func _phase_card(p: int) -> PanelContainer:
+## Görev satırı (taslak): solda kâğıt üstü çizim, adı (büyük) ve alt adı, çentikli ağırlık çubuğu, büyük yüzde;
+## atama gereken işte en sağda kişi düğmesi.
+func _task_row(p: int, i: int, area: String) -> HBoxContainer:
 	var data: GameData = DataDB.data
-	var card: PanelContainer = UiUtil.card()
-	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var box: VBoxContainer = UiUtil.vbox(4)
-	card.add_child(box)
-	box.add_child(Cards.section(tr("PHASE_%d" % p)))
-	var areas: Array[String] = data.focus_ids_of_phase(p)
-	for i: int in 3:
-		box.add_child(_task_row(p, i, areas[i]))
-	if p == 2:
-		box.add_child(_rentals_box())
-	return card
-
-
-func _task_row(p: int, i: int, area: String) -> VBoxContainer:
-	var data: GameData = DataDB.data
-	var row: VBoxContainer = UiUtil.vbox(0)
+	var row: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_M)
 	row.custom_minimum_size.y = ROW_H
-	var top: HBoxContainer = UiUtil.hbox(6)
-	top.add_child(UiUtil.icon(str(WorkBoard.AREA_ICONS.get(area, "info")), 18, CozyTheme.TERRA))
-	var name: Label = UiUtil.label(UiUtil.name_of(data.focus_areas, area), 13, CozyTheme.TEXT)
-	name.add_theme_font_override("font", CozyTheme.strong_font())
-	name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	name.clip_text = true
-	top.add_child(name)
-	top.add_child(FocusHint.badge(str(_choices.get("objective", _brief["objective"])), area, 12))
-	var share: Label = UiUtil.label("", 13, CozyTheme.FOREST)
-	share.add_theme_font_override("font", CozyTheme.strong_font())
-	share.custom_minimum_size.x = 40.0
-	share.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	top.add_child(share)
-	(_share_labels[p] as Array).append(share)
-	row.add_child(top)
-	var bottom: HBoxContainer = UiUtil.hbox(6)
+	var art: FocusArt = FocusArt.new(area)
+	art.custom_minimum_size = Vector2(100.0, 70.0)
+	art.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(art)
+	var full: String = UiUtil.name_of(data.focus_areas, area)
+	var parts: PackedStringArray = _split_name(full)
+	var names: VBoxContainer = UiUtil.vbox(-2)
+	names.custom_minimum_size.x = 180.0
+	names.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var title: Label = UiUtil.label(parts[0], 18, CozyTheme.TEXT)
+	title.add_theme_font_override("font", CozyTheme.title_font(700))
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # uzun ad iki satıra iner, kesilmez
+	title.custom_minimum_size.x = 180.0
+	title.tooltip_text = full
+	title.mouse_filter = Control.MOUSE_FILTER_STOP
+	names.add_child(title)
+	var sub: HBoxContainer = UiUtil.hbox(6)
+	if not parts[1].is_empty():
+		sub.add_child(UiUtil.label(parts[1], 13, CozyTheme.TEXT))
+	sub.add_child(FocusHint.badge(str(_choices.get("objective", _brief["objective"])), area, 12))
+	names.add_child(sub)
+	row.add_child(names)
 	var slider: HSlider = HSlider.new()
 	slider.min_value = 0.0
 	slider.max_value = 100.0
 	slider.step = 5.0
+	slider.tick_count = 5
+	slider.ticks_on_borders = false
 	slider.value = float(_raw[p][i])
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -152,18 +179,34 @@ func _task_row(p: int, i: int, area: String) -> VBoxContainer:
 	slider.value_changed.connect(func(v: float) -> void:
 		_raw[p][i] = v
 		_refresh())
-	bottom.add_child(slider)
+	row.add_child(slider)
+	var share: Label = UiUtil.label("", 20, CozyTheme.FOREST)
+	share.add_theme_font_override("font", CozyTheme.title_font(700))
+	share.custom_minimum_size.x = 60.0
+	share.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	share.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(share)
+	(_share_labels[p] as Array).append(share)
 	if _assign_mode:
 		var who: Button = Button.new()
 		who.focus_mode = Control.FOCUS_NONE
-		who.custom_minimum_size = Vector2(112.0, 30.0)
+		who.custom_minimum_size = Vector2(104.0, 34.0)
+		who.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		who.clip_text = true
 		who.add_theme_font_size_override("font_size", 12)
 		who.pressed.connect(func() -> void: _pick_person(p, i, area, who))
 		(_who_buttons[p] as Array).append(who)
-		bottom.add_child(who)
-	row.add_child(bottom)
+		row.add_child(who)
 	return row
+
+
+## "Büyük Fikir / Konsept" → ["Büyük Fikir", "Konsept"]; "Metin Yazarlığı (Copy)" → ["Metin Yazarlığı", "Copy"].
+static func _split_name(full: String) -> PackedStringArray:
+	if full.contains(" / "):
+		return PackedStringArray([full.get_slice(" / ", 0), full.get_slice(" / ", 1)])
+	if full.contains(" (") and full.ends_with(")"):
+		return PackedStringArray([full.get_slice(" (", 0), full.get_slice(" (", 1).trim_suffix(")")])
+	return PackedStringArray([full, ""])
 
 
 ## Görevin kişisini seçme: ekipteki herkes portresi, o göreve uygunluğu ve yüküyle; "Kimse" ile boşaltılır.
