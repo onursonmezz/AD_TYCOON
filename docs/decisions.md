@@ -1895,3 +1895,7 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Kadın/erkek/diğer etiketi görünüşe göre verildi; `data/avatars.json` içinde "gender" (female/male/neutral) değiştirilerek düzeltilebilir.
   - Karakter ekranında Tümü/Kadın/Erkek/Diğer filtresi ve kaydırmalı 5 sütunlu ızgara var (`ui_layout.json avatar_grid_height`).
   - Yeni portreler işe alınan çalışanlara da veriliyor (aynı cinsiyet etiketinden, kullanılmayanlar önce).
+- **Seçenek görselleri (S12, Orgo):** Orgo'nun ChatGPT'ye çizdirdiği 77 görsel geldi (600×400).
+  - Oyuna 360×240'a küçültülüp `assets/ui/option_art/` içine alındı; asılları `art/incoming/option_art/` içinde (git dışı).
+  - `OptionArt.picture_for` önce görseli arıyor (`opt_<tür>_<id>`, `focus_<id>`, `opt_influencer`); görsel yoksa eski kod çizimi çalışıyor.
+  - Görseller seçim kartlarında, seçici düğmelerin küçük resminde ve görev planında kullanılıyor.

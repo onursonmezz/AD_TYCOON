@@ -1,5 +1,7 @@
 # Kodla çizilen görseller
 
+> **Durum (2026-11-21):** Bölüm 1–4'teki 77 görselin hepsi geldi ve oyunda kullanılıyor (`assets/ui/option_art/`, 360×240; asılları `art/incoming/option_art/`). Kod çizimi yalnızca görsel yoksa yedek olarak çalışır. Değiştirmek için aynı adla yeni PNG koyman yeterli (sonra küçültme komutu için bana haber ver).
+
 Bu listedeki görselleri şu an oyun kodla çiziyor. Hazır resim gelirse yerine konabilir.
 Dosya adlarını aynen kullanırsan bağlamayı ben yaparım. Öneri: şeffaf PNG, sıcak "cozy" çizim tarzı (oyundaki ikon paketiyle aynı), kenarlarda boşluk az.
 

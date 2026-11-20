@@ -41,6 +41,12 @@ func _draw() -> void:
 		draw_set_transform(Vector2.ZERO)
 		return
 	var k: String = kind.replace(".", "_").replace("social_", "digital_")  # sosyal kanallar dijitalin seçeneklerini kullanır
+	# S12: Orgo'nun çizdirdiği görsel varsa (assets/ui/option_art/*.png, 3:2) o gösterilir; yoksa kodla çizim.
+	var picture: Texture2D = picture_for(k, id)
+	if picture != null:
+		draw_texture_rect(picture, Rect2(0.0, 2.0, W, W * 2.0 / 3.0), false)
+		draw_set_transform(Vector2.ZERO)
+		return
 	var f: String = "_d_%s_%s" % [k, id]
 	if has_method(f):
 		call(f)
@@ -49,6 +55,20 @@ func _draw() -> void:
 	else:
 		_blob(Vector2(60, 42), 22, SAGE)
 	draw_set_transform(Vector2.ZERO)
+
+
+const PICTURE_DIR: String = "res://assets/ui/option_art"
+static var _pictures: Dictionary = {}
+
+
+## Seçeneğin hazır görseli: görevler focus_<id>, influencer tek şablon, diğerleri opt_<tür>_<id>. Yoksa null.
+static func picture_for(k: String, option_id: String) -> Texture2D:
+	var file: String = "focus_%s" % option_id if k == "focus" \
+		else ("opt_influencer" if k == "influencer" else "opt_%s_%s" % [k, option_id])
+	if not _pictures.has(file):
+		var path: String = "%s/%s.png" % [PICTURE_DIR, file]
+		_pictures[file] = load(path) if ResourceLoader.exists(path) else null
+	return _pictures[file]
 
 
 # --- yardımcılar -----------------------------------------------------------------------------------------------
