@@ -8,7 +8,7 @@
 	"_fit": "K-122: pencere içeriği taşarsa kaydırma yerine bu ölçeğe kadar küçülür; Ar-Ge listesi sayfa başına bu kadar kart.",
 	"fit_min_scale": 1.0, "research_per_page": 3, "research_fit_list_height": 370, "finance_rows_height": 252,
 	"dialogs": {
-		"wizard": [800, 475], "report": [740, 570], "event": [580, 340], "ceremony": [619, 525], "settings": [775, 430],
+		"wizard": [800, 640], "report": [740, 570], "event": [580, 340], "ceremony": [619, 525], "settings": [775, 430],
 		"channel_picker": [475, 504], "option_picker": [560, 84], "task_plan": [600, 480], "echo": [728, 492], "client": [620, 452], "scandal": [640, 420], "award_entry": [600, 440], "era": [600, 460], "offer": [540, 340], "negotiation": [560, 560], "game_over": [560, 340], "confirm": [480, 220], "minigame": [700, 612], "pitch_invite": [780, 560]
 	},
 	"build_bar": { "tools_width": 173, "palette_width": 539, "height": 151, "bottom": 45, "gap": 2 },
