@@ -1,23 +1,16 @@
 extends GutTest
-## S12 (Orgo): görev planında çubuk konumu görevin gerçek yüzdesi; üç görev hep %100, kalan pay eski oranlarla dağılır.
+## K-033 (Orgo, değişmez): görev planı çubukları birbirinden bağımsız; biri oynatılınca diğerleri kaymaz.
+## Pay = öncelik / fazın öncelikleri toplamı.
 
 
-func test_raising_one_task_shares_the_rest_by_old_ratio() -> void:
+func test_moving_one_bar_does_not_move_the_others() -> void:
 	var d: TaskPlanDialog = TaskPlanDialog.new({}, {}, Callable())
-	d._raw[1] = [40.0, 40.0, 20.0]
-	d._rebalance(1, 0, 70.0)
-	assert_almost_eq(float(d._raw[1][0]), 70.0, 0.001)
-	assert_almost_eq(float(d._raw[1][1]), 20.0, 0.001, "kalan %30, eski 40:20 oranıyla")
-	assert_almost_eq(float(d._raw[1][2]), 10.0, 0.001)
+	assert_false(d.has_method("_rebalance"), "kaydırıcılar birbirini itmez (K-033)")
+	d._raw[1] = [50.0, 50.0, 50.0]
+	d._raw[1][0] = 100.0  # çubuğun yaptığı tek şey
+	assert_eq(float(d._raw[1][1]), 50.0)
+	assert_eq(float(d._raw[1][2]), 50.0)
 	var s: Array = d.sliders()
-	assert_almost_eq(float(s[1][0]), 0.70, 0.001, "çubuk %70'te → pay %70")
-	d.free()
-
-
-func test_zero_others_split_evenly() -> void:
-	var d: TaskPlanDialog = TaskPlanDialog.new({}, {}, Callable())
-	d._raw[0] = [100.0, 0.0, 0.0]
-	d._rebalance(0, 0, 50.0)
-	assert_almost_eq(float(d._raw[0][1]), 25.0, 0.001)
-	assert_almost_eq(float(d._raw[0][2]), 25.0, 0.001)
+	assert_almost_eq(float(s[1][0]), 0.5, 0.001, "pay = 100 / (100+50+50)")
+	assert_almost_eq(float(s[1][1]), 0.25, 0.001)
 	d.free()

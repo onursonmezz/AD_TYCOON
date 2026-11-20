@@ -1882,10 +1882,10 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **Pencere ana ekranda:** `Settings._apply_window` pencereyi masaüstünün (0,0) noktasına göre ortalıyordu. Orgo'nun iki ekranlı düzeninde orası yan ekrandı.
   - Artık Windows'un ana ekranına (`DisplayServer.get_primary_screen()`) taşınıp orada ortalanıyor.
   - Hem oyun hem test araçları için geçerli. `--screen` komut satırı bayrağı bu düzende işe yaramadı.
-- **Görev planı çubukları (S12, Orgo):** Çubuğun konumu artık görevin gerçek yüzdesi; çentikler %25, %50 ve %75'i gösteriyor.
-  - Eskiden çubuk ham ağırlıktı (üçü de ortadayken her biri %33 yazıyordu, çentikler yanıltıyordu).
-  - Bir görev değişince kalan pay diğer ikisine eski oranlarıyla dağılıyor; ikisi de sıfırsa eşit paylaşıyorlar. Toplam hep %100.
-  - Çentikler tutamağın merkeziyle aynı hesapla çiziliyor.
+- **Görev planı çubukları (S12): GERİ ALINDI.** Çubukları birbirine bağlamıştım (biri yükselince diğerleri alçalıyordu); bu K-033'ü bozuyordu.
+  - Orgo hatırlattı. Çubuklar yine bağımsız öncelik; pay = öncelik / toplam.
+  - Çentikler önceliğin %25, %50 ve %75 noktası.
+  - Test: `tests/test_plan_sliders.gd` (biri oynayınca diğerleri değişmez).
 - **İkon kesilmesi (S12, Orgo):** `IconPack` ikonları yüklerken resmin kenarındaki %6'lık şeridi "komşu ikon kırıntısı" sayıp atlıyordu. Kenara yakın çizilmiş ikonların bir parçası da gidiyordu (giriş sayfasındaki yenile ikonu; toplam 91 ikon bu şeride dayanıyordu).
   - Artık kırpma kutusu, çizim şeride kadar uzanıyorsa o yönde çizim bitene kadar büyüyor.
   - Çizimden ayrık kırıntılar yine dışarıda kalıyor.

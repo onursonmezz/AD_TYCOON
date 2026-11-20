@@ -1863,7 +1863,7 @@ UI_NEGO_SAY_YES_2,"Tamam, el sıkışalım!","Fine, let us shake on it!"
 UI_PLAN_TITLE,Görev planı,Task plan
 UI_PLAN_HINT_ASSIGN,"Bu fazın görevlerine ağırlık ver ve her göreve bir kişi ata. Kişinin yükü kampanyada aldığı görevlerin ağırlıkları toplamıdır; %100'ü aşan yorulur ve hata yapar.","Weigh this phase's tasks and put one person on each task. A person's load is the sum of their task weights in the campaign; above 100% they tire and make mistakes."
 UI_PLAN_HINT_AUTO,"Küçük iş: atama gerekmez. Bu fazın görevlerine ağırlık ver; ekip her göreve ağırlığı kadar zaman verir.","Small job: no assignments needed. Weigh this phase's tasks; the team gives each task time in proportion."
-UI_PLAN_WEIGHT_TIP,"Görevin fazdaki payı. Birini artırınca diğer ikisi azalır; üçünün toplamı hep %100.","The task's share of the phase. Raising one lowers the other two; together they are always 100%."
+UI_PLAN_WEIGHT_TIP,Görevin önceliği. Çubuklar birbirinden bağımsız; yanında yazan yüzde görevin fazdaki payı.,The task's priority. The bars are independent; the percentage next to it is the task's share of the phase.
 UI_PLAN_PICK_INFO,Uygunluk %d · yük %s,Fit %d · load %s
 UI_PLAN_NOBODY,Kimse,Nobody
 UI_PLAN_ASSIGN,Ata,Assign
