@@ -1886,3 +1886,6 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Eskiden çubuk ham ağırlıktı (üçü de ortadayken her biri %33 yazıyordu, çentikler yanıltıyordu).
   - Bir görev değişince kalan pay diğer ikisine eski oranlarıyla dağılıyor; ikisi de sıfırsa eşit paylaşıyorlar. Toplam hep %100.
   - Çentikler tutamağın merkeziyle aynı hesapla çiziliyor.
+- **İkon kesilmesi (S12, Orgo):** `IconPack` ikonları yüklerken resmin kenarındaki %6'lık şeridi "komşu ikon kırıntısı" sayıp atlıyordu. Kenara yakın çizilmiş ikonların bir parçası da gidiyordu (giriş sayfasındaki yenile ikonu; toplam 91 ikon bu şeride dayanıyordu).
+  - Artık kırpma kutusu, çizim şeride kadar uzanıyorsa o yönde çizim bitene kadar büyüyor.
+  - Çizimden ayrık kırıntılar yine dışarıda kalıyor.

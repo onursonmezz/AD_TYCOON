@@ -83,4 +83,40 @@ static func _solid_rect(img: Image) -> Rect2i:
 			if img.get_pixel(x, y).a > ALPHA_FLOOR:
 				lo = Vector2i(mini(lo.x, x), mini(lo.y, y))
 				hi = Vector2i(maxi(hi.x, x), maxi(hi.y, y))
-	return Rect2i(lo, hi - lo + Vector2i.ONE) if hi.x >= 0 else Rect2i()
+	if hi.x < 0:
+		return Rect2i()
+	if skip > 0:
+		# S12: çizim kenar şeridine kadar uzanıyorsa kutu o yönde, çizim bitene kadar satır satır büyür (yenile ikonu
+		# kesiliyordu). Kutudan ayrık kırıntılar (komşu ikondan kalan) yine dışarıda kalır.
+		var r: Rect2i = Rect2i(lo, hi - lo + Vector2i.ONE)
+		var grew: bool = true
+		while grew:
+			grew = false
+			if r.position.x > 0 and _column_has(img, r.position.x - 1, r.position.y, r.end.y):
+				r = r.grow_individual(1, 0, 0, 0)
+				grew = true
+			if r.end.x < img.get_width() and _column_has(img, r.end.x, r.position.y, r.end.y):
+				r = r.grow_individual(0, 0, 1, 0)
+				grew = true
+			if r.position.y > 0 and _row_has(img, r.position.y - 1, r.position.x, r.end.x):
+				r = r.grow_individual(0, 1, 0, 0)
+				grew = true
+			if r.end.y < img.get_height() and _row_has(img, r.end.y, r.position.x, r.end.x):
+				r = r.grow_individual(0, 0, 0, 1)
+				grew = true
+		return r
+	return Rect2i(lo, hi - lo + Vector2i.ONE)
+
+
+static func _column_has(img: Image, x: int, y0: int, y1: int) -> bool:
+	for y: int in range(y0, y1):
+		if img.get_pixel(x, y).a > ALPHA_FLOOR:
+			return true
+	return false
+
+
+static func _row_has(img: Image, y: int, x0: int, x1: int) -> bool:
+	for x: int in range(x0, x1):
+		if img.get_pixel(x, y).a > ALPHA_FLOOR:
+			return true
+	return false
