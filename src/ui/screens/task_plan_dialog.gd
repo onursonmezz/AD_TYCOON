@@ -170,12 +170,13 @@ func _task_row(p: int, i: int, area: String) -> HBoxContainer:
 	slider.min_value = 0.0
 	slider.max_value = 100.0
 	slider.step = 5.0
-	slider.tick_count = 5
+	slider.tick_count = 5  # çentikler yüzde 25, 50, 75 (uçlardakiler çizilmez)
 	slider.ticks_on_borders = false
 	slider.value = float(_raw[p][i])
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	slider.tooltip_text = tr("UI_PLAN_WEIGHT_TIP")
+	_style_slider(slider)
 	slider.value_changed.connect(func(v: float) -> void:
 		_raw[p][i] = v
 		_refresh())
@@ -198,6 +199,20 @@ func _task_row(p: int, i: int, area: String) -> HBoxContainer:
 		(_who_buttons[p] as Array).append(who)
 		row.add_child(who)
 	return row
+
+
+## S12 (taslak): kalın yuvarlak ray (dolu kısım yeşil, boşu krem ve kiremit kenarlı), turuncu "II" tutamak, altta çentikler.
+static func _style_slider(slider: HSlider) -> void:
+	var rail: StyleBoxFlat = CozyTheme.box(Color("f8e6cf"), 999, Color("e3ad85"), 1, false, Vector2(0.0, 7.0))
+	var fill: StyleBoxFlat = CozyTheme.box(Color("a9b98b"), 999, Color("a9b98b"), 1, false, Vector2(0.0, 7.0))
+	var fill_hi: StyleBoxFlat = CozyTheme.box(Color("98ab78"), 999, Color("98ab78"), 1, false, Vector2(0.0, 7.0))
+	slider.add_theme_stylebox_override("slider", rail)
+	slider.add_theme_stylebox_override("grabber_area", fill)
+	slider.add_theme_stylebox_override("grabber_area_highlight", fill_hi)
+	slider.add_theme_icon_override("grabber", CozyIcons.pill_grabber(CozyTheme.TERRA))
+	slider.add_theme_icon_override("grabber_highlight", CozyIcons.pill_grabber(CozyTheme.TERRA.darkened(0.1)))
+	slider.add_theme_icon_override("tick", CozyIcons.slider_tick(Color("d9865a")))
+	slider.custom_minimum_size.y = 40.0
 
 
 ## "Büyük Fikir / Konsept" → ["Büyük Fikir", "Konsept"]; "Metin Yazarlığı (Copy)" → ["Metin Yazarlığı", "Copy"].

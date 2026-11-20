@@ -95,3 +95,31 @@ static func dot(col: Color) -> ImageTexture:
 			var outer: float = clampf(n * 0.5 - 1.0 - d + 0.5, 0.0, 1.0)
 			img.set_pixel(x, y, Color(CozyTheme.CREAM_LIGHT.lerp(col, inner), outer))
 	return ImageTexture.create_from_image(img)
+
+
+## S12 (görev planı taslağı): hap biçimli turuncu tutamak, ortasında iki krem çizgi ("II").
+static func pill_grabber(col: Color) -> ImageTexture:
+	var w: int = 34
+	var h: int = 24
+	var img: Image = Image.create(w, h, false, Image.FORMAT_RGBA8)
+	var c: Vector2 = Vector2(w, h) * 0.5
+	for y: int in h:
+		for x: int in w:
+			var p: Vector2 = Vector2(x + 0.5, y + 0.5) - c
+			var q: Vector2 = Vector2(absf(p.x), absf(p.y)) - Vector2(w * 0.5 - 6.0, h * 0.5 - 6.0)
+			var d: float = Vector2(maxf(q.x, 0.0), maxf(q.y, 0.0)).length() + minf(maxf(q.x, q.y), 0.0) - 5.5
+			img.set_pixel(x, y, Color(col, clampf(0.5 - d, 0.0, 1.0)))
+	for bx: float in [14.0, 19.0]:
+		for y: int in range(8, 16):
+			for x: int in range(int(bx), int(bx) + 2):
+				img.set_pixel(x, y, CozyTheme.CREAM_LIGHT)
+	return ImageTexture.create_from_image(img)
+
+
+## S12: çubuğun altındaki çentik; doku uzun, çizgi alt yarıda (Godot çentiği rayın ortasına koyar, böylece altta görünür).
+static func slider_tick(col: Color) -> ImageTexture:
+	var img: Image = Image.create(2, 22, false, Image.FORMAT_RGBA8)
+	for y: int in range(15, 22):
+		for x: int in 2:
+			img.set_pixel(x, y, col)
+	return ImageTexture.create_from_image(img)
