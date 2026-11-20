@@ -18,6 +18,8 @@ var _background: String = ""
 var _avatar: String = ""
 var _year_buttons: Array[Button] = []
 var _cards: Array[Button] = []
+var _gender_filter: String = ""  # S12: portre filtresi ("" hepsi, female, male, neutral)
+var _avatar_grid: GridContainer
 var _desc: Label
 var _stats: HBoxContainer
 var _preview: VBoxContainer
@@ -173,22 +175,53 @@ func _build_character() -> void:
 	_preview = UiUtil.vbox(CozyTheme.SPACE_S)
 	_preview.custom_minimum_size.x = PREVIEW_SIZE.x
 	split.add_child(_preview)
-	var grid: GridContainer = GridContainer.new()
-	grid.columns = 4
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_S)
-	grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
-	split.add_child(grid)
-	for id: Variant in avatar_ids():
-		var avatar: String = str(id)
-		var card: Button = _pick_card(avatar, MenuArt.avatar_path(avatar), "", Vector2(0.0, 92.0),
-			func() -> void: _select_avatar(avatar))
-		card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		grid.add_child(card)
+	# S12 (Orgo): bütün portreler; üstte Tümü/Kadın/Erkek/Diğer filtresi, altta kaydırmalı ızgara.
+	var right: VBoxContainer = UiUtil.vbox(CozyTheme.SPACE_S)
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	split.add_child(right)
+	var filters: HBoxContainer = UiUtil.hbox(0)
+	right.add_child(filters)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.custom_minimum_size.y = float(DataDB.data.raw["ui_layout.json"]["avatar_grid_height"])
+	right.add_child(scroll)
+	_avatar_grid = GridContainer.new()
+	_avatar_grid.columns = 5
+	_avatar_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_avatar_grid.add_theme_constant_override("h_separation", CozyTheme.SPACE_S)
+	_avatar_grid.add_theme_constant_override("v_separation", CozyTheme.SPACE_S)
+	scroll.add_child(_avatar_grid)
+	var fill_filters: Callable = func(self_ref: Callable) -> void:
+		UiUtil.clear(filters)
+		filters.add_child(UiUtil.segmented([["", "UI_AVATAR_ALL"], ["female", "UI_AVATAR_FEMALE"], ["male", "UI_AVATAR_MALE"],
+			["neutral", "UI_AVATAR_OTHER"]], _gender_filter, func(id: String) -> void:
+				_gender_filter = id
+				self_ref.call(self_ref)
+				_fill_avatars()
+				scroll.scroll_vertical = 0))
+	fill_filters.call(fill_filters)
+	_fill_avatars()
 	_page.add_child(_buttons(tr("UI_BACK"), func() -> void: show_step(1), tr("UI_START_GAME"), func() -> void:
 		_on_done.call(_background, _start_year, _agency_name, {"name": _founder_name, "avatar": _avatar})))
 	_select_avatar(_avatar)
 	name_edit.grab_focus.call_deferred()
+
+
+## Filtreye uyan portre kartları (seçili olan işaretli kalır).
+func _fill_avatars() -> void:
+	UiUtil.clear(_avatar_grid)
+	_cards.clear()
+	for rec: Variant in DataDB.data.raw.get("avatars.json", []):
+		if bool(rec.get("staff_only", false)):
+			continue
+		if not _gender_filter.is_empty() and str(rec.get("gender", "")) != _gender_filter:
+			continue
+		var avatar: String = str(rec["id"])
+		var card: Button = _pick_card(avatar, MenuArt.avatar_path(avatar), "", Vector2(0.0, 92.0),
+			func() -> void: _select_avatar(avatar))
+		card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		_avatar_grid.add_child(card)
+	_mark(_avatar)
 
 
 func _select_avatar(id: String) -> void:

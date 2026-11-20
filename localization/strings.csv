@@ -2128,3 +2128,7 @@ UI_PLAN_FOOT_ASSIGN,"Her göreve bir kişi ata; yükü %100'ü aşan yorulur ve 
 UI_PLAN_STEP_0,Strateji,Strategy
 UI_PLAN_STEP_1,Kreatif,Creative
 UI_PLAN_STEP_2,Prodüksiyon & Yayın,Production & Launch
+UI_AVATAR_ALL,Tümü,All
+UI_AVATAR_FEMALE,Kadın,Female
+UI_AVATAR_MALE,Erkek,Male
+UI_AVATAR_OTHER,Diğer,Other

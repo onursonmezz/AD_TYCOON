@@ -1889,3 +1889,9 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **İkon kesilmesi (S12, Orgo):** `IconPack` ikonları yüklerken resmin kenarındaki %6'lık şeridi "komşu ikon kırıntısı" sayıp atlıyordu. Kenara yakın çizilmiş ikonların bir parçası da gidiyordu (giriş sayfasındaki yenile ikonu; toplam 91 ikon bu şeride dayanıyordu).
   - Artık kırpma kutusu, çizim şeride kadar uzanıyorsa o yönde çizim bitene kadar büyüyor.
   - Çizimden ayrık kırıntılar yine dışarıda kalıyor.
+- **Portreler (S12, Orgo):** Karakter ekranında yalnızca 11 portre vardı. Orgo'nun `Downloads/KARAKTER_AVATAR` klasöründeki 7 ızgara (her biri 12 portre) ve 9 tek portre eklenmemişti.
+  - Izgaralar hücrelere bölündü. Aynı beş karakterin neredeyse aynı tekrarları ve zaten oyunda olan ızgara ayıklandı.
+  - 56 yeni portre eklendi (`assets/ui/avatars/portre_001…056.png`). Seçilebilir portre sayısı 67 oldu: 15 kadın, 20 erkek, 32 diğer.
+  - Kadın/erkek/diğer etiketi görünüşe göre verildi; `data/avatars.json` içinde "gender" (female/male/neutral) değiştirilerek düzeltilebilir.
+  - Karakter ekranında Tümü/Kadın/Erkek/Diğer filtresi ve kaydırmalı 5 sütunlu ızgara var (`ui_layout.json avatar_grid_height`).
+  - Yeni portreler işe alınan çalışanlara da veriliyor (aynı cinsiyet etiketinden, kullanılmayanlar önce).
