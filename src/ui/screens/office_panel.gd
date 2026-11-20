@@ -169,7 +169,10 @@ func _plants_row(sim: Simulation, s: SimState, parent: HBoxContainer) -> void:
 		return
 	var info: VBoxContainer = UiUtil.vbox(0)
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.add_child(UiUtil.label(tr("UI_PLANTS_STATE") % [count, sim.build.weeks_since_watered(s)], 12))
+	var state_label: Label = UiUtil.label(tr("UI_PLANTS_STATE") % [count, sim.build.weeks_since_watered(s)], 12)
+	state_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # S11: İngilizcede uzun; satırı genişletmesin
+	state_label.custom_minimum_size.x = 110.0
+	info.add_child(state_label)
 	if sim.build.plants_dry(s):
 		info.add_child(UiUtil.label(tr("UI_PLANTS_DRY"), 12, UiUtil.TERRACOTTA))
 	parent.add_child(info)

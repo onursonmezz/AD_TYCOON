@@ -10,6 +10,7 @@ const SUB_VIEWS: Array = [["research", "_tab", "fit"], ["research", "_tab", "foc
 	["finance", "_view", "suppliers"]]
 
 var _out: String = "user://panel_shots"
+var _audit: UiAudit = UiAudit.new()  # S11
 var _only: PackedStringArray = PackedStringArray()
 var _lang: String = "tr"
 
@@ -58,6 +59,11 @@ func _run() -> void:
 		while not GameState.is_waiting() and days < WARMUP_DAYS:
 			_step()
 			days += 1
+	# S11: faz başında plan/mini oyun beklemesini geç (yoksa pencere kapanır, panel bulunmaz).
+	for i: int in 6:
+		if GameState.is_waiting():
+			ToolUnblock.unblock(0.6)
+	await get_tree().create_timer(0.3).timeout
 	for id: String in PANELS:
 		if not _only.is_empty() and not _only.has(id):
 			continue
@@ -68,6 +74,7 @@ func _run() -> void:
 		var panel: Control = screen.get("_panel")
 		var need: Vector2 = panel.get_combined_minimum_size()
 		print("%s: içerik %.0f×%.0f" % [id, need.x, need.y])
+		_audit.check(get_tree().root, id)
 		get_viewport().get_texture().get_image().save_png(_out.path_join(id + ".png"))
 		for sub: Array in SUB_VIEWS:
 			if sub[0] != id:
@@ -77,6 +84,8 @@ func _run() -> void:
 			await get_tree().create_timer(0.5).timeout
 			need = panel.get_combined_minimum_size()
 			print("%s/%s: içerik %.0f×%.0f" % [id, sub[2], need.x, need.y])
+			_audit.check(get_tree().root, "%s_%s" % [id, sub[2]])
 			get_viewport().get_texture().get_image().save_png(_out.path_join("%s_%s.png" % [id, sub[2]]))
 	print("Panel çekimleri: %s" % _out)
+	_audit.save(_out.path_join("audit.txt"))
 	get_tree().quit()

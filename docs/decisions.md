@@ -1839,3 +1839,36 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
 - **Odak önemi tablosu:** Düz "?" yazıları yerine Sektör uyumu sekmesiyle aynı renkli kutular.
 - **Ekran turu:** Hedef ve ton seçim panelleri `11g_pick_*` adıyla turda.
 - **Kalan açılır menüler** yalnızca filtre ve ayar menüleri (ekip/müşteri filtreleri, dil); bunlar seçim değil süzme için olduğundan bırakıldı.
+
+## K-145 — S11: Orgo'nun arayüz ve akış düzeltmeleri (2026-11-20)
+- **Fazlar sırayla (Orgo):** 3. aşamadaki "plan başta bir kez" kararı geri alındı.
+  - Kampanya başlarken yalnızca 1. fazın planı yapılıyor.
+  - 2. ve 3. faz başladığında oyun duruyor ve o fazın görev planı açılıyor (`TaskPlanDialog.for_phase`, `PlanTaskPhaseCommand`, `PhaseInput.apply_task_phase`).
+  - Kiralıklar 3. fazın planında seçiliyor. Kişi yükü, planlanan fazlardan birikiyor (`TaskPlan.auto_assign_phases`).
+- **Faz sürerken ofis görünüyor (Orgo):**
+  - Planlı kampanyada faz başında kampanya penceresi açılmıyor, mini oyundan sonra kapanıyor.
+  - Kampanya başlayınca da pencere kapanıyor. İlerleme üstteki şeritte.
+  - Şerit ve puan baloncukları artık pencerelerin altında; eskiden pencerenin üstüne çıkıyordu.
+- **Pencere boyu ve yazı boyu sabit:** "Büyüyüp küçülme"nin kaynağı K-122'deki küçülterek sığdırmaydı (`FitScaler`): içerik değişince bütün yazı ölçeği değişiyordu. `fit_min_scale` 1 oldu.
+  - Ana pencerelerin hepsi 820×540 (paneller arasında geçince de boy değişmiyor).
+  - Taşan pencereler genişletildi ya da sıkılaştırıldı: yeni kampanya, seçim kartları, olay, rapor, sunum daveti, ofis, ekipman, sektör uyumu.
+  - Uzun listeler (gelen kutusu, adaylar, ekip, sektör listesi, sektör takvimi, araçlar) kendi kutusunda kayıyor.
+- **Üstüne gelince kayma:**
+  - Düğmelerin "üstüne gelince büyüme" efekti kaldırıldı; büyüyen düğmenin yazısı kayıyor, kenarı pencereden taşıyordu.
+  - Temada bütün düğme türlerinin bütün hâlleri aynı iç boşlukta (`ThemeStates.unify`). Özel kutu veren düğmelerde "kapalı" hâli de eklendi.
+- **Denetim aracı (`tools/ui_audit.gd`, `UiAudit`):** Ekran turu, pencere çekimleri ve panel çekimleri her karede şunları denetliyor:
+  - kesik tek satır yazı
+  - ekrandan taşma
+  - pencereden geniş ya da uzun içerik
+  - hâller arasında iç boşluğu farklı düğme
+  - küçültülmüş içerik
+  - aynı pencerenin karelerde boy değiştirmesi
+  - Rapor: `<out>/audit.txt`.
+- **Tarih:** "Kasım 1993 · Hafta 2 (Y4)" (ay adı önde). Kayıt yuvalarında "Kasım 1993".
+- **Bitkiler:** Susayınca sağdaki bildirim sütununun en üstünde kalıcı bir "Sula" kartı duruyor (`PlantAlert`); sulayınca kalkıyor. Susadı/kurudu bildirim kartları ayrıca çıkmıyor.
+- **Küçükler:**
+  - Tek kanalda "%100 · tutar" satırı gizli; yalnızca bütçe kanala yetmiyorsa uyarı olarak görünüyor.
+  - Araç satırında sürüm ve abonelik adın altında.
+  - İnşa durum yazısı geniş alt satırda; kısayollar bilgi simgesinin ipucunda.
+  - Sektör uyumunda başlıklar ve kutular ayrı satırlarda.
+  - Sunum davetinde ekip iki sütunda.

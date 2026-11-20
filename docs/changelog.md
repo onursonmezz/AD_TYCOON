@@ -1,5 +1,22 @@
 # Değişiklik günlüğü
 
+## Orgo'nun düzeltmeleri: arayüz ve faz akışı (2026-11-20)
+- Fazlar yine sırayla geliyor: kampanya başlarken 1. faz, sonra 2. ve 3. faz başlarken o fazın planı.
+- Faz sürerken kampanya penceresi kapalı; ofiste çalışanları izliyorsun, ilerleme üstteki şeritte.
+- Pencereler sabit boyda; sekme ya da sayfa değişince yazılar büyüyüp küçülmüyor. Uzun listeler kendi kutusunda kayıyor.
+- Fareyle üstüne gelince düğmeler büyümüyor, yazı kaymıyor, kart pencereden taşmıyor.
+- Tarih "Kasım 1993 · Hafta 2 (Y4)" biçiminde.
+- Bitkiler susayınca sağda "Sula" düğmeli kalıcı bir kart çıkıyor.
+- Tek kanalda gereksiz "%100 · tutar" yazısı kalktı.
+- Nasıl test ederim:
+  1. Orta boy bir işi 3+ kişiyle başlat. Önce yalnızca "Görev planı · Faz 1" açılmalı. Başlatınca pencere kapanmalı ve ofis görünmeli.
+  2. Faz 1 bitince oyun durmalı ve "Görev planı · Faz 2" açılmalı; Faz 3'te kiralık ekipman seçenekleri de olmalı.
+  3. Ar-Ge'de sekmeler ve sayfalar arasında gezin. Pencere ve yazı boyu hiç değişmemeli.
+  4. Medya kanalı seçerken "Tümü" ile tek bir kategori arasında geçiş yap. Yazılar aynı boyda kalmalı.
+  5. Fareyi düğmelerin ve olay seçeneklerinin üstünde gezdir. Hiçbir şey kaymamalı ya da taşmamalı.
+  6. Bitkileri birkaç hafta sulama. Sağda "Bitkiler susadı · Sula" kartı çıkmalı; basınca kaybolmalı.
+  7. Üstteki tarih "Ay adı Yıl · Hafta n (Yn)" biçiminde olmalı.
+
 ## İnceleme 10. aşama: genel cila (2026-11-19)
 - Büyük ofiste "İnşa moduna geç" düğmesi artık kesilmiyor; bitki sulama ile aynı satırda.
 - Yeni kampanyada hedef, hedef kitle ve ton da çizimli kartlarla seçiliyor (açılır menü kalmadı).

@@ -6,6 +6,7 @@ extends Node
 const WARMUP_DAYS: int = 400
 
 var _out: String = "user://dialog_shots"
+var _audit: UiAudit = UiAudit.new()  # S11
 var _lang: String = "tr"
 var _screen: Control
 
@@ -30,6 +31,7 @@ func _step() -> void:
 
 func _shot(name: String) -> void:
 	await get_tree().create_timer(0.8).timeout
+	_audit.check(get_tree().root, name)
 	get_viewport().get_texture().get_image().save_png(_out.path_join(name + ".png"))
 
 
@@ -129,4 +131,5 @@ func _run() -> void:
 	await _shot("ceremony")
 	await _clear()
 	print("Pencere çekimleri: %s" % _out)
+	_audit.save(_out.path_join("audit.txt"))
 	get_tree().quit()
