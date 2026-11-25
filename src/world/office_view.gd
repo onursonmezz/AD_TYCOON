@@ -112,7 +112,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
-	if not is_visible_in_tree() or get_viewport().gui_get_focus_owner() is LineEdit:
+	if not is_visible_in_tree() or world.tour != null or get_viewport().gui_get_focus_owner() is LineEdit:
 		return
 	var dir: Vector2 = Vector2(
 		float(Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT)) - float(Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT)),

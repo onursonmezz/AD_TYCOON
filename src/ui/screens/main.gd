@@ -149,6 +149,18 @@ func _build_menu(col: HBoxContainer) -> void:
 		b.add_child(dot)
 		_menu_dots[id] = dot
 		col.add_child(b)
+	# K-148: gezinti modu (F) dokun sonunda, çizgiyle ayrı.
+	col.add_child(MainHud.dock_divider())
+	var tour: Button = UiUtil.icon_button("walk", tr("MENU_TOUR"), enter_tour, MainHud.MENU_ICON)
+	tour.theme_type_variation = "DockIcon"
+	tour.custom_minimum_size = MainHud.DOCK_SLOT
+	tour.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	col.add_child(tour)
+
+
+## Gezinti modu (K-148): pencere, inşa modu ya da karar penceresi açıkken açılmaz.
+func enter_tour() -> void:
+	TourMode.try_open(self, _office, _modal_layer, _build_bar != null)
 
 
 ## Menü ekranlarının yüzen penceresi: ekranın tam ortasında, boyutu açılan panele göre (_layout).

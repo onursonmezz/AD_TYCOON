@@ -1,0 +1,17 @@
+<!-- Ajans Tycoon için elle çizildi (Tabler çizgi stiliyle uyumlu): yürüyen insan (gezinti modu, K-148) -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  stroke-width="3"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="13" cy="4" r="1.4" />
+  <path d="M7 21l3 -4" />
+  <path d="M16 21l-2 -4l-3 -3l1 -6" />
+  <path d="M6 12l2 -3l4 -1l3 3l3 1" />
+</svg>

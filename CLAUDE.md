@@ -48,6 +48,7 @@ gereken bir şey varsa adım adım tarif et.
 - Ses (M9-B): `Audio` autoload, tarifler `data/sounds.json`, dosya rehberi `assets/audio/README.md`. Dosya yoksa kodla üretilen yer tutucu çalar.
 - Performans ölçümü (M9-C): `godot --path . res://tools/perf_check.tscn -- --staff=60 [--samples]`; ekran turu İngilizce: `--lang=en`.
 - Görsel karşılaştırma (G1): `godot --path . res://tools/screenshot.tscn -- --tag=<ad>` → `docs/screenshots/`; görünüş ayarları `data/look.json`.
+  Gezinti modu (K-148): `TourMode` (src/ui/screens), `TourCamera`/`TourCollision`/`TourLife` (src/world), ayarlar `data/look.json` "tour"; çekim `screenshot.tscn -- --tour`.
 - Blender modelleri (G3): `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe" --background --python tools/blender/build_all.py [-- --only=desk]` → `assets/models/`, palet `assets/textures/palette.png`.
   Karakterler (C1): `tools/blender/characters.py` (iskelet, gövdeler, hareketler); renk `skin`/`outfit`/`hair` adlı malzemelerle `CharacterRig._paint`.
   Hareket sayfası (C2): `godot --path . res://tools/pose_sheet.tscn --resolution 640x480 -- --out=<klasör>` (her klip önden/yandan + `sheet.png`).

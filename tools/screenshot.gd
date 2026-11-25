@@ -4,6 +4,7 @@ extends Node
 ## referanslarla (C:\Users\osonm\Documents\reference) karşılaştırılır.
 ## Çalıştırma (pencere açılır): godot --path . res://tools/screenshot.tscn -- [--out=docs/screenshots] [--tag=ad]
 ##   [--samples] (deneme modelleriyle) [--level=2] [--year=2020] [--no-era-lock] (kadro her dönemden)
+##   [--tour] (yalnızca gezinti modu, K-148: giriş, dönüş, çalışma alanı, canlılık, sokak)
 
 const W: int = 1920
 const H: int = 1080
@@ -12,6 +13,7 @@ var _out: String = "res://docs/screenshots"
 var _tag: String = ""
 var _samples: bool = false
 var _level: int = 2
+var _tour: bool = false
 var _year: int = 2000  # başlangıç yılı (--year=2020: kadro karakterlerini görmek için)
 
 
@@ -27,6 +29,8 @@ func _ready() -> void:
 			_level = int(arg.trim_prefix("--level="))
 		elif arg.begins_with("--year="):
 			_year = int(arg.trim_prefix("--year="))
+		elif arg == "--tour":
+			_tour = true
 		elif arg == "--no-era-lock":
 			StaffSystem.era_lock = false
 	if not _out.begins_with("res://") and not _out.begins_with("user://") and not _out.is_absolute_path():
@@ -47,6 +51,10 @@ func _run() -> void:
 		ModelLibrary.overrides = s.make_all("user://shot_samples")
 		ModelLibrary.overrides.merge(s.make_characters("user://shot_samples", DataDB.data))
 	_make_agency()
+	if _tour:
+		await _tour_shots()
+		get_tree().quit()
+		return
 	# 1) Yalnızca dünya (referanslar gibi tam ekran 3D).
 	var view: OfficeView = OfficeView.new()
 	add_child(view)
@@ -71,6 +79,44 @@ func _run() -> void:
 	await _shot("ui_panel")
 	print("Ekran görüntüleri: %s" % ProjectSettings.globalize_path(_out))
 	get_tree().quit()
+
+
+
+## Gezinti modu (K-148): ana ekrandan F ile girilmiş gibi; bakış ve konum elle verilir.
+func _tour_shots() -> void:
+	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
+	add_child(screen)
+	await _wait(3.0)
+	screen.call("enter_tour")
+	var world: OfficeWorld = (screen.get("_office") as OfficeView).world
+	var cam: TourCamera = world.tour
+	await _wait(1.0)
+	await _shot("tour_entrance")
+	cam.look(Vector2(-500.0, 0.0))
+	await _wait(0.3)
+	await _shot("tour_turn")
+	cam.look(Vector2(500.0, 0.0))
+	for i: int in 25:
+		cam.walk(Vector2(0.0, -1.0), false, 1.0 / 30.0)
+	cam.look(Vector2(0.0, 40.0))
+	await _wait(1.0)
+	await _shot("tour_inside")
+	var spots: Array = world.layout.spot_list("kitchen") + world.layout.spot_list("lounge")
+	if not spots.is_empty():
+		var d: Vector2 = (spots[0] as Vector2) - cam.ground_pos()
+		cam.set("_yaw", atan2(-d.x, -d.y))
+		cam.set("_pitch", deg_to_rad(-8.0))
+		cam.look(Vector2.ZERO)
+	await _wait(14.0)  # zaman durmuşken biri kahveye kalksın
+	await _shot("tour_life")
+	var size: Vector2 = world.layout.size
+	cam.position = Vector3(size.x * 0.5, cam.position.y, size.y + 4.0)
+	cam.set("_yaw", 0.0)
+	cam.set("_pitch", deg_to_rad(8.0))
+	cam.look(Vector2.ZERO)
+	await _wait(0.5)
+	await _shot("tour_street")
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 ## Sabit tohumlu örnek ajans: 2005, ofis seviyesi _level, 8 çalışan, mobilyalar, birkaç biten kampanya (posterler).

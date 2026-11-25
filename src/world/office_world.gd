@@ -8,6 +8,9 @@ extends Node3D
 const WALL_THICKNESS: float = 0.18
 
 var rig: CameraRig
+## Gezinti modu (K-148) açıkken göz hizası kamerası; kapalıyken null.
+var tour: TourCamera = null
+var _life: TourLife = null
 var layout: OfficeLayout
 var _level: int = 0
 var _build_version: int = -1
@@ -134,7 +137,7 @@ func _update_cut() -> void:
 	var normals: Dictionary = {"n": Vector2(0, -1), "s": Vector2(0, 1), "w": Vector2(-1, 0), "e": Vector2(1, 0)}
 	for w: Dictionary in _walls:
 		var mesh: MeshInstance3D = w["mesh"]
-		var cut: bool = bool(w["outer"]) and (normals[w["side"]] as Vector2).dot(view) > 0.1
+		var cut: bool = tour == null and bool(w["outer"]) and (normals[w["side"]] as Vector2).dot(view) > 0.1
 		var h: float = cut_h if cut else float(w["height"])
 		(mesh.mesh as BoxMesh).size.y = h
 		mesh.position.y = h * 0.5
@@ -300,6 +303,60 @@ func _update_looks_and_activities(s: SimState) -> void:
 						and absi((id + str(_last_day)).hash()) % 100 < int(100.0 * float(cfg["phone_chance"]))
 					act = "phone" if phone else "type"
 		c.set_activity(act)
+
+
+# --- gezinti modu (K-148) -----------------------------------------------------------
+
+## Göz hizası kamerasına geçer: bütün duvarlar tam boy, çalışanlar zaman dururken de dolaşır (TourLife).
+func begin_tour() -> void:
+	if tour != null or layout == null:
+		return
+	tour = TourCamera.new()
+	add_child(tour)
+	tour.start(layout, _environment.environment)
+	_life = TourLife.new(self)
+	add_child(_life)
+	_update_cut()
+
+
+## Kuşbakışına döner; gezintide kalkanlar gerçek yerlerine yürür, işleri simülasyondaki gibi olur.
+func end_tour() -> void:
+	if tour == null:
+		return
+	tour.queue_free()
+	tour = null
+	_life.queue_free()
+	_life = null
+	rig.camera.current = true
+	_update_cut()
+	_place_of.clear()
+	sync()
+
+
+func character(id: String) -> OfficeCharacter:
+	return _chars.get(id, null)
+
+
+func character_ids() -> Array:
+	return _chars.keys()
+
+
+## Çalışanın simülasyondaki yeri ("desk:3", "kitchen:0", "away:0"…); bilinmiyorsa "".
+func home_place(id: String) -> String:
+	return str(_place_of.get(id, ""))
+
+
+## Yalnızca görüntü: çalışanı place'in slot numaralı yerine yürütür (_place_of değişmez).
+func send(id: String, place: String, slot: int) -> void:
+	if _chars.has(id):
+		_go(_chars[id], id, place, slot)
+
+
+## Gerçek yerine geri yürütür.
+func go_home(id: String) -> void:
+	var home: String = home_place(id)
+	if _chars.has(id) and not home.is_empty():
+		_go(_chars[id], id, home.get_slice(":", 0), int(home.get_slice(":", 1)))
 
 
 # --- baloncuklar ------------------------------------------------------------------

@@ -1918,3 +1918,32 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - 2000: beyaz elbiseli kadın (f05), çizgili gömlek ve kargo (m01).
   - 2010: gözlüklü ekose pantolonlu kadın (f01), pembe hırkalı sarışın (f02), kot ceketli adam (m01).
   - 2020: hardal kapüşonlu genç (m02), kıvırcık kızıl saçlı kadın (f02).
+
+## K-148 — Gezinti modu: ofiste birinci şahıs yürüyüş (2026-11-25)
+- **İstek (Orgo):** Ofiste birinci şahıs gezilebilen bir mod. İçindeyken hiçbir etkileşim yok; yalnızca çevreyi görmek için. Çalışanlar zaman akıyormuş gibi hareket etsin ama zaman akmasın.
+- **Giriş ve çıkış:** Doktaki son düğme (yürüyen insan) ya da F tuşu; Esc ile çıkılır. İnşa modunda ve bir karar penceresi (modal) açıkken açılmaz. Menü penceresi açıksa yalnızca gizlenir, çıkınca geri gelir.
+- **Hiç etkileşim yok:** `TourMode` bütün girdiyi yutar (tıklama, kısayol, hız tuşları). Bütün arayüz gizlenir; yalnızca ortada küçük bir nokta ve sol altta sönük bir tuş ipucu kalır. Fare imleci kilitlenir.
+- **Zaman durur:** Girişte `Clock.hold()`, çıkışta `Clock.release()`. Oyuncunun hızı korunur: önceden 2x'teyse çıkınca 2x'e döner. Oyun günü ilerlemediği için olay, teklif ve kampanya pencereleri de gelmez.
+- **Çalışanlar yalnızca görüntüde yaşar (`TourLife`):**
+  - Birkaç saniyede bir masasındaki biri kalkar, boş bir mutfak ya da dinlenme yerine gider, biraz durur ve döner. Aynı anda en çok 3 kişi kalkar.
+  - Masada yazanlar ile telefondakiler arada yer değiştirir. Uyuyan ve stres yapan olduğu gibi kalır.
+  - Simülasyona ve kayda hiçbir şey yazılmaz. Oyunun tohumlu zarı (`state.rng`) kullanılmaz, görüntünün kendi zarı var. Bu yüzden gezinti oyunun gidişatını değiştirmez.
+  - Çıkınca herkes simülasyondaki gerçek yerine yürür ve işi yeniden simülasyondan okunur.
+- **Yürüyüş (`TourCamera` + `TourCollision`):**
+  - WASD ya da oklarla yürünür, fareyle bakılır, Shift ile daha hızlı gidilir.
+  - Duvarlara (kapılar boşluk) ve eşyalara çarpılır, duvar boyunca kayılır. Halı gibi yere serilenler ve asılı eşyalar engel değildir; çalışanların içinden geçilir.
+  - Binanın 5 m dışına, sokağa kadar gidilebilir. Göz yüksekliği 1,62 m.
+- **Görünüş:**
+  - Kuşbakışında kesilen dış duvarlar gezintide tam boy olur.
+  - Binanın üstüne tavan gelir; tavan gölge düşürmez, güneş içeriyi aydınlatmaya devam eder.
+  - Gezinti kamerasının kendi gökyüzü var (kuşbakışında gök hiç görünmediği için ortamın arka planı düz koyu renk).
+  - Tilt-shift bulanıklığı gezintide yok.
+- **Sayılar `data/balance.json`'da değil, `data/look.json` "tour"da:** Planda balance.json demiştim. Ama bunlar oyun dengesi değil, kamera ve görüntü ayarı (diğer kamera ayarları da look.json'da). Hız, göz yüksekliği, fare hassasiyeti, gökyüzü ve tavan rengi, canlılık sıklıkları burada.
+- **Sınırlar:**
+  - Binanın dış yüzünde iç duvar kâğıdı görünüyor (eskiden beri böyle; kuşbakışında fark edilmiyordu).
+  - Kapı boşluklarının üstünde lento yok; tavan kenarı görünüyor.
+- **Testler (`tests/test_tour.gd`):**
+  - Her ofiste 8 yöne uzun yürüyüşte hiçbir duvar kesilmiyor ve hiçbir eşyanın içine girilmiyor.
+  - Zaman duruyor. Kayıt ve zar değişmiyor. Zaman dururken biri masasından kalkıyor. Çıkınca hız, arayüz, kamera ve fare eski hâline dönüyor.
+  - İnşa modunda ya da pencere açıkken mod açılmıyor.
+  - Gezintide kesik duvar yok.

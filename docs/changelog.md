@@ -1,5 +1,19 @@
 # Değişiklik günlüğü
 
+## Gezinti modu: ofiste yürü (2026-11-25)
+- Doktaki son düğme (yürüyen insan) ya da F tuşu ile ofise göz hizasından girilir.
+- WASD ile yürünür, fareyle bakılır, Shift ile daha hızlı gidilir; Esc ile çıkılır.
+- Gezinti yalnızca bakmak için: hiçbir şeye tıklanmaz, arayüz gizlenir.
+- Zaman durur, ama çalışanlar arada kalkıp kahveye gider, telefonla konuşur ve masalarına döner. Bu yalnızca görüntü; oyuna ve kayda etkisi yok.
+- Duvarlar tam boy, üstte tavan var; binanın önündeki sokağa da çıkılabilir.
+- Nasıl test ederim:
+  1. Oyunu 1x hızda başlat, F'ye bas. Arayüz kaybolmalı, girişte göz hizasında durmalısın.
+  2. WASD ile yürü, fareyle etrafa bak. Duvarlardan ve masalardan geçememelisin, kapılardan geçebilmelisin.
+  3. Yarım dakika bekle. Birkaç çalışan kalkıp mutfağa ya da dinlenme alanına gidip dönmeli.
+  4. Kapıdan çıkıp sokağa yürü. Gökyüzü mavi olmalı, binanın biraz ötesinde durmalısın.
+  5. Esc'ye bas. Arayüz geri gelmeli, kamera eski yerinde olmalı, tarih girdiğin günde kalmış olmalı ve oyun yine 1x akmalı.
+  6. İnşa modunu aç ve F'ye bas. Gezinti açılmamalı.
+
 ## Yeni kadro karakterleri ve dönem kilidi (2026-11-25)
 - Orgo'nun 10 yeni Tripo karakteri oyunda. İskeletleri benzer karakterlerden kopyalandı; hepsi yürüyor, oturuyor, yazıyor, telefonla konuşuyor.
 - Artık her dönemde kadın ve erkek karakter var. 1990: 1 kadın, 3 erkek; 2000: 5 kadın, 1 erkek; 2010: 2 kadın, 1 erkek; 2020: 2 kadın, 2 erkek.

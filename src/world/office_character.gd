@@ -63,6 +63,11 @@ func cheer() -> void:
 	_cheer_left = float(DataDB.data.characters["activity"]["cheer_seconds"])
 
 
+## Hedefteyken yapacağı iş (yürürken de; current_activity o an oynayanı verir).
+func wanted_activity() -> String:
+	return _activity
+
+
 func current_activity() -> String:
 	return _body.activity
 

@@ -27,6 +27,9 @@ static func handle(main: Control, event: InputEvent, modal_layer: Control, panel
 		else:
 			GameState.save_game()
 		return true
+	if event.is_action_pressed("game_tour") and not event.is_echo():
+		main.call("enter_tour")
+		return true
 	if event.is_action_pressed("ui_cancel"):
 		var modals: Array[Node] = modal_layer.get_children()
 		for i: int in range(modals.size() - 1, -1, -1):
