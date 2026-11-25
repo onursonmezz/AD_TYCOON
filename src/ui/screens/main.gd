@@ -62,6 +62,8 @@ func _ready() -> void:
 		open_modal(PitchDialog.new())
 	else:
 		_open_event()
+		if GameState.is_waiting():  # K-150: faz planı beklerken kaydedilen oyun yüklendi
+			_on_phase_started()  # mini oyundan önce (oyundaki sıra: önce plan)
 
 
 func _build() -> void:

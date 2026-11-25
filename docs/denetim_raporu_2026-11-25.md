@@ -1,6 +1,6 @@
 # Oyun denetimi — 25 Kasım 2026
 
-Bu rapor ilk hâliyle yalnızca tespitti. Onayınla 1–3 numaralı hatalar düzeltildi (K-149); diğerleri bekliyor.
+Bu rapor ilk hâliyle yalnızca tespitti. Onayınla 1–3 numaralı hatalar (K-149) ve 4–6 numaralı hatalar (K-150) düzeltildi; 7 ve 8 bekliyor.
 
 ## Neye baktım
 
@@ -37,16 +37,16 @@ Bu rapor ilk hâliyle yalnızca tespitti. Onayınla 1–3 numaralı hatalar düz
 - **Sonuç:** O görev fazın sonuna kadar hiç puan üretmiyor ve oyuncuya bunu söyleyen bir uyarı yok. Kampanya puanı sebepsizce düşmüş gibi görünüyor.
 - **Önerim:** Görevi kendiliğinden en uygun boştaki ekip üyesine vermek ve "X ayrıldı, görevi Y'ye geçti" bildirimi göstermek.
 
-### 4. Ay başında pencere çıkarsa otomatik kayıt o ay hiç yapılmıyor — **küçük**
+### 4. Ay başında pencere çıkarsa otomatik kayıt o ay hiç yapılmıyor — **küçük · DÜZELTİLDİ (K-150)**
 - Otomatik kayıt ay başında, yalnızca zaman akarken yapılıyor.
 - Ay başında çoğu zaman bir pencere açılıyor: olay, ödül töreni, rakip teklifi ya da faz planı. Pencere zamanı durduruyor, kayıt o ay atlanıyor ve bir sonraki aya kadar yeniden denenmiyor.
 - **Önerim:** Kaydı, pencere kapanıp zaman yeniden akınca yapmak.
 
-### 5. Faz planı beklerken kaydedilen oyun yüklenince plan penceresi açılmıyor — **küçük**
+### 5. Faz planı beklerken kaydedilen oyun yüklenince plan penceresi açılmıyor — **küçük · DÜZELTİLDİ (K-150)**
 - Yükleyince oyun durmuş kalıyor; yalnızca kampanya düğmesinde "!" işareti var. Kampanya penceresinden plan açılabiliyor, yani oyun kilitlenmiyor, ama ilk anda neden durduğu belli değil.
 - **Önerim:** Açılışta bekleyen faz planı varsa pencereyi kendiliğinden açmak; olay ve pitch için bu zaten yapılıyor.
 
-### 6. Kayıt yazılırken çok küçük bir risk — **küçük**
+### 6. Kayıt yazılırken çok küçük bir risk — **küçük · DÜZELTİLDİ (K-150)**
 - Kayıt önce geçici dosyaya yazılıyor, bu iyi. Ama eski kayıt yenisi yerine konmadan *önce* siliniyor. Tam o anda bir sorun çıkarsa (disk dolu, antivirüs dosyayı kilitledi) slot boş kalır.
 - **Önerim:** Eski kaydı silmek yerine `.bak` adıyla bir yedek olarak saklamak.
 

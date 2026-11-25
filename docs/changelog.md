@@ -1,5 +1,14 @@
 # Değişiklik günlüğü
 
+## Denetim düzeltmeleri: kayıt ve yükleme (2026-11-25)
+- Ay başında bir pencere açılsa bile otomatik kayıt artık atlanmıyor; pencere kapanıp zaman akınca yapılıyor.
+- Faz planı beklerken kaydedilmiş bir oyun yüklenince plan penceresi kendiliğinden açılıyor. Eskiden mini oyun plandan önce geliyordu; mini oyunlar kapalıysa hiçbir şey açılmıyordu.
+- Üstüne kaydederken eski kayıt bir yedek olarak saklanıyor. Kayıt bozulursa oyun otomatik olarak bir önceki kayıttan açılıyor.
+- Nasıl test ederim:
+  1. Oyunu oynat ve ay başında bir olay penceresi çıkınca kapat. Birkaç gün sonra Yükle ekranında "Otomatik" kaydın tarihi o aya geçmiş olmalı.
+  2. Bir kampanya başlat ve 2. faz başlayıp plan penceresi çıkınca kapatma, oyunu "Kaydet ve çık" ile kapat. Oyunu açıp kaydı yükle: önce görev planı penceresi açılmalı, mini oyun ondan sonra gelmeli.
+  3. Aynı slota iki kez kaydet. `%APPDATA%\Godot\app_userdata\` altındaki oyun klasöründe `save_slot_1.sav` yanında `save_slot_1.sav.bak` dosyası olmalı.
+
 ## Denetim düzeltmeleri: müşteri parası, vergi, görev devri (2026-11-25)
 - İşi süren müşteri artık ajanstan gitmiyor; iş bitince ayrılıyor. Eskiden giderse medya parası ajanstan çıkıyor ama fatura kesilmiyordu.
 - Ayrılmak üzere olan müşteri yeni brief göndermiyor.

@@ -109,3 +109,37 @@ func test_settings_apply_and_defaults() -> void:
 	assert_eq(Settings.get_value("autosave"), true)
 	Settings.mark_tutorial_seen("first_brief")
 	assert_true(Settings.tutorial_seen("first_brief"))
+
+
+func test_autosave_waits_for_closed_window_instead_of_skipping() -> void:
+	# K-150: ay başında pencere açıkken (saat tutulu) kayıt atlanmaz, zaman akınca ilk gün yapılır.
+	GameState.autosave_needs_clock = true
+	Settings.set_value("autosave", true)
+	GameState.new_game(15)
+	GameState.sim.pause_on_phase = false
+	Clock.set_speed(0)
+	Clock.hold()
+	for i: int in GameState.sim.state.clock.days_per_week * GameState.sim.state.clock.weeks_per_month + 1:
+		GameState.step_day()
+	assert_false(SaveSystem.has_save(SaveSystem.AUTO), "pencere açıkken kaydedilmez")
+	Clock.release()
+	GameState.step_day()
+	Clock.set_paused(true)
+	assert_true(SaveSystem.has_save(SaveSystem.AUTO), "pencere kapanınca ilk gün kaydedilir")
+
+
+func test_overwrite_keeps_backup_and_broken_save_falls_back() -> void:
+	# K-150: üstüne kaydedince eski kayıt .bak olarak kalır; asıl dosya bozulursa ondan yüklenir.
+	GameState.new_game(16, "", 0, "Birinci")
+	assert_true(GameState.save_game("slot_1"))
+	GameState.sim.state.agency_name = "İkinci"
+	assert_true(GameState.save_game("slot_1"))
+	assert_true(FileAccess.file_exists(SaveSystem.backup_path_of("slot_1")), "yedek var")
+	var f: FileAccess = FileAccess.open_compressed(SaveSystem.path_of("slot_1"), FileAccess.WRITE, FileAccess.COMPRESSION_GZIP)
+	f.store_string("{bozuk")
+	f.close()
+	var errs: Array[String] = []
+	var sim: Simulation = SaveSystem.load_game(data, "slot_1", errs)
+	assert_not_null(sim, "yedekten yüklendi")
+	assert_eq(errs, [] as Array[String])
+	assert_eq(sim.state.agency_name, "Birinci", "bir önceki kayıt")

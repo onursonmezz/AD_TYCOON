@@ -14,6 +14,11 @@ func path_of(slot: String) -> String:
 	return dir.path_join("save_%s.sav" % slot)
 
 
+## Bir önceki kayıt (K-150): asıl dosya okunamazsa buradan yüklenir.
+func backup_path_of(slot: String) -> String:
+	return path_of(slot) + ".bak"
+
+
 func meta_path_of(slot: String) -> String:
 	return dir.path_join("save_%s.meta" % slot)
 
@@ -70,10 +75,16 @@ func save_game(sim: Simulation, slot: String) -> bool:
 	file.store_string(text)
 	file.close()
 	# Önce geçici dosyaya yazılır, sonra eskisinin yerine konur: yazarken çökerse eski kayıt bozulmaz.
+	# K-150: eski kayıt silinmez, .bak olarak bir kuşak saklanır; yenisi yerine konamazsa geri alınır.
+	var bak: String = backup_path_of(slot)
 	if FileAccess.file_exists(path_of(slot)):
-		DirAccess.remove_absolute(path_of(slot))
+		if FileAccess.file_exists(bak):
+			DirAccess.remove_absolute(bak)
+		DirAccess.rename_absolute(path_of(slot), bak)
 	if DirAccess.rename_absolute(tmp, path_of(slot)) != OK:
 		push_error("Kayıt yerine konamadı: %s" % path_of(slot))
+		if FileAccess.file_exists(bak) and not FileAccess.file_exists(path_of(slot)):
+			DirAccess.rename_absolute(bak, path_of(slot))
 		return false
 	var meta: Dictionary = SaveCodec.meta_of(sim.state.to_dict(), Time.get_unix_time_from_system())
 	var mf: FileAccess = FileAccess.open(meta_path_of(slot), FileAccess.WRITE)
@@ -89,17 +100,29 @@ func load_game(data: GameData, slot: String, error_out: Array[String] = []) -> S
 		error_out.append("ERR_SAVE_CORRUPT")
 		return null
 	var text: String = _read(slot)
-	if text.is_empty():
-		error_out.append("ERR_SAVE_CORRUPT")
-		return null
-	var sim: Simulation = SaveCodec.decode(data, text, error_out)
-	for e: String in error_out:
+	var errors: Array[String] = []
+	var sim: Simulation = SaveCodec.decode(data, text, errors) if not text.is_empty() else null
+	if sim == null and errors.is_empty():
+		errors.append("ERR_SAVE_CORRUPT")
+	if sim == null and FileAccess.file_exists(backup_path_of(slot)):
+		# K-150: asıl dosya bozuksa bir önceki kayıt denenir.
+		var backup_errors: Array[String] = []
+		var old: Simulation = SaveCodec.decode(data, _read_file(backup_path_of(slot)), backup_errors)
+		if old != null:
+			push_warning("Kayıt bozuktu (%s), bir önceki kayıt yüklendi." % slot)
+			return old
+	error_out.append_array(errors)
+	for e: String in errors:
 		push_error("Kayıt okunamadı (%s): %s" % [slot, e])
 	return sim
 
 
 func _read(slot: String) -> String:
-	var file: FileAccess = FileAccess.open_compressed(path_of(slot), FileAccess.READ, FileAccess.COMPRESSION_GZIP)
+	return _read_file(path_of(slot))
+
+
+func _read_file(path: String) -> String:
+	var file: FileAccess = FileAccess.open_compressed(path, FileAccess.READ, FileAccess.COMPRESSION_GZIP)
 	if file == null:
 		return ""
 	var text: String = file.get_as_text()

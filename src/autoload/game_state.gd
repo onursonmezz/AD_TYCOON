@@ -7,6 +7,8 @@ var current_slot: String = ""
 ## Son kayıttan beri geçen oyun günleri yoksa false: çıkarken "kaydetmeden çık?" sorulmaz.
 var dirty: bool = false
 var _last_month: int = -1
+## Ay döndü ama kayıt henüz yapılamadı (pencere açıktı).
+var _autosave_due: bool = false
 ## Otomatik kayıt yalnızca oyun saati (Clock) çalışırken; testler GameState.step_day çağırınca gerçek kaydın
 ## üstüne yazılmasın. Kayıt testi bunu kapatır.
 var autosave_needs_clock: bool = true
@@ -92,15 +94,17 @@ func first_free_slot() -> String:
 
 
 ## Ay başında otomatik kayıt (ayarlardan kapatılabilir). Elle kayıt slotunu ve "kaydedilmedi" bilgisini değiştirmez.
+## K-150: ay başında bir pencere zamanı durdurduysa kayıt atlanmaz; zaman yeniden akınca ilk günde yapılır.
 func _maybe_autosave() -> void:
 	var month: int = sim.state.clock.week_index / sim.state.clock.weeks_per_month
 	if _last_month < 0:
 		_last_month = month
-	if month == _last_month:
+	if month != _last_month:
+		_last_month = month
+		_autosave_due = true
+	if not _autosave_due or (autosave_needs_clock and not Clock.is_running()):
 		return
-	_last_month = month
-	if autosave_needs_clock and not Clock.is_running():
-		return
+	_autosave_due = false
 	if bool(Settings.get_value("autosave")) and not sim.state.bankrupt:
 		SaveSystem.save_game(sim, SaveSystem.AUTO)
 
@@ -155,6 +159,7 @@ func is_bankrupt() -> bool:
 func _attach(new_sim: Simulation) -> void:
 	sim = new_sim
 	_last_month = -1
+	_autosave_due = false
 	sim.pause_on_phase = true
 	sim.phase_started.connect(func(phase: int) -> void: EventBus.phase_started.emit(phase))
 	sim.campaign_delivered.connect(_on_delivered)

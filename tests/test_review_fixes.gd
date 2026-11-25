@@ -120,3 +120,25 @@ func test_departed_assignee_tasks_go_to_team() -> void:
 	assert_eq(notes.size(), 1, "devir bildirimi")
 	assert_eq(str(notes[0]["key"]), "NOTE_TASK_REASSIGNED")
 	assert_gt(TaskPlan.phase_intensity(camp["setup"], 0, str(row[2])), 0.0, "devralan bu fazda üretir")
+
+
+func test_loading_a_game_waiting_for_phase_plan_reopens_the_plan() -> void:
+	# K-150: faz planı beklerken kaydedilen oyun açılınca plan penceresi kendiliğinden gelir.
+	GameState.new_game(507)
+	var sim: Simulation = GameState.sim
+	var client: Dictionary = sim.state.clients.values()[0]
+	_start(sim, client, [sim.state.founder()["id"]])
+	for i: int in 400:
+		if GameState.is_waiting():
+			break
+		while not EventSystem.pending(sim.state).is_empty():
+			var inst: Dictionary = EventSystem.pending(sim.state)
+			sim.events.resolve(sim, inst["uid"], int(inst["options"][0]))
+		sim.step_day()
+	assert_true(GameState.is_waiting(), "2. fazın planı bekleniyor")
+	sim.state.events["queue"] = []
+	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(3)
+	assert_eq(screen.find_children("*", "TaskPlanDialog", true, false).size(), 1, "plan penceresi açık")
+	GameState.end_game()

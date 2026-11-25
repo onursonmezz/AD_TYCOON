@@ -1961,3 +1961,14 @@ Orgo'nun istediği denetimde (`docs/denetim_raporu_2026-11-25.md`) bulunan ilk �
   - Bildirim: `NOTE_TASK_REASSIGNED`. Rakip teklifinde "bırak" seçilince de çıkar (`ResolveOfferCommand`).
 - **Testler:** `tests/test_review_fixes.gd` (6 test).
 - **Denge (200×10):** Bilgili bot aynı (ort. puan 7,63, Y10 medyan nakit ₺2,65 M, iflas %0,5 / %6,5). Rastgele bot 10 yılda %56,5 → %52,5 iflas; ilk 3 yılda %15,5 (değişmedi).
+
+## K-150 — Denetim düzeltmeleri: otomatik kayıt, yüklemede faz planı, kayıt yedeği (2026-11-25)
+- **Otomatik kayıt atlanmıyor:** Ay başında bir pencere (olay, tören, teklif, faz planı) zamanı durdurunca o ayın kaydı tamamen atlanıyordu. Artık kayıt "bekliyor" olarak kalıyor ve zaman yeniden akınca ilk günde yapılıyor (`GameState._autosave_due`).
+- **Yüklemede faz planı:** Denetimde "plan açılmıyor" demiştim. Daha doğrusu şuydu:
+  - Mini oyunlar açıksa yüklemede önce mini oyun geliyor, plan ondan sonra açılıyordu (oyundaki sıranın tersi).
+  - Mini oyunlar kapalıysa hiçbir pencere açılmıyor, oyun duruyordu.
+  - Artık açılışta bekleyen faz varsa önce plan penceresi açılıyor (`main.gd _ready`), mini oyun plandan sonra geliyor.
+- **Kayıt yedeği:** Üstüne kaydederken eski kayıt silinmiyor, `save_<slot>.sav.bak` olarak bir kuşak saklanıyor.
+  - Yeni dosya yerine konamazsa eskisi geri alınıyor.
+  - Asıl kayıt bozuk çıkarsa yükleme yedekten yapılıyor (uyarı günlüğe yazılıyor, oyuncuya hata gösterilmiyor).
+- **Testler:** `test_saves.gd` (otomatik kayıt bekler; yedekten yükleme) ve `test_review_fixes.gd` (yüklemede plan penceresi).
