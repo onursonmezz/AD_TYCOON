@@ -74,6 +74,7 @@ func refresh() -> void:
 		line.add_child(UiUtil.icon("check" if ok else "x", 16, CozyTheme.POSITIVE if ok else CozyTheme.TERRA))
 		line.add_child(UiUtil.wrapped(tr(r["key"]) % [need, have], 13, CozyTheme.TEXT if ok else CozyTheme.NEGATIVE, COLUMN_TEXT - 30.0))
 		_col.add_child(line)
+	_runway_line(sim)
 	var move: Button = UiUtil.button(tr("UI_MOVE_OFFICE") % UiUtil.money(sim.offices.move_cost(s, next)), func() -> void:
 		var err: String = GameState.execute(MoveOfficeCommand.new())
 		if err.is_empty():
@@ -85,6 +86,22 @@ func refresh() -> void:
 	move.disabled = not sim.offices.can_move(s)
 	move.theme_type_variation = "PrimaryButton"
 	_col.add_child(move)
+
+
+## K-151: taşınınca kalan nakit yeni aylık giderle kaç ay yeter; azsa kırmızı ve uyarı.
+func _runway_line(sim: Simulation) -> void:
+	var r: Dictionary = MonthlyCosts.after_move(sim)
+	if r.is_empty() or float(r["cash_left"]) < 0.0:
+		return  # parası yetmiyorsa koşul satırı zaten kırmızı
+	var warn: bool = bool(r["warn"])
+	var line: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
+	line.add_child(UiUtil.icon("alert-triangle" if warn else "clock", 16, CozyTheme.TERRA if warn else CozyTheme.MUTED))
+	var text: String = tr("UI_MOVE_RUNWAY") % [UiUtil.money(float(r["cash_left"])), UiUtil.money(float(r["monthly"])),
+		UiUtil.num(float(r["months"]), 1)]
+	if warn:
+		text += " " + tr("UI_MOVE_RUNWAY_WARN")
+	line.add_child(UiUtil.wrapped(text, 13, CozyTheme.NEGATIVE if warn else CozyTheme.TEXT, COLUMN_TEXT - 30.0))
+	_col.add_child(line)
 
 
 func _column() -> VBoxContainer:

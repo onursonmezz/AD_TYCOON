@@ -1972,3 +1972,13 @@ Orgo'nun istediği denetimde (`docs/denetim_raporu_2026-11-25.md`) bulunan ilk �
   - Yeni dosya yerine konamazsa eskisi geri alınıyor.
   - Asıl kayıt bozuk çıkarsa yükleme yedekten yapılıyor (uyarı günlüğe yazılıyor, oyuncuya hata gösterilmiyor).
 - **Testler:** `test_saves.gd` (otomatik kayıt bekler; yedekten yükleme) ve `test_review_fixes.gd` (yüklemede plan penceresi).
+
+## K-151 — Plaza tuzağı: bot işsiz oturmaz, taşınma ekranı kalan nakdi söyler (2026-11-25)
+Denetimin 7. maddesi: 30 yıllık 200 koşuda bilgili bot %15,5 iflas ediyordu; geç batışların 17/18'i plaza katında, taşındıktan 1–4 yıl sonra.
+- **Neden:** ₺15 M taşınmadan sonra kasada ~₺2,4 M kalıyor, aylık gider ₺160 binden ₺270 bine çıkıyor. Botun "tahsilata kadar kasa 1 aylık giderin altına inecekse işi alma" kuralı her brief'i reddettiriyordu; bot ~40 hafta boş oturup moral ve kadro kaybederek batıyordu.
+- **Bot (`SmartBot._affordable`):** Temkinli kural (`_fits`) tutmazsa bakılır: işsiz oturmak da kasayı yedeğin altına indirecek mi? İndirecekse kasayı hiçbir hafta eksiye düşürmeyen iş alınır. İşsiz güvendeyse eski kural geçerli.
+- **Oyuncu (ofis ekranı):** Taşınma koşullarının altında "taşınınca kasada X kalır; yeni aylık gider Y, ≈ N ay yeter" satırı (`MonthlyCosts.after_move`). N, `cashflow.move_runway_warn_months` (6) aydan azsa satır kırmızı ve batma uyarısı ekli. Kasa taşınmaya yetmiyorsa satır çıkmaz (koşul satırı zaten kırmızı).
+  - 6 ay: en uzun ödeme vadesi 12 hafta + iş süresi; bir işin parası ancak 3–5 ayda geliyor. Finans ekranının 2 aylık uyarısı taşınma kararı için fazla geç.
+- Oyun kuralı değişmedi (taşınma bedeli, kira aynı); yalnız bilgi eklendi.
+- **Denge (200 koşu):** 10 yıl: bilgili iflas %6,5 → %5,5, puan 7,63 (aynı); rastgele aynı. 30 yıl: bilgili iflas %15,5 → %7,0, plazaya ulaşma %94 (medyan Y17), 30. yıl medyan nakit ₺74,7 M.
+- **Testler:** `tests/test_move_runway.gd` (4 test). `panel_shots` aracına `--cash=` eklendi (uyarıyı görüntüde görmek için).

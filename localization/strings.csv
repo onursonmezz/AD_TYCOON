@@ -2138,3 +2138,5 @@ UI_AVATAR_OTHER,Diğer,Other
 NOTE_YEAR_TAX,"Kurumlar vergisi ödendi: ₺%d (geçen yılın kârı ₺%d).","Corporate tax paid: ₺%d (last year's profit ₺%d)."
 NOTE_CLIENT_LEAVES_LATER,"%s, süren işi bitince ajansla çalışmayı bırakacak.","%s will stop working with the agency once the current job is done."
 NOTE_TASK_REASSIGNED,"%s ayrıldı; kampanyadaki görevlerini %s üstlendi.","%s left; %s took over their campaign tasks."
+UI_MOVE_RUNWAY,"Taşınınca kasada %s kalır; yeni aylık gider %s, bu para ≈ %s ay yeter.","After moving you keep %s; new monthly costs %s, enough for ≈ %s months."
+UI_MOVE_RUNWAY_WARN,Bu sürede ödemesi gelecek işler yoksa ajans batabilir.,Without paid work coming in by then the agency may go bankrupt.

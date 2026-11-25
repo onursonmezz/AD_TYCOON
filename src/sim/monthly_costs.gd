@@ -32,3 +32,18 @@ static func total(sim: Simulation) -> float:
 	for v: Variant in breakdown(sim).values():
 		sum += float(v)
 	return sum
+
+
+## Taşınmadan önce (K-151): taşınınca kasada kalan, yeni kirayla aylık gider ve bu paranın kaç ay yettiği.
+## { cash_left, monthly, months, warn } — warn: kalan nakit cashflow.move_runway_warn_months aydan azsa. Sonraki ofis yoksa {}.
+static func after_move(sim: Simulation) -> Dictionary:
+	var s: SimState = sim.state
+	var next: Dictionary = sim.offices.next_office(s)
+	if next.is_empty():
+		return {}
+	var new_rent: float = float(next["rent_1990"]) * Economy.inflation(sim.data, s.clock.year())
+	var monthly: float = total(sim) - sim.offices.monthly_rent(s) + new_rent
+	var left: float = s.cash - sim.offices.move_cost(s, next)
+	var months: float = maxf(0.0, left) / monthly if monthly > 0.0 else INF
+	return {"cash_left": left, "monthly": monthly, "months": months,
+		"warn": months < sim.data.balf("cashflow.move_runway_warn_months")}

@@ -1,7 +1,7 @@
 extends Node
 ## Panel çekimi (UI-3): sabit tohumlu bir oyunda on menü penceresini tek tek, üstünde olay penceresi olmadan çeker.
 ## Taslaklarla (docs/reference/ui_mockups) yan yana karşılaştırmak için.
-## Çalıştırma: godot --path . res://tools/panel_shots.tscn --resolution 1672x941 -- --out=<klasör> [--only=team,inbox] [--lang=en]
+## Çalıştırma: godot --path . res://tools/panel_shots.tscn --resolution 1672x941 -- --out=<klasör> [--only=team,inbox] [--lang=en] [--cash=520000]
 
 const PANELS: Array[String] = ["inbox", "clients", "campaign", "team", "office", "tools", "research", "finance", "industry", "history"]
 const WARMUP_DAYS: int = 400
@@ -13,6 +13,7 @@ var _out: String = "user://panel_shots"
 var _audit: UiAudit = UiAudit.new()  # S11
 var _only: PackedStringArray = PackedStringArray()
 var _lang: String = "tr"
+var _cash: float = -1.0  # --cash=: kasayı ayarla (ör. taşınma uyarısını görmek için)
 
 
 func _ready() -> void:
@@ -23,6 +24,8 @@ func _ready() -> void:
 			_only = arg.trim_prefix("--only=").split(",")
 		elif arg.begins_with("--lang="):
 			_lang = arg.trim_prefix("--lang=")
+		elif arg.begins_with("--cash="):
+			_cash = float(arg.trim_prefix("--cash="))
 	DirAccess.make_dir_recursive_absolute(_out)
 	_run.call_deferred()
 
@@ -46,6 +49,8 @@ func _run() -> void:
 	var screen: Control = load("res://src/ui/screens/main.tscn").instantiate()
 	add_child(screen)
 	var sim: Simulation = GameState.sim
+	if _cash >= 0.0:
+		sim.state.cash = _cash
 	var days: int = 0
 	while sim.state.inbox.is_empty() and days < WARMUP_DAYS:
 		_step()

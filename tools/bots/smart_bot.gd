@@ -59,7 +59,19 @@ func decide(sim: Simulation) -> void:
 
 ## Kampanyanın medya ödemesi (teslim + medya vadesi) ve faturası (teslim + en uzun vade + pay) hesaba katılınca
 ## nakit hiçbir hafta yedeğin altına düşmüyorsa alınabilir.
+## K-151: işsiz oturmak da nakdi yedeğin altına indirecekse yedek beklenmez; kasayı eksiye düşürmeyen iş alınır
+## (eskiden bot büyük ofise taşınınca her işi reddedip haftalarca boş oturuyor, moral çöküp batıyordu).
 func _affordable(sim: Simulation, brief: Dictionary, reserve: float) -> bool:
+	if _fits(sim, brief, reserve):
+		return true
+	var terms: Array = sim.data.bal("cashflow.payment_terms")
+	var horizon: int = int(brief["deadline_weeks"]) + int(terms[terms.size() - 1]["weeks"]) + PAYMENT_SAFETY_WEEKS
+	if BotUtil.min_projected_cash(sim, horizon) >= reserve:
+		return false  # işsiz de güvende; temkinli kural geçerli
+	return _fits(sim, brief, 0.0)
+
+
+func _fits(sim: Simulation, brief: Dictionary, reserve: float) -> bool:
 	var now: int = sim.state.clock.week_index
 	var delivery: int = now + int(brief["deadline_weeks"])
 	var terms: Array = sim.data.bal("cashflow.payment_terms")

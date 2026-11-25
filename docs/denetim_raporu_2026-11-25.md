@@ -50,11 +50,20 @@ Bu rapor ilk hâliyle yalnızca tespitti. Onayınla 1–3 numaralı hatalar (K-1
 - Kayıt önce geçici dosyaya yazılıyor, bu iyi. Ama eski kayıt yenisi yerine konmadan *önce* siliniyor. Tam o anda bir sorun çıkarsa (disk dolu, antivirüs dosyayı kilitledi) slot boş kalır.
 - **Önerim:** Eski kaydı silmek yerine `.bak` adıyla bir yedek olarak saklamak.
 
-### 7. İyi oynayan ajans bile geç dönemde batabiliyor — **dikkat, ölçüm**
+### 7. İyi oynayan ajans bile geç dönemde batabiliyor — **DÜZELTİLDİ (K-151)**
 - 30 yıllık simülasyonda bilinçli oynayan bot 30 koşunun 6'sında iflas etti (%20). İlk 10 yılda bu oran %6,5; yani batmaların çoğu 10. yıldan sonra.
 - Aynı dönemde hayatta kalanların ortanca kasası ₺10–70 milyon. Batanlar azınlık ama oran yüksek.
 - 17. yılda (plaza katına taşınma) ortanca kasa ₺12,5 milyondan ₺9,3 milyona düşüyor. Plaza kirası ve büyüyen ekip şüpheli.
-- 30 koşu küçük bir örnek. Önerim önce 200 koşuyla yeniden ölçmek, sonra hangi yılda ve neden battıklarına bakmak.
+- **200 koşuyla ölçüldü (25 Kasım):** Genel iflas oranı %15,5 çıktı (31 oyun; 30 koşudaki %20 biraz abartılıydı).
+  - 13'ü ilk 10 yılda battı, hepsi küçük ofiste ve 1–2 kişiyle (4–6. yıl).
+  - 18'i 10. yıldan sonra battı; 17'si plaza katında, taşındıktan 1–4 yıl sonra.
+- **Plaza katındaki batışın nedeni:** Taşınma bedeli ₺15M. Bot taşındıktan sonra elinde ~₺2,4M kalıyor; aylık gider ₺160 binden ₺270 bine çıkıyor.
+  - Gelen kutusunda iş olduğu hâlde bot hiçbirini almıyor. Kuralı "tahsilata kadar kasa 1 aylık giderin altına inecekse alma".
+  - İşsiz kalmak da kasayı eritiyor, ama bot bunu hesaba katmıyor. 40 hafta boyunca boş oturup batıyor; bu arada moral 54'ten 23'e iniyor, çalışanlar rakiplere kaçıyor.
+- **Deneme:** Aynı oyunları bir kural farkıyla oynayan bot denendi: "işsiz kalmak da kasayı yedeğin altına indirecekse, kırmızıya düşürmeyen işi al".
+  - Geç dönem iflası 18'den 3'e indi, genel iflas %15,5'ten %7'ye. Erken iflaslar (11) neredeyse aynı kaldı.
+  - Yani geç dönem iflasının çoğu oyunun değil botun zaafı. Ama gerçek bir oyuncu da plazaya taşınınca aynı tuzağa düşebilir: kasa boşalıyor, kira 4–5 katına çıkıyor ve taşınma ekranı bunu söylemiyor.
+- **Düzeltme (K-151):** Kural bota kondu ve ofis ekranına "taşınınca para kaç ay yeter" satırı eklendi. 200×30 ölçümde iflas %15,5 → %7,0.
 - 30 yılın iyi yanları da var: geç dönem puanı eskisinden çok daha iyi (30. yılda 5,2; eskiden 2–3,5), rastgele bot ilk 3 yılda %20 iflasla bu örnekte hedefte, plaza katı 17. yılda açılıyor.
 
 ### 8. Teknik gürültü — **önemsiz, oyuncu görmez**

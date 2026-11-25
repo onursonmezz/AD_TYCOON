@@ -1,5 +1,14 @@
 # Değişiklik günlüğü
 
+## Taşınma uyarısı ve daha akıllı bot (2026-11-25)
+- Ofis ekranında, taşınma koşullarının altında yeni bir satır var: taşınınca kasada ne kalacağı, yeni kirayla aylık giderin ne olacağı ve bu paranın kaç ay yeteceği. 6 aydan azsa satır kırmızı ve "ödemesi gelecek işler yoksa ajans batabilir" uyarısı çıkıyor.
+- Denge botu artık büyük ofise taşındıktan sonra işsiz oturmuyor: boş oturmak da kasayı eritecekse kasayı eksiye düşürmeyen işi alıyor. 30 yıllık ölçümde iflas %15,5'ten %7'ye indi.
+- Nasıl test ederim:
+  1. Bir oyunda Ofis penceresini aç. Kasan taşınma bedelinin biraz üstündeyken "Taşınma koşulları" altında kırmızı uyarı satırı görmelisin.
+  2. Kasan çok bolken satır siyah olmalı ve ay sayısı büyük çıkmalı.
+  3. Kasan taşınmaya yetmiyorsa bu satır hiç görünmemeli.
+  4. Hızlı görmek için: `godot --path . res://tools/panel_shots.tscn --resolution 1672x941 -- --out=<klasör> --only=office --cash=520000`
+
 ## Denetim düzeltmeleri: kayıt ve yükleme (2026-11-25)
 - Ay başında bir pencere açılsa bile otomatik kayıt artık atlanmıyor; pencere kapanıp zaman akınca yapılıyor.
 - Faz planı beklerken kaydedilmiş bir oyun yüklenince plan penceresi kendiliğinden açılıyor. Eskiden mini oyun plandan önce geliyordu; mini oyunlar kapalıysa hiçbir şey açılmıyordu.
