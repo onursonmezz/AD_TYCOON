@@ -3,7 +3,7 @@ extends Node
 ## sabit açılardan çeker, docs/screenshots/ altına kaydeder. Her görsel değişiklikten sonra çalıştırılıp
 ## referanslarla (C:\Users\osonm\Documents\reference) karşılaştırılır.
 ## Çalıştırma (pencere açılır): godot --path . res://tools/screenshot.tscn -- [--out=docs/screenshots] [--tag=ad]
-##   [--samples] (deneme modelleriyle) [--level=2] [--year=2020]
+##   [--samples] (deneme modelleriyle) [--level=2] [--year=2020] [--no-era-lock] (kadro her dönemden)
 
 const W: int = 1920
 const H: int = 1080
@@ -27,6 +27,8 @@ func _ready() -> void:
 			_level = int(arg.trim_prefix("--level="))
 		elif arg.begins_with("--year="):
 			_year = int(arg.trim_prefix("--year="))
+		elif arg == "--no-era-lock":
+			StaffSystem.era_lock = false
 	if not _out.begins_with("res://") and not _out.begins_with("user://") and not _out.is_absolute_path():
 		_out = "res://" + _out
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_out))

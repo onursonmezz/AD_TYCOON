@@ -46,3 +46,23 @@ func test_candidates_get_different_portraits() -> void:
 		if list.size() < pool:
 			assert_false(list.has(c["avatar"]), "aynı portre iki adayda: %s" % c["avatar"])
 		list.append(c["avatar"])
+
+
+## Dönem kilidi (K-147): açıkken 1990'da yalnız 1990'lar kadrosu; kapalıyken diğer dönemlerden de gelir.
+func test_era_lock_limits_cast_to_the_year() -> void:
+	var sim: Simulation = Simulation.new(data, 14)
+	var era_of: Dictionary = {}
+	for c: Dictionary in data.characters["cast"]:
+		era_of[str(c["id"])] = int(c["from"])
+	var seen_other: bool = false
+	for i: int in 40:
+		StaffSystem.era_lock = true
+		var locked: String = sim.staff.unused_cast(sim.state, "female", 1990)
+		if not locked.is_empty():
+			assert_eq(era_of[locked], 1990, "kilit açıkken başka dönem: %s" % locked)
+		StaffSystem.era_lock = false
+		var free: String = sim.staff.unused_cast(sim.state, "female", 1990)
+		if not free.is_empty() and int(era_of[free]) != 1990:
+			seen_other = true
+	StaffSystem.era_lock = true
+	assert_true(seen_other, "kilit kapalıyken hep 1990 karakteri geldi")

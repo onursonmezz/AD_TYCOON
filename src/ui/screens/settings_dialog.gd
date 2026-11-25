@@ -85,6 +85,7 @@ func _build() -> void:
 			body.add_child(_check_row("autosave"))
 			body.add_child(_check_row("tutorial"))
 			body.add_child(_check_row("minigames"))
+			body.add_child(_check_row("era_lock"))
 			var tools: HBoxContainer = UiUtil.hbox(CozyTheme.SPACE_S)
 			tools.add_child(UiUtil.button(tr("UI_SET_TUTORIAL_RESET"), func() -> void: Settings.set_value("tutorial_seen", [])))
 			tools.add_child(UiUtil.button(tr("UI_SET_LOGS"), func() -> void:

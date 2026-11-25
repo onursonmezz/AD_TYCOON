@@ -12,6 +12,13 @@ var _last_month: int = -1
 var autosave_needs_clock: bool = true
 
 
+func _ready() -> void:
+	StaffSystem.era_lock = bool(Settings.get_value("era_lock"))
+	Settings.changed.connect(func(key: String) -> void:
+		if key == "era_lock" or key.is_empty():
+			StaffSystem.era_lock = bool(Settings.get_value("era_lock")))
+
+
 func has_game() -> bool:
 	return sim != null
 

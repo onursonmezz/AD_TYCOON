@@ -3,6 +3,10 @@ extends RefCounted
 ## Çalışanlar (GDD 11): kurucu, aday üretimi, işe alım, eğitim, uzmanlaşma, kovma, maaş, haftalık moral/enerji/
 ## tükenmişlik, XP/seviye, rakip transfer teklifleri.
 
+## Dönem kilidi (K-139, Ayarlar): açıkken çalışan yalnız işe girdiği dönemin kadro karakterlerinden birini alır;
+## kapalıyken her dönemin karakterleri gelebilir. Oyuncu tercihi; kayda girmez, GameState Ayarlar'dan kurar.
+static var era_lock: bool = true
+
 var data: GameData
 
 
@@ -138,7 +142,8 @@ func unused_cast(state: SimState, gender: String, year: int, except_id: String =
 			used.append(str(emp.get("cast", "")))
 	var free: Array = []
 	for c: Dictionary in data.characters.get("cast", []):
-		if int(c["from"]) <= year and year <= int(c["to"]) and not used.has(str(c["id"])) \
+		var in_era: bool = int(c["from"]) <= year and year <= int(c["to"])
+		if (in_era or not era_lock) and not used.has(str(c["id"])) \
 				and (str(c["gender"]) == gender or not gender in ["female", "male"]):
 			free.append(str(c["id"]))
 	return str(state.rng.pick("staff", free)) if not free.is_empty() else ""

@@ -1899,3 +1899,22 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Oyuna 360×240'a küçültülüp `assets/ui/option_art/` içine alındı; asılları `art/incoming/option_art/` içinde (git dışı).
   - `OptionArt.picture_for` önce görseli arıyor (`opt_<tür>_<id>`, `focus_<id>`, `opt_influencer`); görsel yoksa eski kod çizimi çalışıyor.
   - Görseller seçim kartlarında, seçici düğmelerin küçük resminde ve görev planında kullanılıyor.
+
+## K-147 — S13: Dönem kilidi ayarı ve 10 yeni kadro karakteri (2026-11-25)
+- **Sorun:** Orgo'nun gönderdiği karakterler oyunda görünmüyordu. Kadro karakterleri dönemlere bağlı (`data/characters.json` "cast" `from`/`to`). 1990'da yalnız bir erkek vardı; 2010'larda hiç karakter yoktu. Yeni 10 Tripo modelinde iskelet de yoktu.
+- **Dönem kilidi (Ayarlar → Oyun):** Varsayılan açık. Açıkken çalışan, işe girdiği yılın döneminden bir karakter alır; o dönemde boş karakter yoksa kodla çizilen karakter gelir. Kapalıyken her dönemin karakterleri gelebilir.
+  - Oyuncu tercihi olduğu için kayda girmez: `StaffSystem.era_lock` (static), `GameState` Ayarlar'dan kurar. Var olan çalışanların görünüşü değişmez; yalnız yeni adaylar etkilenir.
+  - Test: `tests/test_staff_looks.gd` `test_era_lock_limits_cast_to_the_year`.
+- **İskelet aktarma (`tools/blender/transfer_rig.py`, Orgo'nun önerisi: "iskeletlerini diğerlerinden kopyala"):**
+  - Örnek iskeletli karakter (erkek `char_1990_m01.fbx`, kadın `char_2000_f01.fbx`) yeni gövdenin kutusuna uydurulur.
+  - Ağırlıklar en yakın yüzeyden aktarılır. Gövde 15 000 üçgeni aşıyorsa önce %95'ine sadeleştirilir.
+  - Çıktı `art/incoming/cast/char_<dönem>_<g><nn>.glb`; sonra her zamanki `build_cast.py`.
+- **Yakalanan hatalar:**
+  - Örnek FBX'ten kalan poz ağırlıkları kaydırıyordu: kollar hareket etmiyordu.
+  - Tripo FBX'leri dokuyu yalnız adıyla anıyor ("Color.png"). Blender başka karakterin klasöründen alabiliyordu; artık kaynağın kendi `.fbm` klasörü kullanılıyor ve yalnız renk dokusu kalıyor.
+  - Blender JPEG'e ICC renk profili ekliyor; Godot bu dokuyu açamayıp karakteri beyaz çiziyordu. `retarget_tripo._strip_icc` bu bloğu aynı boyda yorum bloğuna çeviriyor.
+- **Dönem dağılımı (benim önerim; Orgo değiştirebilir):**
+  - 1990: takım elbiseli yaşlı adam (m02), siyah takımlı kadın (f01), yeşil polo (m03).
+  - 2000: beyaz elbiseli kadın (f05), çizgili gömlek ve kargo (m01).
+  - 2010: gözlüklü ekose pantolonlu kadın (f01), pembe hırkalı sarışın (f02), kot ceketli adam (m01).
+  - 2020: hardal kapüşonlu genç (m02), kıvırcık kızıl saçlı kadın (f02).

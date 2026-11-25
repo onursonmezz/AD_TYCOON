@@ -117,6 +117,21 @@ def _stand_up(tarm, mesh, pre: str) -> None:
     print("dik konuma getirildi")
 
 
+def _strip_icc(path: str) -> None:
+    """Blender JPEG'e ICC renk profili (APP2) ekliyor; Godot bu dokuyu açamıyor (karakter beyaz kalıyor). Blok, aynı
+    boyda yorum bloğuna (COM) çevrilir; dosya düzeni değişmez."""
+    data = bytearray(open(path, "rb").read())
+    i = data.find(b"\xff\xe2")
+    n = 0
+    while i != -1:
+        if data[i + 4:i + 15] == b"ICC_PROFILE":
+            data[i + 1] = 0xFE
+            n += 1
+        i = data.find(b"\xff\xe2", i + 2)
+    if n:
+        open(path, "wb").write(bytes(data))
+
+
 def retarget(src: str, dst: str) -> None:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     if src.lower().endswith(".fbx"):  # Mixamo ya da Tripo FBX çıktısı
@@ -231,6 +246,7 @@ def retarget(src: str, dst: str) -> None:
     bpy.ops.export_scene.gltf(filepath=out, export_format="GLB", export_yup=True, export_animations=True,
                               export_animation_mode="ACTIONS", export_skins=True, export_cameras=False,
                               export_lights=False, export_image_format="JPEG", export_jpeg_quality=92)
+    _strip_icc(out)
     print("RETARGET %s → %s  %d hareket, boy %.2f" % (os.path.basename(src), dst, len(ours), top))
 
 

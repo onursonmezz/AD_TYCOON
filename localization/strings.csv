@@ -1498,6 +1498,7 @@ UI_SET_TUTORIAL_RESET,İpuçlarını baştan göster,Show tips again
 UI_SET_LOGS,Günlük klasörünü aç,Open log folder
 UI_SET_RESET,Varsayılanlara dön,Reset to defaults
 UI_SET_MINIGAMES,Fazlar arasında mini oyunlar,Mini games between phases
+UI_SET_ERA_LOCK,"Dönem kilidi: çalışanlar yalnız kendi dönemlerinin karakterleri","Era lock: staff use only their own era's characters"
 UI_MG_TITLE,Mini oyun · %s,Mini game · %s
 UI_MG_SKIP,Atla,Skip
 MG_MAP_LEGEND,Kalabalık: insan noktaları,Crowd: people dots

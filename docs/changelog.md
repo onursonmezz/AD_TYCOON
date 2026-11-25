@@ -1,5 +1,15 @@
 # Değişiklik günlüğü
 
+## Yeni kadro karakterleri ve dönem kilidi (2026-11-25)
+- Orgo'nun 10 yeni Tripo karakteri oyunda. İskeletleri benzer karakterlerden kopyalandı; hepsi yürüyor, oturuyor, yazıyor, telefonla konuşuyor.
+- Artık her dönemde kadın ve erkek karakter var. 1990: 1 kadın, 3 erkek; 2000: 5 kadın, 1 erkek; 2010: 2 kadın, 1 erkek; 2020: 2 kadın, 2 erkek.
+- Ayarlar → Oyun'da "Dönem kilidi" (varsayılan açık). Kapatınca yeni işe alınanlar her dönemin karakterlerinden gelebilir.
+- Nasıl test ederim:
+  1. 1990'da yeni oyun başlat ve birkaç kişi işe al. Ofiste takım elbiseli yaşlı adam, siyah takımlı kadın ya da yeşil polo tişörtlü adam görünmeli.
+  2. Ayarlar → Oyun → "Dönem kilidi"ni kapat ve yeni adaylarla birkaç kişi daha al. Kot ceketli adam ya da kapüşonlu genç gibi sonraki dönemlerin karakterleri de gelebilmeli.
+  3. Kilidi yeniden aç. Daha önce işe alınanların görünüşü değişmemeli.
+  4. 2010'da başla. Gözlüklü kadın, pembe hırkalı kadın ve kot ceketli adam görünebilmeli (eskiden 2010'larda hiç model yoktu).
+
 ## Orgo'nun düzeltmeleri: arayüz ve faz akışı (2026-11-20)
 - Fazlar yine sırayla geliyor: kampanya başlarken 1. faz, sonra 2. ve 3. faz başlarken o fazın planı.
 - Faz sürerken kampanya penceresi kapalı; ofiste çalışanları izliyorsun, ilerleme üstteki şeritte.
