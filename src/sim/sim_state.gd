@@ -193,9 +193,11 @@ func find_brief(brief_id: String) -> Dictionary:
 
 
 ## Gelir ve gideri yıl toplamına ve bu ayın kaydına yazar (bütün gelir-gider buradan geçer).
-func book(income: float, expense: float) -> void:
-	year_income += income
-	year_expense += expense
+## taxable false: yalnızca aylık finans kaydına girer, vergi matrahına girmez (vergi ödemesinin kendisi, K-149).
+func book(income: float, expense: float, taxable: bool = true) -> void:
+	if taxable:
+		year_income += income
+		year_expense += expense
 	var key: int = clock.year() * 12 + clock.month() - 1
 	if finance_months.is_empty() or int(finance_months[-1]["m"]) != key:
 		finance_months.append({"m": key, "in": 0.0, "out": 0.0})

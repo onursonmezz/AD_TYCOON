@@ -371,7 +371,7 @@ func _finish(camp: Dictionary) -> void:
 			state.history[i]["viral"] = result["viral"]
 			break
 	var lost_names: Array[String] = []
-	drop_clients(clients.remove_unhappy(state, lost_names))
+	drop_clients(clients.remove_unhappy(state, lost_names, str(camp["id"])))
 	campaign_finished.emit(camp)
 	if not lost_names.is_empty():
 		clients_lost.emit(lost_names)
@@ -405,7 +405,10 @@ func _end_year() -> void:
 		staff_note.emit("NOTE_COMMIT_PENALTY", [penalty], "bad")
 	IndustryCalendar.yearly(self)
 	state.year_media = 0.0
-	economy.yearly(state)
+	var profit: float = state.year_income - state.year_expense
+	var tax: float = economy.yearly(state)
+	if tax > 0.0:  # K-149: eskiden sessizce kesiliyordu
+		staff_note.emit("NOTE_YEAR_TAX", [tax, profit], "info")
 	# Rekor çıtası her yıl biraz erir (K-047): tek bir şanslı iş yıllarca aşılamaz çıta bırakmasın.
 	for size: Variant in state.best_raw:
 		state.best_raw[size] = float(state.best_raw[size]) * (1.0 - data.balf("score.best_yearly_decay"))

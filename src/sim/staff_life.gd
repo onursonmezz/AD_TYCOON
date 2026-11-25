@@ -76,7 +76,7 @@ func weekly(state: SimState) -> Array[Dictionary]:
 			still.append(offer)
 	state.offers = still
 	for id: String in leaving:
-		remove_employee(state, id)
+		notes.append_array(remove_employee(state, id))
 	return notes
 
 
@@ -93,15 +93,24 @@ func _display_name(emp: Dictionary) -> String:
 	return str(emp.get("name", ""))
 
 
-func remove_employee(state: SimState, emp_id: String) -> void:
+## Dönüş: bildirimler (K-149: görevleri kime geçti).
+func remove_employee(state: SimState, emp_id: String) -> Array[Dictionary]:
+	var notes: Array[Dictionary] = []
+	var gone_name: String = _display_name(state.staff.get(emp_id, {}))
 	state.staff.erase(emp_id)
 	for c: Dictionary in state.campaigns:
 		(c["setup"]["team"] as Array).erase(emp_id)
+		var takers: Array[String] = TaskPlan.reassign_departed(data, state, c["setup"], emp_id)
+		for id: String in takers:  # genelde tek kişi; adsız kurucu "Sen" olarak çevrilsin diye her biri ayrı bildirim
+			var taker: String = _display_name(state.staff[id])
+			notes.append({"key": "NOTE_TASK_REASSIGNED", "args": [gone_name, taker if not taker.is_empty() else "UI_YOU"],
+				"kind": "info"})
 	var kept: Array[Dictionary] = []
 	for o: Dictionary in state.offers:
 		if o["employee_id"] != emp_id:
 			kept.append(o)
 	state.offers = kept
+	return notes
 
 
 ## Aylık: piyasa değerinin altında maaş alanlara rakip teklif gelebilir (GDD 11.2). Dönüş: yeni teklifler.
@@ -127,8 +136,8 @@ func _has_offer(state: SimState, emp_id: String) -> bool:
 	return false
 
 
-## Oyuncu kararı: "match" (piyasa +%10 zam) ya da "release" (bırak gitsin).
-func resolve_offer(state: SimState, offer_id: String, choice: String) -> String:
+## Oyuncu kararı: "match" (piyasa +%10 zam) ya da "release" (bırak gitsin). notes_out: görev devri bildirimleri.
+func resolve_offer(state: SimState, offer_id: String, choice: String, notes_out: Array[Dictionary] = []) -> String:
 	for o: Dictionary in state.offers:
 		if o["id"] != offer_id:
 			continue
@@ -138,7 +147,7 @@ func resolve_offer(state: SimState, offer_id: String, choice: String) -> String:
 			if not emp.is_empty():
 				emp["salary"] = roundf(Employee.market_value(data, emp, state.clock.year()) * (1.0 + _r("offer_raise_over_market")))
 		else:
-			remove_employee(state, o["employee_id"])
+			notes_out.append_array(remove_employee(state, o["employee_id"]))
 		return ""
 	return "ERR_NO_OFFER"
 

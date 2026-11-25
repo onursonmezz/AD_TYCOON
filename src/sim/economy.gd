@@ -84,6 +84,8 @@ func yearly(state: SimState) -> float:
 	state.cash -= tax
 	state.year_income = 0.0
 	state.year_expense = 0.0
+	if tax > 0.0:
+		state.book(0.0, tax, false)  # K-149: finans grafiğinde görünsün; gelecek yılın matrahından düşmesin
 	# Aylık finans kaydı (yalnızca arayüz için): son cashflow.history_months ay.
 	while state.finance_months.size() > data.bali("cashflow.history_months"):
 		state.finance_months.pop_front()

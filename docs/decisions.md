@@ -1947,3 +1947,17 @@ Orgo ChatGPT'den örnek ekranlar getirdi ("fikir alabilirsin"): her mini oyun ay
   - Zaman duruyor. Kayıt ve zar değişmiyor. Zaman dururken biri masasından kalkıyor. Çıkınca hız, arayüz, kamera ve fare eski hâline dönüyor.
   - İnşa modunda ya da pencere açıkken mod açılmıyor.
   - Gezintide kesik duvar yok.
+
+## K-149 — Denetim düzeltmeleri: müşteri parası, vergi, görev devri (2026-11-25)
+Orgo'nun istediği denetimde (`docs/denetim_raporu_2026-11-25.md`) bulunan ilk üç hata düzeltildi.
+- **İşi süren müşteri gitmez:** Rakip çalmadaki "üretimde ya da yayında işi olan müşteri çalınmaz" kuralı artık her ayrılmada geçerli (`ClientSystem.is_busy`).
+  - Eskiden memnuniyetsizlikle (`remove_unhappy`) ya da olayla (`client.leave`) giden müşterinin süren kampanyası faturasız teslim ediliyordu. Medya bedeli ajanstan çıkıyor, ücret gelmiyordu.
+  - Memnuniyeti ayrılma sınırının altındaki müşteri yeni brief göndermez (`ClientSystem.is_leaving`). Yoksa iş bitmeden yeni iş verip hiç gitmeyebilirdi.
+  - Son kampanyası yayından düşerken o kampanya sayılmaz (`except_campaign`); müşteri o anda ayrılır.
+  - İşi süren müşteriye olayda "ayrılıyor" çıkarsa memnuniyeti 0 olur ve "işi bitince ayrılacak" bildirimi gelir (`NOTE_CLIENT_LEAVES_LATER`).
+- **Yıl sonu vergisi duyurulur:** `NOTE_YEAR_TAX` (vergi, geçen yılın kârı). Vergi yeni yılın ilk ayının finans kaydına gider olarak yazılır, ama gelecek yılın vergi matrahına girmez (`SimState.book(..., taxable = false)`). Oran (%25) değişmedi.
+- **Ayrılanın görevi devredilir:** `StaffLife.remove_employee` artık planlanmış fazlardaki görevlerini `TaskPlan.reassign_departed` ile kalan ekibe dağıtıyor.
+  - Seçim otomatik atamanın kuralıyla yapılır (`TaskPlan._best_for`, otomatik dağıtımdan ayrıldı): önce fazda görevi olmayan ve yükü %100'ü aşmayan, sonra yalnızca yük sınırı, sonra yükü en az artan.
+  - Bildirim: `NOTE_TASK_REASSIGNED`. Rakip teklifinde "bırak" seçilince de çıkar (`ResolveOfferCommand`).
+- **Testler:** `tests/test_review_fixes.gd` (6 test).
+- **Denge (200×10):** Bilgili bot aynı (ort. puan 7,63, Y10 medyan nakit ₺2,65 M, iflas %0,5 / %6,5). Rastgele bot 10 yılda %56,5 → %52,5 iflas; ilk 3 yılda %15,5 (değişmedi).

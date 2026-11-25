@@ -2135,3 +2135,6 @@ UI_AVATAR_ALL,Tümü,All
 UI_AVATAR_FEMALE,Kadın,Female
 UI_AVATAR_MALE,Erkek,Male
 UI_AVATAR_OTHER,Diğer,Other
+NOTE_YEAR_TAX,"Kurumlar vergisi ödendi: ₺%d (geçen yılın kârı ₺%d).","Corporate tax paid: ₺%d (last year's profit ₺%d)."
+NOTE_CLIENT_LEAVES_LATER,"%s, süren işi bitince ajansla çalışmayı bırakacak.","%s will stop working with the agency once the current job is done."
+NOTE_TASK_REASSIGNED,"%s ayrıldı; kampanyadaki görevlerini %s üstlendi.","%s left; %s took over their campaign tasks."

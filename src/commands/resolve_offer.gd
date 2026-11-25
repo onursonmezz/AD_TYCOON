@@ -12,4 +12,8 @@ func _init(offer_in: String, choice_in: String) -> void:
 
 
 func execute(sim: Simulation) -> String:
-	return sim.staff_life.resolve_offer(sim.state, offer_id, choice)
+	var notes: Array[Dictionary] = []
+	var err: String = sim.staff_life.resolve_offer(sim.state, offer_id, choice, notes)
+	for n: Dictionary in notes:
+		sim.staff_note.emit(n["key"], n["args"], n["kind"])
+	return err

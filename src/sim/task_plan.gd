@@ -91,29 +91,66 @@ static func auto_assign_phases(data: GameData, state: SimState, sliders: Array, 
 	tasks.sort_custom(func(a: Array, b: Array) -> bool: return float(a[2]) > float(b[2]))
 	for t: Array in tasks:
 		var p: int = int(t[0])
-		var area: String = data.focus_ids_of_phase(p)[int(t[1])]
-		# Sıra: bu fazda görevi olmayan ve yükü %100'ü aşmayacak kişi; sonra yalnızca yük sınırı; sonra yükü en az artan.
-		var best: String = ""
-		var best_v: float = -1.0
 		var w: float = float(t[2])
-		for pass_i: int in 3:
-			for id: Variant in team:
-				var emp: Dictionary = state.staff.get(str(id), {})
-				if emp.is_empty():
-					continue
-				var after: float = float(load[str(id)]) + w
-				if pass_i <= 1 and after > data.balf("workload.warn_load") + 0.001:
-					continue
-				if pass_i == 0 and (assign[p] as Array).has(str(id)):
-					continue  # önce herkese fazda bir görev
-				var fit: float = Employee.area_stat(data, emp, area) * Employee.specialty_mult(data, emp, area)
-				var v: float = fit if pass_i <= 1 else 1.0 / after
-				if v > best_v:
-					best_v = v
-					best = str(id)
-			if not best.is_empty():
-				break
+		var best: String = _best_for(data, state, team, assign, load, p, data.focus_ids_of_phase(p)[int(t[1])], w)
 		if not best.is_empty():
 			assign[p][int(t[1])] = best
 			load[best] = float(load[best]) + w
 	return assign
+
+
+## Görev için en uygun kişi. Sıra: bu fazda görevi olmayan ve yükü %100'ü aşmayacak kişi; sonra yalnızca yük sınırı;
+## sonra yükü en az artan. Kimse yoksa "".
+static func _best_for(data: GameData, state: SimState, team: Array, assign: Array, load: Dictionary, p: int,
+		area: String, w: float) -> String:
+	var best: String = ""
+	var best_v: float = -1.0
+	for pass_i: int in 3:
+		for id: Variant in team:
+			var emp: Dictionary = state.staff.get(str(id), {})
+			if emp.is_empty():
+				continue
+			var after: float = float(load.get(str(id), 0.0)) + w
+			if pass_i <= 1 and after > data.balf("workload.warn_load") + 0.001:
+				continue
+			if pass_i == 0 and (assign[p] as Array).has(str(id)):
+				continue  # önce herkese fazda bir görev
+			var fit: float = Employee.area_stat(data, emp, area) * Employee.specialty_mult(data, emp, area)
+			var v: float = fit if pass_i <= 1 else 1.0 / after
+			if v > best_v:
+				best_v = v
+				best = str(id)
+		if not best.is_empty():
+			return best
+	return best
+
+
+## K-149: ekipten ayrılan kişinin görevleri (planlanmış fazlarda) kalan ekibe dağıtılır; eskiden görev fazın sonuna
+## kadar sahipsiz kalıp hiç puan üretmiyordu. Dönüş: görevi alanların id'leri (tekrarsız; kimse yoksa boş).
+static func reassign_departed(data: GameData, state: SimState, setup: Dictionary, emp_id: String) -> Array[String]:
+	var takers: Array[String] = []
+	if not has_plan(setup):
+		return takers
+	var assign: Array = setup["assign"]
+	var team: Array = setup.get("team", [])
+	var load: Dictionary = {}
+	for id: Variant in team:
+		load[str(id)] = campaign_load(setup, str(id))
+	var vacant: Array = []
+	for p: int in 3:
+		for i: int in 3:
+			if assignee(setup, p, i) == emp_id:
+				assign[p][i] = ""
+				vacant.append([p, i, float(setup["sliders"][p][i])])
+	vacant.sort_custom(func(a: Array, b: Array) -> bool: return float(a[2]) > float(b[2]))
+	for t: Array in vacant:
+		var p: int = int(t[0])
+		var w: float = float(t[2])
+		var best: String = _best_for(data, state, team, assign, load, p, data.focus_ids_of_phase(p)[int(t[1])], w)
+		if best.is_empty():
+			continue
+		assign[p][int(t[1])] = best
+		load[best] = float(load[best]) + w
+		if not takers.has(best):
+			takers.append(best)
+	return takers

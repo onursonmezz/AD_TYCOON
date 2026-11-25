@@ -58,8 +58,8 @@ func weekly(state: SimState) -> void:
 		return
 	var chances: Array = data.bal("clients.brief_weekly_chance")
 	for client: Dictionary in state.clients.values():
-		if _has_pending(state, client["id"]):
-			continue
+		if _has_pending(state, client["id"]) or clients.is_leaving(client):
+			continue  # ayrılmak üzere olan müşteri yeni iş vermez (K-149)
 		var p: float = float(chances[int(client["scale"])]) * season_multiplier(client["sector"], year, month)
 		if state.rng.chance("briefs", p):
 			state.inbox.append(make_brief(state, client, {}))

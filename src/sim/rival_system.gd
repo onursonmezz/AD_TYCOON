@@ -97,7 +97,7 @@ func steal_clients(state: SimState) -> Array[Dictionary]:
 	for client: Dictionary in state.clients.values():
 		if float(client["satisfaction"]) >= data.balf("clients.risk_threshold"):
 			continue
-		if _busy(state, str(client["id"])):
+		if ClientSystem.is_busy(state, str(client["id"])):
 			continue
 		if not state.rng.chance("rivals", float(_r("steal_monthly_chance"))):
 			continue
@@ -105,17 +105,6 @@ func steal_clients(state: SimState) -> Array[Dictionary]:
 		if not rival.is_empty():
 			out.append({"client_id": client["id"], "rival_id": rival})
 	return out
-
-
-## Üretimde ya da yayında işi olan müşteri çalınmaz (ajans parasını alamazdı).
-func _busy(state: SimState, client_id: String) -> bool:
-	for c: Dictionary in state.campaigns:
-		if c["setup"].get("client_id", "") == client_id:
-			return true
-	for camp: Dictionary in state.airing:
-		if camp["setup"]["client_id"] == client_id:
-			return true
-	return false
 
 
 ## Rakipten transfer (GDD 11.6 "rakibi zayıflatır").

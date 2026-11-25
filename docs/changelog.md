@@ -1,5 +1,16 @@
 # Değişiklik günlüğü
 
+## Denetim düzeltmeleri: müşteri parası, vergi, görev devri (2026-11-25)
+- İşi süren müşteri artık ajanstan gitmiyor; iş bitince ayrılıyor. Eskiden giderse medya parası ajanstan çıkıyor ama fatura kesilmiyordu.
+- Ayrılmak üzere olan müşteri yeni brief göndermiyor.
+- Bir olayda "müşteri ayrılıyor" çıkarsa ve müşterinin süren işi varsa "işi bitince ayrılacak" bildirimi geliyor.
+- Yıl sonunda kurumlar vergisi bildirimi çıkıyor ve vergi finans grafiğinde ocak giderinde görünüyor. Eskiden sessizce kesiliyordu.
+- Görev planındaki biri istifa ederse, rakibe geçerse ya da bir olayla ayrılırsa görevleri kalan ekibin en uygun kişisine geçiyor ve bildirim çıkıyor. Eskiden görev sahipsiz kalıp hiç puan üretmiyordu.
+- Nasıl test ederim:
+  1. Bir oyunu bir yıl oynat ve yıl sonunu geç. Sağda "Kurumlar vergisi ödendi: ₺…" bildirimi çıkmalı (o yıl kâr ettiysen). Finans ekranının grafiğinde ocak ayının gideri o kadar yüksek olmalı.
+  2. En az 3 kişilik ekiple orta boy bir kampanya başlat ve görevleri dağıt. Görevli biri ayrılırsa "… ayrıldı; kampanyadaki görevlerini … üstlendi" bildirimi gelmeli.
+  3. Kötü biten bir kampanyadan sonra müşteri ayrılıyorsa: o müşterinin ikinci kampanyası sürüyorsa müşteri hemen gitmemeli, ikinci kampanyanın faturası finans ekranındaki bekleyen tahsilatlarda görünmeli.
+
 ## Gezinti modu: ofiste yürü (2026-11-25)
 - Doktaki son düğme (yürüyen insan) ya da F tuşu ile ofise göz hizasından girilir.
 - WASD ile yürünür, fareyle bakılır, Shift ile daha hızlı gidilir; Esc ile çıkılır.

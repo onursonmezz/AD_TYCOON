@@ -90,8 +90,13 @@ static func _client(sim: Simulation, c: Dictionary, field: String, v: Variant, l
 			c["annual_budget"] = float(c["annual_budget"]) * (1.0 + float(v))
 		"leave":
 			if bool(v):
-				sim.state.clients.erase(c["id"])
-				lost.append(str(c["id"]))
+				if ClientSystem.is_busy(sim.state, str(c["id"])):
+					# K-149: işi süren müşteri o iş bitince ayrılır (memnuniyet sıfır; yeni brief de gelmez).
+					c["satisfaction"] = 0.0
+					sim.staff_note.emit("NOTE_CLIENT_LEAVES_LATER", [str(c["name"])], "bad")
+				else:
+					sim.state.clients.erase(c["id"])
+					lost.append(str(c["id"]))
 		"brief":
 			sim.state.inbox.append(sim.briefs.make_brief(sim.state, c, {}))
 		_:
@@ -119,7 +124,8 @@ static func _employee(sim: Simulation, emp: Dictionary, parts: PackedStringArray
 		"quit":
 			if not bool(v) or bool(emp.get("is_founder", false)):
 				return false
-			sim.staff_life.remove_employee(state, emp["id"])
+			for n: Dictionary in sim.staff_life.remove_employee(state, emp["id"]):
+				sim.staff_note.emit(n["key"], n["args"], n["kind"])
 		"award_points":
 			emp["award_points"] = float(emp.get("award_points", 0.0)) + float(v)
 		_:

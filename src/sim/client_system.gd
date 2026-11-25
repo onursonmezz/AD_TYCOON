@@ -114,12 +114,29 @@ func yearly(state: SimState) -> void:
 				data.balf("clients.budget_growth_min"), data.balf("clients.budget_growth_max")))
 
 
+## Müşterinin üretimde ya da yayında işi var mı (varken ayrılmaz; yoksa ajans parasını alamazdı, K-149).
+## except_campaign: o an biten kampanya sayılmaz (yayından düşmek üzere).
+static func is_busy(state: SimState, client_id: String, except_campaign: String = "") -> bool:
+	for c: Dictionary in state.campaigns:
+		if str(c["setup"].get("client_id", "")) == client_id and str(c["id"]) != except_campaign:
+			return true
+	for c: Dictionary in state.airing:
+		if str(c["setup"].get("client_id", "")) == client_id and str(c["id"]) != except_campaign:
+			return true
+	return false
+
+
+## Memnuniyeti ayrılma eşiğinin altında mı (yeni brief göndermez, işi bitince ayrılır).
+func is_leaving(client: Dictionary) -> bool:
+	return float(client["satisfaction"]) < data.balf("clients.leave_threshold")
+
+
 ## Memnuniyeti eşiğin altına düşen müşteriler ajansı bırakır (M5'te önce ihaleye çıkacak). Dönüş: ayrılanların id'leri.
-## removed_names: verilirse ayrılan markaların adları buna eklenir (bildirim için).
-func remove_unhappy(state: SimState, removed_names: Array[String] = []) -> Array[String]:
+## İşi süren müşteri o iş bitene kadar kalır (K-149). removed_names: verilirse ayrılanların adları eklenir (bildirim için).
+func remove_unhappy(state: SimState, removed_names: Array[String] = [], except_campaign: String = "") -> Array[String]:
 	var gone: Array[String] = []
 	for id: String in state.clients.keys():
-		if float(state.clients[id]["satisfaction"]) < data.balf("clients.leave_threshold"):
+		if is_leaving(state.clients[id]) and not is_busy(state, id, except_campaign):
 			gone.append(id)
 	for id: String in gone:
 		removed_names.append(str(state.clients[id]["name"]))
